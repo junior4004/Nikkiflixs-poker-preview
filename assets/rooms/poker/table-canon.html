@@ -36,20 +36,22 @@
   }
 
   /* ===== 1. Perspective Felt Box (Jim's CSS) ===== */
-  .poker-table-container {
-  width: 100vw;
-  height: 56.25vw;
-  max-width: 177.78vh;
-  max-height: 100vh;
+  .poker-table-container{
+  aspect-ratio: 16 / 9;
+  width: min(100vw, 1200px);
+  height: auto;
+  position: relative;
   margin: auto;
-  position: absolute;
-  top: 0; bottom: 0; left: 0; right: 0;
+  overflow: hidden;
+  container-type: inline-size;
 }
+.poker-table-container > *{ pointer-events: auto; }
   .poker-table-felt {
-    width: 94vw; height: 55vh;
-    max-width: 1250px; max-height: 620px;
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    max-width: none; max-height: none;
     border-radius: 120px;
-    transform: rotateX(35deg);
+    transform: none;
     /* Jim 2026-10-10: CINEMATIC ART DECO — dramatic overhead spotlight.
        Bright pool of light from top-center fading to deep shadow at edges.
        Golden Art Deco trim on the rim. */
@@ -235,17 +237,6 @@
 .hole.back,.muck i,.deck i{background:linear-gradient(135deg,transparent 0 8%,#f6d271 8% 12%,transparent 12% 20%,#f6d271 20% 24%,transparent 24%),#540714;border:2px solid #f9e2aa;box-shadow:inset 0 0 0 2px #42030d,0 8px 14px #000e}
 
 
-
-  /* ===== Seats — Jim's comfortable positions ===== */
-  .seat { position: absolute; z-index: 5; }
-  .seat.s0 { bottom: 3%; left: 50%; transform: translateX(-50%); }
-  .seat.s1 { bottom: 20%; left: 8%; }
-  .seat.s2 { top: 32%; left: 4%; }
-  .seat.s3 { top: 6%; left: 18%; }
-  .seat.s4 { top: 2%; left: 50%; transform: translateX(-50%); }
-  .seat.s5 { top: 6%; right: 18%; }
-  .seat.s6 { top: 32%; right: 4%; }
-  .seat.s7 { bottom: 20%; right: 8%; }
 
   /* ===== Game-required elements (canon hooks, Jim's styling) ===== */
   #stage { position: fixed; inset: 0; overflow: hidden; }
@@ -545,18 +536,6 @@
     max-height: 540px !important;
   }
 
-  /* 2. Spread the seats — clear angular separation, no overlaps.
-        (Positions are % of the felt; vertical gaps widened to compensate
-         for the rotateX visual compression.) */
-  .seat.s0 { bottom: 5% !important; left: 50% !important; }
-  .seat.s1 { bottom: 26% !important; left: 11% !important; }
-  .seat.s2 { top: 40% !important; left: 6% !important; }
-  .seat.s3 { top: 14% !important; left: 22% !important; }
-  .seat.s4 { top: 4% !important; left: 50% !important; }
-  .seat.s5 { top: 14% !important; right: 22% !important; }
-  .seat.s6 { top: 40% !important; right: 6% !important; }
-  .seat.s7 { bottom: 26% !important; right: 11% !important; }
-
   /* 3. Dealer clearance — Nikki sits well above the top-center seat */
   .dealer { top: -11% !important; }
 
@@ -601,26 +580,6 @@
   /* Jim 2026-10-10: mobile — entire oval felt, dealer station, and top
      player pods fully visible. scale(0.85) so nothing clips. */
   
-  .poker-table-felt {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute !important;
-    inset: 0 !important;
-    border-radius: 140px !important;
-    overflow: visible !important;
-  }
-  /* Jim 2026-10-10: FORCE OVERRIDE — explicit seat anchors for 8-max racetrack.
-     No JS positioning. Each seat locked to the outer rail.
-     Jim 2026-10-10: bottom seats pulled UP 6-7% so they stay on-screen on mobile.
-     Jim 2026-10-10: bottom seats pulled UP another 5% for full visibility. */
-  .seat.s0 { left: 50% !important; top: -12% !important; transform: translate(-50%, 0) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s1 { left: 82% !important; top: 5% !important; transform: translate(-50%, 0) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s2 { left: 96% !important; top: 45% !important; transform: translate(-50%, -50%) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s3 { left: 82% !important; top: 77% !important; transform: translate(-50%, -100%) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s4 { left: 50% !important; top: 93% !important; transform: translate(-50%, -100%) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s5 { left: 18% !important; top: 77% !important; transform: translate(-50%, -100%) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s6 { left: 4% !important; top: 45% !important; transform: translate(-50%, -50%) rotateX(calc(var(--felt-tilt) * -1)) !important; }
-  .seat.s7 { left: 18% !important; top: 5% !important; transform: translate(-50%, 0) rotateX(calc(var(--felt-tilt) * -1)) !important; }
   /* Jim 2026-10-10: blind badges render BEHIND faces — never cover players */
   .seat .blind { z-index: 1 !important; }
   .seat .ws-figure.seat-figure { z-index: 5 !important; position: relative; }
@@ -695,19 +654,6 @@
 
   /* Pot stacked just below the dealer cutout */
   .pot { top: 22% !important; }
-
-  /* 3. Horizontal seat distribution: 8 seats pushed FURTHER OUT to the rail.
-        Ellipse rx=46%, ry=42% from center — each player sits cleanly on or
-        just outside the mahogany rail with clear breathing room. s4 keeps
-        dealer clearance. (Jim 2026-10-10: spread them out.) */
-  .seat.s0 { left: 50% !important; top: 92% !important; bottom: auto !important; right: auto !important; }
-  .seat.s1 { left: 17.5% !important; top: 79.7% !important; bottom: auto !important; right: auto !important; }
-  .seat.s2 { left: 4% !important; top: 50% !important; bottom: auto !important; right: auto !important; }
-  .seat.s3 { left: 17.5% !important; top: 20.3% !important; bottom: auto !important; right: auto !important; }
-  .seat.s4 { left: 50% !important; top: 12% !important; bottom: auto !important; right: auto !important; }
-  .seat.s5 { left: 82.5% !important; top: 20.3% !important; bottom: auto !important; right: auto !important; }
-  .seat.s6 { left: 96% !important; top: 50% !important; bottom: auto !important; right: auto !important; }
-  .seat.s7 { left: 82.5% !important; top: 79.7% !important; bottom: auto !important; right: auto !important; }
 
   /* 4. Community cards + pot: TRUE CENTER of the expanded felt.
         Board dead-center; pot just above it in the clear central zone,
@@ -806,19 +752,6 @@
     margin: 0 auto !important;
     z-index: 45 !important;
   }
-  /* ============================================================
-     Jerry 2026-10-10 (image 1957): EXPANDED SEAT RADIUS — HARD CODED.
-     Negative offsets increased so pods sit completely outside the
-     felt boundary. Fixed CSS only — no dynamic math anywhere.
-     ============================================================ */
-  .poker-table-felt .seat.s4 { left: 50% !important; right: auto !important; top: -45% !important; bottom: auto !important; transform: translateX(-50%) !important; }
-  .poker-table-felt .seat.s3 { left: 6% !important; right: auto !important; top: -35% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s5 { right: 6% !important; left: auto !important; top: -35% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s2 { left: -18% !important; right: auto !important; top: 42% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s6 { right: -18% !important; left: auto !important; top: 42% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s1 { left: 6% !important; right: auto !important; top: 86% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s7 { right: 6% !important; left: auto !important; top: 86% !important; bottom: auto !important; transform: none !important; }
-  .poker-table-felt .seat.s0 { left: 50% !important; right: auto !important; top: 82% !important; bottom: auto !important; transform: translateX(-50%) !important; }
 
   /* ===== WAVE2-FUN UI LAYER (throwables + emotes) - CSS was missing, added 2026-10-11 ===== */
   #funTray {
