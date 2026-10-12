@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>App Store · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:#0a0705;color:#f8f2df;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -10%,#241a10 0%,#0a0705 55%)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0a08ee;border-bottom:1px solid #5e452a}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1}
+.wrap{max-width:560px;margin:0 auto;padding:14px 12px 60px}
+.search{width:100%;min-height:46px;padding:10px 14px;border-radius:12px;border:1px solid #5e452a;background:#141009ee;color:#f8f2df;font-size:16px;margin-bottom:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;min-height:38px;padding:8px 16px;border-radius:20px;border:1px solid #5e452a;background:#141009ee;color:#c9bba5;font:700 14px/1 "Source Sans 3",sans-serif}
+.chip.on{background:linear-gradient(180deg,#b8872d,#654216);color:#fff;border-color:#e2b34f}
+.feature{border-radius:16px;overflow:hidden;border:1px solid #d8a94b;background:linear-gradient(135deg,#2a1a08,#141009);margin-bottom:18px;position:relative}
+.feature .fart{font-size:74px;text-align:center;padding:26px 0 6px;filter:drop-shadow(0 6px 10px #000a)}
+.feature .fbody{padding:6px 18px 18px;text-align:center}
+.feature .fname{font:800 26px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#ffe9bd;text-transform:uppercase}
+.feature .fdesc{font-size:14px;color:#c9bba5;margin:8px 0 14px;line-height:1.5}
+.get{min-height:46px;padding:10px 26px;border-radius:12px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.get:active{transform:translateY(1px)}
+.get.soon{background:#241c12;border-color:#5e452a;color:#8a7a5c}
+.sect{font:800 19px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#ffe9bd;margin:6px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:#141009ee;border:1px solid #5e452a;border-radius:12px;padding:14px 10px;text-align:center;position:relative;display:flex;flex-direction:column}
+.card .art{font-size:52px;line-height:1.2;filter:drop-shadow(0 4px 6px #000a)}
+.card .nm{font:800 16px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#fff;margin:8px 0 2px;text-transform:uppercase}
+.card .ds{font-size:12.5px;color:#c9bba5;line-height:1.4;min-height:52px;margin-bottom:6px}
+.card .cat{display:inline-block;font:700 10px/1 "Source Sans 3",sans-serif;letter-spacing:.14em;color:#d8a94b;text-transform:uppercase;margin-bottom:10px}
+.card .get{margin-top:auto;min-height:42px;font-size:14px}
+.badge{position:absolute;top:8px;right:8px;font:800 10px/1 "Source Sans 3",sans-serif;letter-spacing:.1em;padding:5px 8px;border-radius:6px}
+.badge.new{background:#2f8f57;color:#fff}
+.badge.soon{background:#3a2f1a;color:#d8a94b;border:1px solid #5e452a}
+.empty{text-align:center;color:#8a7a5c;padding:30px 0;font-size:15px}
+.foot{text-align:center;color:#6e6250;font-size:12px;margin-top:26px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Casino</button>
+  <h1>📱 App Store</h1>
+</div>
+<div class="wrap">
+  <input class="search" id="q" type="search" placeholder="Search apps…" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div class="feature" id="feature"></div>
+  <div class="sect">All Apps</div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">No apps match your search.</div>
+  <p class="foot">Every app installs straight from its own page — no app store account, no fees, no waiting.<br>More apps are on the way.</p>
+</div>
+<script>
+/* ============================================================
+   NIKKIFLIXS APP STORE — app catalog.
+   To add an app, add one entry:
+     {name, desc, icon, url, cat, badge}
+   icon: emoji string or image URL. url: "" = coming soon.
+   cat: "Games" | "Tools" | "AI". badge: "NEW" | "SOON" | "".
+   ============================================================ */
+var APPS=[
+  {name:"Nikkiflixs Casino",desc:"The main event. Slots, poker, craps, blackjack and more.",icon:"🎰",url:"./index.html",cat:"Games",badge:""},
+  {name:"Habla Translator",desc:"Spanish ↔ English voice translator. Talk, it translates.",icon:"🗣️",url:"https://chipper-khapse-26fe06.netlify.app",cat:"Tools",badge:"NEW"},
+  {name:"Grim's Gourmet",desc:"Order ahead from Grim’s kitchen. Food ready on arrival.",icon:"🍔",url:"https://shimmering-jelly-431ffe.netlify.app",cat:"Tools",badge:"NEW"},
+  {name:"Checkmate",desc:"Your personal AI. Ask anything, get answers with a voice.",icon:"../../checkmate-avatar.png",url:"",cat:"AI",badge:"SOON"},
+  {name:"Riddle Battle",desc:"Out-riddle your friends in a battle of wits.",icon:"🧩",url:"",cat:"Games",badge:"SOON"},
+  {name:"Video Editor",desc:"Cut, caption and polish your videos on your phone.",icon:"🎬",url:"",cat:"Tools",badge:"SOON"},
+  {name:"Book Helper",desc:"Your co-writer. Outlines, chapters and ideas, together.",icon:"📖",url:"",cat:"Tools",badge:"SOON"}
+];
+var CATS=["All","Games","Tools","AI"];
+var curCat="All", curQ="";
+
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function iconHtml(a){
+  if(/^https?:/.test(a.icon)||/\.(png|jpg|jpeg|webp|gif)$/i.test(a.icon)) return '<img src="'+esc(a.icon)+'" alt="" style="width:52px;height:52px;border-radius:12px;object-fit:cover">';
+  return esc(a.icon);
+}
+function badgeHtml(a){
+  if(a.badge==="NEW") return '<span class="badge new">NEW</span>';
+  if(a.badge==="SOON") return '<span class="badge soon">SOON</span>';
+  return "";
+}
+function btnHtml(a){
+  if(!a.url) return '<button class="get soon" type="button" disabled>SOON</button>';
+  return '<button class="get" type="button" data-open="'+esc(a.url)+'">GET</button>';
+}
+function filtered(){
+  var q=curQ.trim().toLowerCase();
+  return APPS.filter(function(a){
+    if(curCat!=="All"&&a.cat!==curCat) return false;
+    if(q&&(a.name+" "+a.desc).toLowerCase().indexOf(q)<0) return false;
+    return true;
+  });
+}
+function renderFeature(){
+  var live=APPS.filter(function(a){return a.url;});
+  var f=live[0]||APPS[0];
+  document.getElementById("feature").innerHTML=
+    '<div class="fart">'+iconHtml(f)+'</div>'+
+    '<div class="fbody"><div class="fname">'+esc(f.name)+'</div>'+
+    '<div class="fdesc">'+esc(f.desc)+'</div>'+
+    (f.url?'<button class="get" type="button" data-open="'+esc(f.url)+'">GET THE APP</button>'
+          :'<button class="get soon" type="button" disabled>COMING SOON</button>')+'</div>';
+}
+function renderChips(){
+  document.getElementById("chips").innerHTML=CATS.map(function(c){
+    return '<button class="chip'+(c===curCat?" on":"")+'" type="button" data-cat="'+c+'">'+c+'</button>';
+  }).join("");
+}
+function renderGrid(){
+  var list=filtered(), g=document.getElementById("grid");
+  document.getElementById("empty").style.display=list.length?"none":"block";
+  g.innerHTML=list.map(function(a){
+    return '<div class="card">'+badgeHtml(a)+
+      '<div class="art">'+iconHtml(a)+'</div>'+
+      '<div class="nm">'+esc(a.name)+'</div>'+
+      '<div class="ds">'+esc(a.desc)+'</div>'+
+      '<div class="cat">'+esc(a.cat)+'</div>'+
+      btnHtml(a)+'</div>';
+  }).join("");
+}
+function render(){renderFeature();renderChips();renderGrid();}
+
+document.getElementById("chips").addEventListener("click",function(e){
+  var b=e.target.closest("[data-cat]"); if(!b) return;
+  curCat=b.getAttribute("data-cat"); renderChips(); renderGrid();
+});
+document.getElementById("grid").addEventListener("click",openApp);
+document.getElementById("feature").addEventListener("click",openApp);
+function openApp(e){
+  var b=e.target.closest("[data-open]"); if(!b) return;
+  window.open(b.getAttribute("data-open"),"_blank","noopener");
+}
+document.getElementById("q").addEventListener("input",function(e){
+  curQ=e.target.value; renderGrid();
+});
+document.getElementById("backBtn").addEventListener("click",function(){
+  window.location.href="index.html";
+});
+render();
+</script>
+</body>
+</html>

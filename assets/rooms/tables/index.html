@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Nikkiflixs Table Games</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+:root{--ink:#f8f2df;--muted:#c9c0a6;--bg:#100c09;--gold:#ddb866;--gold2:#8e672f;--felt:#0b4a35;--red:#a9292b;--line:#5e452a;--shadow:0 18px 55px #0009}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:var(--bg);color:var(--ink)}
+body{background-image:linear-gradient(#090603d9,#090603f2),url('../poker/assets/poker-lobby/table-01.webp');background-size:cover;background-position:center;background-attachment:fixed}
+button{cursor:pointer;font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:20px clamp(14px,4vw,44px) 60px}
+.head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.back{min-height:44px;padding:9px 16px;border:1px solid var(--line);background:#1a1510;color:var(--ink);border-radius:8px;font-weight:700}
+.head h1{margin:0;font:800 clamp(30px,6vw,52px)/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.02em;color:#f4d68d;text-shadow:0 3px 14px #000}
+.sub{color:var(--muted);margin:0 0 22px;font-size:15px}
+.tables{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.table-card{position:relative;display:block;text-align:left;border:1px solid #75562f;border-radius:14px;overflow:hidden;background:linear-gradient(145deg,#1c140eeb,#0d0a08f2);box-shadow:var(--shadow);color:var(--ink);padding:0;transition:transform .15s ease,border-color .15s ease}
+.table-card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.table-card .art{height:150px;background-size:cover;background-position:center 30%;position:relative}
+.table-card .art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#0d0a08ee 100%)}
+.table-card .body{padding:14px 16px 16px}
+.table-card h2{margin:0 0 4px;font:800 24px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#ffe9bd}
+.table-card p{margin:0 0 10px;color:var(--muted);font-size:13px}
+.table-card .meta{display:flex;justify-content:space-between;align-items:center}
+.table-card .min{font:800 15px/1 "Barlow Condensed",sans-serif;color:var(--gold);letter-spacing:.05em}
+.table-card .go{font:800 13px/1 "Barlow Condensed",sans-serif;color:#1e1003;background:linear-gradient(135deg,#fff0a8,#c67b1c);border-radius:6px;padding:8px 14px;letter-spacing:.06em}
+.craps-art{background:radial-gradient(ellipse at center,#0f6b47 0%,#083a26 55%,#04170f 100%)!important;display:grid;place-items:center}
+.dice-pair{display:flex;gap:14px;position:relative;z-index:1}
+.die{width:56px;height:56px;border-radius:10px;background:linear-gradient(145deg,#fff,#d9d4c8);display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;box-shadow:0 6px 14px #000c,inset 0 0 0 2px #b8b2a4;transform:rotate(-8deg)}
+.die.two{transform:rotate(11deg)}
+.pip{width:8px;height:8px;border-radius:50%;background:#1a1a1a;place-self:center;visibility:hidden}
+.die.d1 .p1,.die.d1 .p9,.die.d6 .p1,.die.d6 .p3,.die.d6 .p4,.die.d6 .p6,.die.d6 .p7,.die.d6 .p9{visibility:visible}
+.note{margin-top:26px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#141009cc;color:var(--muted);font-size:13px;line-height:1.5}
+.note b{color:var(--gold)}
+@media(max-width:560px){.tables{grid-template-columns:1fr 1fr}.table-card .art{height:110px}.table-card h2{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><button class="back" id="backBtn" type="button">← Lobby</button><h1>Table Games</h1></div>
+  <p class="sub">Real felt. Real rules. Take your seat.</p>
+  <div class="tables">
+    <button class="table-card" data-href="blackjack.html?min=10" type="button">
+      <div class="art" style="background-image:url('../poker/assets/poker-lobby/table-02.webp')"></div>
+      <div class="body"><h2>Blackjack</h2><p>Beat the dealer · pays 3:2 · dealer stands on 17</p>
+      <div class="meta"><span class="min">MIN BET 10</span><span class="go">PLAY →</span></div></div>
+    </button>
+    <button class="table-card" data-href="blackjack.html?min=25" type="button">
+      <div class="art" style="background-image:url('../poker/assets/poker-lobby/table-05.webp')"></div>
+      <div class="body"><h2>Blackjack</h2><p>Beat the dealer · pays 3:2 · dealer stands on 17</p>
+      <div class="meta"><span class="min">MIN BET 25</span><span class="go">PLAY →</span></div></div>
+    </button>
+    <button class="table-card" data-href="blackjack.html?min=100" type="button">
+      <div class="art" style="background-image:url('../poker/assets/poker-lobby/table-09.webp')"></div>
+      <div class="body"><h2>Blackjack · High Limit</h2><p>Beat the dealer · pays 3:2 · dealer stands on 17</p>
+      <div class="meta"><span class="min">MIN BET 100</span><span class="go">PLAY →</span></div></div>
+    </button>
+    <button class="table-card" data-href="craps.html" type="button">
+      <div class="art craps-art"><div class="dice-pair" aria-hidden="true">
+        <div class="die d1"><i class="pip p1"></i><i class="pip p2"></i><i class="pip p3"></i><i class="pip p4"></i><i class="pip p5"></i><i class="pip p6"></i><i class="pip p7"></i><i class="pip p8"></i><i class="pip p9"></i></div>
+        <div class="die d6"><i class="pip p1"></i><i class="pip p2"></i><i class="pip p3"></i><i class="pip p4"></i><i class="pip p5"></i><i class="pip p6"></i><i class="pip p7"></i><i class="pip p8"></i><i class="pip p9"></i></div>
+      </div></div>
+      <div class="body"><h2>Craps</h2><p>Pass line, come bets, place bets, hardways — full layout</p>
+      <div class="meta"><span class="min">MIN BET 5</span><span class="go">PLAY →</span></div></div>
+    </button>
+  </div>
+  <div class="note"><b>Social casino:</b> token play only, no cash value. Your balance resets each session. Good luck.</div>
+</div>
+<script>
+document.getElementById('backBtn').addEventListener('click',function(){
+  try{if(window.parent&&window.parent!==window&&window.parent.postMessage){window.parent.postMessage({type:'nikkiflixs-leave-room'},'*');}}catch(e){}
+  try{window.history.back();}catch(e){}
+});
+document.querySelectorAll('.table-card').forEach(function(c){
+  c.addEventListener('click',function(){window.location.href=c.getAttribute('data-href');});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sportsbook · Nikkiflixs Casino</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:#0a0705;color:#f8f2df;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -10%,#1c2a12 0%,#0a0705 60%)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0a08ee;border-bottom:1px solid #5e452a}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1}
+.bal{background:#070b0c;border:1px solid #7e5d28;border-radius:8px;padding:6px 10px;text-align:right}
+.bal small{display:block;color:#c9bba5;font-size:9px;letter-spacing:.14em}
+.bal strong{font:800 20px/1 "Barlow Condensed",sans-serif;color:#f5c65a;font-variant-numeric:tabular-nums}
+.funbanner{margin:10px 12px 0;padding:9px 12px;border:1px solid #5e452a;border-radius:10px;background:#141009ee;font:700 13px/1.4 "Source Sans 3",sans-serif;color:#ffdf9e;text-align:center}
+.linesbar{display:flex;align-items:center;gap:8px;margin:10px 12px 0;padding:8px 12px;border-radius:10px;background:#101408;border:1px solid #3a4a2a;font:700 12px/1.4 "Source Sans 3",sans-serif}
+.linesbar .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.linesbar.demo .dot{background:#e8a13d;box-shadow:0 0 8px #e8a13d}
+.linesbar.live .dot{background:#4dd696;box-shadow:0 0 8px #4dd696}
+.linesbar .grow{flex:1;color:#c9c0a6}
+.linesbar button{min-height:36px;padding:6px 12px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:8px;font-weight:700;font-size:13px}
+.leagues{display:flex;gap:8px;overflow-x:auto;margin:12px 12px 0;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+.league{flex:none;min-height:44px;padding:8px 16px;border:1px solid #5e452a;background:#141009ee;color:#f8f2df;border-radius:22px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.league.active{background:linear-gradient(180deg,#b8872d,#654216);border-color:#e2b34f;color:#fff}
+#games{max-width:640px;margin:0 auto;padding:6px 12px 60px}
+.gcard{background:#141009ee;border:1px solid #5e452a;border-radius:12px;padding:12px;margin:10px 0}
+.gcard .gtop{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gcard .gtime{font:700 12px/1.3 "Source Sans 3",sans-serif;color:#c9c0a6}
+.gcard .gstat{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px}
+.gstat.upcoming{background:#1a2a5e;color:#9fc0ff}
+.gstat.live{background:#5e1010;color:#ff9a9a;animation:blink 1.4s infinite}
+.gstat.final{background:#1e3a24;color:#9fd08a}
+@keyframes blink{50%{opacity:.55}}
+.grow{flex:1}
+.teams{display:grid;gap:6px;margin-bottom:10px}
+.team{display:flex;align-items:center;gap:10px;font:700 16px/1.2 "Source Sans 3",sans-serif}
+.team .abbr{flex:none;width:44px;font:800 14px/1 "Barlow Condensed",sans-serif;color:#0a0705;background:#e8c86a;border-radius:6px;text-align:center;padding:5px 0}
+.team .nm{flex:1}
+.team .sc{font:800 18px/1 "Barlow Condensed",sans-serif;color:#f5c65a;font-variant-numeric:tabular-nums}
+.oddsrow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.oddsbtn{min-height:52px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:9px;padding:6px 4px;text-align:center}
+.oddsbtn small{display:block;font:700 10px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:#c9a06a;text-transform:uppercase;margin-bottom:3px}
+.oddsbtn b{font:800 16px/1.2 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.oddsbtn:active{transform:translateY(1px);background:#241d12}
+.empty{margin:26px 12px;padding:22px;text-align:center;color:#c9c0a6;border:1px dashed #5e452a;border-radius:12px;font-size:14px}
+/* modals */
+.modal{position:fixed;inset:0;z-index:40;display:none;place-items:center;padding:16px;background:rgba(0,0,0,.72)}
+.modal.open{display:grid}
+.mcard{width:min(480px,100%);max-height:min(700px,92vh);overflow:auto;background:#141009;border:1px solid #d8a94b;border-radius:14px;padding:18px;box-shadow:0 30px 90px #000}
+.mcard h2{margin:0 0 4px;font:800 24px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;color:#ffe9bd;letter-spacing:.05em}
+.mcard .sub{font-size:13px;color:#c9c0a6;margin:0 0 14px}
+.pickline{display:flex;align-items:center;gap:8px;background:#1a1510;border:1px solid #5e452a;border-radius:10px;padding:10px 12px;margin-bottom:12px;font:700 15px/1.4 "Source Sans 3",sans-serif}
+.pickline b{color:#f5c65a}
+.stake-row{display:flex;gap:8px;margin-bottom:10px}
+.stake-row input{flex:1;min-height:50px;border-radius:10px;border:1px solid #5e452a;background:#0d0a08;color:#f8f2df;font:800 20px/1 "Barlow Condensed",sans-serif;padding:8px 14px;font-variant-numeric:tabular-nums;min-width:0}
+.qchips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.qchips button{min-height:42px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:8px;font:700 14px/1 "Barlow Condensed",sans-serif}
+.payout{font:700 14px/1.5 "Source Sans 3",sans-serif;color:#c9c0a6;margin-bottom:14px}
+.payout b{color:#9fd08a}
+.mactions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mactions button{min-height:50px;border-radius:10px;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.place{border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff}
+.cancel{border:1px solid #5e452a;background:#1a1510;color:#f8f2df}
+.bet{border:1px solid #5e452a;border-radius:10px;padding:10px 12px;margin-bottom:10px;background:#1a1510}
+.bet .bl1{display:flex;justify-content:space-between;gap:8px;font:700 14px/1.4 "Source Sans 3",sans-serif}
+.bet .bl2{font:600 12px/1.4 "Source Sans 3",sans-serif;color:#c9c0a6;margin-top:4px}
+.bet .st{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;white-space:nowrap}
+.st.open{background:#1a2a5e;color:#9fc0ff}.st.won{background:#1e3a24;color:#9fd08a}
+.st.lost{background:#3a1a1a;color:#ff9a9a}.st.push{background:#3a3220;color:#e8c86a}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,16px);z-index:99;max-width:92vw;padding:12px 18px;border-radius:12px;background:#0e0a0df5;border:1px solid #d8a94b;color:#ffe9bd;font:700 14px/1.4 "Source Sans 3",sans-serif;text-align:center;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;box-shadow:0 12px 32px #000e}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+/* ============ SCHEDULES VIEW ============ */
+.viewtabs{display:flex;gap:8px;margin:12px 12px 0;max-width:640px;margin-left:auto;margin-right:auto;padding:0 12px}
+.vtab{flex:1;min-height:46px;border:1px solid #5e452a;background:#141009ee;color:#f8f2df;border-radius:10px;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.vtab.active{background:linear-gradient(180deg,#b8872d,#654216);border-color:#e2b34f;color:#fff}
+#schedView{max-width:640px;margin:0 auto;padding:6px 12px 60px}
+.sched-controls{display:flex;gap:8px;margin:10px 0}
+.sched-controls select{flex:1;min-height:48px;border-radius:10px;border:1px solid #5e452a;background:#0d0a08;color:#f8f2df;font:700 15px/1 "Source Sans 3",sans-serif;padding:8px 12px;min-width:0}
+.sched-controls .weekbtn{flex:none;min-height:48px;padding:8px 16px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:10px;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.sched-controls .weekbtn.active{background:linear-gradient(180deg,#b8872d,#654216);border-color:#e2b34f;color:#fff}
+.sched-head{margin:14px 0 4px;font:800 13px/1.4 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#c9a06a}
+.srow{display:flex;align-items:center;gap:10px;background:#141009ee;border:1px solid #5e452a;border-radius:10px;padding:10px 12px;margin:8px 0}
+.srow .sdate{flex:none;width:86px;font:700 12px/1.35 "Source Sans 3",sans-serif;color:#c9c0a6}
+.srow .sdate b{display:block;color:#f8f2df;font-size:13px}
+.srow .wl{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:800 14px/1 "Barlow Condensed",sans-serif}
+.wl.w{background:#1e3a24;color:#9fd08a}
+.wl.l{background:#3a1a1a;color:#ff9a9a}
+.wl.na{background:#241d12;color:#8a7a5e}
+.srow .sopp{flex:1;min-width:0;font:700 15px/1.35 "Source Sans 3",sans-serif}
+.srow .sopp small{display:block;font:600 11px/1.4 "Source Sans 3",sans-serif;color:#c9c0a6}
+.srow .ssc{flex:none;text-align:right;font:800 15px/1.3 "Barlow Condensed",sans-serif;color:#f5c65a;font-variant-numeric:tabular-nums}
+.srow .ssc small{display:block;font:700 10px/1.3 "Source Sans 3",sans-serif;color:#c9c0a6;font-weight:600}
+.sched-retry{min-height:48px;padding:10px 22px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;border-radius:10px;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.spin{margin:26px auto;text-align:center;color:#c9a06a;font:700 14px/1.5 "Source Sans 3",sans-serif}
+/* ============ NEWS VIEW ============ */
+#newsView{max-width:640px;margin:0 auto;padding:6px 12px 60px}
+.ncard{display:flex;gap:12px;background:#141009ee;border:1px solid #5e452a;border-radius:12px;padding:10px;margin:10px 0;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}
+.ncard:active{background:#241d12}
+.ncard img{flex:none;width:96px;height:72px;object-fit:cover;border-radius:8px;background:#241d12}
+.ncard .nph{flex:none;width:96px;height:72px;border-radius:8px;background:#241d12;display:grid;place-items:center;font-size:28px}
+.ncard .nbody{flex:1;min-width:0}
+.ncard h3{margin:0 0 6px;font:700 15px/1.35 "Source Sans 3",sans-serif;color:#f8f2df}
+.ncard .nmeta{display:flex;gap:8px;align-items:center;font:700 11px/1.4 "Source Sans 3",sans-serif;color:#c9a06a;letter-spacing:.06em;text-transform:uppercase}
+.ncard .nmeta .ago{color:#c9c0a6;font-weight:600;letter-spacing:0;text-transform:none}
+.nfresh{margin:10px 2px 0;font:600 11px/1.4 "Source Sans 3",sans-serif;color:#8a7a5e;text-align:center}
+/* ============ FANTASY VIEW ============ */
+#fantView{max-width:640px;margin:0 auto;padding:6px 12px 60px}
+.subtabs{display:flex;gap:8px;margin:10px 0}
+.subtabs .vtab{min-height:44px;font-size:14px}
+.wl.q{background:#3a3220;color:#e8c86a}
+.fant-note{margin:8px 2px;font:600 11px/1.5 "Source Sans 3",sans-serif;color:#8a7a5e;text-align:center}
+.cmp-box{background:#141009ee;border:1px solid #5e452a;border-radius:10px;padding:12px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.cmp-box input{min-height:46px;padding:0 12px;border:1px solid #77613f;background:#050403;color:#fff;font:600 15px/1.2 "Source Sans 3",sans-serif;border-radius:8px}
+.cmp-vs{text-align:center;font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.2em;color:#c9a06a}
+.cmp-go{min-height:48px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;border-radius:10px;cursor:pointer}
+.cmp-card{background:#141009ee;border:1px solid #5e452a;border-radius:10px;padding:12px;margin:10px 0}
+.cmp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cmp-head .pname{flex:1;font:800 17px/1.2 "Barlow Condensed",sans-serif;color:#f8f2df;letter-spacing:.03em}
+.cmp-head .pname small{display:block;font:600 11px/1.4 "Source Sans 3",sans-serif;color:#c9c0a6}
+.cmp-winner{border-color:#e2b34f;box-shadow:0 0 0 1px #e2b34f66}
+.cmp-winner .pname::after{content:" ★ START";color:#f5c65a;font-size:12px}
+.cmp-stat{display:flex;justify-content:space-between;padding:6px 2px;border-top:1px solid #2c2317;font:600 13px/1.4 "Source Sans 3",sans-serif;color:#d8cdb2}
+.cmp-stat b{color:#f8f2df}
+.cmp-call{margin:12px 0;padding:12px;border:1px solid #e2b34f;background:#1c1409;border-radius:10px;font:600 14px/1.5 "Source Sans 3",sans-serif;color:#f3e6c4}
+.cmp-call .cmface{width:34px;height:34px;border-radius:50%;vertical-align:-10px;margin-right:8px;border:1px solid #e2b34f}
+.ss-tag{display:inline-block;min-width:52px;text-align:center;padding:3px 8px;border-radius:6px;font:800 11px/1.4 "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.ss-start{background:#1d3a1d;color:#7ee787;border:1px solid #2f6b2f}
+.ss-sit{background:#3a1d1d;color:#ff9d9d;border:1px solid #6b2f2f}
+/* ============ CHECKMATE SPORTS GUIDE ============ */
+#cmBtn{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));z-index:35;width:56px;height:56px;border-radius:50%;border:2px solid #e2b34f;background:radial-gradient(circle at 35% 30%,#3a2c14,#141009);box-shadow:0 10px 28px #000c;touch-action:manipulation;overflow:hidden;padding:0}
+#cmBtn img{width:100%;height:100%;object-fit:cover;display:block}
+#cmBtn:active{transform:scale(.94)}
+.cmhead-img{width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:-8px;border:1px solid #e2b34f}
+.cmmsg.cm{display:flex;gap:8px;align-items:flex-start}
+.cmmsg.cm .cmavatar{flex:none;width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid #e2b34f}
+#cmBubble{position:fixed;right:max(80px,calc(env(safe-area-inset-right) + 66px));bottom:max(24px,calc(env(safe-area-inset-bottom) + 10px));z-index:35;max-width:min(280px,72vw);background:#141009;border:1px solid #d8a94b;border-radius:12px;padding:10px 12px;font:600 13px/1.45 "Source Sans 3",sans-serif;color:#ffe9bd;display:none;box-shadow:0 12px 32px #000e;cursor:pointer}
+#cmBubble b{color:#f5c65a}
+#cmPanel{position:fixed;right:max(14px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 66px);z-index:35;width:min(340px,calc(100vw - 28px));max-height:min(480px,62vh);display:none;flex-direction:column;background:#141009;border:1px solid #d8a94b;border-radius:14px;overflow:hidden;box-shadow:0 24px 70px #000}
+.cmhead{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#1a1510;border-bottom:1px solid #5e452a;font:800 15px/1 "Barlow Condensed",sans-serif;color:#f4d68d;letter-spacing:.06em}
+.cmhead button{background:none;border:0;color:#c9c0a6;font-size:16px;min-width:40px;min-height:40px}
+#cmLog{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+.cmmsg{max-width:88%;padding:9px 11px;border-radius:10px;font:600 13px/1.45 "Source Sans 3",sans-serif;word-break:break-word}
+.cmmsg.cm{background:#1a1510;border:1px solid #5e452a;color:#f3ead8;align-self:flex-start}
+.cmmsg.me{background:#5e1010;border:1px solid #b64950;color:#fff;align-self:flex-end}
+.cmrow{display:flex;gap:8px;padding:10px;border-top:1px solid #5e452a;background:#171008}
+.cmrow input{flex:1;min-height:44px;border-radius:8px;border:1px solid #77613f;background:#050403;color:#fff;padding:0 10px;font:500 13px/1 "Source Sans 3",sans-serif;min-width:0}
+.cmrow button{flex:none;min-width:52px;min-height:44px;border-radius:8px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-size:16px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Casino</button>
+  <h1>🏈 Sportsbook</h1>
+  <button class="back" id="myBetsBtn" type="button">🎫 My Bets</button>
+  <div class="bal"><small>GOLD COINS</small><strong id="balance">0</strong></div>
+</div>
+<div class="funbanner">For fun only — gold coins have no cash value. Spreads shown are real Vegas-style lines.</div>
+<div class="linesbar demo" id="linesBar">
+  <span class="dot"></span><span class="grow" id="linesText">DEMO LINES — sample data for preview</span>
+  <button id="refreshBtn" type="button">↻ Refresh</button>
+</div>
+<div class="viewtabs" id="viewTabs" role="tablist" aria-label="Sportsbook views">
+  <button class="vtab active" id="oddsTab" type="button" role="tab" aria-selected="true">🎲 Odds</button>
+  <button class="vtab" id="schedTab" type="button" role="tab" aria-selected="false">📅 Schedules</button>
+  <button class="vtab" id="newsTab" type="button" role="tab" aria-selected="false">📰 News</button>
+  <button class="vtab" id="fantTab" type="button" role="tab" aria-selected="false">🏆 Fantasy</button>
+</div>
+<div id="oddsView">
+<nav class="leagues" id="leagues" aria-label="Leagues"></nav>
+<div id="games"></div>
+</div>
+<div id="schedView" style="display:none">
+  <nav class="leagues" id="schedLeagues" aria-label="Schedule leagues"></nav>
+  <div class="sched-controls">
+    <select id="teamSelect" aria-label="Choose a team"></select>
+    <button class="weekbtn active" id="weekBtn" type="button">This week</button>
+  </div>
+  <div id="schedList"></div>
+</div>
+<div id="newsView" style="display:none">
+  <nav class="leagues" id="newsLeagues" aria-label="News leagues"></nav>
+  <div id="newsList"></div>
+</div>
+<div id="fantView" style="display:none">
+  <nav class="leagues" id="fantLeagues" aria-label="Fantasy leagues"></nav>
+  <div class="subtabs" role="tablist" aria-label="Fantasy sections">
+    <button class="vtab active" id="injTab" type="button">🤕 Injuries</button>
+    <button class="vtab" id="advTab" type="button">💡 Advice</button>
+    <button class="vtab" id="ssTab" type="button">🎯 Start/Sit</button>
+    <button class="vtab" id="slpTab" type="button">😴 Sleepers</button>
+    <button class="vtab" id="cmpTab" type="button">⚖️ Compare</button>
+  </div>
+  <div id="fantInjView">
+    <div class="sched-controls"><select id="injTeamSelect" aria-label="Choose a team for injury report"></select></div>
+    <div class="fant-note">Injury report · live roster data via ESPN</div>
+    <div id="injList"></div>
+  </div>
+  <div id="fantAdvView" style="display:none">
+    <div class="fant-note">Fantasy headlines · ESPN editorial — tap to read the full article</div>
+    <div id="fantNewsList"></div>
+  </div>
+  <div id="fantSSView" style="display:none">
+    <div class="fant-note">Start/Sit · from ESPN fantasy headlines + injury report — updated <span id="ssFresh"></span></div>
+    <div id="ssList"></div>
+  </div>
+  <div id="fantSlpView" style="display:none">
+    <div class="fant-note">Sleepers of the week · breakout + waiver targets from ESPN fantasy</div>
+    <div id="slpList"></div>
+  </div>
+  <div id="fantCmpView" style="display:none">
+    <div class="fant-note">Head-to-head · live season stats via ESPN — Checkmate calls the pick</div>
+    <div class="cmp-box">
+      <input id="cmpA" type="text" placeholder="Player 1 — e.g. Brock Purdy" autocomplete="off" aria-label="First player">
+      <span class="cmp-vs">VS</span>
+      <input id="cmpB" type="text" placeholder="Player 2 — e.g. Lamar Jackson" autocomplete="off" aria-label="Second player">
+      <button class="cmp-go" id="cmpGo" type="button">⚖️ Compare</button>
+    </div>
+    <div id="cmpOut"></div>
+  </div>
+</div>
+
+<div class="modal" id="slipModal" role="dialog" aria-modal="true">
+  <div class="mcard">
+    <h2>Place your bet</h2>
+    <p class="sub" id="slipGame"></p>
+    <div class="pickline" id="slipPick"></div>
+    <div class="stake-row"><input id="stakeInput" type="number" inputmode="numeric" min="50" step="50" value="500" aria-label="Bet amount in gold coins"></div>
+    <div class="qchips">
+      <button type="button" data-q="100">100</button>
+      <button type="button" data-q="500">500</button>
+      <button type="button" data-q="1000">1K</button>
+      <button type="button" data-q="2500">2.5K</button>
+    </div>
+    <div class="payout" id="slipPayout"></div>
+    <div class="mactions">
+      <button class="cancel" id="slipCancel" type="button">Cancel</button>
+      <button class="place" id="slipPlace" type="button">Place bet</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="betsModal" role="dialog" aria-modal="true">
+  <div class="mcard">
+    <h2>🎫 My bets</h2>
+    <p class="sub">Settled automatically when games go final.</p>
+    <div id="betsList"></div>
+    <div class="mactions" style="grid-template-columns:1fr"><button class="cancel" id="betsClose" type="button">Close</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+<button id="cmBtn" type="button" aria-label="Ask Checkmate"><img src="../../checkmate-avatar.png" alt="Checkmate"></button>
+<div id="cmBubble" role="button" tabindex="0">Looking for odds, schedules, news or fantasy? It's all right here. <b>Tap me to ask.</b></div>
+<div id="cmPanel" role="dialog" aria-label="Checkmate sports guide">
+  <div class="cmhead"><span><img src="../../checkmate-avatar.png" alt="Checkmate" class="cmhead-img"> CHECKMATE</span><button id="cmClose" type="button" aria-label="Close">✕</button></div>
+  <div id="cmLog" aria-live="polite"></div>
+  <div class="cmrow"><input id="cmInput" placeholder="Ask about the sportsbook…" aria-label="Ask Checkmate" autocomplete="off"><button id="cmSend" type="button" aria-label="Send">➤</button></div>
+</div>
+<script>
+(function(){
+"use strict";
+/* ============ CONFIG ============ */
+var ODDS_API_KEY="c0c85f67649da988ac0b078dfd385075"; /* <-- paste your free key from the-odds-api.com here */
+var CACHE_MS = 6*3600*1000; /* refresh lines at most every 6 hours */
+var BANK_KEY='nikkiflixs_bankroll';
+var BETS_KEY='nikkiflixs_sportsbook_bets';
+var CACHE_KEY='nikkiflixs_sportsbook_cache';
+var SCORE_CACHE_KEY='nikkiflixs_sportsbook_scores';
+var MIN_BET=50;
+/* ============ LEAGUES ============ */
+var SPORTS=[
+  {key:'americanfootball_nfl',label:'NFL',icon:'🏈'},
+  {key:'basketball_nba',label:'NBA',icon:'🏀'},
+  {key:'baseball_mlb',label:'MLB',icon:'⚾'},
+  {key:'icehockey_nhl',label:'NHL',icon:'🏒'},
+  {key:'americanfootball_ncaaf',label:'NCAAF',icon:'🏈'},
+  {key:'soccer_epl',label:'Soccer',icon:'⚽'},
+  {key:'mma_mixed_martial_arts',label:'MMA',icon:'🥊'}
+];
+/* ============ DEMO DATA (realistic sample lines) ============ */
+var DEMO_TEAMS={
+  americanfootball_nfl:[['Chiefs','KC'],['Bills','BUF'],['Eagles','PHI'],['49ers','SF'],['Cowboys','DAL'],['Ravens','BAL'],['Lions','DET'],['Packers','GB']],
+  basketball_nba:[['Lakers','LAL'],['Celtics','BOS'],['Warriors','GSW'],['Nuggets','DEN'],['Suns','PHX'],['Knicks','NYK'],['Mavericks','DAL'],['Bucks','MIL']],
+  baseball_mlb:[['Yankees','NYY'],['Dodgers','LAD'],['Astros','HOU'],['Braves','ATL'],['Red Sox','BOS'],['Cubs','CHC'],['Mets','NYM'],['Giants','SF']],
+  icehockey_nhl:[['Bruins','BOS'],['Rangers','NYR'],['Avalanche','COL'],['Oilers','EDM'],['Maple Leafs','TOR'],['Golden Knights','VGK'],['Lightning','TB'],['Stars','DAL']],
+  americanfootball_ncaaf:[['Georgia','UGA'],['Alabama','ALA'],['Ohio State','OSU'],['Michigan','MICH'],['Texas','TEX'],['Oregon','ORE'],['LSU','LSU'],['Notre Dame','ND']],
+  soccer_epl:[['Arsenal','ARS'],['Man City','MCI'],['Liverpool','LIV'],['Chelsea','CHE'],['Tottenham','TOT'],['Man United','MUN'],['Newcastle','NEW'],['Aston Villa','AVL']],
+  mma_mixed_martial_arts:[['Jon Jones','JJ'],['Islam Makhachev','IM'],['Alex Pereira','AP'],['Ilia Topuria','IT'],['Dricus du Plessis','DDP'],['Tom Aspinall','TA'],['Merab Dvalishvili','MD'],['Sean OMalley','SO']]
+};
+function demoGames(sportKey){
+  var teams=DEMO_TEAMS[sportKey]||DEMO_TEAMS.americanfootball_nfl;
+  var games=[],now=Date.now(),i;
+  for(i=0;i<4;i++){
+    var a=teams[(i*2)%teams.length],b=teams[(i*2+1)%teams.length];
+    var favSpread=-(1.5+i*2+((i%2)*0.5));
+    var mlFav=-110-i*25, mlDog=100+i*30;
+    var total=44+i*3.5;
+    var status='upcoming',hs=null,as=null,mins=0;
+    if(i===3){ /* one final game so demo bets can settle */
+      status='final';
+      hs=Math.round(21+i*3+2); as=Math.round(17+i*2);
+    } else if(i===2){
+      status='live'; hs=14+i; as=10+i; mins=32+i*11;
+    }
+    games.push({
+      id:'demo_'+sportKey+'_'+i, sport:sportKey,
+      home:a[0], homeAbbr:a[1], away:b[0], awayAbbr:b[1],
+      commence: status==='upcoming' ? new Date(now+(i+1)*5*3600*1000).toISOString() : new Date(now-3*3600*1000).toISOString(),
+      status:status, homeScore:hs, awayScore:as, mins:mins,
+      spreadHome:favSpread, spreadHomeOdds:-110, spreadAwayOdds:-110,
+      mlHome:mlFav, mlAway:mlDog,
+      totalLine:total, overOdds:-110, underOdds:-110,
+      tv: i%2? 'ESPN':'FOX'
+    });
+  }
+  return games;
+}
+/* ============ STORAGE ============ */
+function lsGet(k,f){try{var v=localStorage.getItem(k);return v==null?f:JSON.parse(v);}catch(e){return f;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function getBank(){try{var v=parseInt(localStorage.getItem(BANK_KEY)||'~',10);return isNaN(v)?null:v;}catch(e){return null;}}
+function setBank(v){try{localStorage.setItem(BANK_KEY,String(Math.max(0,Math.floor(v))));}catch(e){}}
+function fmt(n){return Number(n||0).toLocaleString('en-US');}
+function fmtOdds(o){return (o>0?'+':'')+o;}
+function fmtSpread(s){return (s>0?'+':'')+s;}
+/* ============ ODDS API LAYER ============ */
+function pickBookmaker(bms){
+  if(!bms||!bms.length) return null;
+  var pref=['draftkings','fanduel','betmgm','caesars'];
+  for(var i=0;i<pref.length;i++){for(var j=0;j<bms.length;j++){if(bms[j].key===pref[i])return bms[j];}}
+  return bms[0];
+}
+function normGame(g){
+  var bm=pickBookmaker(g.bookmakers),mk={};
+  if(bm) bm.markets.forEach(function(m){mk[m.key]=m.outcomes;});
+  var h2h=mk.h2h||[],sp=mk.spreads||[],tot=mk.totals||[];
+  function out(list,team){for(var i=0;i<list.length;i++){if(list[i].name===team)return list[i];}return null;}
+  var hSp=out(sp,g.home_team),aSp=out(sp,g.away_team);
+  var hMl=out(h2h,g.home_team),aMl=out(h2h,g.away_team);
+  var over=null,under=null,line=null;
+  for(var t=0;t<tot.length;t++){if(tot[t].name==='Over'){over=tot[t];}else if(tot[t].name==='Under'){under=tot[t];}}
+  if(over)line=over.point;
+  return {
+    id:g.id, sport:g.sport_key,
+    home:g.home_team, homeAbbr:abbr(g.home_team), away:g.away_team, awayAbbr:abbr(g.away_team),
+    commence:g.commence_time, status:'upcoming', homeScore:null, awayScore:null, mins:0,
+    spreadHome:hSp?hSp.point:null, spreadHomeOdds:hSp?hSp.price:-110, spreadAwayOdds:aSp?aSp.price:-110,
+    mlHome:hMl?hMl.price:null, mlAway:aMl?aMl.price:null,
+    totalLine:line, overOdds:over?over.price:-110, underOdds:under?under.price:-110,
+    tv:null
+  };
+}
+function abbr(name){
+  var w=name.replace(/[^A-Za-z ]/g,'').split(' ').filter(Boolean);
+  if(w.length===1)return w[0].slice(0,3).toUpperCase();
+  return (w[w.length-1].slice(0,3)).toUpperCase();
+}
+var liveMode=false;
+function loadGames(sportKey,cb){
+  var cache=lsGet(CACHE_KEY,{}),now=Date.now();
+  var c=cache[sportKey];
+  if(c&&now-c.ts<CACHE_MS){liveMode=!!c.live;cb(c.games);return;}
+  if(!ODDS_API_KEY){liveMode=false;var d=demoGames(sportKey);cb(d);return;}
+  var url='https://api.the-odds-api.com/v4/sports/'+encodeURIComponent(sportKey)+'/odds/?apiKey='+encodeURIComponent(ODDS_API_KEY)+'&regions=us&markets=h2h,spreads,totals&oddsFormat=american';
+  fetch(url).then(function(r){if(!r.ok)throw new Error('api '+r.status);return r.json();})
+  .then(function(data){
+    var games=data.map(normGame);
+    cache[sportKey]={ts:now,games:games,live:true};lsSet(CACHE_KEY,cache);
+    liveMode=true;cb(games);
+  }).catch(function(){liveMode=false;cb(demoGames(sportKey));});
+}
+function refreshScores(cb){
+  /* pull final/live scores for sports with open bets; throttled to 6h */
+  var bets=getBets().filter(function(b){return b.status==='open';});
+  if(!bets.length||!ODDS_API_KEY){cb&&cb();return;}
+  var sc=lsGet(SCORE_CACHE_KEY,{}),now=Date.now();
+  var sports={};bets.forEach(function(b){sports[b.sportKey]=1;});
+  var keys=Object.keys(sports).filter(function(k){return !(sc[k]&&now-sc[k].ts<CACHE_MS);});
+  if(!keys.length){cb&&cb();return;}
+  var done=0;
+  keys.forEach(function(k){
+    fetch('https://api.the-odds-api.com/v4/sports/'+encodeURIComponent(k)+'/scores/?apiKey='+encodeURIComponent(ODDS_API_KEY)+'&daysFrom=3')
+    .then(function(r){return r.ok?r.json():[];}).then(function(data){
+      var map={};
+      data.forEach(function(g){
+        var hs=null,as=null;
+        (g.scores||[]).forEach(function(s){
+          if(s.name===g.home_team)hs=parseInt(s.score,10);
+          else if(s.name===g.away_team)as=parseInt(s.score,10);
+        });
+        map[g.id]={completed:!!g.completed,homeScore:hs,awayScore:as};
+      });
+      sc[k]={ts:now,map:map};lsSet(SCORE_CACHE_KEY,sc);
+    }).catch(function(){}).then(function(){if(++done===keys.length&&cb)cb();});
+  });
+}
+function scoreFor(bet){
+  var sc=lsGet(SCORE_CACHE_KEY,{});
+  var m=sc[bet.sportKey]&&sc[bet.sportKey].map&&sc[bet.sportKey].map[bet.gameId];
+  return m||null;
+}
+/* ============ BETS ============ */
+function getBets(){return lsGet(BETS_KEY,[]);}
+function setBets(b){lsSet(BETS_KEY,b);}
+function americanPayout(stake,odds){
+  if(odds>0)return stake+stake*odds/100;
+  return stake+stake*100/Math.abs(odds);
+}
+function settleBet(bet,homeScore,awayScore){
+  /* returns 'won' | 'lost' | 'push' */
+  var hs=homeScore,as=awayScore;
+  if(hs==null||as==null)return null;
+  if(bet.type==='moneyline'){
+    var hw=hs>as,aw=as>hs;
+    if(!hw&&!aw)return 'push';
+    var won=(bet.pick==='home'&&hw)||(bet.pick==='away'&&aw);
+    return won?'won':'lost';
+  }
+  if(bet.type==='spread'){
+    var margin=(bet.pick==='home'?hs:as)-(bet.pick==='home'?as:hs)+bet.line;
+    if(margin>0)return 'won';if(margin<0)return 'lost';return 'push';
+  }
+  if(bet.type==='total'){
+    var tot=hs+as;
+    if(tot>bet.line)return bet.pick==='over'?'won':'lost';
+    if(tot<bet.line)return bet.pick==='under'?'won':'lost';
+    return 'push';
+  }
+  return null;
+}
+function settleOpenBets(){
+  var bets=getBets(),changed=false,bal=getBank()||0;
+  bets.forEach(function(b){
+    if(b.status!=='open')return;
+    var s=scoreFor(b),hs=null,as=null,done=false;
+    if(s&&s.completed){hs=s.homeScore;as=s.awayScore;done=true;}
+    else if(b.demoFinal){hs=b.demoFinal.home;as=b.demoFinal.away;done=true;}
+    if(!done)return;
+    var r=settleBet(b,hs,as);
+    if(!r)return;
+    b.status=r;b.finalScore=hs+'-'+as;
+    if(r==='won')bal+=americanPayout(b.stake,b.odds);
+    else if(r==='push')bal+=b.stake;
+    changed=true;
+  });
+  if(changed){setBets(bets);setBank(bal);}
+  return changed;
+}
+/* ============ RENDER ============ */
+var toast=document.getElementById('toast'),toastTimer=null;
+function say(t){toast.textContent=t;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toast.classList.remove('show');},2400);}
+function renderBal(){var b=getBank();document.getElementById('balance').textContent=fmt(b===null?0:b);}
+var curSport=SPORTS[0].key,curGames=[];
+function fmtTime(iso){
+  try{var d=new Date(iso);return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});}
+  catch(e){return '';}
+}
+function renderLeagues(){
+  var nav=document.getElementById('leagues');nav.innerHTML='';
+  SPORTS.forEach(function(s){
+    var b=document.createElement('button');b.type='button';
+    b.className='league'+(s.key===curSport?' active':'');
+    b.textContent=s.icon+' '+s.label;
+    b.addEventListener('click',function(){curSport=s.key;renderLeagues();loadGames(curSport,renderGames);});
+    nav.appendChild(b);
+  });
+}
+function statBadge(g){
+  if(g.status==='final')return '<span class="gstat final">Final</span>';
+  if(g.status==='live')return '<span class="gstat live">● Live'+(g.mins?' · '+g.mins+'\'':'')+'</span>';
+  return '<span class="gstat upcoming">Upcoming</span>';
+}
+function oddBtn(g,label,val,click){
+  var b=document.createElement('button');b.type='button';b.className='oddsbtn';
+  b.innerHTML='<small>'+label+'</small><b>'+val+'</b>';
+  if(click)b.addEventListener('click',click);else b.disabled=true,b.style.opacity=.4;
+  return b;
+}
+function renderGames(games){
+  curGames=games;
+  var bar=document.getElementById('linesBar'),txt=document.getElementById('linesText');
+  if(liveMode){bar.className='linesbar live';txt.textContent='LIVE LINES — real odds via The Odds API';}
+  else{bar.className='linesbar demo';txt.textContent='DEMO LINES — sample data for preview';}
+  var wrap=document.getElementById('games');wrap.innerHTML='';
+  if(!games.length){wrap.innerHTML='<div class="empty">No games found for this league right now.</div>';return;}
+  games.forEach(function(g){
+    var d=document.createElement('div');d.className='gcard';
+    var top=document.createElement('div');top.className='gtop';
+    top.innerHTML='<span class="grow gtime">'+fmtTime(g.commence)+(g.tv?' · 📺 '+g.tv:'')+'</span>';
+    var badge=document.createElement('span');badge.innerHTML=statBadge(g);top.appendChild(badge);
+    d.appendChild(top);
+    var teams=document.createElement('div');teams.className='teams';
+    teams.innerHTML=
+      '<div class="team"><span class="abbr">'+g.awayAbbr+'</span><span class="nm">'+g.away+'</span>'+(g.awayScore!=null?'<span class="sc">'+g.awayScore+'</span>':'')+'</div>'+
+      '<div class="team"><span class="abbr">'+g.homeAbbr+'</span><span class="nm">'+g.home+'</span>'+(g.homeScore!=null?'<span class="sc">'+g.homeScore+'</span>':'')+'</div>';
+    d.appendChild(teams);
+    if(g.status!=='final'){
+      var row=document.createElement('div');row.className='oddsrow';
+      row.appendChild(oddBtn(g,g.awayAbbr+' '+fmtSpread(-g.spreadHome),fmtOdds(g.spreadAwayOdds),function(){openSlip(g,'spread','away');}));
+      row.appendChild(oddBtn(g,'Moneyline','—',null));
+      var totVal=g.totalLine!=null?('O/U '+g.totalLine):'—';
+      row.appendChild(oddBtn(g,'Total',totVal,function(){openSlip(g,'total','over');}));
+      d.appendChild(row);
+      var row2=document.createElement('div');row2.className='oddsrow';row2.style.marginTop='8px';
+      row2.appendChild(oddBtn(g,g.homeAbbr+' '+fmtSpread(g.spreadHome),fmtOdds(g.spreadHomeOdds),function(){openSlip(g,'spread','home');}));
+      var mlB=document.createElement('button');mlB.type='button';mlB.className='oddsbtn';
+      mlB.innerHTML='<small>Moneyline</small><b>'+g.awayAbbr+' '+fmtOdds(g.mlAway)+' / '+g.homeAbbr+' '+fmtOdds(g.mlHome)+'</b>';
+      mlB.addEventListener('click',function(){openSlip(g,'moneyline','away');});
+      row2.appendChild(mlB);
+      var totB=document.createElement('button');totB.type='button';totB.className='oddsbtn';
+      totB.innerHTML='<small>Pick side</small><b>O '+fmtOdds(g.overOdds)+' / U '+fmtOdds(g.underOdds)+'</b>';
+      totB.addEventListener('click',function(){openSlip(g,'total','under');});
+      row2.appendChild(totB);
+      d.appendChild(row2);
+    } else {
+      var f=document.createElement('div');f.style.cssText='font:700 13px/1.5 "Source Sans 3",sans-serif;color:#9fd08a;text-align:center;padding:4px;';
+      f.textContent='Final: '+g.away+' '+g.awayScore+' — '+g.home+' '+g.homeScore;
+      d.appendChild(f);
+    }
+    wrap.appendChild(d);
+  });
+}
+/* ============ BET SLIP ============ */
+var slip={game:null,type:null,pick:null,odds:0,line:null,label:''};
+function pickLabel(g,type,pick){
+  if(type==='spread'){
+    var line=pick==='home'?g.spreadHome:-g.spreadHome;
+    var odds=pick==='home'?g.spreadHomeOdds:g.spreadAwayOdds;
+    var team=pick==='home'?g.home+' ('+g.homeAbbr+')':g.away+' ('+g.awayAbbr+')';
+    return {label:team+' '+fmtSpread(line),odds:odds,line:line};
+  }
+  if(type==='moneyline'){
+    var modds=pick==='home'?g.mlHome:g.mlAway;
+    var mteam=pick==='home'?g.home+' ('+g.homeAbbr+')':g.away+' ('+g.awayAbbr+')';
+    return {label:mteam+' ML',odds:modds,line:0};
+  }
+  var tline=g.totalLine;
+  var todds=pick==='over'?g.overOdds:g.underOdds;
+  return {label:(pick==='over'?'Over ':'Under ')+tline,odds:todds,line:tline};
+}
+function openSlip(g,type,pick){
+  var p=pickLabel(g,type,pick);
+  slip={game:g,type:type,pick:pick,odds:p.odds,line:p.line,label:p.label};
+  document.getElementById('slipGame').textContent=g.away+' @ '+g.home;
+  document.getElementById('slipPick').innerHTML='<span>📋</span><span>'+p.label+' <b>('+fmtOdds(p.odds)+')</b></span>';
+  document.getElementById('stakeInput').value=500;
+  updatePayout();
+  document.getElementById('slipModal').classList.add('open');
+}
+function updatePayout(){
+  var stake=Math.max(0,parseInt(document.getElementById('stakeInput').value||'0',10));
+  var win=americanPayout(stake,slip.odds)-stake;
+  document.getElementById('slipPayout').innerHTML='To win: <b>'+fmt(Math.floor(win))+' GC</b> · Total return: <b>'+fmt(Math.floor(americanPayout(stake,slip.odds)))+' GC</b>';
+}
+function placeBet(){
+  var stake=parseInt(document.getElementById('stakeInput').value||'0',10);
+  if(isNaN(stake)||stake<MIN_BET){say('Minimum bet is '+MIN_BET+' gold coins.');return;}
+  var bal=getBank()||0;
+  if(stake>bal){say('Not enough coins — grab more in the Coin Store.');return;}
+  var g=slip.game;
+  var bets=getBets();
+  var bet={
+    id:'b'+Date.now(), gameId:g.id, sportKey:g.sport,
+    gameLabel:g.away+' @ '+g.home,
+    type:slip.type, pick:slip.pick, label:slip.label,
+    line:slip.line, odds:slip.odds, stake:stake,
+    status:'open', placedAt:Date.now()
+  };
+  if(!liveMode&&g.status==='final'){bet.demoFinal={home:g.homeScore,away:g.awayScore};}
+  bets.unshift(bet);setBets(bets);
+  setBank(bal-stake);renderBal();
+  document.getElementById('slipModal').classList.remove('open');
+  say('Bet placed! Good luck 🍀');
+  settleOpenBets();renderBal();
+}
+/* ============ MY BETS ============ */
+function renderBets(){
+  var list=document.getElementById('betsList');list.innerHTML='';
+  var bets=getBets();
+  if(!bets.length){list.innerHTML='<div class="empty">No bets yet. Pick a game above and place your first fun bet!</div>';return;}
+  bets.forEach(function(b){
+    var d=document.createElement('div');d.className='bet';
+    var st=b.status==='open'?'OPEN':b.status==='won'?'WON ✓':b.status==='lost'?'LOST':'PUSH';
+    d.innerHTML='<div class="bl1"><span>'+b.label+'</span><span class="st '+b.status+'">'+st+'</span></div>'+
+      '<div class="bl2">'+b.gameLabel+(b.finalScore?' · Final '+b.finalScore:'')+'<br>Stake: '+fmt(b.stake)+' GC @ '+fmtOdds(b.odds)+'</div>';
+    list.appendChild(d);
+  });
+}
+/* ============ SCHEDULES (ESPN free API, no key) ============ */
+var SCHED_CACHE_KEY='nikkiflixs_sched_cache';
+var SCHED_LEAGUES=[
+  {key:'nfl',espn:'football/nfl',label:'NFL',icon:'🏈'},
+  {key:'nba',espn:'basketball/nba',label:'NBA',icon:'🏀'},
+  {key:'mlb',espn:'baseball/mlb',label:'MLB',icon:'⚾'},
+  {key:'nhl',espn:'hockey/nhl',label:'NHL',icon:'🏒'},
+  {key:'ncaaf',espn:'football/college-football',label:'NCAAF',icon:'🏈'},
+  {key:'ncaam',espn:'basketball/mens-college-basketball',label:'NCAAM',icon:'🏀'},
+  {key:'mls',espn:'soccer/usa.1',label:'MLS',icon:'⚽'},
+  {key:'epl',espn:'soccer/eng.1',label:'EPL',icon:'⚽'}
+];
+var curSchedLeague='nfl',curTeamId=null,schedWeekMode=true,schedInitDone=false,schedTeams=[];
+function schedCacheGet(bucket,sub){
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    var b=c[bucket]&&c[bucket][sub];
+    if(b&&Date.now()-b.ts<CACHE_MS)return b.data;
+  }catch(e){}
+  return null;
+}
+function schedCacheSet(bucket,sub,data){
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    if(!c[bucket])c[bucket]={};
+    c[bucket][sub]={ts:Date.now(),data:data};
+    localStorage.setItem(SCHED_CACHE_KEY,JSON.stringify(c));
+  }catch(e){}
+}
+function espn(path){
+  return fetch('https://site.api.espn.com/apis/site/v2/sports/'+path)
+    .then(function(r){if(!r.ok)throw new Error('espn '+r.status);return r.json();});
+}
+function parseSchedTeams(data){
+  var out=[];
+  try{
+    data.sports[0].leagues[0].teams.forEach(function(t){
+      var tm=t.team;
+      out.push({id:String(tm.id),name:tm.displayName||tm.name,abbr:tm.abbreviation||''});
+    });
+  }catch(e){}
+  out.sort(function(a,b){return a.name<b.name?-1:(a.name>b.name?1:0);});
+  return out;
+}
+function loadSchedTeams(cb,err){
+  var hit=schedCacheGet('teams',curSchedLeague);
+  if(hit){cb(hit);return;}
+  espn(SCHED_LEAGUES.filter(function(l){return l.key===curSchedLeague;})[0].espn+'/teams')
+    .then(function(d){var t=parseSchedTeams(d);schedCacheSet('teams',curSchedLeague,t);cb(t);})
+    .catch(function(){err&&err();});
+}
+function parseSchedEvent(ev,teamId){
+  var comp=(ev.competitions&&ev.competitions[0])||{};
+  var us=null,opp=null;
+  (comp.competitors||[]).forEach(function(c){
+    if(c.team&&String(c.team.id)===String(teamId))us=c;else opp=c;
+  });
+  var completed=!!(comp.status&&comp.status.type&&comp.status.type.completed);
+  var usS=us&&us.score!=null&&us.score!==''?parseInt(us.score,10):null;
+  var oppS=opp&&opp.score!=null&&opp.score!==''?parseInt(opp.score,10):null;
+  var result=null;
+  if(completed&&usS!=null&&oppS!=null){
+    if(us&&typeof us.winner==='boolean')result=us.winner?'W':'L';
+    else result=usS>oppS?'W':(usS<oppS?'L':'T');
+  }
+  var tv='';
+  try{var b=comp.broadcasts||[];if(b.length&&b[0].names)tv=b[0].names.join('/');}catch(e){}
+  var wk='';
+  try{wk=ev.week?(ev.week.number?('Week '+ev.week.number):(ev.week.text||'')):'';}catch(e){}
+  return {
+    date:ev.date||'',week:wk,
+    ha:us?(us.homeAway==='home'?'vs':'@'):'',
+    oppAbbr:opp&&opp.team?(opp.team.abbreviation||''):'',
+    oppName:opp&&opp.team?(opp.team.displayName||opp.team.name||''):'',
+    tv:tv,completed:completed,usScore:usS,oppScore:oppS,result:result
+  };
+}
+function loadTeamSched(teamId,cb,err){
+  var sub=curSchedLeague+'_'+teamId;
+  var hit=schedCacheGet('sched',sub);
+  if(hit){cb(hit);return;}
+  var espnPath=SCHED_LEAGUES.filter(function(l){return l.key===curSchedLeague;})[0].espn;
+  espn(espnPath+'/teams/'+encodeURIComponent(teamId)+'/schedule')
+    .then(function(d){
+      var evs=(d.events||[]).map(function(ev){return parseSchedEvent(ev,teamId);});
+      var teamName='';try{teamName=d.team.displayName||d.team.name||'';}catch(e){}
+      var out={teamName:teamName,events:evs};
+      schedCacheSet('sched',sub,out);cb(out);
+    }).catch(function(){err&&err();});
+}
+function parseBoardEvent(ev){
+  var comp=(ev.competitions&&ev.competitions[0])||{};
+  var home=null,away=null;
+  (comp.competitors||[]).forEach(function(c){if(c.homeAway==='home')home=c;else away=c;});
+  var completed=!!(comp.status&&comp.status.type&&comp.status.type.completed);
+  var live=!!(comp.status&&comp.status.type&&comp.status.type.name&&/IN_PROGRESS|STATUS_IN_PROGRESS/.test(comp.status.type.name)&&!completed);
+  var hs=home&&home.score!=null&&home.score!==''?parseInt(home.score,10):null;
+  var as=away&&away.score!=null&&away.score!==''?parseInt(away.score,10):null;
+  var tv='';
+  try{var b=comp.broadcasts||[];if(b.length&&b[0].names)tv=b[0].names.join('/');}catch(e){}
+  function nm(c){return c&&c.team?(c.team.displayName||c.team.name||'') :'';}
+  function ab(c){return c&&c.team?(c.team.abbreviation||'') :'';}
+  return {date:ev.date||'',home:nm(home),homeAbbr:ab(home),away:nm(away),awayAbbr:ab(away),
+    homeScore:hs,awayScore:as,completed:completed,live:live,tv:tv};
+}
+function loadWeekBoard(cb,err){
+  var hit=schedCacheGet('board',curSchedLeague);
+  if(hit){cb(hit);return;}
+  var espnPath=SCHED_LEAGUES.filter(function(l){return l.key===curSchedLeague;})[0].espn;
+  espn(espnPath+'/scoreboard')
+    .then(function(d){
+      var evs=(d.events||[]).map(parseBoardEvent);
+      schedCacheSet('board',curSchedLeague,evs);cb(evs);
+    }).catch(function(){err&&err();});
+}
+function schedDate(iso){
+  try{
+    var d=new Date(iso);
+    return {d1:d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}),
+            d2:d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})};
+  }catch(e){return {d1:'',d2:''};}
+}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function showSchedLoading(msg){
+  var w=document.getElementById('schedList');w.innerHTML='';
+  w.appendChild(el('div','spin',msg||'Loading schedule…'));
+}
+function showSchedError(retry){
+  var w=document.getElementById('schedList');w.innerHTML='';
+  var d=el('div','empty','Couldn\'t load the schedule.<br>Check your connection and try again.');
+  var b=el('button','sched-retry','↻ Retry');b.type='button';
+  b.style.marginTop='12px';
+  b.addEventListener('click',retry);
+  d.appendChild(document.createElement('br'));d.appendChild(b);
+  w.appendChild(d);
+}
+function renderSchedLeagues(){
+  var nav=document.getElementById('schedLeagues');nav.innerHTML='';
+  SCHED_LEAGUES.forEach(function(s){
+    var b=el('button','league'+(s.key===curSchedLeague?' active':''),s.icon+' '+s.label);
+    b.type='button';
+    b.addEventListener('click',function(){
+      if(curSchedLeague===s.key)return;
+      curSchedLeague=s.key;curTeamId=null;schedWeekMode=true;schedTeams=[];
+      renderSchedLeagues();enterSchedLeague();
+    });
+    nav.appendChild(b);
+  });
+}
+function renderTeamSelect(){
+  var sel=document.getElementById('teamSelect');sel.innerHTML='';
+  var ph=document.createElement('option');ph.value='';ph.textContent=schedTeams.length?('Pick a team — full season ('+schedTeams.length+')'):'Pick a team…';
+  sel.appendChild(ph);
+  schedTeams.forEach(function(t){
+    var o=document.createElement('option');o.value=t.id;
+    o.textContent=(t.abbr?t.abbr+' — ':'')+t.name;
+    sel.appendChild(o);
+  });
+  sel.value='';
+}
+function renderTeamSchedule(out){
+  var w=document.getElementById('schedList');w.innerHTML='';
+  if(!out.events.length){w.appendChild(el('div','empty','No games on the schedule right now.'));return;}
+  w.appendChild(el('div','sched-head',(out.teamName||'Team')+' — full season'));
+  var wl={W:0,L:0,T:0};
+  out.events.forEach(function(g){if(g.result&&wl[g.result]!=null)wl[g.result]++;});
+  if(wl.W+wl.L+wl.T>0)w.appendChild(el('div','sched-head','Record: '+wl.W+'-'+wl.L+(wl.T?'-'+wl.T:'')));
+  out.events.forEach(function(g){
+    var dt=schedDate(g.date);
+    var row=el('div','srow');
+    var badge=g.result?'<span class="wl '+g.result.toLowerCase()+'">'+g.result+'</span>':'<span class="wl na">·</span>';
+    var mid=g.ha+' '+g.oppAbbr;
+    var sub=(g.week?g.week+' · ':'')+(g.completed?'Final':(g.tv?'📺 '+g.tv:''));
+    var right=g.completed
+      ? '<span class="ssc">'+g.usScore+' - '+g.oppScore+'<small>final</small></span>'
+      : '<span class="ssc"><small>'+dt.d2+(g.tv?' · '+g.tv:'')+'</small></span>';
+    row.innerHTML='<span class="sdate"><b>'+dt.d1+'</b>'+(g.completed?'':dt.d2)+'</span>'+badge+
+      '<span class="sopp">'+mid+'<small>'+g.oppName+'</small></span>'+right;
+    w.appendChild(row);
+  });
+}
+function renderWeekBoard(evs){
+  var w=document.getElementById('schedList');w.innerHTML='';
+  if(!evs.length){w.appendChild(el('div','empty','No games this week.'));return;}
+  var label=SCHED_LEAGUES.filter(function(l){return l.key===curSchedLeague;})[0].label;
+  w.appendChild(el('div','sched-head',label+' — this week ('+evs.length+' games)'));
+  evs.forEach(function(g){
+    var d=el('div','gcard');
+    var top=el('div','gtop','<span class="grow gtime">'+schedDate(g.date).d1+' · '+schedDate(g.date).d2+(g.tv?' · 📺 '+g.tv:'')+'</span>');
+    var st=g.completed?'<span class="gstat final">Final</span>':(g.live?'<span class="gstat live">● Live</span>':'<span class="gstat upcoming">Upcoming</span>');
+    var bs=el('span');bs.innerHTML=st;top.appendChild(bs);d.appendChild(top);
+    d.appendChild(el('div','teams',
+      '<div class="team"><span class="abbr">'+g.awayAbbr+'</span><span class="nm">'+g.away+'</span>'+(g.awayScore!=null?'<span class="sc">'+g.awayScore+'</span>':'')+'</div>'+
+      '<div class="team"><span class="abbr">'+g.homeAbbr+'</span><span class="nm">'+g.home+'</span>'+(g.homeScore!=null?'<span class="sc">'+g.homeScore+'</span>':'')+'</div>'));
+    w.appendChild(d);
+  });
+}
+function showTeamSchedule(){
+  if(!curTeamId)return;
+  showSchedLoading();
+  loadTeamSched(curTeamId,renderTeamSchedule,function(){showSchedError(showTeamSchedule);});
+}
+function showWeek(){
+  showSchedLoading('Loading this week\u2019s games…');
+  loadWeekBoard(renderWeekBoard,function(){showSchedError(showWeek);});
+}
+function enterSchedLeague(){
+  renderTeamSelect();
+  document.getElementById('weekBtn').className='weekbtn active';
+  showSchedLoading('Loading teams…');
+  loadSchedTeams(function(teams){
+    schedTeams=teams;renderTeamSelect();showWeek();
+  },function(){showSchedError(enterSchedLeague);});
+}
+/* ============ NEWS (ESPN free API — freshness is law) ============ */
+var NEWS_CACHE_MS=15*60*1000; /* refetch at most every 15 min; staleness checked on article timestamps */
+var STALE_AFTER_MS=24*3600*1000; /* Jerry's rule: never show news older than 24h */
+var curNewsLeague='nfl',newsInitDone=false;
+function relTime(iso){
+  var t=new Date(iso).getTime();
+  if(isNaN(t))return '';
+  var s=Math.max(0,(Date.now()-t)/1000);
+  if(s<60)return 'Just now';
+  var m=Math.floor(s/60);
+  if(m<60)return m+(m===1?' minute ago':' minutes ago');
+  var h=Math.floor(m/60);
+  if(h<24)return h+(h===1?' hour ago':' hours ago');
+  var d=Math.floor(h/24);
+  return d+(d===1?' day ago':' days ago');
+}
+function newsEspnPath(){
+  var l=SCHED_LEAGUES.filter(function(x){return x.key===curNewsLeague;})[0];
+  return l?l.espn:'football/nfl';
+}
+function parseNews(d){
+  var out=[];
+  (d.articles||[]).forEach(function(a){
+    var pub=a.published||'';
+    var t=new Date(pub).getTime();
+    if(!a.headline||isNaN(t))return;
+    var img='';
+    try{if(a.images&&a.images.length&&a.images[0].url)img=a.images[0].url;}catch(e){}
+    var href='';
+    try{if(a.links&&a.links.web&&a.links.web.href)href=a.links.web.href;}catch(e){}
+    out.push({headline:a.headline,pub:pub,ts:t,img:img,href:href});
+  });
+  out.sort(function(x,y){return y.ts-x.ts;});
+  return out;
+}
+function loadNews(cb,err){
+  var sub='news_'+curNewsLeague;
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    var b=c.news&&c.news[sub];
+    if(b&&Date.now()-b.ts<NEWS_CACHE_MS){cb(b.data);return;}
+  }catch(e){}
+  espn(newsEspnPath()+'/news?limit=25')
+    .then(function(d){
+      var arts=parseNews(d);
+      try{
+        var cc=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+        if(!cc.news)cc.news={};
+        cc.news[sub]={ts:Date.now(),data:arts};
+        localStorage.setItem(SCHED_CACHE_KEY,JSON.stringify(cc));
+      }catch(e){}
+      cb(arts);
+    }).catch(function(){err&&err();});
+}
+function showNewsLoading(){
+  var w=document.getElementById('newsList');w.innerHTML='';
+  w.appendChild(el('div','spin','Updating headlines…'));
+}
+function showNewsError(retry){
+  var w=document.getElementById('newsList');w.innerHTML='';
+  var d=el('div','empty','Headlines are updating.<br>Check your connection and try again.');
+  var b=el('button','sched-retry','↻ Retry');b.type='button';b.style.marginTop='12px';
+  b.addEventListener('click',retry);
+  d.appendChild(document.createElement('br'));d.appendChild(b);
+  w.appendChild(d);
+}
+function renderNews(arts){
+  var w=document.getElementById('newsList');w.innerHTML='';
+  /* Jerry's rule: if no headline is newer than 24h, the feed is stale — show updating, never old news */
+  var fresh=arts.filter(function(a){return Date.now()-a.ts<STALE_AFTER_MS;});
+  if(!fresh.length){showNewsLoading();return;}
+  cmIngestNews(fresh); /* Jerry: Checkmate learns sports by reading the news */
+  fresh.forEach(function(a){
+    var card=document.createElement('a');
+    card.className='ncard';
+    card.href=a.href||'#';
+    if(a.href){card.target='_blank';card.rel='noopener';}
+    else{card.addEventListener('click',function(e){e.preventDefault();});}
+    var media=a.img
+      ?'<img src="'+a.img.replace(/"/g,'')+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+      :'<span class="nph">📰</span>';
+    card.innerHTML=media+'<span class="nbody"><h3></h3><span class="nmeta">ESPN <span class="ago">'+relTime(a.pub)+'</span></span></span>';
+    card.querySelector('h3').textContent=a.headline;
+    w.appendChild(card);
+  });
+  w.appendChild(el('div','nfresh','Updated '+relTime(fresh[0].pub)+' · newest first'));
+}
+function renderNewsLeagues(){
+  var nav=document.getElementById('newsLeagues');nav.innerHTML='';
+  SCHED_LEAGUES.forEach(function(s){
+    var b=el('button','league'+(s.key===curNewsLeague?' active':''),s.icon+' '+s.label);
+    b.type='button';
+    b.addEventListener('click',function(){
+      if(curNewsLeague===s.key)return;
+      curNewsLeague=s.key;renderNewsLeagues();enterNewsLeague();
+    });
+    nav.appendChild(b);
+  });
+}
+function enterNewsLeague(){
+  showNewsLoading();
+  loadNews(renderNews,function(){showNewsError(enterNewsLeague);});
+}
+/* ============ FANTASY (injuries + advice, ESPN free API) ============ */
+var INJ_CACHE_MS=3600*1000; /* injuries refetched at most hourly */
+var FANTASY_RX=/fantasy|waiver|start[\s-]?sit|sleeper|rankings|pickup|streamer|dfs\b|daily fantasy|trade target/i;
+var curFantLeague='nfl',curInjTeamId=null,fantInitDone=false,fantTeams=[],fantSub='inj';
+function fantEspnPath(){
+  var l=SCHED_LEAGUES.filter(function(x){return x.key===curFantLeague;})[0];
+  return l?l.espn:'football/nfl';
+}
+function parseInjuries(d){
+  var out=[];
+  (d.athletes||[]).forEach(function(g){
+    (g.items||[]).forEach(function(p){
+      var st=(p.status&&p.status.type)||'active';
+      if(st==='active')return;
+      var inj=(p.injuries&&p.injuries[0])||{};
+      out.push({
+        name:p.displayName||'',
+        pos:(p.position&&p.position.abbreviation)||'',
+        jersey:p.jersey||'',
+        status:(p.status&&p.status.name)||st,
+        detail:inj.status||'',
+        date:inj.date||''
+      });
+    });
+  });
+  return out;
+}
+function injBadge(p){
+  var s=((p.detail||'')+' '+(p.status||'')).toLowerCase();
+  if(/out|injured reserve|\bir\b/.test(s))return '<span class="wl l">OUT</span>';
+  if(/doubtful/.test(s))return '<span class="wl q">D</span>';
+  if(/questionable/.test(s))return '<span class="wl q">Q</span>';
+  if(/day-to-day/.test(s))return '<span class="wl q">DTD</span>';
+  return '<span class="wl q">•</span>';
+}
+function loadInjuries(teamId,cb,err){
+  var sub='inj_'+curFantLeague+'_'+teamId,now=Date.now();
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    var b=c.inj&&c.inj[sub];
+    if(b&&now-b.ts<INJ_CACHE_MS){cb(b.data);return;}
+  }catch(e){}
+  espn(fantEspnPath()+'/teams/'+encodeURIComponent(teamId)+'/roster')
+    .then(function(d){
+      var list=parseInjuries(d);
+      try{
+        var cc=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+        if(!cc.inj)cc.inj={};
+        cc.inj[sub]={ts:now,data:list};
+        localStorage.setItem(SCHED_CACHE_KEY,JSON.stringify(cc));
+      }catch(e){}
+      cb(list);
+    }).catch(function(){err&&err();});
+}
+function showInjLoading(){
+  var w=document.getElementById('injList');w.innerHTML='';
+  w.appendChild(el('div','spin','Checking the injury report…'));
+}
+function showInjError(retry){
+  var w=document.getElementById('injList');w.innerHTML='';
+  var d=el('div','empty','Injury report is updating.<br>Check your connection and try again.');
+  var b=el('button','sched-retry','↻ Retry');b.type='button';b.style.marginTop='12px';
+  b.addEventListener('click',retry);
+  d.appendChild(document.createElement('br'));d.appendChild(b);
+  w.appendChild(d);
+}
+function renderInjTeams(){
+  var sel=document.getElementById('injTeamSelect');sel.innerHTML='';
+  if(!fantTeams.length){
+    var o=document.createElement('option');o.value='';o.textContent='Pick a team…';sel.appendChild(o);return;
+  }
+  fantTeams.forEach(function(t){
+    var op=document.createElement('option');op.value=t.id;
+    op.textContent=(t.abbr?t.abbr+' — ':'')+t.name;
+    sel.appendChild(op);
+  });
+  sel.value=curInjTeamId||'';
+}
+function renderInjuries(list,teamName){
+  var w=document.getElementById('injList');w.innerHTML='';
+  w.appendChild(el('div','sched-head',(teamName||'Team')+' — injury report ('+list.length+')'));
+  if(!list.length){
+    w.appendChild(el('div','empty','No injuries reported — full squad available.'));
+    return;
+  }
+  list.forEach(function(p){
+    var row=el('div','srow');
+    var badge=el('span');badge.innerHTML=injBadge(p);row.appendChild(badge);
+    var mid=el('span','sopp');mid.textContent=p.name;
+    var sub=el('small');sub.textContent=(p.pos?p.pos+' · ':'')+(p.jersey?'#'+p.jersey:'');
+    mid.appendChild(sub);row.appendChild(mid);
+    var right=el('span','ssc');
+    var rsmall=el('small');rsmall.textContent=p.status;right.appendChild(rsmall);
+    right.appendChild(document.createTextNode(p.detail||''));
+    row.appendChild(right);
+    w.appendChild(row);
+  });
+}
+function showInjuries(){
+  if(!curInjTeamId)return;
+  showInjLoading();
+  var tn='';fantTeams.forEach(function(t){if(t.id===curInjTeamId)tn=t.name;});
+  loadInjuries(curInjTeamId,function(list){renderInjuries(list,tn);},function(){showInjError(showInjuries);});
+}
+function enterFantLeague(){
+  renderInjTeams();
+  showInjLoading();
+  loadSchedTeamsFor(curFantLeague,function(teams){
+    fantTeams=teams;curInjTeamId=teams.length?teams[0].id:null;
+    renderInjTeams();showInjuries();
+  },function(){showInjError(enterFantLeague);});
+}
+function loadSchedTeamsFor(leagueKey,cb,err){
+  var hit=schedCacheGet('teams',leagueKey);
+  if(hit){cb(hit);return;}
+  var l=SCHED_LEAGUES.filter(function(x){return x.key===leagueKey;})[0];
+  espn(l.espn+'/teams')
+    .then(function(d){var t=parseSchedTeams(d);schedCacheSet('teams',leagueKey,t);cb(t);})
+    .catch(function(){err&&err();});
+}
+function renderFantLeagues(){
+  var nav=document.getElementById('fantLeagues');nav.innerHTML='';
+  SCHED_LEAGUES.forEach(function(s){
+    var b=el('button','league'+(s.key===curFantLeague?' active':''),s.icon+' '+s.label);
+    b.type='button';
+    b.addEventListener('click',function(){
+      if(curFantLeague===s.key)return;
+      curFantLeague=s.key;curInjTeamId=null;fantTeams=[];
+      renderFantLeagues();setFantSub('inj');enterFantLeague();
+    });
+    nav.appendChild(b);
+  });
+}
+function renderFantAdvice(arts){
+  var w=document.getElementById('fantNewsList');w.innerHTML='';
+  var picks=arts.filter(function(a){
+    return FANTASY_RX.test(a.headline)&&Date.now()-a.ts<STALE_AFTER_MS;
+  });
+  if(!picks.length){
+    w.appendChild(el('div','empty','No fresh fantasy headlines right now.<br>Check back soon — updating.'));
+    return;
+  }
+  picks.forEach(function(a){
+    var card=document.createElement('a');
+    card.className='ncard';
+    card.href=a.href||'#';
+    if(a.href){card.target='_blank';card.rel='noopener';}
+    else{card.addEventListener('click',function(e){e.preventDefault();});}
+    var media=a.img
+      ?'<img src="'+a.img.replace(/"/g,'')+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+      :'<span class="nph">💡</span>';
+    card.innerHTML=media+'<span class="nbody"><h3></h3><span class="nmeta">ESPN FANTASY <span class="ago">'+relTime(a.pub)+'</span></span></span>';
+    card.querySelector('h3').textContent=a.headline;
+    w.appendChild(card);
+  });
+}
+function enterFantAdvice(){
+  var w=document.getElementById('fantNewsList');w.innerHTML='';
+  w.appendChild(el('div','spin','Finding fantasy advice…'));
+  var sub='news_'+curFantLeague;
+  function done(arts){renderFantAdvice(arts);}
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    var b=c.news&&c.news[sub];
+    if(b&&Date.now()-b.ts<NEWS_CACHE_MS){done(b.data);return;}
+  }catch(e){}
+  var l=SCHED_LEAGUES.filter(function(x){return x.key===curFantLeague;})[0];
+  espn(l.espn+'/news?limit=25')
+    .then(function(d){
+      var arts=parseNews(d);
+      try{
+        var cc=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+        if(!cc.news)cc.news={};
+        cc.news[sub]={ts:Date.now(),data:arts};
+        localStorage.setItem(SCHED_CACHE_KEY,JSON.stringify(cc));
+      }catch(e){}
+      done(arts);
+    }).catch(function(){
+      w.innerHTML='';
+      var dd=el('div','empty','Fantasy advice is updating.<br>Check your connection and try again.');
+      var rb=el('button','sched-retry','↻ Retry');rb.type='button';rb.style.marginTop='12px';
+      rb.addEventListener('click',enterFantAdvice);
+      dd.appendChild(document.createElement('br'));dd.appendChild(rb);
+      w.appendChild(dd);
+    });
+}
+function setFantSub(s){
+  fantSub=s;
+  document.getElementById('fantInjView').style.display=s==='inj'?'':'none';
+  document.getElementById('fantAdvView').style.display=s==='adv'?'':'none';
+  document.getElementById('fantSSView').style.display=s==='ss'?'':'none';
+  document.getElementById('fantSlpView').style.display=s==='slp'?'':'none';
+  document.getElementById('fantCmpView').style.display=s==='cmp'?'':'none';
+  document.getElementById('injTab').className='vtab'+(s==='inj'?' active':'');
+  document.getElementById('advTab').className='vtab'+(s==='adv'?' active':'');
+  document.getElementById('ssTab').className='vtab'+(s==='ss'?' active':'');
+  document.getElementById('slpTab').className='vtab'+(s==='slp'?' active':'');
+  document.getElementById('cmpTab').className='vtab'+(s==='cmp'?' active':'');
+  if(s==='adv')enterFantAdvice();
+  if(s==='ss')enterStartSit();
+  if(s==='slp')enterSleepers();
+  if(s==='cmp')enterCompare();
+}
+/* ============ FANTASY DEEP: START/SIT + SLEEPERS + PLAYER COMPARE (Jerry's order) ============ */
+/* Jerry: fantasy info is the draw — free, accurate, up-to-date. Freshness law applies everywhere. */
+var FANT_IDX_KEY='nikkiflixs_fant_idx';
+var FANT_IDX_MS=7*24*3600*1000; /* player index refetched weekly */
+var fantPlayerIdx=null, fantIdxLoading=false;
+var SS_RX=/start[\s-]?sit|start\s+(em|him|\w+)|sit\s+(em|him|\w+)|must[\s-]?start|bench\b/i;
+var SLEEP_RX=/sleeper|breakout|waiver\s+wire|waiver\s+target|streamer|deep\s+league|under[\s-]?the[\s-]?radar/i;
+function fantNflTeams(cb){
+  /* all 32 NFL teams for roster sweep */
+  var l=SCHED_LEAGUES.filter(function(x){return x.key==='nfl';})[0];
+  loadSchedTeamsFor('nfl',cb,function(){cb([]);});
+}
+function loadPlayerIndex(cb){
+  /* name -> {id,pos,team,abbr} for every NFL rostered player. Cached 7 days. */
+  if(fantPlayerIdx){cb(fantPlayerIdx);return;}
+  try{
+    var c=JSON.parse(localStorage.getItem(FANT_IDX_KEY)||'null');
+    if(c&&Date.now()-c.ts<FANT_IDX_MS){fantPlayerIdx=c.idx;cb(fantPlayerIdx);return;}
+  }catch(e){}
+  if(fantIdxLoading){var t=setInterval(function(){if(fantPlayerIdx){clearInterval(t);cb(fantPlayerIdx);}},400);return;}
+  fantIdxLoading=true;
+  fantNflTeams(function(teams){
+    if(!teams.length){fantIdxLoading=false;cb({});return;}
+    var idx={},done=0;
+    teams.forEach(function(tm){
+      espn('football/nfl/teams/'+encodeURIComponent(tm.id)+'/roster')
+        .then(function(d){
+          (d.athletes||[]).forEach(function(g){
+            (g.items||[]).forEach(function(pl){
+              var nm=(pl.displayName||'').trim();if(!nm)return;
+              var st=(pl.status&&pl.status.type)||'active';
+              var inj=(pl.injuries&&pl.injuries[0])||{};
+              idx[nm.toLowerCase()]={id:String(pl.id),name:nm,
+                pos:(pl.position&&pl.position.abbreviation)||'',
+                team:tm.abbr||tm.name,injured:st!=='active',
+                injDetail:inj.status||''};
+            });
+          });
+        }).catch(function(){})
+        .then(function(){
+          if(++done>=teams.length){
+            fantIdxLoading=false;fantPlayerIdx=idx;
+            try{localStorage.setItem(FANT_IDX_KEY,JSON.stringify({ts:Date.now(),idx:idx}));}catch(e){}
+            cb(idx);
+          }
+        });
+    });
+  });
+}
+function fantFreshArts(cb){
+  /* fresh NFL fantasy-filtered headlines, newest first */
+  var sub='news_nfl';
+  function fresh(list){return (list||[]).filter(function(a){return Date.now()-a.ts<STALE_AFTER_MS;});}
+  try{
+    var c=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    var b=c.news&&c.news[sub];
+    if(b&&Date.now()-b.ts<NEWS_CACHE_MS){cb(fresh(b.data));return;}
+  }catch(e){}
+  espn('football/nfl/news?limit=40')
+    .then(function(d){
+      var arts=parseNews(d);
+      try{
+        var cc=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+        if(!cc.news)cc.news={};
+        cc.news[sub]={ts:Date.now(),data:arts};
+        localStorage.setItem(SCHED_CACHE_KEY,JSON.stringify(cc));
+      }catch(e){}
+      cb(fresh(arts));
+    }).catch(function(){cb(null);});
+}
+function namesInHeadline(h,idx){
+  /* match headline against known player names (longest first) */
+  var out=[],low=(' '+h+' ').toLowerCase();
+  var names=Object.keys(idx).sort(function(a,b){return b.length-a.length;});
+  var used='';
+  names.forEach(function(n){
+    if(n.length<4)return;
+    if(low.indexOf(' '+n+' ')>=0&&used.indexOf(n)<0){out.push(idx[n]);used+=' '+n;}
+  });
+  return out.slice(0,4);
+}
+/* ---- START/SIT ---- */
+function enterStartSit(){
+  var w=document.getElementById('ssList');w.innerHTML='';
+  w.appendChild(el('div','spin','Scouting this week…'));
+  fantFreshArts(function(arts){
+    if(!arts){w.innerHTML='';w.appendChild(el('div','empty','Start/Sit is updating.<br>Check your connection and try again.'));return;}
+    loadPlayerIndex(function(idx){
+      w.innerHTML='';
+      var starts=[],sits=[],seen={};
+      arts.forEach(function(a){
+        var h=a.headline;
+        var isStart=/must[\s-]?start|start\s+['"]?em/i.test(h);
+        var isSit=/\bsit\b|bench\b|downgrade/i.test(h);
+        if(!isStart&&!isSit)return;
+        namesInHeadline(h,idx).forEach(function(p){
+          if(seen[p.id])return;seen[p.id]=1;
+          (isStart?starts:sits).push({p:p,why:h,ts:a.ts});
+        });
+      });
+      /* injury-driven sits: Out / Doubtful / IR skill-position players, capped */
+      var skillSeen=0;
+      Object.keys(idx).forEach(function(k){
+        var p=idx[k];
+        if(skillSeen>=25)return;
+        if(!/^(QB|RB|WR|TE)$/.test(p.pos))return;
+        if(!seen[p.id]&&p.injured&&/out|doubtful|injured reserve/i.test(p.injDetail||'')){
+          seen[p.id]=1;skillSeen++;
+          sits.push({p:p,why:p.name+' — '+p.injDetail,ts:Date.now()});
+        }
+      });
+      var freshTs=arts.length?arts[0].ts:Date.now();
+      document.getElementById('ssFresh').textContent=relTime(new Date(freshTs).toISOString());
+      if(!starts.length&&!sits.length){
+        w.appendChild(el('div','empty','No fresh start/sit calls right now.<br>Check back soon — updating.'));return;
+      }
+      var posOrder={QB:0,RB:1,WR:2,TE:3};
+      [['START',starts,'ss-start'],['SIT',sits,'ss-sit']].forEach(function(grp){
+        if(!grp[1].length)return;
+        w.appendChild(el('div','sched-head',grp[0]+' — this week ('+grp[1].length+')'));
+        grp[1].sort(function(a,b){
+          var pa=posOrder[a.p.pos]!=null?posOrder[a.p.pos]:9;
+          var pb=posOrder[b.p.pos]!=null?posOrder[b.p.pos]:9;
+          return pa-pb;
+        });
+        grp[1].slice(0,20).forEach(function(e){
+          var row=el('div','srow');
+          var tag=el('span','ss-tag '+grp[2]);tag.textContent=grp[0];row.appendChild(tag);
+          var mid=el('span','sopp');mid.textContent=e.p.name;
+          var sub=el('small');sub.textContent=(e.p.pos?e.p.pos+' · ':'')+e.p.team+' — '+e.why.slice(0,90);
+          mid.appendChild(sub);row.appendChild(mid);
+          var right=el('span','ssc');var rs=el('small');rs.textContent=relTime(new Date(e.ts).toISOString());right.appendChild(rs);
+          row.appendChild(right);w.appendChild(row);
+        });
+      });
+    });
+  });
+}
+/* ---- SLEEPERS ---- */
+function enterSleepers(){
+  var w=document.getElementById('slpList');w.innerHTML='';
+  w.appendChild(el('div','spin','Hunting sleepers…'));
+  fantFreshArts(function(arts){
+    if(!arts){w.innerHTML='';w.appendChild(el('div','empty','Sleepers are updating.<br>Check your connection and try again.'));return;}
+    loadPlayerIndex(function(idx){
+      w.innerHTML='';
+      var picks=[],seen={};
+      arts.forEach(function(a){
+        if(!SLEEP_RX.test(a.headline))return;
+        namesInHeadline(a.headline,idx).forEach(function(p){
+          if(seen[p.id]||/QB|RB|WR|TE/.test(p.pos)===false)return;seen[p.id]=1;
+          picks.push({p:p,why:a.headline,ts:a.ts,href:a.href});
+        });
+      });
+      if(!picks.length){
+        /* Fallback: trending skill-position names from broader fantasy headlines */
+        var trend=[],tseen={};
+        arts.forEach(function(a){
+          if(!FANTASY_RX.test(a.headline))return;
+          namesInHeadline(a.headline,idx).forEach(function(p){
+            if(tseen[p.id]||!/^(QB|RB|WR|TE)$/.test(p.pos))return;
+            tseen[p.id]=1;trend.push({p:p,why:a.headline,ts:a.ts,href:a.href});
+          });
+        });
+        if(!trend.length){
+          w.appendChild(el('div','empty','No fresh sleeper buzz right now.<br>Check back soon — updating.'));return;
+        }
+        w.appendChild(el('div','sched-head','📈 Trending in fantasy news'));
+        w.appendChild(el('div','fant-note','No explicit sleeper picks this week — these names are buzzing:'));
+        trend.slice(0,10).forEach(function(e){
+          var row=el('div','srow');
+          var tag=el('span','ss-tag ss-start');tag.textContent=e.p.pos;row.appendChild(tag);
+          var mid=el('span','sopp');mid.textContent=e.p.name;
+          var sub=el('small');sub.textContent=e.p.team+' — '+e.why.slice(0,90);
+          mid.appendChild(sub);row.appendChild(mid);
+          var right=el('span','ssc');var rs=el('small');rs.textContent=relTime(new Date(e.ts).toISOString());right.appendChild(rs);
+          row.appendChild(right);w.appendChild(row);
+        });
+        return;
+      }
+      w.appendChild(el('div','sched-head','😴 Sleepers of the week ('+picks.length+')'));
+      var posOrder={QB:0,RB:1,WR:2,TE:3};
+      ['QB','RB','WR','TE'].forEach(function(pos){
+        var bp=picks.filter(function(e){return e.p.pos===pos;})[0];
+        if(!bp)return;
+        var row=el('div','srow');
+        var tag=el('span','ss-tag ss-start');tag.textContent=pos;row.appendChild(tag);
+        var mid=el('span','sopp');mid.textContent='Best '+pos+' sleeper: '+bp.p.name;
+        var sub=el('small');sub.textContent=bp.p.team+' — '+bp.why.slice(0,90);
+        mid.appendChild(sub);row.appendChild(mid);w.appendChild(row);
+      });
+      w.appendChild(el('div','sched-head','All sleeper mentions'));
+      picks.slice(0,15).forEach(function(e){
+        var card=document.createElement('a');card.className='ncard';
+        card.href=e.href||'#';
+        if(e.href){card.target='_blank';card.rel='noopener';}
+        else{card.addEventListener('click',function(ev){ev.preventDefault();});}
+        card.innerHTML='<span class="nph">😴</span><span class="nbody"><h3></h3><span class="nmeta">'+
+          (e.p.pos?e.p.pos+' · ':'')+e.p.team+' · ESPN FANTASY <span class="ago">'+
+          relTime(new Date(e.ts).toISOString())+'</span></span></span>';
+        card.querySelector('h3').textContent=e.why;
+        w.appendChild(card);
+      });
+    });
+  });
+}
+/* ---- PLAYER COMPARE ---- */
+/* ---- PLAYER COMPARE (boxscore-powered: reliable recent-form stats) ---- */
+/* Jerry: free player comparison — the stuff other sites charge for. */
+function espnSummary(eventId){
+  return fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+encodeURIComponent(eventId))
+    .then(function(r){if(!r.ok)throw new Error('summary '+r.status);return r.json();});
+}
+function cmpTeamIdFor(p){
+  /* map team abbr -> ESPN team id via the loaded team list */
+  var t=null;
+  (fantTeams||[]).forEach(function(x){if(x.abbr===p.team)t=x;});
+  return t?t.id:null;
+}
+function cmpRecentGames(teamId,cb){
+  /* last 3 completed games + next matchup for a team */
+  espn('football/nfl/teams/'+encodeURIComponent(teamId)+'/schedule?season=2026')
+    .then(function(d){
+      var done=[],next=null;
+      (d.events||[]).forEach(function(e){
+        var comp=(e.competitions||[])[0]||{};
+        var st=((comp.status||{}).type||{}).description||'';
+        if(st==='Final'&&e.id)done.push({id:String(e.id),date:e.date||'',name:e.name||''});
+        else if(!next&&st!=='Final'&&e.date){next={date:e.date,name:e.name||''};}
+      });
+      /* most recent first */
+      done.sort(function(a,b){return b.date<a.date?-1:1;});
+      cb(done.slice(0,3),next);
+    }).catch(function(){cb([],null);});
+}
+function cmpExtractPlayer(box,p){
+  /* pull a player's stat lines from a boxscore summary */
+  var out={pass:{},rush:{},rec:{},games:0};
+  try{
+    var groups=((box||{}).boxscore||{}).players||[];
+    var nm=p.name.toLowerCase();
+    groups.forEach(function(g){
+      (g.statistics||[]).forEach(function(cat){
+        var labels=cat.labels||[];
+        (cat.athletes||[]).forEach(function(a){
+          var an=((a.athlete||{}).displayName||'').toLowerCase();
+          if(an!==nm)return;
+          out.games=1;
+          var vals=a.stats||[];
+          var map={};
+          labels.forEach(function(lb,i){map[lb]=vals[i];});
+          if(cat.name==='passing')out.pass=map;
+          else if(cat.name==='rushing')out.rush=map;
+          else if(cat.name==='receiving')out.rec=map;
+        });
+      });
+    });
+  }catch(e){}
+  return out;
+}
+function cmpN(v){var n=parseFloat(String(v==null?'':v).replace(/,/g,''));return isNaN(n)?0:n;}
+function cmpAggregate(games){
+  /* sum stat lines across games */
+  var t={py:0,ptd:0,pint:0,ry:0,rtd:0,rec:0,recy:0,rectd:0,gp:0};
+  games.forEach(function(g){
+    if(!g.games)return;t.gp++;
+    t.py+=cmpN(g.pass.YDS);t.ptd+=cmpN(g.pass.TD);t.pint+=cmpN(g.pass.INT);
+    t.ry+=cmpN(g.rush.YDS);t.rtd+=cmpN(g.rush.TD);
+    t.rec+=cmpN(g.rec.REC);t.recy+=cmpN(g.rec.YDS);t.rectd+=cmpN(g.rec.TD);
+  });
+  return t;
+}
+function cmpFantasyPPR(p,agg){
+  var pts=0;
+  if(p.pos==='QB')pts=agg.py/25+agg.ptd*4-agg.pint*2+agg.ry/10+agg.rtd*6;
+  else pts=agg.ry/10+agg.rtd*6+agg.recy/10+agg.rectd*6+agg.rec;
+  return Math.round(pts*10)/10;
+}
+function cmpPlayerData(p,cb){
+  /* full data package for one player: recent games aggregated + next matchup */
+  var teamId=cmpTeamIdFor(p);
+  if(!teamId){cb({p:p,agg:null,next:null});return;}
+  cmpRecentGames(teamId,function(games,next){
+    if(!games.length){cb({p:p,agg:null,next:next});return;}
+    var results=[],done=0;
+    games.forEach(function(g){
+      espnSummary(g.id).then(function(box){
+        results.push(cmpExtractPlayer(box,p));
+      }).catch(function(){results.push({games:0});})
+      .then(function(){
+        if(++done>=games.length)cb({p:p,agg:cmpAggregate(results),next:next});
+      });
+    });
+  });
+}
+function enterCompare(){
+  document.getElementById('cmpGo').onclick=runCompare;
+  ['cmpA','cmpB'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')runCompare();});
+  });
+  /* make sure we have a team list for id mapping (injury tab usually loads it) */
+  if(!fantTeams||!fantTeams.length){
+    loadSchedTeamsFor('nfl',function(t){fantTeams=t;},function(){});
+  }
+}
+function runCompare(){
+  var out=document.getElementById('cmpOut');out.innerHTML='';
+  var qa=(document.getElementById('cmpA').value||'').trim().toLowerCase();
+  var qb=(document.getElementById('cmpB').value||'').trim().toLowerCase();
+  if(!qa||!qb){out.appendChild(el('div','empty','Type two player names, then hit Compare.'));return;}
+  out.appendChild(el('div','spin','Loading player database…'));
+  loadPlayerIndex(function(idx){
+    function find(q){
+      if(idx[q])return idx[q];
+      var keys=Object.keys(idx),i;
+      for(i=0;i<keys.length;i++){if(keys[i].indexOf(q)>=0)return idx[keys[i]];}
+      for(i=0;i<keys.length;i++){var ps=keys[i].split(' ');if(ps[ps.length-1]===q)return idx[keys[i]];}
+      return null;
+    }
+    var pa=find(qa),pb=find(qb);
+    out.innerHTML='';
+    if(!pa||!pb){
+      var miss=!pa?document.getElementById('cmpA').value:document.getElementById('cmpB').value;
+      out.appendChild(el('div','empty','Couldn\'t find "'+miss+'" on an NFL roster.<br>Check the spelling and try again.'));
+      return;
+    }
+    out.appendChild(el('div','spin','Pulling recent games for '+pa.name+' and '+pb.name+'…'));
+    var da=null,db=null,finished=false;
+    function maybeDone(){
+      if(finished||!da||!db)return;finished=true;
+      renderCompare(da,db);
+    }
+    /* ensure team list is loaded for id mapping */
+    function go(){
+      cmpPlayerData(pa,function(r){da=r;maybeDone();});
+      cmpPlayerData(pb,function(r){db=r;maybeDone();});
+    }
+    if(fantTeams&&fantTeams.length)go();
+    else loadSchedTeamsFor('nfl',function(t){fantTeams=t;go();},go);
+  });
+}
+function cmpNextStr(next){
+  if(!next||!next.date)return '—';
+  try{
+    var d=new Date(next.date);
+    var ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return ds+' · '+(next.name||'').replace(/^[^:]+:\s*/,'').slice(0,40);
+  }catch(e){return '—';}
+}
+function renderCompare(da,db){
+  var out=document.getElementById('cmpOut');out.innerHTML='';
+  var pa=da.p,pb=db.p;
+  if(!da.agg||!db.agg||!da.agg.gp||!db.agg.gp){
+    out.appendChild(el('div','empty','Not enough recent game data for this comparison.<br>Try two players who saw the field recently.'));
+    return;
+  }
+  var fa=cmpFantasyPPR(pa,da.agg),fb=cmpFantasyPPR(pb,db.agg);
+  var winA=fa>=fb;
+  function card(d,f,win){
+    var p=d.p,agg=d.agg;
+    var elc=el('div','cmp-card'+(win?' cmp-winner':''));
+    var head=el('div','cmp-head');
+    var nm=el('span','pname');nm.textContent=p.name;
+    var sub=el('small');sub.textContent=(p.pos?p.pos+' · ':'')+p.team+(p.injured?' · ⚠️ '+(p.injDetail||'questionable'):'');
+    nm.appendChild(sub);head.appendChild(nm);elc.appendChild(head);
+    var per=agg.gp>1?' ('+(Math.round(f/agg.gp*10)/10)+'/gm)':'';
+    var rows=[];
+    if(p.pos==='QB'){
+      rows=[['Pass yards (last '+agg.gp+')',Math.round(agg.py)],['Pass TD',agg.ptd],
+            ['INT',agg.pint],['Rush yards',Math.round(agg.ry)],['Rush TD',agg.rtd],
+            ['Next: ',cmpNextStr(d.next)],['Est. fantasy (PPR)'+per,f]];
+    }else{
+      rows=[['Rush yards (last '+agg.gp+')',Math.round(agg.ry)],['Rush TD',agg.rtd],
+            ['Receptions',agg.rec],['Rec yards',Math.round(agg.recy)],['Rec TD',agg.rectd],
+            ['Next: ',cmpNextStr(d.next)],['Est. fantasy (PPR)'+per,f]];
+    }
+    rows.forEach(function(r){
+      var line=el('div','cmp-stat');line.innerHTML='<span></span><b></b>';
+      line.querySelector('span').textContent=r[0];line.querySelector('b').textContent=r[1];
+      elc.appendChild(line);
+    });
+    return elc;
+  }
+  out.appendChild(card(da,fa,winA));
+  out.appendChild(card(db,fb,!winA));
+  var winner=winA?pa:pb,loser=winA?pb:pa;
+  var wf=winA?fa:fb,lf=winA?fb:fa;
+  var reasons=[];
+  if(loser.injured)reasons.push(loser.name+' is '+(loser.injDetail||'banged up'));
+  else if(winner.injured)reasons.push('note: '+winner.name+' carries an injury tag ('+(winner.injDetail||'check status')+')');
+  reasons.push('hotter recent form ('+wf+' vs '+lf+' est. PPR over last few games)');
+  var call=el('div','cmp-call');
+  call.innerHTML='<img class="cmface" src="assets/checkmate.png" alt="Checkmate" onerror="this.style.display=\'none\'"> '+
+    '<b>Checkmate\'s call:</b> Start <b>'+winner.name+'</b> — '+reasons.join('; ')+'.';
+  out.appendChild(call);
+  try{if(typeof cmLog==='function')cmLog('compare '+pa.name+' vs '+pb.name,'Checkmate picked '+winner.name);}
+  catch(e){}
+}
+/* ============ CHECKMATE SPORTS GUIDE (lightweight, pattern-matched) ============ */
+var CM_QA_KEY='nikkiflixs_checkmate_qa';
+var cmOpen=false;
+function cmLog(q,a){
+  try{
+    var l=JSON.parse(localStorage.getItem(CM_QA_KEY)||'[]');
+    l.push({q:String(q).slice(0,300),a:String(a).slice(0,500),ts:Date.now()});
+    while(l.length>200)l.shift();
+    localStorage.setItem(CM_QA_KEY,JSON.stringify(l));
+  }catch(e){}
+}
+
+/* ============ CHECKMATE LEARNING (Jerry's order: learn sports by reading the news) ============ */
+/* PRIVACY LAW: only learns from PUBLISHED news headlines. Never ingests user chat text. */
+var CM_SPORTS_KEY='nikkiflixs_checkmate_sports';
+var CM_DEVICE_KEY='nikkiflixs_device_id';
+var COUNTER_URL=''; /* Jerry pastes his counter endpoint here later; empty = no-op */
+function cmDeviceId(){
+  try{
+    var id=localStorage.getItem(CM_DEVICE_KEY);
+    if(!id){
+      id='dvc_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10);
+      localStorage.setItem(CM_DEVICE_KEY,id);
+    }
+    return id;
+  }catch(e){return 'dvc_unknown';}
+}
+function pingHome(){
+  /* Anonymous install counter: one ping per session, never breaks the page */
+  try{
+    if(!COUNTER_URL||sessionStorage.getItem('cm_pinged'))return;
+    sessionStorage.setItem('cm_pinged','1');
+    var payload={device_id:cmDeviceId(),app:'nikkiflixs-sportsbook',ts:Date.now()};
+    if(window.fetch){fetch(COUNTER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(function(){});}
+  }catch(e){}
+}
+function cmLearn(fact,type,ref,ts){
+  /* Store one structured sports fact, deduped, capped at 500. ts = article publish time when known. */
+  try{
+    fact=String(fact).slice(0,220).trim();if(!fact)return;
+    var l=JSON.parse(localStorage.getItem(CM_SPORTS_KEY)||'[]');
+    for(var i=0;i<l.length;i++){if(l[i].fact===fact)return;}
+    l.push({fact:fact,type:type||'note',ref:String(ref||'').slice(0,120),ts:(typeof ts==='number'&&ts>0)?ts:Date.now()});
+    while(l.length>500)l.shift();
+    localStorage.setItem(CM_SPORTS_KEY,JSON.stringify(l));
+  }catch(e){}
+}
+function cmSportsFacts(){try{return JSON.parse(localStorage.getItem(CM_SPORTS_KEY)||'[]');}catch(e){return[];}}
+var CM_TEAMS='Cardinals|Falcons|Ravens|Bills|Panthers|Bears|Bengals|Browns|Cowboys|Broncos|Lions|Packers|Texans|Colts|Jaguars|Chiefs|Chargers|Rams|Dolphins|Vikings|Patriots|Saints|Giants|Jets|Raiders|Eagles|Steelers|Seahawks|Buccaneers|Titans|Commanders|Hawks|Celtics|Nets|Hornets|Bulls|Cavaliers|Mavericks|Nuggets|Pistons|Warriors|Rockets|Pacers|Clippers|Lakers|Grizzlies|Heat|Bucks|Timberwolves|Pelicans|Knicks|Thunder|Magic|76ers|Suns|Trail Blazers|Kings|Spurs|Raptors|Jazz|Wizards|Diamondbacks|Braves|Orioles|Red Sox|White Sox|Reds|Guardians|Rockies|Tigers|Astros|Royals|Angels|Dodgers|Marlins|Brewers|Twins|Yankees|Mets|Athletics|Phillies|Pirates|Padres|Mariners|Rays|Blue Jays|Nationals|Ducks|Coyotes|Bruins|Sabres|Flames|Hurricanes|Blackhawks|Avalanche|Blue Jackets|Stars|Red Wings|Oilers|Wild|Canadiens|Predators|Devils|Islanders|Senators|Flyers|Penguins|Sharks|Kraken|Blues|Lightning|Maple Leafs|Canucks|Golden Knights|Capitals';
+function cmIngestNews(arts){
+  /* Jerry: Checkmate learns sports by reading the news. Extract facts from fresh headlines only. */
+  try{
+    (arts||[]).forEach(function(a){
+      var h=a.headline||'';if(!h)return;
+      var league=(typeof curNewsLeague!=='undefined')?curNewsLeague:'';
+      /* team mentions */
+      var tm=h.match(new RegExp('\\b('+CM_TEAMS+')\\b','i'));
+      var team=tm?tm[1]:'';
+      /* score patterns: "Chiefs beat Bills 27-24", "27-24 win" */
+      var sm=h.match(/(\d{1,3})\s*[-\u2013]\s*(\d{1,3})/);
+      var isScore=sm&&/beat|beats|defeat|defeats|down|edge|edges|top|tops|win|wins|loss|fall|final|overtime/i.test(h);
+      var isInj=/injur|hurt|out for|questionable|doubtful|day-to-day|day to day|placed on IR|\bIR\b|sidelined|ruled out/i.test(h);
+      var isTrade=/trade|traded|acquire|acquires|sign|signed|signing|waive|waived|release|released|extend|extension/i.test(h);
+      /* player names: two+ capitalized words, filtered against team names */
+      var names=h.match(/\b[A-Z][a-z]{1,20}(?:\s+[A-Z][a-z]{1,20}){1,2}\b/g)||[];
+      var players=[];
+      names.forEach(function(n){
+        if(new RegExp('\\b('+CM_TEAMS+')\\b','i').test(n))return;
+        if(/^(The|This|That|What|When|Where|Why|How|After|Before|With|From|Over|Under|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|January|February|March|April|May|June|July|August|September|October|November|December|Week|Game|Season|Playoff|Final|Report|Sources|Breaking)\b/i.test(n))return;
+        if(players.indexOf(n)<0)players.push(n);
+      });
+      if(isScore&&sm){
+        cmLearn('Score: '+h, 'score', league, a.ts);
+      }else if(isInj){
+        cmLearn('Injury: '+h+(players.length?' ['+players.slice(0,2).join(', ')+']':''), 'injury', league, a.ts);
+      }else if(isTrade){
+        cmLearn('Move: '+h, 'transaction', league, a.ts);
+      }else if(players.length){
+        cmLearn(players.slice(0,2).join(' / ')+' — '+h, 'player', league, a.ts);
+      }else if(team){
+        cmLearn(team+' — '+h, 'team', league, a.ts);
+      }
+    });
+  }catch(e){}
+}
+function cmAgo(ts){
+  var m=Math.max(1,Math.round((Date.now()-ts)/60000));
+  if(m<60)return m+'m ago';
+  var h=Math.round(m/60);if(h<24)return h+'h ago';
+  return Math.round(h/24)+'d ago';
+}
+function cmKnowledgeAnswer(q){
+  /* Check learned sports knowledge FIRST, before pattern-matching. Cites recency. */
+  try{
+    var facts=cmSportsFacts();if(!facts.length)return null;
+    var ql=' '+q.toLowerCase()+' ';
+    var hits=[];
+    facts.forEach(function(f){
+      var fl=' '+f.fact.toLowerCase()+' ';
+      var score=0;
+      /* player-name match: two-word capitalized phrase in the question */
+      var qnames=(q.match(/\b[A-Z][a-z]{1,20}(?:\s+[A-Z][a-z]{1,20}){1,2}\b/g)||[]);
+      qnames.forEach(function(n){
+        if(fl.indexOf(n.toLowerCase())>=0)score+=3;
+      });
+      /* team nickname match */
+      var tm=q.match(new RegExp('\\b('+CM_TEAMS+')\\b','i'));
+      if(tm&&fl.indexOf(tm[1].toLowerCase())>=0)score+=2;
+      /* intent boosts */
+      if(/injur|hurt|out|questionable/.test(ql)&&f.type==='injury')score+=2;
+      if(/win|won|score|beat|result/.test(ql)&&f.type==='score')score+=2;
+      if(/trade|sign|move/.test(ql)&&f.type==='transaction')score+=2;
+      if(score>0)hits.push({f:f,score:score});
+    });
+    if(!hits.length)return null;
+    hits.sort(function(a,b){return (b.score-a.score)||(b.f.ts-a.f.ts);});
+    var top=hits[0].f;
+    var prefix=top.type==='score'?'Here\'s what I read':'I read this';
+    return {say:prefix+' '+cmAgo(top.ts)+': '+top.fact+'.',act:null};
+  }catch(e){return null;}
+}
+function cmToggle(force){
+  cmOpen=(typeof force==='boolean')?force:!cmOpen;
+  document.getElementById('cmPanel').style.display=cmOpen?'flex':'none';
+  document.getElementById('cmBubble').style.display='none';
+  if(cmOpen){
+    var inp=document.getElementById('cmInput');
+    if(inp)setTimeout(function(){try{inp.focus();}catch(e){}},60);
+  }
+}
+function cmSay(text,me){
+  var log=document.getElementById('cmLog');
+  var d=el('div','cmmsg '+(me?'me':'cm'));
+  if(!me){var av=el('img','cmavatar');av.src='../../checkmate-avatar.png';av.alt='Checkmate';d.appendChild(av);}
+  var t=el('span','');t.textContent=text;d.appendChild(t);
+  log.appendChild(d);
+  log.scrollTop=log.scrollHeight;
+}
+function cmEntry(){
+  try{if(sessionStorage.getItem('cm_seen'))return;sessionStorage.setItem('cm_seen','1');}catch(e){}
+  var b=document.getElementById('cmBubble');
+  b.style.display='block';
+  setTimeout(function(){if(b.style.display!=='none'&&!cmOpen)b.style.display='none';},9000);
+}
+function cmFindTeam(ql){
+  var all=schedTeams.concat(fantTeams),seen={},i,t;
+  for(i=0;i<all.length;i++){
+    t=all[i];if(!t||!t.name||seen[t.id])continue;seen[t.id]=1;
+    var parts=t.name.toLowerCase().split(' ');
+    var nick=parts[parts.length-1];
+    var ab=(t.abbr||'').toLowerCase();
+    if(nick.length>2&&ql.indexOf(nick)>=0)return t;
+    if(ab.length>1){
+      try{if(new RegExp('\\b'+ab.replace(/[^a-z]/g,'')+'\\b').test(ql))return t;}catch(e){}
+    }
+  }
+  return null;
+}
+function cmNextGame(teamId){
+  var c=null;
+  try{
+    var cc=JSON.parse(localStorage.getItem(SCHED_CACHE_KEY)||'{}');
+    c=cc.sched&&cc.sched[curSchedLeague+'_'+teamId]&&cc.sched[curSchedLeague+'_'+teamId].data;
+  }catch(e){}
+  if(!c||!c.events)return null;
+  var now=Date.now();
+  for(var i=0;i<c.events.length;i++){
+    var g=c.events[i];
+    if(!g.completed&&new Date(g.date).getTime()>now-3600000)return g;
+  }
+  return null;
+}
+function cmAnswer(q){
+  var kr=cmKnowledgeAnswer(q);
+  if(kr)return kr; /* learned sports knowledge beats pattern-matching */
+  var ql=' '+q.toLowerCase()+' ';
+  var leagueHit=null;
+  SCHED_LEAGUES.forEach(function(l){
+    if(ql.indexOf(l.key)>=0||ql.indexOf(l.label.toLowerCase())>=0)leagueHit=l;
+  });
+  function goSched(){setView('sched');
+    if(leagueHit&&leagueHit.key!==curSchedLeague){
+      curSchedLeague=leagueHit.key;curTeamId=null;schedWeekMode=true;schedTeams=[];
+      renderSchedLeagues();enterSchedLeague();
+    }}
+  var team=cmFindTeam(ql);
+  if(team&&/(when|next).{0,12}play|play.{0,12}(when|next)|schedule/.test(ql)){
+    var g=cmNextGame(team.id);
+    if(g){
+      var dt=schedDate(g.date);
+      return {say:'The '+team.name+' play '+g.ha+' '+g.oppName+' ('+g.oppAbbr+') — '+dt.d1+' at '+dt.d2+(g.tv?' on '+g.tv:'')+'.',act:goSched};
+    }
+    return {say:'I don\'t have the '+team.name+' schedule loaded yet — tap 📅 Schedules, pick '+team.name+', and you\'ll see their full season.',act:goSched};
+  }
+  if(/injur|hurt|is out|questionable|doubtful|day.to.day/.test(ql))
+    return {say:'Injury reports live under 🏆 Fantasy → Injuries. Pick a team to see who\'s out.',act:function(){setView('fant');setFantSub('inj');}};
+  if(/fantasy/.test(ql)){
+    if(/advice|start|sit|sleeper|waiver|rank|pickup|stream/.test(ql))
+      return {say:'Fantasy advice is under 🏆 Fantasy → Advice — newest headlines first.',act:function(){setView('fant');setFantSub('adv');}};
+    return {say:'Fantasy stuff lives under the 🏆 tab — injuries and advice.',act:function(){setView('fant');}};
+  }
+  if(/news|headline/.test(ql))
+    return {say:'Fresh headlines are on the 📰 News tab — newest first, never stale.',act:function(){setView('news');}};
+  if(/schedule/.test(ql))
+    return {say:'Full-season schedules are on the 📅 tab — pick a league, then a team.',act:goSched};
+  if(/odds|line|spread|bet|moneyline|total/.test(ql))
+    return {say:'Odds and gold-coin betting are on the 🎲 Odds tab.',act:function(){setView('odds');}};
+  if(/who.*win|predict/.test(ql))
+    return {say:'I don\'t make picks — but the 🎲 tab has the real lines if you want to size one up.',act:function(){setView('odds');}};
+  if(/hello|\bhi\b|hey|thanks|thank/.test(ql))
+    return {say:'Hey. Odds, schedules, news, fantasy — what are you looking for?',act:null};
+  return {say:'I can point you to odds, schedules, news, or fantasy — try "where are the NFL schedules" or "who\'s injured".',act:null};
+}
+function cmAsk(){
+  var inp=document.getElementById('cmInput');
+  var q=(inp.value||'').trim();
+  if(!q)return;
+  inp.value='';
+  cmSay(q,true);
+  var r;
+  try{r=cmAnswer(q);}catch(e){r={say:'Something glitched on my end — try asking about odds, schedules, news, or fantasy.',act:null};}
+  cmSay(r.say,false);
+  cmLog(q,r.say);
+  if(r.act){try{r.act();}catch(e){}}
+}
+function setView(v){
+  var views={odds:'oddsView',sched:'schedView',news:'newsView',fant:'fantView'};
+  var tabs={odds:'oddsTab',sched:'schedTab',news:'newsTab',fant:'fantTab'};
+  Object.keys(views).forEach(function(k){
+    document.getElementById(views[k]).style.display=(k===v)?'':'none';
+    var tb=document.getElementById(tabs[k]);
+    tb.className='vtab'+(k===v?' active':'');
+    tb.setAttribute('aria-selected',k===v?'true':'false');
+  });
+  if(v==='sched'&&!schedInitDone){schedInitDone=true;renderSchedLeagues();enterSchedLeague();}
+  if(v==='news'&&!newsInitDone){newsInitDone=true;renderNewsLeagues();enterNewsLeague();}
+  else if(v==='news'){enterNewsLeague();} /* always refresh headlines on open — freshness is law */
+  if(v==='fant'&&!fantInitDone){fantInitDone=true;renderFantLeagues();setFantSub('inj');enterFantLeague();}
+}
+function initSchedules(){
+  document.getElementById('oddsTab').addEventListener('click',function(){setView('odds');});
+  document.getElementById('schedTab').addEventListener('click',function(){setView('sched');});
+  document.getElementById('newsTab').addEventListener('click',function(){setView('news');});
+  document.getElementById('fantTab').addEventListener('click',function(){setView('fant');});
+  document.getElementById('injTab').addEventListener('click',function(){setFantSub('inj');});
+  document.getElementById('advTab').addEventListener('click',function(){setFantSub('adv');});
+  document.getElementById('ssTab').addEventListener('click',function(){setFantSub('ss');});
+  document.getElementById('slpTab').addEventListener('click',function(){setFantSub('slp');});
+  document.getElementById('cmpTab').addEventListener('click',function(){setFantSub('cmp');});
+  document.getElementById('injTeamSelect').addEventListener('change',function(){
+    var v=this.value;
+    if(!v)return;
+    curInjTeamId=v;showInjuries();
+  });
+  document.getElementById('cmBtn').addEventListener('click',function(){cmToggle();});
+  document.getElementById('cmClose').addEventListener('click',function(){cmToggle(false);});
+  document.getElementById('cmSend').addEventListener('click',cmAsk);
+  document.getElementById('cmInput').addEventListener('keydown',function(e){if(e.key==='Enter')cmAsk();});
+  document.getElementById('cmBubble').addEventListener('click',function(){cmToggle(true);});
+  document.getElementById('teamSelect').addEventListener('change',function(){
+    var v=this.value;
+    if(!v)return;
+    curTeamId=v;schedWeekMode=false;
+    document.getElementById('weekBtn').className='weekbtn';
+    showTeamSchedule();
+  });
+  document.getElementById('weekBtn').addEventListener('click',function(){
+    schedWeekMode=true;curTeamId=null;renderTeamSelect();
+    document.getElementById('weekBtn').className='weekbtn active';
+    showWeek();
+  });
+}
+/* ============ INIT ============ */
+document.getElementById('backBtn').addEventListener('click',function(){window.location.href='index.html';});
+document.getElementById('myBetsBtn').addEventListener('click',function(){renderBets();document.getElementById('betsModal').classList.add('open');});
+document.getElementById('betsClose').addEventListener('click',function(){document.getElementById('betsModal').classList.remove('open');});
+document.getElementById('slipCancel').addEventListener('click',function(){document.getElementById('slipModal').classList.remove('open');});
+document.getElementById('slipPlace').addEventListener('click',placeBet);
+document.getElementById('stakeInput').addEventListener('input',updatePayout);
+document.querySelectorAll('.qchips button').forEach(function(b){
+  b.addEventListener('click',function(){document.getElementById('stakeInput').value=b.getAttribute('data-q');updatePayout();});
+});
+document.getElementById('refreshBtn').addEventListener('click',function(){
+  var cache=lsGet(CACHE_KEY,{});delete cache[curSport];lsSet(CACHE_KEY,cache);
+  loadGames(curSport,renderGames);say('Lines refreshed.');
+});
+renderBal();renderLeagues();initSchedules();cmEntry();pingHome();
+loadGames(curSport,function(games){
+  renderGames(games);
+  refreshScores(function(){if(settleOpenBets()){renderBal();say('Bets settled! Check 🎫 My Bets.');}});
+});
+})();
+</script>
+</body>
+</html>

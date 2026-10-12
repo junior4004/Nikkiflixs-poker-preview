@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Coin Store · Nikkiflixs Casino</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:#0a0705;color:#f8f2df;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -10%,#2a1608 0%,#0a0705 60%)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0a08ee;border-bottom:1px solid #5e452a}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid #5e452a;background:#1a1510;color:#f8f2df;border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1}
+.bal{background:#070b0c;border:1px solid #7e5d28;border-radius:8px;padding:6px 10px;text-align:right}
+.bal small{display:block;color:#c9bba5;font-size:9px;letter-spacing:.14em}
+.bal strong{font:800 20px/1 "Barlow Condensed",sans-serif;color:#f5c65a;font-variant-numeric:tabular-nums}
+.wrap{max-width:560px;margin:0 auto;padding:14px 12px 40px}
+.hint{font-size:13px;color:#c9c0a6;line-height:1.5;margin:0 0 12px}
+.hint b{color:#ddb866}
+.tier{position:relative;display:flex;align-items:center;gap:12px;background:#141009ee;border:1px solid #5e452a;border-radius:12px;padding:12px;margin-bottom:10px}
+.tier.best{border-color:#ffe27a;box-shadow:0 0 16px #ffe27a44}
+.tier .coin{font-size:40px;filter:drop-shadow(0 4px 6px #000a);flex:none}
+.tier .info{flex:1}
+.tier .nm{font:800 18px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#fff;text-transform:uppercase}
+.tier .amt{font:700 15px/1.3 "Source Sans 3",sans-serif;color:#f5c65a}
+.tier .per{font:600 11.5px/1.3 "Source Sans 3",sans-serif;color:#9fc7ab}
+.tier .buy{min-height:48px;padding:10px 18px;border-radius:9px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;flex:none}
+.tier .buy:active{transform:translateY(1px)}
+.ribbon{position:absolute;top:-11px;right:10px;padding:3px 12px;border-radius:999px;background:linear-gradient(135deg,#fff7c8,#f5c65a);color:#1e1003;font:800 11px/1.4 "Barlow Condensed",sans-serif;letter-spacing:.1em}
+.modal{position:fixed;inset:0;z-index:99;display:none;align-items:center;justify-content:center;background:#000a;padding:20px}
+.modal.open{display:flex}
+.modal .panel{max-width:380px;background:#141009;border:1px solid #d8a94b;border-radius:14px;padding:22px;text-align:center;box-shadow:0 18px 50px #000}
+.modal h2{margin:0 0 10px;font:800 20px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase}
+.modal p{font-size:14px;color:#c9c0a6;line-height:1.55;margin:0 0 16px}
+.modal p b{color:#f5c65a}
+.modal .close{min-height:48px;padding:10px 34px;border-radius:9px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.note{margin-top:16px;font-size:12px;color:#8a8272;line-height:1.5;text-align:center}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Back</button>
+  <h1>🪙 Coin Store</h1>
+  <div class="bal"><small>COINS</small><strong id="balance">0</strong></div>
+</div>
+<div class="wrap">
+  <p class="hint">Bigger bundles mean <b>more coins per dollar</b> — the Whale is the best deal in the house. Checkout opens here once the secure cashier is connected.</p>
+  <div id="tiers"></div>
+  <p class="note">Coins are for play only and have no cash value.</p>
+</div>
+<div class="modal" id="soonModal" role="dialog" aria-modal="true" aria-labelledby="soonTitle">
+  <div class="panel">
+    <h2 id="soonTitle">Secure checkout coming soon</h2>
+    <p>The PayPal cashier opens right here once it&rsquo;s connected. <b>No charge was made</b> &mdash; this button is just holding your place.</p>
+    <button class="close" id="soonClose" type="button">GOT IT</button>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var BANK_KEY='nikkiflixs_bankroll';
+var TIERS=[
+  {name:'Starter',  coins:15000,   price:0.99,  coin:'🪙'},
+  {name:'Bronze',   coins:50000,   price:2.99,  coin:'🥉'},
+  {name:'Silver',   coins:100000,  price:4.99,  coin:'🥈'},
+  {name:'Gold',     coins:250000,  price:9.99,  coin:'🥇'},
+  {name:'Platinum', coins:600000,  price:19.99, coin:'💠'},
+  {name:'Diamond',  coins:1800000, price:49.99, coin:'💎'},
+  {name:'Whale',    coins:4000000, price:99.99, coin:'🐋', best:true}
+];
+function getBank(){try{var v=parseInt(localStorage.getItem(BANK_KEY)||'~',10);return isNaN(v)?null:v;}catch(e){return null;}}
+function fmt(n){return n.toLocaleString('en-US');}
+function money(n){return '$'+n.toFixed(2);}
+(function(){
+  var b=getBank();
+  document.getElementById('balance').textContent=fmt(b===null?0:b);
+  var wrap=document.getElementById('tiers');
+  TIERS.forEach(function(t){
+    var per=Math.round(t.coins/t.price);
+    var d=document.createElement('div');
+    d.className='tier'+(t.best?' best':'');
+    d.innerHTML=(t.best?'<div class="ribbon">BEST VALUE</div>':'')+
+      '<div class="coin">'+t.coin+'</div>'+
+      '<div class="info"><div class="nm">'+t.name+'</div>'+
+      '<div class="amt">'+fmt(t.coins)+' coins · '+money(t.price)+'</div>'+
+      '<div class="per">≈ '+fmt(per)+' coins per $1</div></div>';
+    var buy=document.createElement('button');
+    buy.className='buy';buy.type='button';buy.textContent='BUY';
+    buy.setAttribute('aria-label','Buy '+t.name+' bundle for '+money(t.price));
+    buy.addEventListener('click',function(){document.getElementById('soonModal').classList.add('open');});
+    d.appendChild(buy);wrap.appendChild(d);
+  });
+  document.getElementById('soonClose').addEventListener('click',function(){document.getElementById('soonModal').classList.remove('open');});
+  document.getElementById('soonModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+  document.getElementById('backBtn').addEventListener('click',function(){window.history.back();});
+})();
+})();
+</script>
+</body>
+</html>
