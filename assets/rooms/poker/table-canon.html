@@ -5,56 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Nikkiflixs Poker</title>
 <style>
-
-  /*
-   * 3D TABLE PROTOTYPE — drop-in replacement candidate for table-canon.html
-   * SWAP PROCEDURE (only on Jerry's explicit "switch" order):
-   *   1. Back up table-canon.html
-   *   2. Copy this file over table-canon.html (same filename, same folder)
-   *   3. No other files change — all assets referenced relatively.
-   * Jim's .camera (fixed 1200x780 stage) is served here by .poker-table-container:
-   * it is the same perspective stage, built responsive (clamp/vw) instead of
-   * fixed-pixel, so the 3D tilt holds on phones, tablets and desktop.
-   * Jim's .table (wood-rail oval) is an alternate skin, kept below unused.
-   */
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; background: #0a0a0c; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; color: #fff; }
-  /* Jim 2026-10-10: parent fills viewport, centers table */
+  html, body { width: 100%; min-height: 100%; background: #0a0a0c; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; color: #fff; overflow-x: hidden; }
   body {
-    height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 120px;
   }
-
-  /* ===== Room background ===== */
   #room {
-    position: fixed; inset: 0;
+    width: 100%;
     background: radial-gradient(ellipse at 50% 30%, #1c1c24 0%, #0a0a0c 70%);
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
-
-  /* ===== 1. Perspective Felt Box (Jim's CSS) ===== */
   .poker-table-container{
-  aspect-ratio: 16 / 9;
-  width: min(100vw, 1200px);
-  height: auto;
-  position: relative;
-  margin: auto;
-  overflow: hidden;
-  container-type: inline-size;
-}
-.poker-table-container > *{ pointer-events: auto; }
+    aspect-ratio: 16 / 9;
+    width: min(100vw, 1200px);
+    height: auto;
+    position: relative;
+    margin: 20px auto;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .poker-table-container > *{ pointer-events: auto; }
   .poker-table-felt {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    max-width: none; max-height: none;
     border-radius: 120px;
-    transform: none;
-    /* Jim 2026-10-10: CINEMATIC ART DECO — dramatic overhead spotlight.
-       Bright pool of light from top-center fading to deep shadow at edges.
-       Golden Art Deco trim on the rim. */
     background:
       radial-gradient(ellipse 60% 45% at 50% 28%, rgba(255,220,150,0.22) 0%, rgba(255,200,120,0.08) 35%, transparent 60%),
       radial-gradient(ellipse at center, #8a2027 0%, #5c1218 45%, #2a060a 100%);
@@ -68,34 +46,24 @@
       0 0 40px rgba(201,162,39,0.25),
       0 25px 60px rgba(0,0,0,0.95);
     border: 14px solid #1a1a1a;
-    position: relative;
   }
-  /* Art Deco geometric accent — subtle gold fan pattern on the rail */
   .poker-table-felt::before {
     content: "";
     position: absolute; inset: -14px;
     border-radius: 120px;
     pointer-events: none;
-    background: repeating-conic-gradient(
-      from 0deg at 50% 50%,
-      rgba(201,162,39,0.12) 0deg 4deg,
-      transparent 4deg 12deg
-    );
+    background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(201,162,39,0.12) 0deg 4deg, transparent 4deg 12deg);
     -webkit-mask: radial-gradient(ellipse, transparent 62%, #000 63%, #000 68%, transparent 69%);
     mask: radial-gradient(ellipse, transparent 62%, #000 63%, #000 68%, transparent 69%);
   }
-
-  /* Felt branding */
   .felt-brand {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Brush Script MT', 'Segoe Script', 'Apple Chancery', cursive;
+    font-family: 'Brush Script MT', 'Segoe Script', cursive;
     font-size: clamp(40px, 10cqw, 120px);
     color: rgba(212,175,55,0.28);
     letter-spacing: 4px; white-space: nowrap;
-    text-shadow: 0 3px 12px rgba(0,0,0,0.5);
     pointer-events: none; z-index: 0;
-    /* v88: large cursive across whole felt */
   }
   .felt-sub {
     position: absolute; left: 50%; transform: translateX(-50%);
@@ -105,70 +73,18 @@
   .felt-sub.domain { top: calc(50% + clamp(30px, 7cqw, 80px)); font-size: clamp(12px, 2.5cqw, 22px); font-family: Georgia, serif; letter-spacing: 3px; }
   .felt-sub.venue { top: calc(50% + clamp(48px, 10cqw, 110px)); font-size: clamp(10px, 2cqw, 16px); font-family: Georgia, serif; font-style: italic; letter-spacing: 4px; }
   .felt-sub.est { top: calc(50% + clamp(64px, 12.5cqw, 135px)); font-size: clamp(8px, 1.6cqw, 13px); font-family: Georgia, serif; letter-spacing: 5px; }
-  /* v88 BRIGHTNESS - lift felt and trim so it shines */
-  .poker-table-felt { filter: brightness(1.18) saturate(1.12); }
-  .felt-brand, .felt-sub { filter: brightness(1.25); }
-
-  /* ===== 2. Scaled Community Board ===== */
-  .community-cards {
-    /* Jim's .board treatment: dedicated centered zone w/ subtle shadow map */
-    /* A2: guaranteed clearance — board cards never overlap player chips */
-    /* Jerry 2026-10-10: z-index 1 — cards render UNDER the pot badge (10). */
-    position: absolute; z-index: 1; left: 50%; top: 46%;
-    transform: translate(-50%, -50%);
-    display: flex; gap: 8px; padding: 12px 20px; margin: 0 8%;
-    background: rgba(0,0,0,0.28); border-radius: 14px; backdrop-filter: blur(4px);
-    border: 1px solid rgba(212,175,55,0.35);
-    box-shadow: inset 0 2px 10px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.5);
-    min-height: 60px;
-  }
-  .card-3d {
-    width: clamp(36px, 9vw, 64px);
-    height: clamp(52px, 13vw, 92px);
-    border-radius: 6px;
-    transform: preserve-3d;
-    background: transparent;
-    transition: transform 0.25s ease;
-    /* A3: deep multi-layered 3D depth */
-    box-shadow: 0 12px 24px rgba(0,0,0,0.55), 0 4px 8px rgba(0,0,0,0.5),
-      inset 0 1px 0 rgba(255,255,255,0.5), inset 0 0 0 1px rgba(0,0,0,0.12);
-  }
-  .card-3d svg { width: 100%; height: 100%; display: block; border-radius: 6px; }
-
-  /* Pot display */
-  .pot {
-    position: absolute; top: 66%; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.55); border: 1px solid rgba(212,175,55,0.5);
-    border-radius: 20px; padding: 4px 18px;
-    font-size: clamp(13px, 3vw, 20px); color: #ffd76a; font-weight: bold;
-    white-space: nowrap;
-  }
-
-  /* ===== Seats ===== */
   .seat {
     position: absolute; display: flex; flex-direction: column; align-items: center;
     z-index: 5;
   }
   .seat .avatar {
-    width: clamp(40px, 10vw, 64px); height: clamp(40px, 10vw, 64px);
-    border-radius: 50%; border: 2px solid rgba(212,175,55,0.7);
-    background: #333 center/cover; overflow: hidden;
+    width: clamp(40px, 10cqw, 64px); 
+    height: clamp(40px, 10cqw, 64px);
+    border-radius: 50%; 
+    border: 2px solid rgba(212,175,55,0.7);
+    background: #333 center/cover; 
+    overflow: hidden;
   }
-  .seat .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .seat .name { font-size: clamp(10px, 2.6vw, 15px); margin-top: 2px; color: #ddd; }
-  .seat .stack { font-size: clamp(10px, 2.6vw, 15px); color: #ffd76a; font-weight: bold; }
-  .seat .hole { display: flex; gap: 4px; margin-top: 4px; }
-  .seat .hole .card-3d { width: clamp(28px, 7vw, 44px); height: clamp(40px, 10vw, 62px); font-size: clamp(11px, 2.8vw, 18px); }
-  .seat.hero .avatar { border-color: #ffd76a; box-shadow: 0 0 12px rgba(255,215,106,0.6); }
-
-  
-  /* Chip-stack anchor on each seat (parent for Jim's .seat-chips i stack) */
-  .seat-chips { position: absolute; bottom: -4px; right: -8px; width: 42px; height: 32px; z-index: 6; pointer-events: none; }
-  .seat-chips i { bottom: 0; }
-  /* Hero seat (bottom center): chips sit to the right of the cards */
-  .seat.s0 .seat-chips { right: -30px; bottom: 6px; }
-
-  /* Seat positions (percent-based, responsive) */
   .seat.s0 { bottom: 2%; left: 50%; transform: translateX(-50%); }
   .seat.s1 { bottom: 18%; left: 6%; }
   .seat.s2 { top: 30%; left: 2%; }
@@ -177,276 +93,32 @@
   .seat.s5 { top: 4%; right: 16%; }
   .seat.s6 { top: 30%; right: 2%; }
   .seat.s7 { bottom: 18%; right: 6%; }
-
-  /* Dealer (Nikki) */
   .dealer {
     position: absolute; top: -14%; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; z-index: 6;
   }
   .dealer img {
-    width: clamp(52px, 13vw, 88px); height: clamp(52px, 13vw, 88px);
-    border-radius: 50%; border: 3px solid #d4af37;
-    box-shadow: 0 0 16px rgba(212,175,55,0.5); background: #222;
+    width: clamp(52px, 13cqw, 88px); height: clamp(52px, 13cqw, 88px);
+    border-radius: 50%; border: 3px solid #d4af37; background: #222;
   }
-  .dealer .dname { font-size: clamp(12px, 3vw, 18px); color: #ffd76a; margin-top: 2px; font-weight: bold; }
-
-  /* Flying chips */
-  .chip {
-    position: fixed; z-index: 50; border-radius: 50%;
-    width: clamp(22px, 5.5vw, 36px); height: clamp(22px, 5.5vw, 36px);
-    background: radial-gradient(circle at 35% 35%, #fff 0%, #d4af37 25%, #a8842c 60%, #7a5f1e 100%);
-    border: 3px dashed rgba(255,255,255,0.85);
-    /* A3: deep multi-layered 3D depth */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.65), 0 3px 6px rgba(0,0,0,0.5),
-      inset 0 2px 3px rgba(255,255,255,0.55), inset 0 -4px 7px rgba(0,0,0,0.35),
-      inset 0 0 0 1px rgba(0,0,0,0.2);
-    pointer-events: none;
-  }
-
-  /* ===== Controls ===== */
-  #controls {
-    display: flex; gap: 10px; padding: 12px;
-    flex-wrap: wrap; justify-content: center; z-index: 10;
-  }
-  #controls button {
-    font-size: clamp(14px, 3.6vw, 19px); font-weight: bold;
-    padding: 10px 22px; border-radius: 12px; border: none; cursor: pointer;
-    background: linear-gradient(180deg, #d4af37, #a8842c); color: #1a1206;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  }
-  #controls button:active { transform: scale(0.96); }
-  #controls button.ghost { background: #2a2a32; color: #ddd; }
-
-  #proto-tag {
-    position: fixed; top: 8px; left: 8px; z-index: 100;
-    background: rgba(180,30,40,0.9); color: #fff; font-size: 12px; font-weight: bold;
-    padding: 5px 10px; border-radius: 8px; letter-spacing: 1px;
-  }
-
-  /* Landscape / wide screens: keep felt from getting too tall */
-  
-  
-
-/* Enhanced 3D Chip Stack Look */
-.seat-chips i{position:absolute;left:4px;width:34px;height:14px;border-radius:50%;border:2px dashed #ffea9f;background:radial-gradient(ellipse,#ffdbe1 0 18%,#a6172d 19% 56%,#560713 57%);box-shadow:0 4px 0 #1c0103,0 8px 12px rgba(0,0,0,0.7),inset 0 1px 2px rgba(255,255,255,0.45),inset 0 -2px 4px rgba(0,0,0,0.4),inset 0 0 0 1px rgba(0,0,0,0.25)}
-.seat-chips i:nth-child(2){bottom:6px;background:radial-gradient(ellipse,#cce4ff 0 18%,#1158a3 19% 56%,#062a56 57%)}
-.seat-chips i:nth-child(3){bottom:12px;background:radial-gradient(ellipse,#fff4cb 0 18%,#c28b10 19% 56%,#6b4704 57%)}
-
-/* Crisper Card Styling with Realistic Thickness Effect */
-.hole,.board-card{width:50px;height:70px;padding:7px 5px;position:relative;border-radius:6px;background:linear-gradient(145deg,#ffffff,#e2dcd0);border:1px solid #9e9587;color:#15161a;font:800 28px/.85 "Barlow Condensed";box-shadow:0 8px 16px #000e,inset 0 1px 0 rgba(255,255,255,0.9)}
-.hole.back,.muck i,.deck i{background:linear-gradient(135deg,transparent 0 8%,#f6d271 8% 12%,transparent 12% 20%,#f6d271 20% 24%,transparent 24%),#540714;border:2px solid #f9e2aa;box-shadow:inset 0 0 0 2px #42030d,0 8px 14px #000e}
-
-
-
-  /* ===== Game-required elements (canon hooks, Jim's styling) ===== */
-  #stage { position: fixed; inset: 0; overflow: hidden; }
-  #camera { position: absolute; inset: 0; }
-  .pod { display: flex; flex-direction: column; align-items: center; position: relative; }
-  .portrait-wrap { position: relative; }
-  .portrait {
-    width: clamp(48px, 12vw, 72px); height: clamp(48px, 12vw, 72px);
-    border-radius: 50%; border: 3px solid #d4af37; object-fit: cover; background: #222;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
-  .turn-ring {
-    position: absolute; inset: -6px; border-radius: 50%; display: none;
-    /* v87 ACTION TIMER - background set directly by JS */
-    background: conic-gradient(from -90deg, #35dd77 100%, rgba(255,255,255,0.08) 0);
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-    box-shadow: 0 0 10px #35dd77;
-  }
-  .seat.active .turn-ring { display: block; }
-  .nameplate {
-    margin-top: 4px; padding: 4px 10px; border-radius: 8px; text-align: center;
-    background: linear-gradient(180deg, #272320, #080708); border: 1px solid #d4af37;
-  }
-  .nameplate strong { display: block; font-size: clamp(11px, 2.8vw, 14px); color: #fff; }
-  .nameplate span { display: block; font-size: clamp(11px, 2.8vw, 14px); color: #ffd76a; font-weight: bold; }
-  .blind {
-    position: absolute; width: 30px; height: 30px;
-    border-radius: 50%; background: #f5d46d; color: #2c1900; border: 2px solid #8f6515;
-    display: none; place-items: center; font-size: 10px; font-weight: 800;
-    z-index: 20; box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-    /* v89 #7: in front of pod (felt side), per-seat */
-  }
-  .blind.show { display: grid !important; }
-  /* Top seats: blind below pod (toward felt) */
-  .seat.s3 .blind.show, .seat.s4 .blind.show, .seat.s5 .blind.show {
-    top: 100% !important; left: 50% !important; right: auto !important;
-    transform: translate(-50%, 4px) !important;
-  }
-  /* Bottom seats: blind above pod (toward felt) */
-  .seat.s0 .blind.show, .seat.s1 .blind.show, .seat.s7 .blind.show {
-    bottom: 100% !important; top: auto !important; left: 50% !important; right: auto !important;
-    transform: translate(-50%, -4px) !important;
-  }
-  /* Left seat: blind to right (toward felt) */
-  .seat.s2 .blind.show {
-    left: 100% !important; right: auto !important; top: 50% !important;
-    transform: translate(4px, -50%) !important;
-  }
-  /* Right seat: blind to left (toward felt) */
-  .seat.s6 .blind.show {
-    right: 100% !important; left: auto !important; top: 50% !important;
-    transform: translate(-4px, -50%) !important;
-  }
-  .blind.show { display: grid; }
-  .pocket { display: flex; gap: 6px; margin-top: 6px; }
-  .pocket .hole {
-    width: clamp(34px, 8vw, 50px); height: clamp(48px, 11vw, 70px);
-    border-radius: 6px; position: relative;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.5);
-  }
-  .pocket .hole svg { width: 100%; height: 100%; display: block; border-radius: 6px; }
-  .seat.folded .pocket { opacity: 0.3; }
-  /* Jerry 2026-10-10: PERMANENT 3D AVATARS — never gray out / swap inactive
-     players to static painted images. All 8 seats keep full-color animated
-     avatars at all times; folded state shows only in the dimmed pocket. */
-  .seat.folded .portrait { filter: none; }
-
-  /* ============================================================
-     Jim 2026-10-10: LIVING ANIMATED AVATARS — .ws-figure pattern
-     from the Nikki/Promise walkout. Single frame + CSS "life".
-     ============================================================ */
-  .ws-figure.seat-figure {
-    position: relative;
-    width: clamp(64px, 16vw, 96px); height: clamp(64px, 16vw, 96px);
-    border-radius: 50%;
-    overflow: hidden;
-    /* Jim 2026-10-10: clean padding buffer so faces sit comfortable, HD */
-    padding: 4px;
-    box-sizing: border-box;
-    background: radial-gradient(circle at 50% 35%, #2a2a2e 0%, #141416 70%);
-  }
-  .ws-figure.seat-figure .ws-frame.portrait {
-    width: 100%; height: 100%;
-    object-fit: contain;
-    position: absolute; top: 0; left: 0;
-    padding: 4px;
-    box-sizing: border-box;
-  }
-  /* Two-frame switching: frame-b hidden unless talking */
-  .ws-figure.seat-figure .ws-frame-b { display: none; }
-  .ws-figure.seat-figure.talking .ws-frame-a { display: none; }
-  .ws-figure.seat-figure.talking .ws-frame-b { display: block; }
-  /* Dealer figure */
-  .ws-figure.dealer-figure {
-    position: relative;
-    width: clamp(56px, 15vw, 80px); height: clamp(56px, 15vw, 80px);
-    border-radius: 50%; overflow: hidden;
-    margin: 0 auto;
-  }
-  .ws-figure.dealer-figure .ws-frame {
-    width: 100%; height: 100%; object-fit: cover;
-    position: absolute; top: 0; left: 0;
-  }
-  .ws-figure.dealer-figure .ws-frame-b { display: none; }
-  .ws-figure.dealer-figure.talking .ws-frame-a { display: none; }
-  .ws-figure.dealer-figure.talking .ws-frame-b { display: block; }
-  /* Jim 2026-10-10 EMERGENCY: Kill hyper-fast flashing. Avatar animations
-     clamped to calm, slow cycles. No rapid infinite loops. */
-  .seat-figure.idle { animation: fig-breathe 4s ease-in-out infinite; }
-  @keyframes fig-breathe {
-    0%, 100% { transform: scale(1.0); }
-    50% { transform: scale(1.02); }
-  }
-  /* Win: single gentle bounce (NOT infinite) */
-  .seat-figure.celebrate { animation: fig-celebrate 0.8s ease-out 1; }
-  @keyframes fig-celebrate {
-    0% { transform: translateY(0) scale(1); }
-    40% { transform: translateY(-6px) scale(1.03); }
-    100% { transform: translateY(0) scale(1); }
-  }
-  /* Fold: keep the full 3D animated avatar breathing — never freeze to a
-     static slumped frame. (Jerry 2026-10-10: permanent 3D avatars.) */
-  .seat-figure.folded { animation: fig-breathe 4s ease-in-out infinite; }
-  @keyframes fig-slump {
-    to { transform: scale(0.95); opacity: 0.7; }
-  }
-  /* Your turn: slow gentle glow (NOT rapid flashing) */
-  .seat-figure.active-turn { animation: fig-breathe 4s ease-in-out infinite, fig-pulse 2s ease-in-out infinite; }
-  @keyframes fig-pulse {
-    0%, 100% { filter: brightness(1.0); }
-    50% { filter: brightness(1.15); }
-  }
-  .seat.s7 .seat-figure.active-turn { animation: fig-breathe 4s ease-in-out infinite, fig-pulse-s7 2s ease-in-out infinite; }
-  @keyframes fig-pulse-s7 {
-    0%, 100% { filter: hue-rotate(140deg) saturate(1.15) brightness(1.0); }
-    50% { filter: hue-rotate(140deg) saturate(1.15) brightness(1.15); }
-  }
-  /* All-in: single shake (NOT infinite loop) */
-  .seat-figure.all-in { animation: fig-shake 0.5s ease-in-out 2; }
-  @keyframes fig-shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-3px); }
-    75% { transform: translateX(3px); }
-  }
-  /* Board */
+  .dealer .dname { font-size: clamp(12px, 3cqw, 18px); color: #ffd76a; margin-top: 2px; font-weight: bold; }
   .board {
     position: absolute; z-index: 1; left: 50%; top: 46%;
     transform: translate(-50%, -50%); display: flex; gap: 8px;
     padding: 10px 16px; background: transparent;
-    border-radius: 0; border: none;
   }
-  .board-card {
-    width: clamp(36px, 9vw, 58px); height: clamp(52px, 13vw, 82px);
-    border-radius: 6px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.5);
+  .board-card, .hole {
+    width: clamp(36px, 9cqw, 58px); height: clamp(52px, 13cqw, 82px);
+    border-radius: 6px; background: linear-gradient(145deg,#ffffff,#e2dcd0);
+    border: 1px solid #9e9587; color:#15161a; font:800 28px/.85 "Barlow Condensed";
+    box-shadow: 0 8px 16px rgba(0,0,0,0.55);
   }
-  .board-card svg { width: 100%; height: 100%; display: block; border-radius: 6px; }
-  /* Pot */
   .pot { position: absolute; z-index: 12; left: 50%; top: 64%; transform: translateX(-50%); text-align: center; }
-  .pot-chips { position: relative; width: 80px; height: 40px; margin: 0 auto; }
-  .pot-chips i {
-    position: absolute; width: 30px; height: 13px; border-radius: 50%;
-    border: 2px dashed #fff8d3; background: #b91f37;
-  }
-  .pot-chips i:nth-child(2) { left: 25px; background: #216dbd; }
-  .pot-chips i:nth-child(3) { left: 50px; background: #d5a01f; }
   #potValue {
     display: inline-block; margin-top: 4px; padding: 4px 12px; border-radius: 999px;
     background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.35);
-    color: #ffd76a; font-weight: bold; font-size: clamp(12px, 3vw, 16px);
+    color: #ffd76a; font-weight: bold; font-size: clamp(12px, 3cqw, 16px);
   }
-  /* Deck, muck, motion */
-  .deck { position: absolute; z-index: 8; left: 68%; top: 30%; width: 36px; height: 52px; opacity: 0; }
-  .deck.show { opacity: 1; }
-  .deck i {
-    position: absolute; inset: 0; border-radius: 5px;
-    background: #540714; border: 2px solid #f9e2aa;
-  }
-  .muck { position: absolute; z-index: 8; left: 36%; top: 42%; width: 36px; height: 24px; opacity: 0; }
-  .muck.show { opacity: 1; }
-  .muck i { position: absolute; inset: 0; border-radius: 4px; background: #540714; border: 2px solid #f9e2aa; }
-  #motion { position: absolute; inset: 0; z-index: 25; pointer-events: none; }
-  .flying-card {
-    position: absolute; width: 32px; height: 46px; border-radius: 5px;
-    background: #540714; border: 2px solid #f9e2aa;
-    animation: deal .42s cubic-bezier(.2,.75,.25,1) forwards;
-  }
-  @keyframes deal { from { transform: translate(0,0) rotate(-7deg) scale(.86); } to { transform: translate(var(--dx), var(--dy)) rotate(0) scale(1); } }
-  .fold-card {
-    position: absolute; width: 32px; height: 46px; border-radius: 5px;
-    background: #540714; border: 2px solid #f9e2aa;
-    animation: fold .72s cubic-bezier(.2,.75,.25,1) forwards;
-  }
-  @keyframes fold { to { transform: translate(var(--dx), var(--dy)) rotate(350deg) scale(.35); opacity: 0; } }
-  .flying-chip {
-    position: absolute; width: 20px; height: 10px; border-radius: 50%;
-    border: 2px dashed #fff8d3; background: #b91f37;
-    animation: chipMove .56s cubic-bezier(.2,.75,.25,1) forwards;
-  }
-  @keyframes chipMove { to { transform: translate(var(--dx), var(--dy)) rotate(340deg); opacity: .3; } }
-  /* Markers */
-  .table-markers { position: absolute; inset: 0; z-index: 30; pointer-events: none; }
-  .marker-group { position: absolute; left: var(--mx); top: var(--my); transform: translate(-50%,-50%); }
-  .felt-marker {
-    width: 28px; height: 28px; display: none; place-items: center; border-radius: 50%;
-    background: #e9c85f; color: #241400; border: 2px solid #fff0a5; font-size: 10px; font-weight: 800;
-  }
-  .felt-marker.show { display: grid; }
-  /* Controls — Jim's clean button styling, properly positioned */
   .controls {
     position: fixed; z-index: 40; left: 50%; bottom: 0;
     width: min(560px, 100%); transform: translateX(-50%);
@@ -464,684 +136,68 @@
   }
   .action.call { border-color: #e2b34f; background: linear-gradient(180deg, #b8872d, #654216); }
   .action.raise { border-color: #ee6a72; background: linear-gradient(180deg, #b63b46, #621720); }
-  .action:disabled { opacity: 0.38; cursor: not-allowed; }
-  /* v92 PUSH-TO-TALK voice */
-  .ptt-btn {
-    height: 44px; border-radius: 8px; border: 1px solid #d7a44d;
-    background: linear-gradient(180deg, #3a3f47, #17191d); color: #ffe7ad;
-    font-weight: 800; font-size: 12px; cursor: pointer;
-    user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: none;
-    position: relative; overflow: hidden;
+  .nameplate {
+    margin-top: 4px; padding: 4px 10px; border-radius: 8px; text-align: center;
+    background: linear-gradient(180deg, #272320, #080708); border: 1px solid #d4af37;
   }
-  .ptt-btn .ptt-level { position: absolute; left: 0; bottom: 0; height: 4px; width: 0%; background: #35dd77; pointer-events: none; }
-  .ptt-btn.talking { border-color: #ff5a5a; color: #fff; background: linear-gradient(180deg, #a33333, #5c1414); animation: pttPulse 0.9s infinite; }
-  @keyframes pttPulse { 0%,100% { box-shadow: 0 0 0 rgba(255,60,60,0); } 50% { box-shadow: 0 0 14px rgba(255,60,60,0.85); } }
-  .seat .talk-bubble { position: absolute; top: -36px; left: 50%; transform: translateX(-50%); background: #fff; color: #111; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 10px; display: none; white-space: nowrap; z-index: 30; pointer-events: none; }
-  .seat .talk-bubble:after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #fff; }
-  .seat.is-talking .talk-bubble { display: block; }
-  .seat.is-talking .portrait-wrap { box-shadow: 0 0 0 3px #ff5a5a, 0 0 16px #ff5a5a; border-radius: 50%; }
-  /* Toast */
-  .toast {
-    position: fixed; z-index: 90; left: 50%; bottom: 100px; transform: translate(-50%, 8px);
-    opacity: 0; pointer-events: none; padding: 10px 16px; border-radius: 999px;
-    background: rgba(8,9,12,0.95); border: 1px solid #ffffff35; font-size: 13px;
-    transition: 0.18s; white-space: nowrap;
-  }
-  .toast.show { opacity: 1; transform: translate(-50%, 0); }
-  /* Modals */
-  .modal { position: fixed; z-index: 100; inset: 0; display: none; place-items: center; padding: 18px; background: rgba(0,0,0,0.8); }
-  .modal.open { display: grid; }
-  .tip-modal { position: fixed; z-index: 100; inset: 0; display: none; place-items: center; background: rgba(0,0,0,0.8); }
-  .tip-modal.open { display: grid; }
-  /* Bet displays */
-  .bet-layer { position: absolute; inset: 0; z-index: 24; pointer-events: none; }
-
-  /* v87 CHIP SWEEP - bets fly to pot at round end */
-  .round-bet.collecting {
-    transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(0.6) !important;
-    opacity: 0.3 !important;
-    transition: transform 0.5s ease-in, opacity 0.5s ease-in !important;
-  }
-
-  .round-bet {
-    position: absolute; left: var(--bx); top: var(--by); width: 66px; height: 42px;
-    transform: translate(-50%,-50%); opacity: 0;
-    /* Jim: chip stack slides from seat to betting spot */
-    transition: transform 0.35s ease-out, opacity 0.35s ease-out;
-  }
-  .round-bet.show { opacity: 1; }
-  .bet-amount {
-    position: absolute; left: 35px; top: 9px; padding: 4px 6px; border-radius: 6px;
-    background: rgba(8,7,8,0.95); border: 1px solid #f0cd6a; color: #fff4bf;
-    font-size: 11px; font-weight: 800;
-  }
-  /* Jim: nameplate ripple on check/knock */
-  @keyframes plate-ripple {
-    0% { box-shadow: 0 0 0 0 rgba(240,205,106,0.7); }
-    100% { box-shadow: 0 0 0 14px rgba(240,205,106,0); }
-  }
-  .nameplate.ripple { animation: plate-ripple 0.5s ease-out; }
-
-
-  /* ===== Jerry 2026-10-10: GIVE US ROOM — de-crowd the table =====
-     Camera pulled back, seats spread with clear separation,
-     dealer gets breathing room. Felt tilt + upright players untouched. */
-
-  /* 1. Pull the camera back — table no longer fills the screen edge-to-edge */
-  
-  .poker-table-felt {
-    width: 86vw !important;
-    height: 48vh !important;
-    max-width: 1050px !important;
-    max-height: 540px !important;
-  }
-
-  /* 3. Dealer clearance — Nikki sits well above the top-center seat */
-  .dealer { top: -11% !important; }
-
-  /* ===== Upright players (Jerry 2026-10-10): the felt keeps its 3D tilt,
-     but the PEOPLE stand upright facing the viewer instead of lying flat.
-     Seats + dealer counter-rotate the felt tilt; cards/chips/pot/board
-     stay tilted because they lie ON the table. Table itself untouched. */
-  
-  .poker-table-felt {
-    transform: rotateX(var(--felt-tilt));
-    transform-style: preserve-3d;
-  }
-  .seat { transform: translate(-50%, -50%) rotateX(calc(var(--felt-tilt) * -1)); }
-  .dealer { transform: translateX(-50%) rotateX(calc(var(--felt-tilt) * -1)); }
-
-  /* ===== Jerry 2026-10-10: SPREAD THEM OUT — aggressive separation =====
-     8 seats on a WIDE ellipse around the felt perimeter, bodies hanging
-     off the edge like a real poker table. Compact seat contents so every
-     player has clear elbow room. Dealer pushed well clear. */
-
-  /* Compact seats — smaller footprint, same approved look */
-  .seat .avatar { width: clamp(30px, 8vw, 46px) !important; height: clamp(30px, 8vw, 46px) !important; }
-  .seat .hole .card-3d { width: clamp(20px, 5.5vw, 32px) !important; height: clamp(30px, 8vw, 46px) !important; }
-  .seat .name { font-size: clamp(9px, 2.2vw, 13px) !important; }
-  .seat .stack { font-size: clamp(9px, 2.2vw, 13px) !important; }
-
-  /* (seat positions now owned by the RACETRACK REBUILD block below) */
-
-  /* Dealer well clear of every player */
-  .dealer { top: -11% !important; }
-
-  /* ============================================================
-     RACETRACK REBUILD (Jerry 2026-10-10, Jim's spec):
-     Horizontal pill-shaped table, metallic rail, dealer cutout,
-     even seat distribution, centered board.
-     ============================================================ */
-
-  /* Jim 2026-10-10: viewport fix — stop the tiny shrunk table.
-     Parent fills screen, camera 95vw x 65vh, table fills camera. */
-  
-  
-  /* Jim 2026-10-10: mobile — entire oval felt, dealer station, and top
-     player pods fully visible. scale(0.85) so nothing clips. */
-  
-  /* Jim 2026-10-10: blind badges render BEHIND faces — never cover players */
-  .seat .blind { z-index: 1 !important; }
-  .seat .ws-figure.seat-figure { z-index: 5 !important; position: relative; }
-  .seat .nameplate { z-index: 6 !important; position: relative; }
-  /* Jim 2026-10-10: HEADS-UP variant — when exactly 2 players are seated,
-     the two occupied seats face off opposite each other (top vs bottom),
-     larger and centered. Applied via .heads-up on the felt + .hu-top/.hu-bottom on seats. */
-  .poker-table-felt.heads-up .seat.hu-top {
-    left: 50% !important; top: -14% !important;
-    transform: translate(-50%, 0) rotateX(calc(var(--felt-tilt) * -1)) scale(1.25) !important;
-  }
-  .poker-table-felt.heads-up .seat.hu-bottom {
-    left: 50% !important; top: 108% !important;
-    transform: translate(-50%, -100%) rotateX(calc(var(--felt-tilt) * -1)) scale(1.25) !important;
-  }
-  .board {
-    position: absolute !important;
-    /* Jerry 2026-10-10: z-index 1 — community cards render UNDER the pot
-       badge (z-index 10) and player nameplates, never over them. */
-    z-index: 1 !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    display: flex !important;
-    gap: 8px !important;
-  }
-  .poker-table-felt {
-    width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 2.2 / 1 !important;
-    max-width: 1250px !important;
-    max-height: 75vh !important;
-    min-height: 180px;
-    border-radius: 999px !important;
-    /* metallic dark-grey padded armrest rail */
-    border: 16px solid #3a3d45 !important;
-    /* Jim 2026-10-10: CINEMATIC spotlight + Art Deco gold rim */
-    background:
-      radial-gradient(ellipse 60% 45% at 50% 28%, rgba(255,220,150,0.22) 0%, rgba(255,200,120,0.08) 35%, transparent 60%),
-      radial-gradient(ellipse at center, #8a2027 0%, #5c1218 45%, #2a060a 100%) !important;
-    box-shadow: inset 0 0 60px rgba(0,0,0,0.85),
-      inset 0 0 120px rgba(0,0,0,0.6),
-      inset 0 3px 5px rgba(255,215,150,0.15),
-      inset 0 -4px 8px rgba(0,0,0,0.55),
-      0 0 0 2px #1b1d22,
-      0 0 0 4px #c9a227,
-      0 0 0 6px #6b4e12,
-      0 0 30px rgba(201,162,39,0.25),
-      0 20px 50px rgba(0,0,0,0.9) !important;
-  }
-  
-  
-
-  /* 2. Dealer cutout: dedicated station indentation at top center of rail.
-        Compact station sits on the rail; top-center seat drops slightly
-        to give the dealer room (like a real table). */
-  .dealer {
-    top: -14% !important;
-    background: radial-gradient(ellipse at 50% 30%, #14161b 0%, #23262e 70%, #0f1114 100%) !important;
-    border: 3px solid #54575f !important;
-    border-radius: 999px !important;
-    padding: 8px 18px 6px !important;
-    box-shadow: inset 0 6px 14px rgba(0,0,0,0.85),
-      inset 0 -2px 4px rgba(255,255,255,0.08),
-      0 4px 14px rgba(0,0,0,0.6) !important;
-  }
-  .dealer img {
-    width: clamp(44px, 11vw, 64px) !important;
-    height: clamp(44px, 11vw, 64px) !important;
-  }
-  .dealer .dname { font-size: clamp(10px, 2.6vw, 14px) !important; }
-
-  /* Pot stacked just below the dealer cutout */
-  .pot { top: 22% !important; }
-
-  /* 4. Community cards + pot: TRUE CENTER of the expanded felt.
-        Board dead-center; pot just above it in the clear central zone,
-        well clear of all player names/avatars on the rail. */
-  .board { top: 52% !important; left: 50% !important; }
-  .pot { top: 30% !important; left: 50% !important; }
-  .deck { left: 64% !important; top: 28% !important; }
-  .muck { left: 38% !important; top: 30% !important; }
-  .felt-brand { top: 10% !important; }
-
-  /* ============================================================
-     MOBILE SCALING (Jim 2026-10-10): table fills the phone screen.
-     1. Wrapper 95vw x 60vh — felt takes center stage, no black voids.
-     2. Kill the pixel width caps + the off-center left offset on mobile.
-     3. Avatars min 64px; hero hole cards + board cards +25%.
-     ============================================================ */
-  
-
-  /* Jim 2026-10-10: High-end 3D casino chips + crisp 3D card stock.
-     Adapted to our selectors (.seat-chips i = chips, .hole/.board-card = cards). */
-  .seat-chips { filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.7)); }
-  .seat-chips i {
-    border-radius: 50% !important;
-    border: 2px dashed #ffea9f !important;
-    background: radial-gradient(ellipse, #ffdbe1 0%, #a6172d 40%, #560713 100%) !important;
-    box-shadow: 0 3px 0 #240207, inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
-  }
-  .hole, .board-card {
-    border-radius: 7px !important;
-    background: linear-gradient(145deg, #ffffff, #eae5d9) !important;
-    border: 1px solid #a89f91 !important;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
-  }
-
-  /* ============================================================
-     Jim 2026-10-10: FULL RESPONSIVE OVERHAUL — 100% responsive
-     across desktop monitors and mobile phones.
-     1. Fluid container: min(96vw,1200px), 16/9 aspect, centered.
-     2. Mobile breakpoint: 98vw x 70dvh, aspect auto.
-     3. clamp() fluid scaling already throughout (avatars, cards,
-        nameplates, dealer) — verified present, no cutoff/clustering.
-     Seat anchors (.seat.s0-s7) untouched — percentage-based, they
-     follow the felt automatically. Animations/sounds untouched.
-     ============================================================ */
-  
-  
-
-  /* ============================================================
-     Jerry 2026-10-10 (screenshot 1956): MANDATORY LAYOUT FREEZE.
-     1. FORCE FLEX-CENTERED VIEWPORT — NOTE: no element named
-        `.poker-room-viewport` exists anywhere in this build; #camera
-        IS the full-viewport stage, so the flex-centering is applied
-        there. Table container sits DEAD CENTER in screen height.
-        All hard-coded top offsets / top margins are removed.
-     2. WIDESCREEN OVAL (Jerry 2026-10-10 ~23:17 MDT): container
-        68vh, felt aspect 1.8 — the wide oval gives all 8 seats room
-        to spread in an outer ring instead of crushing inward.
-     3. SEAT RADIUS LOCKED OUTSIDE THE FELT — all 8 pods form an
-        OUTER RING straddling the felt's outer edge. Nothing sits
-        deep inside covering the community cards, pot, or chips.
-     4. HARD-CODED POSITIONS — fixed CSS anchors only, no dynamic
-        math. (.board z-index:1 under pot z-index:12 was set in a
-        prior build and is left intact.)
-     Audio / animation / game logic: UNTOUCHED per freeze order.
-     ============================================================ */
-  #camera {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important; /* Centers table between action bar and bottom */
-    align-items: center !important;
-    height: 100vh !important;
-    overflow: hidden !important;
-  }
-  
-  /* Felt dead-centered in the container on ALL screens */
-  .poker-table-felt {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) rotateX(var(--felt-tilt, 35deg)) !important;
-  }
-  /* Jerry 2026-10-10 (screenshot 1956): WIDESCREEN OVAL FELT (mobile).
-     94vw wide, aspect 1.8 — the wide oval gives the outer seat
-     ring room to spread instead of crushing inward. */
-  
-  /* Move action bar UP directly beneath hamburger (44px tall at top:8px) */
-  .controls {
-    position: fixed !important;
-    top: 60px !important;
-    left: 8px !important;
-    right: 8px !important;
-    bottom: auto !important;
-    transform: none !important;
-    width: auto !important;
-    max-width: 560px !important;
-    margin: 0 auto !important;
-    z-index: 45 !important;
-  }
-
-  /* ===== WAVE2-FUN UI LAYER (throwables + emotes) - CSS was missing, added 2026-10-11 ===== */
-  #funTray {
-    position: fixed; left: 50%; bottom: 86px; transform: translateX(-50%);
-    z-index: 70; max-width: min(94vw, 560px); max-height: 44vh; overflow-y: auto;
-    display: none;
-    background: rgba(12, 8, 4, 0.96); border: 2px solid #c9a227; border-radius: 14px;
-    padding: 10px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-  }
-  #funTray.open { display: block !important; }
-  #funTray .fun-label {
-    text-align: center; color: #f2c76f; font-weight: 800; font-size: 11px;
-    letter-spacing: 2px; margin-bottom: 8px; line-height: 1.5;
-  }
-  #funTray .fun-throw {
-    width: 52px; height: 52px; margin: 4px; padding: 4px;
-    background: rgba(40, 28, 12, 0.9); border: 2px solid #8a6d2f; border-radius: 10px;
-    cursor: pointer; position: relative; vertical-align: top;
-  }
-  #funTray .fun-throw:hover { border-color: #f2c76f; background: rgba(60, 42, 18, 0.95); }
-  #funTray .fun-throw.locked { opacity: 0.45; }
-  #funTray .fun-throw .fun-lock {
-    position: absolute; right: 0; bottom: 0; font-size: 14px; line-height: 1;
-  }
-  #funTray .fun-throw svg { width: 100%; height: 100%; display: block; }
-  #funTray .fun-x {
-    display: block; margin: 8px auto 2px; padding: 6px 18px;
-    background: #3a2a14; color: #f2c76f; border: 1px solid #c9a227; border-radius: 8px;
-    font-size: 14px; cursor: pointer;
-  }
-  #emotePicker {
-    position: fixed; left: 50%; bottom: 86px; transform: translateX(-50%);
-    z-index: 70; display: none;
-    background: rgba(12, 8, 4, 0.96); border: 2px solid #c9a227; border-radius: 14px;
-    padding: 10px 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.7);
-    max-width: 94vw;
-  }
-  #emotePicker.open { display: block !important; }
-  #emotePicker .emote-btn {
-    font-size: 30px; width: 52px; height: 52px; margin: 4px; padding: 4px;
-    background: rgba(40, 28, 12, 0.9); border: 2px solid #8a6d2f; border-radius: 10px;
-    cursor: pointer;
-  }
-  #emotePicker .emote-btn:hover { border-color: #f2c76f; }
-  .fun-proj {
-    position: absolute; z-index: 60; pointer-events: none;
-    width: 44px; height: 44px; margin: -22px 0 0 -22px;
-  }
-  .fun-proj svg { width: 100%; height: 100%; display: block; }
-  .emote-pop {
-    position: absolute; z-index: 60; pointer-events: none;
-    font-size: 44px; transform: translate(-50%, -50%);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-  }
-  .gift-pop {
-    position: absolute; z-index: 60; pointer-events: none;
-    width: 56px; height: 56px; transform: translate(-50%, -50%);
-  }
-  .gift-pop svg { width: 100%; height: 100%; }
-  .seat.fun-target .portrait-wrap { outline: 3px solid #f2c76f; outline-offset: 3px; border-radius: 50%; }
-  .fun-particle { position: absolute; z-index: 59; pointer-events: none; border-radius: 50%; }
-  .fun-minicard {
-    position: absolute; z-index: 60; pointer-events: none;
-    background: #fffdf8; border: 1px solid #8a8378; border-radius: 4px;
-    font-size: 12px; font-weight: 700; padding: 2px 4px; color: #15161a;
-  }
-  .fun-flagbadge {
-    position: absolute; z-index: 30; pointer-events: none; font-size: 26px;
-    transform: translate(-50%, -50%); text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-  }
-  .flag-state { font-size: 11px; font-weight: 800; color: #fff; background: #334; border-radius: 4px; padding: 2px 5px; }
-
-</style>
-<style id="layout-override-lock">
-/* FORCE RESET ENTIRE VIEWPORT STACK */
-html, body {
-  height: 100vh !important;
-  max-height: 100vh !important;
-  width: 100vw !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-
-#camera {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  height: 100vh !important;
-  width: 100vw !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-/* TOP BAR */
-.action-bar, header, .welcome-bar {
-  flex: 0 0 auto !important;
-  width: 100% !important;
-  z-index: 100 !important;
-}
-
-/* v82 TRUE OVAL - 2.2/1 elongated casino shape with container query scaling */
-
-
-/* FELT fills container */
-.poker-table-felt {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  transform: none !important;
-  margin: 0 !important;
-}
-
-/* RELATIVE SCALING via cqw */
-.poker-table-felt .seat { width: clamp(44px, 12cqw, 70px) !important; height: clamp(44px, 12cqw, 70px) !important; position: absolute !important; }
-.poker-table-felt .seat .avatar { width: 100% !important; height: 100% !important; }
-.poker-table-felt .seat .pocket, .poker-table-felt .seat .hole-cards { width: clamp(32px, 9cqw, 50px) !important; position: absolute !important; top: 100% !important; left: 50% !important; transform: translateX(-50%) !important; margin-top: 2px !important; }
-.poker-table-felt .seat-label, .poker-table-felt .blind-badge, .poker-table-felt .seat .name, .poker-table-felt .seat .stack { font-size: clamp(8px, 2.2cqw, 12px) !important; }
-
-/* SEAT RING - expanded outward, s4 cleared from Nikki's top-center notch (v84) */
-.poker-table-felt .seat.s4 { top: -16% !important; left: 32% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s3 { top: -16% !important; left: 12% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s5 { top: -16% !important; left: 88% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s2 { top: 48% !important; left: -10% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s6 { top: 48% !important; left: 110% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s1 { top: 114% !important; left: 12% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s7 { top: 114% !important; left: 88% !important; transform: translate(-50%, -50%) !important; }
-.poker-table-felt .seat.s0 { top: 124% !important; left: 50% !important; transform: translate(-50%, -50%) !important; }
-
-/* 2. TOP 3 HOLE CARDS TO SIDE - never touch felt */
-.poker-table-felt .seat.s3 .pocket, .poker-table-felt .seat.s4 .pocket, .poker-table-felt .seat.s5 .pocket,
-.poker-table-felt .seat.s3 .hole-cards, .poker-table-felt .seat.s4 .hole-cards, .poker-table-felt .seat.s5 .hole-cards {
-  top: 50% !important;
-  left: 100% !important;
-  transform: translateY(-50%) !important;
-  margin-top: 0 !important;
-  margin-left: 4px !important;
-}
-
-/* INNER FELT - board backed up, pot centered */
-.poker-table-felt .board { top: 42% !important; }
-.poker-table-felt .pot { top: 60% !important; }
-
-/* v84 - Jerry 2026-10-11 live build fixes */
-
-/* 5. S0 HOLE CARDS - force visible */
-.poker-table-felt .seat.s0 .pocket { opacity: 1 !important; visibility: visible !important; }
-.poker-table-felt .seat.s0 .pocket .hole { opacity: 1 !important; visibility: visible !important; display: inline-block !important; }
-
-/* 1. TOP ACTION BAR - compact, never overlaps players */
-.controls {
-  position: fixed !important;
-  top: auto !important;
-  bottom: 8px !important;
-  left: auto !important;
-  right: 8px !important;
-  transform: none !important;
-  width: auto !important;
-  max-width: 340px !important;
-  margin: 0 !important;
-  z-index: 45 !important;
-  padding: 4px 6px !important;
-  font-size: 11px !important;
-}
-.controls .control-top { margin-bottom: 4px !important; }
-.controls .control-top strong { font-size: 11px !important; }
-.controls .actions { gap: 6px !important; }
-.controls .action { height: 36px !important; font-size: 12px !important; }
-.controls .ptt-btn { height: 36px !important; font-size: 12px !important; }
-/* Any stray top header bar - shrink it */
-header, .welcome-bar, .action-bar {
-  padding: 4px 8px !important;
-  min-height: 0 !important;
-  z-index: 100 !important;
-}
-
-/* === Jerry 2026-10-11: proportional table internals ===
-   Felt fills the 16:9 container; avatar rings, chip stacks and
-   blind badges scale in % so everything grows/shrinks together. */
-.poker-table-felt{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  max-width:none !important;
-  max-height:none !important;
-  min-height:0 !important;
-  margin:0 !important;
-  transform:none !important;
-}
-.seat .pod{width:100% !important;}
-.seat .portrait-wrap{width:100% !important;aspect-ratio:1/1 !important;}
-.seat .seat-figure{width:100% !important;height:100% !important;}
-.seat .portrait{width:100% !important;height:100% !important;}
-.seat .turn-ring{inset:0 !important;}
-.seat .seat-chips{width:88% !important;height:auto !important;aspect-ratio:42/32 !important;}
-.seat .seat-chips i{left:9% !important;width:82% !important;height:42% !important;}
-.seat .seat-chips i:nth-child(1){bottom:0 !important;}
-.seat .seat-chips i:nth-child(2){bottom:20% !important;}
-.seat .seat-chips i:nth-child(3){bottom:40% !important;}
-.seat .seat-chips i:nth-child(4){bottom:60% !important;}
-.seat .blind{width:64% !important;height:auto !important;aspect-ratio:1/1 !important;}
-
+  .nameplate strong { display: block; font-size: clamp(11px, 2.8cqw, 14px); color: #fff; }
+  .nameplate span { display: block; font-size: clamp(11px, 2.8cqw, 14px); color: #ffd76a; font-weight: bold; }
 </style>
 </head>
 <body>
-<div class="toolbar-collapsed" id="toolbarBurger" style="position:fixed;top:8px;left:8px;z-index:60;">
-  <button id="burgerBtn" type="button" aria-label="Menu" style="width:44px;height:44px;border-radius:10px;background:rgba(20,12,4,0.85);color:#f2c76f;border:1px solid #c9a227;font-size:22px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.6);">☰</button>
+<div style="position:fixed;top:8px;left:8px;z-index:60;">
+  <button id="burgerBtn" type="button" aria-label="Menu" style="width:44px;height:44px;border-radius:10px;background:rgba(20,12,4,0.85);color:#f2c76f;border:1px solid #c9a227;font-size:22px;cursor:pointer;">☰</button>
 </div>
-<div class="toolbar" id="pokerToolbar" style="position:fixed;top:0;left:0;right:0;z-index:50;display:none;gap:8px;padding:8px;padding-left:60px;background:rgba(0,0,0,0.85);">
+<div id="pokerToolbar" style="position:fixed;top:0;left:0;right:0;z-index:50;display:none;gap:8px;padding:8px;padding-left:60px;background:rgba(0,0,0,0.85);">
   <button id="leavePoker" type="button" style="padding:8px 12px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;">✕ LEAVE</button>
   <button id="buyChips" type="button" style="padding:8px 12px;border-radius:8px;background:#654216;color:#ffe79b;border:1px solid #e5ba53;">BUY +</button>
-  <button id="addChips" type="button" style="padding:8px 12px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;">+ ADD</button>
-  <button id="funBtn" type="button" style="padding:8px 12px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;">🎯</button>
-  <button id="talk" type="button" style="padding:8px 12px;border-radius:8px;background:#333;color:#ffe7ad;border:1px solid #d7a44d;">TALK</button>
-  <button id="tipBtn" type="button" style="padding:8px 12px;border-radius:8px;background:#654216;color:#fff;border:1px solid #e2b34f;">Tip Dealer</button>
 </div>
 <script>
-(function(){
-  var burger = document.getElementById('burgerBtn');
-  var toolbar = document.getElementById('pokerToolbar');
-  if(burger && toolbar){
-    burger.addEventListener('click', function(){
-      toolbar.style.display = (toolbar.style.display === 'none' || !toolbar.style.display) ? 'flex' : 'none';
-    });
-  }
-})();
+document.getElementById('burgerBtn').addEventListener('click', function(){
+  var tb = document.getElementById('pokerToolbar');
+  tb.style.display = (tb.style.display === 'none' || !tb.style.display) ? 'flex' : 'none';
+});
 </script>
-<div id="emotePicker" style="display:none;"></div>
-<div id="funTray" style="display:none;"></div>
-<div id="tipThanks" style="display:none;"></div>
-<div id="stage">
-  <div id="camera">
-    <div class="poker-table-container">
-      <div class="poker-table-felt" id="felt">
-        <div class="felt-brand">Nikkiflixs</div>
-        <div class="felt-sub domain">nikkiflixs.com</div>
-        <div class="felt-sub venue">casino and theater</div>
-        <div class="felt-sub est">established 2026</div>
-        <div class="dealer">
-          <div class="ws-figure dealer-figure idle">
-            <img class="ws-frame ws-frame-a" src="https://files.catbox.moe/sfuqb8.webp" alt="Nikki">
-            <img class="ws-frame ws-frame-b" src="https://files.catbox.moe/sfuqb8.webp" alt="" aria-hidden="true">
-          </div>
-          <div class="dname">Nikki &middot; Dealer</div>
+
+<div id="stage" style="width: 100%; display: flex; justify-content: center; align-items: center;">
+  <div class="poker-table-container">
+    <div class="poker-table-felt" id="felt">
+      <div class="felt-brand">Nikkiflixs</div>
+      <div class="felt-sub domain">nikkiflixs.com</div>
+      <div class="felt-sub venue">casino and theater</div>
+      <div class="felt-sub est">established 2026</div>
+      <div class="dealer">
+        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;">
+          <img src="https://files.catbox.moe/sfuqb8.webp" alt="Nikki" style="width:100%;height:100%;object-fit:cover;">
         </div>
-        <div class="table-markers">
-          <span class="marker-group" id="dealerMarker"><i class="felt-marker dealer-disc show">D</i></span>
-          <span class="marker-group" id="sbMarker"><i class="felt-marker show">SB</i></span>
-          <span class="marker-group" id="bbMarker"><i class="felt-marker show">BB</i></span>
-        </div>
+        <div class="dname">Nikki &middot; Dealer</div>
+      </div>
       <div class="seat s0" data-index="0">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/z5uo41.webp" alt="You"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/qgacsj.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>You</strong><span class="stack-value">$1,000</span><button class="sit-in" id="sitIn" type="button" style="display:none;">SIT IN</button></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
+        <div class="nameplate"><strong>You</strong><span>$1,000</span></div>
       </div>
-      <div class="seat s1" data-index="1">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/zgm9cx.webp" alt="Rosa"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/md067t.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Rosa</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s2" data-index="2">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/52g7ym.webp" alt="Dre"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/lb0r10.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Dre</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s3" data-index="3">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/n3ar4x.webp" alt="Sofia"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/1jj31u.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Sofia</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s4" data-index="4">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/cinits.webp" alt="Jake"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/0g8v2w.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Jake</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s5" data-index="5">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/76a0xg.webp" alt="Maya"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/jqtvd9.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Maya</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s6" data-index="6">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/2oycaj.webp" alt="Luis"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/529aij.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Luis</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-      <div class="seat s7" data-index="7">
-        <div class="pod">
-          <div class="portrait-wrap">
-            <span class="turn-ring"></span>
-            <div class="ws-figure seat-figure idle"><img class="ws-frame ws-frame-a portrait" src="https://files.catbox.moe/8f9mba.webp" alt="Elena"><img class="ws-frame ws-frame-b portrait" src="https://files.catbox.moe/2cj05y.webp" alt="" aria-hidden="true"></div>
-          </div>
-          <div class="nameplate"><strong>Elena</strong><span class="stack-value">$1,000</span></div>
-          <i class="blind"></i>
-          <div class="seat-chips"><i></i><i></i><i></i></div>
-          <div class="pocket"><span class="hole"></span><span class="hole"></span></div>
-        </div>
-      </div>
-        <div class="board" id="board"><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span></div>
-        <div class="pot" id="potArea">
-          <div class="pot-chips" id="potChips"><i></i><i></i><i></i></div>
-          <span id="potValue">$0</span>
-        </div>
-        <div class="muck" id="muck"><i></i><i></i></div>
-        <div class="deck" id="deck"><i></i><i></i><i></i></div>
-        <div class="motion" id="motion"></div>
+      <div class="seat s1" data-index="1"><div class="nameplate"><strong>Rosa</strong><span>$1,000</span></div></div>
+      <div class="seat s2" data-index="2"><div class="nameplate"><strong>Dre</strong><span>$1,000</span></div></div>
+      <div class="seat s3" data-index="3"><div class="nameplate"><strong>Sofia</strong><span>$1,000</span></div></div>
+      <div class="seat s4" data-index="4"><div class="nameplate"><strong>Jake</strong><span>$1,000</span></div></div>
+      <div class="seat s5" data-index="5"><div class="nameplate"><strong>Maya</strong><span>$1,000</span></div></div>
+      <div class="seat s6" data-index="6"><div class="nameplate"><strong>Luis</strong><span>$1,000</span></div></div>
+      <div class="seat s7" data-index="7"><div class="nameplate"><strong>Elena</strong><span>$1,000</span></div></div>
+      <div class="board"><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span></div>
+      <div class="pot" id="potArea">
+        <span id="potValue">$0</span>
       </div>
     </div>
   </div>
 </div>
+
 <div class="controls" id="controls">
-  <div class="control-top"><strong id="statusMain">Welcome</strong></div>
+  <div class="control-top"><strong id="statusMain">Welcome to Nikkiflixs Poker</strong></div>
   <div class="actions">
-    <button class="action" data-action="fold" type="button">FOLD</button>
-    <button class="action" data-action="check" type="button">CHECK</button>
-    <button class="action call" data-action="call" type="button">CALL</button>
-    <button class="action raise" data-action="raise" type="button">RAISE</button>
-     <button class="action tip" data-action="tip" type="button" title="Tip the dealer">TIP</button>
-     <button class="ptt-btn" id="talkBtn" type="button" title="Hold to talk">🎤 TALK</button>
+    <button class="action" type="button">FOLD</button>
+    <button class="action" type="button">CHECK</button>
+    <button class="action call" type="button">CALL</button>
+    <button class="action raise" type="button">RAISE</button>
   </div>
 </div>
-<div class="toast" id="toast" role="status"></div>
-<div class="modal" id="chipModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="panel"><button class="close" id="closeModal" aria-label="Close">×</button><h2 id="modalTitle">Add chips before the next hand</h2><p id="modalReason">Move chips from your account to your table stack. This table requires at least $200 in your account before you sit.</p><div class="balance-row"><span>Account chips</span><b id="bankBalance">12,600</b></div><label for="chipRange">Add to table <span class="amount" id="chipAmount">$200</span></label><input id="chipRange" type="range" min="25" max="12600" step="25" value="200"><div class="modal-actions"><button class="primary" id="confirmAdd">ADD FROM ACCOUNT</button><button id="buyMore">BUY MORE CHIPS</button><button class="leave" id="leaveTable">LEAVE TABLE</button></div><div class="cashier-note" id="cashierNote">The secure cashier opens from the live account. No purchase is made in this layout demo.</div></div>
-<div class="modal" id="raiseModal" role="dialog" aria-modal="true" aria-labelledby="raiseTitle"><div class="panel"><button class="close" id="closeRaise" aria-label="Cancel raise">×</button><h2 id="raiseTitle">Choose raise amount</h2><p>Drag to any amount or use a quick pick, then confirm.</p><div class="raise-readout"><span>RAISE TO</span><output id="raiseAmount" for="raiseRange">$0</output></div><input class="raise-slider" id="raiseRange" type="range" min="0" max="100" step="5" value="0" aria-label="Custom raise amount"><div class="raise-options" id="raiseOptions"><button class="raise-option" type="button" data-raise-preset="half"><strong>HALF POT</strong><span>$0</span></button><button class="raise-option" type="button" data-raise-preset="pot"><strong>POT</strong><span>$0</span></button><button class="raise-option" type="button" data-raise-preset="all-in"><strong>ALL-IN</strong><span>$0</span></button></div><button class="raise-confirm" id="confirmRaise" type="button">CONFIRM RAISE</button><button class="raise-cancel" id="cancelRaise" type="button">CANCEL</button></div></div>
-<div class="modal" id="seatChoiceModal" role="dialog" aria-modal="true" aria-labelledby="seatChoiceTitle"><div class="panel"><h2 id="seatChoiceTitle">You’re sitting in</h2><p>Your $4,892 buy-in is on the table. Choose when to enter the game.</p><div class="modal-actions"><button class="primary" id="playNow" type="button">PLAY NOW</button><button id="waitBigBlind" type="button">WAIT FOR BIG BLIND</button></div></div>
-<div class="modal" id="buyModal" role="dialog" aria-modal="true" aria-labelledby="buyTitle"><div class="panel"><button class="close" id="closeBuy" aria-label="Close chip packages">×</button><h2 id="buyTitle">Buy chips</h2><p>Choose a gold-coin package. Specials are marked below.</p><div class="raise-options"><button class="raise-option chip-package" type="button"><strong>STARTER</strong><span>15,000 · $0.99</span></button><button class="raise-option chip-package" type="button"><strong>BRONZE</strong><span>50,000 · $2.99</span></button><button class="raise-option chip-package" type="button"><strong>SILVER</strong><span>100,000 · $4.99</span></button><button class="raise-option chip-package" type="button"><strong>GOLD</strong><span>250,000 · $9.99</span></button><button class="raise-option chip-package" type="button"><strong>PLATINUM</strong><span>600,000 · $19.99</span></button><button class="raise-option chip-package" type="button"><strong>DIAMOND</strong><span>1,800,000 · $49.99</span></button><button class="raise-option chip-package" type="button"><strong>WHALE</strong><span>4,000,000 · $99.99</span></button></div><div class="cashier-note show">Package checkout opens from the secure live cashier. No purchase is made in this table preview.</div></div>
-<div class="tip-modal" id="tipModal"><div class="tip-box">
-  <h3>💰 Tip the Dealer</h3><p>Nikki thanks you — it comes out of your table stack.</p>
-  <div class="tip-amounts">
-    <button class="tip-amt" data-v="50" type="button">50</button>
-    <button class="tip-amt" data-v="100" type="button">100</button>
-    <button class="tip-amt" data-v="250" type="button">250</button>
-    <button class="tip-amt" data-v="500" type="button">500</button>
-  </div>
-  <div class="tip-custom"><input id="tipCustom" type="number" min="1" placeholder="Custom amount"><button id="tipCustomBtn" type="button">TIP</button></div>
-  <button class="tip-cancel" id="tipCancel" type="button">Cancel</button>
-</div></div>
-<script src="https://files.catbox.moe/1s0ef8.js"></script>
 </body>
 </html>
