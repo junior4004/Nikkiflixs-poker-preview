@@ -148,11 +148,131 @@
   <button id="buyChips" type="button" style="padding:6px 10px;border-radius:8px;background:#654216;color:#ffe79b;border:1px solid #e5ba53;">BUY +</button>
 </div>
 <script>
-document.getElementById('burgerBtn').addEventListener('click', function(){
-  var tb = document.getElementById('pokerToolbar');
-  tb.style.display = (tb.style.display === 'none' || !tb.style.display) ? 'flex' : 'none';
-});
+  // Game State Object
+  const game = {
+    pot: 0,
+    currentBet: 20,
+    playerChips: 1000,
+    playerCurrentBet: 0,
+    currentTurn: 0, // 0 = Player, 1-7 = Bots
+    stage: 'pre-flop', // 'pre-flop', 'flop', 'turn', 'river', 'showdown'
+    botNames: ['You', 'Rosa', 'Dre', 'Sofia', 'Jake', 'Maya', 'Luis', 'Elena'],
+    botChips: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+    activePlayers: [true, true, true, true, true, true, true, true]
+  };
+
+  // DOM Elements
+  const potVal = document.getElementById('potValue');
+  const statusMain = document.getElementById('statusMain');
+  const burgerBtn = document.getElementById('burgerBtn');
+  const pokerToolbar = document.getElementById('pokerToolbar');
+
+  // Toolbar Toggle
+  burgerBtn.addEventListener('click', function() {
+    pokerToolbar.style.display = (pokerToolbar.style.display === 'none' || !pokerToolbar.style.display) ? 'flex' : 'none';
+  });
+
+  // UI Updates
+  function updateUI() {
+    potVal.textContent = '$' + game.pot;
+    const playerSeat = document.querySelector('.seat.s0 .nameplate span');
+    if (playerSeat) playerSeat.textContent = '$' + game.playerChips;
+  }
+
+  // Handle Player Action
+  function playerAction(actionType) {
+    if (game.currentTurn !== 0) return; // Not player's turn
+
+    if (actionType === 'fold') {
+      game.activePlayers[0] = false;
+      statusMain.textContent = 'You folded.';
+      document.querySelector('.seat.s0').style.opacity = '0.4';
+      nextTurn();
+    } else if (actionType === 'check') {
+      if (game.currentBet > game.playerCurrentBet) {
+        statusMain.textContent = 'Cannot check! Call $' + (game.currentBet - game.playerCurrentBet) + ' or fold.';
+        return;
+      }
+      statusMain.textContent = 'You checked.';
+      nextTurn();
+    } else if (actionType === 'call') {
+      const callAmount = game.currentBet - game.playerCurrentBet;
+      if (game.playerChips >= callAmount) {
+        game.playerChips -= callAmount;
+        game.pot += callAmount;
+        game.playerCurrentBet = game.currentBet;
+        statusMain.textContent = 'You called $' + callAmount + '.';
+        updateUI();
+        nextTurn();
+      }
+    } else if (actionType === 'raise') {
+      const raiseAmount = 50;
+      const totalNeeded = (game.currentBet - game.playerCurrentBet) + raiseAmount;
+      if (game.playerChips >= totalNeeded) {
+        game.playerChips -= totalNeeded;
+        game.pot += totalNeeded;
+        game.currentBet += raiseAmount;
+        game.playerCurrentBet = game.currentBet;
+        statusMain.textContent = 'You raised to $' + game.currentBet + '.';
+        updateUI();
+        nextTurn();
+      }
+    }
+  }
+
+  // Advance Turn around the table
+  function nextTurn() {
+    do {
+      game.currentTurn = (game.currentTurn + 1) % 8;
+    } while (!game.activePlayers[game.currentTurn] && game.activePlayers.includes(true));
+
+    if (game.currentTurn === 0) {
+      statusMain.textContent = 'Your turn! Choose an action.';
+    } else {
+      statusMain.textContent = game.botNames[game.currentTurn] + ' is thinking...';
+      setTimeout(simulateBotTurn, 1000);
+    }
+  }
+
+  // Simple Bot Turn Simulation
+  function simulateBotTurn() {
+    const idx = game.currentTurn;
+    if (!game.activePlayers[idx]) {
+      nextTurn();
+      return;
+    }
+
+    // Bots call standard bet 80% of the time, fold 20%
+    const rand = Math.random();
+    if (rand < 0.2 && idx !== 0) {
+      game.activePlayers[idx] = false;
+      document.querySelector('.seat.s' + idx).style.opacity = '0.4';
+      statusMain.textContent = game.botNames[idx] + ' folded.';
+    } else {
+      const callAmt = 20;
+      game.pot += callAmt;
+      game.botChips[idx] -= callAmt;
+      const botSpan = document.querySelector('.seat.s' + idx + ' .nameplate span');
+      if (botSpan) botSpan.textContent = '$' + game.botChips[idx];
+      statusMain.textContent = game.botNames[idx] + ' called $' + callAmt + '.';
+      updateUI();
+    }
+
+    setTimeout(nextTurn, 1000);
+  }
+
+  // Attach Action Button Events
+  document.querySelectorAll('.action').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const txt = this.textContent.trim().toLowerCase();
+      playerAction(txt);
+    });
+  });
+
+  // Initialize
+  updateUI();
 </script>
+
 
 <div id="stage">
   <div class="poker-table-container">
