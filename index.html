@@ -1,1 +1,203 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nikkiflixs Poker Preview</title><meta http-equiv="refresh" content="0;url=assets/rooms/poker/table-canon.html"></head><body style="background:#0a0a0c;color:#d4af37;font-family:sans-serif;text-align:center;padding-top:40vh"><p>Loading the poker table...</p><p><a style="color:#d4af37" href="assets/rooms/poker/table-canon.html">Tap here if not redirected</a></p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nikkiflixs Poker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { width: 100%; min-height: 100%; background: #0a0a0c; font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; color: #fff; overflow-x: hidden; }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 120px;
+  }
+  #room {
+    width: 100%;
+    background: radial-gradient(ellipse at 50% 30%, #1c1c24 0%, #0a0a0c 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .poker-table-container{
+    aspect-ratio: 16 / 9;
+    width: min(100vw, 1200px);
+    height: auto;
+    position: relative;
+    margin: 20px auto;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+  .poker-table-container > *{ pointer-events: auto; }
+  .poker-table-felt {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border-radius: 120px;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 28%, rgba(255,220,150,0.22) 0%, rgba(255,200,120,0.08) 35%, transparent 60%),
+      radial-gradient(ellipse at center, #8a2027 0%, #5c1218 45%, #2a060a 100%);
+    box-shadow:
+      inset 0 0 60px rgba(0,0,0,0.85),
+      inset 0 0 120px rgba(0,0,0,0.6),
+      inset 0 2px 3px rgba(255,215,150,0.15),
+      0 0 0 3px #c9a227,
+      0 0 0 5px #6b4e12,
+      0 0 0 7px #2a1f08,
+      0 0 40px rgba(201,162,39,0.25),
+      0 25px 60px rgba(0,0,0,0.95);
+    border: 14px solid #1a1a1a;
+  }
+  .poker-table-felt::before {
+    content: "";
+    position: absolute; inset: -14px;
+    border-radius: 120px;
+    pointer-events: none;
+    background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(201,162,39,0.12) 0deg 4deg, transparent 4deg 12deg);
+    -webkit-mask: radial-gradient(ellipse, transparent 62%, #000 63%, #000 68%, transparent 69%);
+    mask: radial-gradient(ellipse, transparent 62%, #000 63%, #000 68%, transparent 69%);
+  }
+  .felt-brand {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Brush Script MT', 'Segoe Script', cursive;
+    font-size: clamp(40px, 10cqw, 120px);
+    color: rgba(212,175,55,0.28);
+    letter-spacing: 4px; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+  }
+  .felt-sub {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    text-align: center; pointer-events: none; z-index: 0;
+    color: rgba(212,175,55,0.35); white-space: nowrap;
+  }
+  .felt-sub.domain { top: calc(50% + clamp(30px, 7cqw, 80px)); font-size: clamp(12px, 2.5cqw, 22px); font-family: Georgia, serif; letter-spacing: 3px; }
+  .felt-sub.venue { top: calc(50% + clamp(48px, 10cqw, 110px)); font-size: clamp(10px, 2cqw, 16px); font-family: Georgia, serif; font-style: italic; letter-spacing: 4px; }
+  .felt-sub.est { top: calc(50% + clamp(64px, 12.5cqw, 135px)); font-size: clamp(8px, 1.6cqw, 13px); font-family: Georgia, serif; letter-spacing: 5px; }
+  .seat {
+    position: absolute; display: flex; flex-direction: column; align-items: center;
+    z-index: 5;
+  }
+  .seat .avatar {
+    width: clamp(40px, 10cqw, 64px); 
+    height: clamp(40px, 10cqw, 64px);
+    border-radius: 50%; 
+    border: 2px solid rgba(212,175,55,0.7);
+    background: #333 center/cover; 
+    overflow: hidden;
+  }
+  .seat.s0 { bottom: 2%; left: 50%; transform: translateX(-50%); }
+  .seat.s1 { bottom: 18%; left: 6%; }
+  .seat.s2 { top: 30%; left: 2%; }
+  .seat.s3 { top: 4%; left: 16%; }
+  .seat.s4 { top: 0%; left: 50%; transform: translateX(-50%); }
+  .seat.s5 { top: 4%; right: 16%; }
+  .seat.s6 { top: 30%; right: 2%; }
+  .seat.s7 { bottom: 18%; right: 6%; }
+  .dealer {
+    position: absolute; top: -14%; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; z-index: 6;
+  }
+  .dealer img {
+    width: clamp(52px, 13cqw, 88px); height: clamp(52px, 13cqw, 88px);
+    border-radius: 50%; border: 3px solid #d4af37; background: #222;
+  }
+  .dealer .dname { font-size: clamp(12px, 3cqw, 18px); color: #ffd76a; margin-top: 2px; font-weight: bold; }
+  .board {
+    position: absolute; z-index: 1; left: 50%; top: 46%;
+    transform: translate(-50%, -50%); display: flex; gap: 8px;
+    padding: 10px 16px; background: transparent;
+  }
+  .board-card, .hole {
+    width: clamp(36px, 9cqw, 58px); height: clamp(52px, 13cqw, 82px);
+    border-radius: 6px; background: linear-gradient(145deg,#ffffff,#e2dcd0);
+    border: 1px solid #9e9587; color:#15161a; font:800 28px/.85 "Barlow Condensed";
+    box-shadow: 0 8px 16px rgba(0,0,0,0.55);
+  }
+  .pot { position: absolute; z-index: 12; left: 50%; top: 64%; transform: translateX(-50%); text-align: center; }
+  #potValue {
+    display: inline-block; margin-top: 4px; padding: 4px 12px; border-radius: 999px;
+    background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.35);
+    color: #ffd76a; font-weight: bold; font-size: clamp(12px, 3cqw, 16px);
+  }
+  .controls {
+    position: fixed; z-index: 40; left: 50%; bottom: 0;
+    width: min(560px, 100%); transform: translateX(-50%);
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, #171115f6, #070506fd);
+    border: 1px solid #ffffff22; border-bottom: 0; border-radius: 12px 12px 0 0;
+  }
+  .control-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .control-top strong { font-size: 13px; color: #ffd76a; }
+  .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .action {
+    height: 44px; border-radius: 8px; border: 1px solid #ffffff42;
+    background: linear-gradient(180deg, #303640, #111318); color: #fff;
+    font-weight: 800; font-size: 12px; cursor: pointer;
+  }
+  .action.call { border-color: #e2b34f; background: linear-gradient(180deg, #b8872d, #654216); }
+  .action.raise { border-color: #ee6a72; background: linear-gradient(180deg, #b63b46, #621720); }
+  .nameplate {
+    margin-top: 4px; padding: 4px 10px; border-radius: 8px; text-align: center;
+    background: linear-gradient(180deg, #272320, #080708); border: 1px solid #d4af37;
+  }
+  .nameplate strong { display: block; font-size: clamp(11px, 2.8cqw, 14px); color: #fff; }
+  .nameplate span { display: block; font-size: clamp(11px, 2.8cqw, 14px); color: #ffd76a; font-weight: bold; }
+</style>
+</head>
+<body>
+<div style="position:fixed;top:8px;left:8px;z-index:60;">
+  <button id="burgerBtn" type="button" aria-label="Menu" style="width:44px;height:44px;border-radius:10px;background:rgba(20,12,4,0.85);color:#f2c76f;border:1px solid #c9a227;font-size:22px;cursor:pointer;">☰</button>
+</div>
+<div id="pokerToolbar" style="position:fixed;top:0;left:0;right:0;z-index:50;display:none;gap:8px;padding:8px;padding-left:60px;background:rgba(0,0,0,0.85);">
+  <button id="leavePoker" type="button" style="padding:8px 12px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;">✕ LEAVE</button>
+  <button id="buyChips" type="button" style="padding:8px 12px;border-radius:8px;background:#654216;color:#ffe79b;border:1px solid #e5ba53;">BUY +</button>
+</div>
+<script>
+document.getElementById('burgerBtn').addEventListener('click', function(){
+  var tb = document.getElementById('pokerToolbar');
+  tb.style.display = (tb.style.display === 'none' || !tb.style.display) ? 'flex' : 'none';
+});
+</script>
+
+<div id="stage" style="width: 100%; display: flex; justify-content: center; align-items: center;">
+  <div class="poker-table-container">
+    <div class="poker-table-felt" id="felt">
+      <div class="felt-brand">Nikkiflixs</div>
+      <div class="felt-sub domain">nikkiflixs.com</div>
+      <div class="felt-sub venue">casino and theater</div>
+      <div class="felt-sub est">established 2026</div>
+      <div class="dealer">
+        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;">
+          <img src="https://files.catbox.moe/sfuqb8.webp" alt="Nikki" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="dname">Nikki &middot; Dealer</div>
+      </div>
+      <div class="seat s0" data-index="0">
+        <div class="nameplate"><strong>You</strong><span>$1,000</span></div>
+      </div>
+      <div class="seat s1" data-index="1"><div class="nameplate"><strong>Rosa</strong><span>$1,000</span></div></div>
+      <div class="seat s2" data-index="2"><div class="nameplate"><strong>Dre</strong><span>$1,000</span></div></div>
+      <div class="seat s3" data-index="3"><div class="nameplate"><strong>Sofia</strong><span>$1,000</span></div></div>
+      <div class="seat s4" data-index="4"><div class="nameplate"><strong>Jake</strong><span>$1,000</span></div></div>
+      <div class="seat s5" data-index="5"><div class="nameplate"><strong>Maya</strong><span>$1,000</span></div></div>
+      <div class="seat s6" data-index="6"><div class="nameplate"><strong>Luis</strong><span>$1,000</span></div></div>
+      <div class="seat s7" data-index="7"><div class="nameplate"><strong>Elena</strong><span>$1,000</span></div></div>
+      <div class="board"><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span></div>
+      <div class="pot" id="potArea">
+        <span id="potValue">$0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls" id="controls">
+  <div class="control-top"><strong id="statusMain">Welcome to Nikkiflixs Poker</strong></div>
+  <div class="actions">
+    <button class="action" type="button">FOLD</button>
+    <button class="action" type="button">CHECK</button>
+    <button class="action call" type="button">CALL</button>
+    <button class="action raise" type="button">RAISE</button>
+  </div>
+</div>
+</body>
+</html>
