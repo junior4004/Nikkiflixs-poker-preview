@@ -1,62 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Table Canon</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      margin: 20px;
-      padding: 0;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #0066cc;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    tr:hover {
-      background-color: #f1f1f1;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nikkiflixs Poker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { 
+    width: 100%; 
+    height: 100%; 
+    background: #0a0a0c; 
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; 
+    color: #fff; 
+    overflow: hidden;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #stage {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .poker-table-container {
+    aspect-ratio: 16 / 9;
+    width: min(96vw, 1100px);
+    position: relative;
+    container-type: inline-size;
+  }
+
+  .poker-table-felt {
+    position: absolute; inset: 0;
+    border-radius: 120px;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 28%, rgba(255,220,150,0.22) 0%, rgba(255,200,120,0.08) 35%, transparent 60%),
+      radial-gradient(ellipse at center, #8a2027 0%, #5c1218 45%, #2a060a 100%);
+    box-shadow:
+      inset 0 0 50px rgba(0,0,0,0.85),
+      0 0 0 3px #c9a227,
+      0 0 0 6px #1a1a1a,
+      0 12px 30px rgba(0,0,0,0.9);
+    border: 10px solid #1a1a1a;
+  }
+
+  .felt-brand {
+    position: absolute; top: 42%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Brush Script MT', 'Segoe Script', cursive;
+    font-size: clamp(24px, 7cqw, 75px);
+    color: rgba(212,175,55,0.22);
+    letter-spacing: 2px; white-space: nowrap;
+    pointer-events: none; z-index: 0;
+  }
+  .felt-sub {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    text-align: center; pointer-events: none; z-index: 0;
+    color: rgba(212,175,55,0.25); white-space: nowrap;
+  }
+  .felt-sub.domain { top: calc(42% + clamp(18px, 4.5cqw, 45px)); font-size: clamp(9px, 2cqw, 15px); font-family: Georgia, serif; letter-spacing: 2px; }
+
+  .dealer {
+    position: absolute; top: -6%; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; z-index: 6;
+  }
+  .dealer img {
+    width: clamp(36px, 8.5cqw, 60px); height: clamp(36px, 8.5cqw, 60px);
+    border-radius: 50%; border: 2px solid #d4af37; background: #222;
+    object-fit: cover;
+  }
+  .dealer .dname { font-size: clamp(9px, 2.1cqw, 12px); color: #ffd76a; font-weight: bold; margin-top: 1px; }
+
+  .board {
+    position: absolute; z-index: 2; left: 50%; top: 38%;
+    transform: translate(-50%, -50%); display: flex; gap: 4px;
+  }
+  .board-card {
+    width: clamp(22px, 5.5cqw, 40px); 
+    height: clamp(32px, 7.8cqw, 56px);
+    border-radius: 4px; background: linear-gradient(145deg,#ffffff,#e2dcd0);
+    border: 1px solid #9e9587;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  }
+
+  .pot { position: absolute; z-index: 12; left: 50%; top: 56%; transform: translateX(-50%); }
+  #potValue {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    background: rgba(0,0,0,0.75); border: 1px solid rgba(212,175,55,0.5);
+    color: #ffd76a; font-weight: bold; font-size: clamp(9px, 2.1cqw, 12px);
+  }
+
+  .seat {
+    position: absolute; display: flex; flex-direction: column; align-items: center;
+    z-index: 5;
+  }
+  .seat.s0 { bottom: 2%; left: 50%; transform: translateX(-50%); }
+  .seat.s1 { bottom: 12%; left: 4%; }
+  .seat.s2 { top: 32%; left: 2%; }
+  .seat.s3 { top: 4%; left: 18%; }
+  .seat.s4 { top: 2%; left: 50%; transform: translateX(-50%); }
+  .seat.s5 { top: 4%; right: 18%; }
+  .seat.s6 { top: 32%; right: 2%; }
+  .seat.s7 { bottom: 12%; right: 4%; }
+
+  .nameplate {
+    padding: 2px 6px; border-radius: 6px; text-align: center;
+    background: linear-gradient(180deg, #272320, #080708); border: 1px solid #d4af37;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.7);
+  }
+  .nameplate strong { display: block; font-size: clamp(8px, 1.9cqw, 11px); color: #fff; }
+  .nameplate span { display: block; font-size: clamp(8px, 1.9cqw, 11px); color: #ffd76a; font-weight: bold; }
+
+  .controls {
+    width: 100%;
+    max-width: 580px;
+    padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, #171115, #070506);
+    border-top: 1px solid rgba(212,175,55,0.3);
+    border-radius: 12px 12px 0 0;
+  }
+  .control-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; justify-content: center; }
+  .control-top strong { font-size: 12px; color: #ffd76a; }
+  .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .action {
+    height: 40px; border-radius: 8px; border: 1px solid #ffffff42;
+    background: linear-gradient(180deg, #303640, #111318); color: #fff;
+    font-weight: 800; font-size: 11px; cursor: pointer;
+  }
+  .action.call { border-color: #e2b34f; background: linear-gradient(180deg, #b8872d, #654216); }
+  .action.raise { border-color: #ee6a72; background: linear-gradient(180deg, #b63b46, #621720); }
+</style>
 </head>
 <body>
-  <h2>Table Canon</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Item One</td>
-        <td>Active</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Item Two</td>
-        <td>Pending</td>
-      </tr>
-    </tbody>
-  </table>
+<div style="position:fixed;top:8px;left:8px;z-index:60;">
+  <button id="burgerBtn" type="button" aria-label="Menu" style="width:40px;height:40px;border-radius:10px;background:rgba(20,12,4,0.85);color:#f2c76f;border:1px solid #c9a227;font-size:20px;cursor:pointer;">☰</button>
+</div>
+<div id="pokerToolbar" style="position:fixed;top:0;left:0;right:0;z-index:50;display:none;gap:8px;padding:8px;padding-left:54px;background:rgba(0,0,0,0.85);">
+  <button id="leavePoker" type="button" style="padding:6px 10px;border-radius:8px;background:#333;color:#fff;border:1px solid #555;">✕ LEAVE</button>
+  <button id="buyChips" type="button" style="padding:6px 10px;border-radius:8px;background:#654216;color:#ffe79b;border:1px solid #e5ba53;">BUY +</button>
+</div>
+<script>
+document.getElementById('burgerBtn').addEventListener('click', function(){
+  var tb = document.getElementById('pokerToolbar');
+  tb.style.display = (tb.style.display === 'none' || !tb.style.display) ? 'flex' : 'none';
+});
+</script>
+
+<div id="stage">
+  <div class="poker-table-container">
+    <div class="poker-table-felt" id="felt">
+      <div class="felt-brand">Nikkiflixs</div>
+      <div class="felt-sub domain">nikkiflixs.com</div>
+      <div class="dealer">
+        <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;">
+          <img src="https://files.catbox.moe/sfuqb8.webp" alt="Nikki">
+        </div>
+        <div class="dname">Nikki</div>
+      </div>
+      <div class="seat s0" data-index="0"><div class="nameplate"><strong>You</strong><span>$1,000</span></div></div>
+      <div class="seat s1" data-index="1"><div class="nameplate"><strong>Rosa</strong><span>$1,000</span></div></div>
+      <div class="seat s2" data-index="2"><div class="nameplate"><strong>Dre</strong><span>$1,000</span></div></div>
+      <div class="seat s3" data-index="3"><div class="nameplate"><strong>Sofia</strong><span>$1,000</span></div></div>
+      <div class="seat s4" data-index="4"><div class="nameplate"><strong>Jake</strong><span>$1,000</span></div></div>
+      <div class="seat s5" data-index="5"><div class="nameplate"><strong>Maya</strong><span>$1,000</span></div></div>
+      <div class="seat s6" data-index="6"><div class="nameplate"><strong>Luis</strong><span>$1,000</span></div></div>
+      <div class="seat s7" data-index="7"><div class="nameplate"><strong>Elena</strong><span>$1,000</span></div></div>
+      <div class="board">
+        <span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span><span class="board-card"></span>
+      </div>
+      <div class="pot" id="potArea">
+        <span id="potValue">$0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls" id="controls">
+  <div class="control-top"><strong id="statusMain">Welcome to Nikkiflixs Poker</strong></div>
+  <div class="actions">
+    <button class="action" type="button">FOLD</button>
+    <button class="action" type="button">CHECK</button>
+    <button class="action call" type="button">CALL</button>
+    <button class="action raise" type="button">RAISE</button>
+  </div>
+</div>
 </body>
 </html>
-
