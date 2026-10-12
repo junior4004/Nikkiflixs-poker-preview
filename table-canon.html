@@ -1,1 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikkiflixs - Interactive Poker Table</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #0d0f12;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
+        /* Audio Unlock Banner */
+        #audio-banner {
+            position: absolute;
+            top: 15px;
+            z-index: 100;
+            background: rgba(241, 196, 15, 0.95);
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Poker Table Arena */
+        .table-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1000px;
+            height: 55vw;
+            max-height: 550px;
+            background: radial-gradient(circle, #1b5e20 0%, #0d3b11 70%, #051a07 100%);
+            border: 16px solid #3e2723;
+            border-radius: 200px;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Community Cards & Pot Area */
+        .pot-display {
+            font-size: 1.2rem;
+            color: #f1c40f;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        .community-cards {
+            display: flex;
+            gap: 8px;
+        }
+        .card {
+            width: 48px;
+            height: 68px;
+            background: #ffffff;
+            color: #000000;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid #ccc;
+        }
+        .card.red {
+            color: #d32f2f;
+        }
+
+        /* Seats & Avatars */
+        .seat {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        .avatar-frame {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid #f1c40f;
+            background-color: #263238;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            transition: transform 0.2s;
+        }
+        .seat:hover .avatar-frame {
+            transform: scale(1.08);
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .player-info {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-top: 4px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .player-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        .player-chips {
+            color: #2ecc71;
+        }
+
+        /* Dialogue Speech Overlay */
+        .dialogue-bubble {
+            position: absolute;
+            bottom: 85px;
+            background: #ffffff;
+            color: #000000;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            z-index: 50;
+        }
+        .dialogue-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+        }
+        .dialogue-bubble.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Position seats around table */
+        .seat-1 { bottom: -30px; left: 50%; transform: translateX(-50%); } /* User */
+        .seat-2 { top: 20%; left: -25px; }
+        .seat-3 { top: -30px; left: 50%; transform: translateX(-50%); }
+        .seat-4 { top: 20%; right: -25px; }
+
+        /* Controls Panel */
+        .controls {
+            margin-top: 40px;
+            display: flex;
+            gap: 12px;
+        }
+        .btn-action {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: background 0.2s;
+        }
+        .btn-action:hover { background: #219150; }
+        .btn-action.fold { background: #c0392b; }
+        .btn-action.fold:hover { background: #a93226; }
+    </style>
+</head>
+<body>
+
+    <!-- Click to Enable Audio Banner -->
+    <div id="audio-banner" onclick="unlockAudio()">🔊 Tap Anywhere to Enable Sound & Voice</div>
+
+    <div class="table-container">
+        <div class="pot-display">POT: $1,250</div>
+
+        <!-- Community Cards -->
+        <div class="community-cards">
+            <div class="card red">A♥</div>
+            <div class="card">K♠</div>
+            <div class="card red">10♦</div>
+            <div class="card">J♣</div>
+            <div class="card red">Q♥</div>
+        </div>
+
+        <!-- Player Seat 1 (User / Main) -->
+        <div class="seat seat-1" onclick="triggerAvatarSpeech('user', 'Let\'s raise the stakes!')">
+            <div class="dialogue-bubble" id="bubble-user">Let's raise the stakes!</div>
+            <div class="avatar-frame">
+                <img src="avatar-user.png" alt="Player" class="avatar-img" onerror="this.src='https://via.placeholder.com/70/111/fff?text=YOU'">
+            </div>
+            <div class="player-info">
+                <div class="player-name">You</div>
+                <div class="player-chips">$2,400</div>
+            </div>
+        </div>
+
+        <!-- Player Seat 2 (Leo) -->
+        <div class="seat seat-2" onclick="triggerAvatarSpeech('leo', 'I\'m calling your bluff.')">
+            <div class="dialogue-bubble" id="bubble-leo">I'm calling your bluff.</div>
+            <div class="avatar-frame">
+                <img src="avatar-leo.png" alt="Leo" class="avatar-img" onerror="this.src='https://via.placeholder.com/70/333/fff?text=LEO'">
+            </div>
+            <div class="player-info">
+                <div class="player-name">Leo</div>
+                <div class="player-chips">$1,850</div>
+            </div>
+        </div>
+
+        <!-- Player Seat 3 (Mia) -->
+        <div class="seat seat-3" onclick="triggerAvatarSpeech('mia', 'All in!')">
+            <div class="dialogue-bubble" id="bubble-mia">All in!</div>
+            <div class="avatar-frame">
+                <img src="avatar-mia.png" alt="Mia" class="avatar-img" onerror="this.src='https://via.placeholder.com/70/555/fff?text=MIA'">
+            </div>
+            <div class="player-info">
+                <div class="player-name">Mia</div>
+                <div class="player-chips">$3,100</div>
+            </div>
+        </div>
+
+        <!-- Player Seat 4 (Marco) -->
+        <div class="seat seat-4" onclick="triggerAvatarSpeech('marco', 'Too rich for my blood.')">
+            <div class="dialogue-bubble" id="bubble-marco">Too rich for my blood.</div>
+            <div class="avatar-frame">
+                <img src="avatar-marco.png" alt="Marco" class="avatar-img" onerror="this.src='https://via.placeholder.com/70/777/fff?text=MARCO'">
+            </div>
+            <div class="player-info">
+                <div class="player-name">Marco</div>
+                <div class="player-chips">$950</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Control Buttons -->
+    <div class="controls">
+        <button class="btn-action fold" onclick="playSfx('fold')">Fold</button>
+        <button class="btn-action" onclick="playSfx('check')">Check</button>
+        <button class="btn-action" onclick="playSfx('chip')">Call $50</button>
+        <button class="btn-action" onclick="playSfx('chip')">Raise</button>
+    </div>
+
+    <script>
+        let audioUnlocked = false;
+
+        // Audio Context setup for Browser Compatibility
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function unlockAudio() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            audioUnlocked = true;
+            document.getElementById('audio-banner').style.display = 'none';
+        }
+
+        // Trigger Speech Bubbles & Sound Effects
+        function triggerAvatarSpeech(avatarId, text) {
+            unlockAudio();
+            const bubble = document.getElementById('bubble-' + avatarId);
+            if (bubble) {
+                bubble.innerText = text;
+                bubble.classList.add('active');
+                playSfx('chip'); // Trigger sound on talk
+                setTimeout(() => {
+                    bubble.classList.remove('active');
+                }, 2500);
+            }
+        }
+
+        // Web Audio Synthesizer SFX Fallback
+        function playSfx(type) {
+            unlockAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'chip') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'check') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } else if (type === 'fold') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+            }
+        }
+    </script>
+</body>
+</html>
