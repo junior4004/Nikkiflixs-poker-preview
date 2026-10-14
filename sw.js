@@ -1,14 +1,16 @@
 /* Nikkiflixs service worker — app-shell caching for install-to-home-screen.
    Cache-first for same-origin static assets; network-only for live odds API.
    Bump CACHE_VERSION on each release so updates propagate. */
-var CACHE_VERSION = 'nikkiflixs-v43';
+var CACHE_VERSION = 'nikkiflixs-v44';
 var SHELL_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
-  '/apple-touch-icon.png'
+  '/apple-touch-icon.png',
+  '/poker/',
+  '/poker/index.html'
 ];
 var ODDS_API_HOST = 'api.the-odds-api.com';
 
