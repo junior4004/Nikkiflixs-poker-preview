@@ -693,7 +693,7 @@ window.addEventListener('nikkiflixs:local-admin-ready',syncAdminServerState);roo
   var flashes=0;
   var iv=setInterval(function(){
     b.style.opacity=(b.style.opacity==='0.2'?'1':'0.2');
-    if(++flashes>=9){clearInterval(iv);b.style.opacity='1';}
+    if(++flashes>=6){clearInterval(iv);b.style.opacity='1';}
   },350);
   document.getElementById('maintX').onclick=function(){
     n.style.display='none';
