@@ -9,8 +9,6 @@ var SHELL_URLS = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
-  '/poker/',
-  '/poker/index.html'
 ];
 var ODDS_API_HOST = 'api.the-odds-api.com';
 
