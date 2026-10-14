@@ -336,7 +336,7 @@
       var strong=seat.querySelector('.nameplate strong');if(strong)strong.textContent='You';
       var img=seat.querySelector('.portrait');if(img){img.src='assets/avatar-3.png';img.alt='You';}
       seat.classList.remove('empty-seat','folded');
-      delete sittingOut[target];delete handFolded[target];delete botProfiles[target];
+      delete handFolded[target];delete botProfiles[target];
       /* v25 BUG1: seat 0 was pre-labeled "You" in the HTML — convert it to a real bot
          so there is NEVER a second "You" on the table. */
       if(target!==0){
