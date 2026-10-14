@@ -1,12 +1,55 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=table-canon.html"><title>Redirecting...</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nikkiflixs Poker Room — Choose Your Table</title>
 <style>
-/* Hide Netlify badge - aggressive */
-iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netlify.com"], img[alt*="Netlify"], img[src*="netlify"] { display:none!important; visibility:hidden!important; opacity:0!important; pointer-events:none!important; position:absolute!important; left:-9999px!important; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #12351f 0%, #0a1f12 45%, #050805 100%);
+    color: #f2e6c8; font-family: Georgia, 'Times New Roman', serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px; min-height: 100dvh; text-align: center;
+  }
+  .felt-line { font-size: 13px; letter-spacing: .35em; color: #d4af5e; text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-size: clamp(30px, 7vw, 54px); color: #f5d67b; text-shadow: 0 3px 10px #000; margin-bottom: 8px; font-weight: normal; }
+  .sub { color: #cdbf9f; font-size: clamp(14px, 3.5vw, 18px); margin-bottom: 34px; }
+  .tables { display: flex; flex-direction: column; gap: 16px; width: min(480px, 100%); }
+  .table-card {
+    display: block; text-decoration: none; color: #f2e6c8;
+    background: linear-gradient(180deg, #1c2b1a, #101b0f);
+    border: 2px solid #d4af5e; border-radius: 14px;
+    padding: 22px 20px; transition: transform .15s, box-shadow .15s;
+  }
+  .table-card:hover, .table-card:active { transform: translateY(-2px); box-shadow: 0 10px 30px #000c; }
+  .table-card .name { font-size: clamp(20px, 5vw, 28px); color: #f5d67b; margin-bottom: 6px; }
+  .table-card .desc { font-size: 14px; color: #cdbf9f; }
+  .badge {
+    display: inline-block; font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    background: #d4af5e; color: #1a1206; border-radius: 20px; padding: 3px 12px; margin-bottom: 8px;
+    font-family: Arial, sans-serif; font-weight: bold;
+  }
+  .back { margin-top: 30px; color: #9c8f6f; font-size: 14px; text-decoration: none; }
+  .back:hover { color: #d4af5e; }
 </style>
-<style>#nl-badge-frame{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style>
 </head>
-<body style="background:#0a0a0a;color:#f0d488;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;">
-<p>Loading your poker table...</p>
-<script>window.location.replace('table-canon.html');</script>
-</body></html>
+<body>
+  <div class="felt-line">Nikkiflixs Casino</div>
+  <h1>♠ Poker Room ♥</h1>
+  <p class="sub">Choose your table and take your seat.</p>
+  <div class="tables">
+    <a class="table-card" href="/poker/">
+      <span class="badge">New</span>
+      <div class="name">Nikkiflixs Poker</div>
+      <div class="desc">Texas Hold'em — you versus the AI. Pick 1–5 opponents and play.</div>
+    </a>
+    <a class="table-card" href="table-canon.html">
+      <div class="name">Classic Table</div>
+      <div class="desc">The original Nikkiflixs poker table.</div>
+    </a>
+  </div>
+  <a class="back" href="/">← Back to the casino floor</a>
+</body>
+</html>
