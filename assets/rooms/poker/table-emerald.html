@@ -154,7 +154,12 @@
     .seat[data-view-slot="0"] .pocket .hole+.hole,.seat[data-view-slot="4"] .pocket .hole+.hole{margin-left:0}
     .seat.folded .pocket{display:none!important}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-  .dealer-notch{position:absolute;z-index:5;left:62%;top:17%;width:44%;height:70px;background:#120b08;border:4px solid #7a5c1e;border-top:none;border-radius:0 0 120px 120px;transform:translate(-50%,-50%);box-shadow:inset 0 -8px 15px #000,0 2px 8px #000a}</style>
+  .dealer-notch{position:absolute;z-index:5;left:62%;top:17%;width:44%;height:70px;background:#120b08;border:4px solid #7a5c1e;border-top:none;border-radius:0 0 120px 120px;transform:translate(-50%,-50%);box-shadow:inset 0 -8px 15px #000,0 2px 8px #000a}
+.board.n3 .board-card{width:52px;height:74px;font-size:28px}
+.board.n4 .board-card{width:46px;height:66px;font-size:25px}
+.board.n5 .board-card{width:40px;height:58px;font-size:22px}
+.board .board-card{transition:width .3s,height .3s,font-size .3s}
+</style>
 <style>#nl-badge-frame{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style>
 
 <style>
@@ -442,7 +447,7 @@
   }
   function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');playSfx('card-muck',.5);cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
-  var markerPositions=[['50%','80%'],['27%','71%'],['20%','50%'],['27%','30%'],['50%','24%'],['73%','42%'],['80%','51%'],['73%','71%']];
+  var markerPositions=[['50%','78%'],['30%','68%'],['24%','50%'],['30%','32%'],['50%','26%'],['70%','40%'],['76%','50%'],['70%','68%']];
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index])return index}return after}
   function dealerIndex(){return dealerButton}
   function smallBlindIndex(){return(dealerButton+1)%8}
@@ -1246,5 +1251,23 @@ return '<svg width="92" height="92" viewBox="0 0 92 92"><path d="M45 16 C61 14 7
 
 
 
+
+<script>
+(function(){
+  var board=document.querySelector('.board');
+  if(!board) return;
+  function update(){
+    var vis=0;
+    board.querySelectorAll('.board-card').forEach(function(c){
+      if(c.style.opacity==='1'||c.classList.contains('show')) vis++;
+    });
+    board.classList.remove('n3','n4','n5');
+    if(vis>=3) board.classList.add('n'+Math.min(vis,5));
+  }
+  new MutationObserver(update).observe(board,{attributes:true,subtree:true,attributeFilter:['style','class']});
+  setInterval(update,500);
+  update();
+})();
+</script>
 </body>
 </html>
