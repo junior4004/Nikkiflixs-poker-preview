@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Poker Avatars - 30</title>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:sans-serif;margin:0;padding:20px}
+h1{text-align:center;color:#f5cf6d}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px;max-width:1200px;margin:0 auto}
+.card{background:#1a1a1a;border-radius:10px;overflow:hidden;border:1px solid #333}
+.card img{width:100%;height:180px;object-fit:cover;display:block}
+.card p{margin:0;padding:8px;font-size:11px;text-align:center;color:#ccc}
+</style></head><body>
+<h1>30 Poker Avatars</h1>
+<div class="grid" id="g"></div>
+<script>
+const desc={
+1:"Hispanic male, 30s, goatee",2:"Black male, 30s, beard",3:"White male, 40s, blue eyes",
+4:"Asian male, 20s",5:"Middle Eastern male, 30s",6:"White male, 50s, bald",
+7:"Hispanic male, 40s, mustache",8:"Black male, 20s, locs",9:"Indian male, 30s, beard",
+10:"White male, 30s, blond",11:"Hispanic male, 50s",12:"Black male, 40s, bald",
+13:"Middle Eastern male, 20s",14:"White male, 20s, red hair",15:"Asian male, 40s",
+16:"White female, 30s, auburn",17:"Black female, 20s, afro",18:"Latina, 30s",
+19:"Asian female, 20s, bob",20:"Middle Eastern female, 30s",21:"White female, 40s, blonde",
+22:"Black female, 40s, braids",23:"Hispanic female, 50s",24:"Indian female, 30s",
+25:"White female, 20s, red curly",26:"Black female, 30s",27:"Latina, 40s, pixie",
+28:"Asian female, 50s",29:"Middle Eastern female, 20s",30:"White female, 50s, silver"
+};
+let h='';
+for(let i=1;i<=30;i++){
+  const n=String(i).padStart(2,'0');
+  h+=`<div class="card"><img src="avatar-${n}.png" loading="lazy"><p>${n}: ${desc[i]}</p></div>`;
+}
+document.getElementById('g').innerHTML=h;
+</script></body></html>
