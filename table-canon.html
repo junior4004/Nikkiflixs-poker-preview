@@ -74,18 +74,17 @@
     .pot{top:38%}.pot-chips{width:98px;height:52px}.pot-label{padding:6px 13px;font-size:13px}
     .board{top:49%;gap:16px}.board-card{width:58px;height:82px;padding:8px 5px;font-size:32px}
     .muck{left:32%;top:40%;width:42px;height:29px}.deck{left:72%;top:17%}
-    .seat[data-index="0"]{--x:50%!important;--y:88%!important;--kx:50%!important;--ky:88%!important;--show-x:39%;--show-y:56%}
-    .seat[data-index="1"]{--x:18%!important;--y:76%!important;--kx:18%!important;--ky:76%!important;--show-x:33%;--show-y:52%}
-    .seat[data-index="2"]{--x:12%!important;--y:48%!important;--kx:12%!important;--ky:48%!important;--show-x:35%;--show-y:45%}
-    .seat[data-index="3"]{--x:18%!important;--y:18%!important;--kx:18%!important;--ky:18%!important;--show-x:42%;--show-y:42%}
-    .seat[data-index="4"]{--x:50%!important;--y:6%!important;--kx:50%!important;--ky:6%!important;--show-x:50%;--show-y:43%}
-    .seat[data-index="5"]{--x:82%!important;--y:18%!important;--kx:82%!important;--ky:18%!important;--show-x:58%;--show-y:42%}
-    .seat[data-index="6"]{--x:88%!important;--y:48%!important;--kx:88%!important;--ky:48%!important;--show-x:65%;--show-y:45%}
-    .seat[data-index="7"]{--x:82%!important;--y:76%!important;--kx:82%!important;--ky:76%!important;--show-x:67%;--show-y:52%}
-    .seat[data-index="1"] .pocket,.seat[data-index="2"] .pocket,.seat[data-index="3"] .pocket{left:-2px;top:63px;transform:none;flex-direction:column;gap:3px}
-    .seat[data-index="5"] .pocket,.seat[data-index="6"] .pocket,.seat[data-index="7"] .pocket{left:auto;right:-2px;top:63px;transform:none;flex-direction:column;gap:3px}
-    .seat[data-index="1"] .seat-chips,.seat[data-index="2"] .seat-chips,.seat[data-index="3"] .seat-chips{left:20%!important}
-    .seat[data-index="5"] .seat-chips,.seat[data-index="6"] .seat-chips,.seat[data-index="7"] .seat-chips{left:80%!important}
+.seat[data-index="1"]{--x:18%!important}
+.seat[data-index="0"]{--x:50%!important}
+.seat[data-index="1"]{--x:18%!important}
+.seat[data-index="2"]{--x:12%!important}
+.seat[data-index="3"]{--x:18%!important}
+.seat[data-index="4"]{--x:50%!important}
+.seat[data-index="5"]{--x:82%!important}
+.seat[data-index="6"]{--x:88%!important}
+.seat[data-index="7"]{--x:82%!important}
+.seat[data-index="1"] .pocket,.seat[data-index="5"] .pocket{left:calc(50% - 3px)!important}
+.seat[data-index="1"] .seat-chips,.seat[data-index="5"] .seat-chips{left:calc(50% + 55px)!important}
     .controls{width:min(520px,100%);padding:8px 10px calc(9px + env(safe-area-inset-bottom));border-radius:12px 12px 0 0}.control-top{height:31px;margin-bottom:8px}.talk{height:31px;min-width:124px;margin-left:18px}.actions{gap:9px}.action{height:40px}
     @media(max-width:620px){
       .stage{inset:58px 0 106px}.camera{width:430px;height:700px}.brand{font-size:56px}.dealer{left:78%;top:4%}
