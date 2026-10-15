@@ -1,7 +1,7 @@
 /* Nikkiflixs service worker — app-shell caching for install-to-home-screen.
    Cache-first for same-origin static assets; network-only for live odds API.
    Bump CACHE_VERSION on each release so updates propagate. */
-var CACHE_VERSION = 'nikkiflixs-v68';
+var CACHE_VERSION = 'nikkiflixs-v69';
 var SHELL_URLS = [
   '/',
   '/index.html',
