@@ -312,7 +312,7 @@
   function humanJoinTable(forceSeat){
     var candidates=[];
     for(var i=0;i<8;i++){if(BOTS_ENABLED&&!humanSeats[i]&&!sittingOut[i])candidates.push(i);}
-    var target=(typeof forceSeat==='number'&&forceSeat>=0&&forceSeat<8)?forceSeat:(candidates.indexOf(0)>=0?0:(candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:0));
+    var target=0;/* FORCED: human always sits bottom-center, never random */
     var seat=seats[target];
     humanSeats[target]=true;humanSeated=true;localSeatAbsolute=target;
     seat.style.transition='opacity .35s ease';seat.style.opacity='0';
