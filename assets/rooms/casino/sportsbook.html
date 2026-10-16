@@ -109,7 +109,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .nfresh{margin:10px 2px 0;font:600 11px/1.4 "Source Sans 3",sans-serif;color:#8a7a5e;text-align:center}
 /* ============ FANTASY VIEW ============ */
 #fantView{max-width:640px;margin:0 auto;padding:6px 12px 60px}
-.subtabs{display:flex;gap:8px;margin:10px 0}
+.subtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
 .subtabs .vtab{min-height:44px;font-size:14px}
 .wl.q{background:#3a3220;color:#e8c86a}
 .fant-note{margin:8px 2px;font:600 11px/1.5 "Source Sans 3",sans-serif;color:#8a7a5e;text-align:center}
@@ -155,7 +155,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .ticker-label{flex:0 0 auto;background:#c9a227;color:#1a0f0a;font:800 11px/1 'Barlow Condensed',sans-serif;padding:6px 10px;margin:0 0 0 8px;border-radius:4px;letter-spacing:.08em;animation:tickpulse 2s ease-in-out infinite;}
 @keyframes tickpulse{0%,100%{opacity:1}50%{opacity:.55}}
 .ticker-mask{flex:1;overflow:hidden;white-space:nowrap;}
-.ticker{display:inline-block;white-space:nowrap;animation:tickscroll 45s linear infinite;color:#f5e6c8;font:600 13px/34px 'IBM Plex Sans',sans-serif;will-change:transform;}
+.ticker{display:inline-block;white-space:nowrap;animation:tickscroll 70s linear infinite;color:#f5e6c8;font:600 13px/34px 'IBM Plex Sans',sans-serif;will-change:transform;}
 .ticker .tsep{color:#c9a227;margin:0 14px;}
 .ticker .tlive{color:#7CFC90;font-weight:700;}
 .ticker .tfinal{color:#bfa76a;}
@@ -202,22 +202,25 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <h1>🏈 Sportsbook</h1>
   <button class="back" id="myBetsBtn" type="button">🎫 My Bets</button>
   <button class="back" id="parlayBtn" type="button">🎟️ Parlay <span id="parlayCount" class="pbadge"></span></button>
-  <div class="bal"><small>GOLD COINS</small><strong id="balance">0</strong></div>
 </div>
 <div class="ticker-wrap" id="tickerWrap" aria-label="Live scores">
   <span class="ticker-label">⚡ SCORES</span>
   <div class="ticker-mask"><div class="ticker" id="ticker"><span>Loading live scores…</span></div></div>
 </div>
 <div class="funbanner">For fun only — gold coins have no cash value. Spreads shown are real Vegas-style lines.</div>
-<div style="text-align:center;padding:12px;">
-  <p style="color:#f5e6c8;font-size:14px;margin:0 0 8px;">Enjoying the free fantasy info? We put a lot of work into this.</p>
-  <a href="https://www.paypal.com/donate/?business=jerrytuter3@gmail.com&currency_code=USD" target="_blank" rel="noopener" style="display:inline-block;background:#c9a227;color:#1a0f0a;font-weight:bold;padding:10px 28px;border-radius:8px;text-decoration:none;font-size:16px;">Donate</a>
-  <p style="color:#888;font-size:12px;margin:8px 0 0;">Totally optional. Thanks for stopping by!</p>
+<div style="max-width:640px;margin:0 auto;padding:12px;">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+    <div style="text-align:left;">
+      <p style="color:#f5e6c8;font-size:14px;margin:0 0 8px;">Enjoying the free fantasy info? We put a lot of work into this.</p>
+      <a href="https://www.paypal.com/donate/?business=jerrytuter3@gmail.com&currency_code=USD" target="_blank" rel="noopener" style="display:inline-block;background:#c9a227;color:#1a0f0a;font-weight:bold;padding:10px 28px;border-radius:8px;text-decoration:none;font-size:16px;">Donate</a>
+    </div>
+    <div class="bal" style="flex:none;"><small>GOLD COINS</small><strong id="balance">0</strong></div>
+  </div>
+  <p style="color:#888;font-size:12px;margin:8px 0 0;text-align:center;">Totally optional. Thanks for stopping by!</p>
 </div>
 
 <div class="linesbar demo" id="linesBar">
   <span class="dot"></span><span class="grow" id="linesText">DEMO LINES — sample data for preview</span>
-  <button id="refreshBtn" type="button">↻ Refresh</button>
 </div>
 <div class="viewtabs" id="viewTabs" role="tablist" aria-label="Sportsbook views">
   <button class="vtab active" id="oddsTab" type="button" role="tab" aria-selected="true">🎲 Odds</button>
@@ -254,7 +257,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   </div>
   <div id="fantInjView">
     <div id="injWireWrap">
-      <div class="wire-head" style="background:#160f08;border-color:#c9a22733;">⚡ <b>LIVE INJURY WIRE</b> — <span id="wireStatus">connecting…</span> <button type="button" id="wireRefresh" style="float:right;background:none;border:1px solid #c9a22788;color:#e8c86a;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;">↻ Refresh</button></div>
+      <div class="wire-head" style="background:#160f08;border-color:#c9a22733;">⚡ <b>LIVE INJURY WIRE</b> — <span id="wireStatus">connecting…</span></div>
       <div class="wire-sub">Breaking injuries across all 32 teams · auto-refreshes every 3 min on game days</div>
       <div id="injWire"></div>
     </div>
@@ -824,12 +827,9 @@ function showSchedLoading(msg){
 }
 function showSchedError(retry){
   var w=document.getElementById('schedList');w.innerHTML='';
-  var d=el('div','empty','Couldn\'t load the schedule.<br>Check your connection and try again.');
-  var b=el('button','sched-retry','↻ Retry');b.type='button';
-  b.style.marginTop='12px';
-  b.addEventListener('click',retry);
-  d.appendChild(document.createElement('br'));d.appendChild(b);
+  var d=el('div','empty','Couldn\'t load the schedule.<br>Retrying automatically\u2026');
   w.appendChild(d);
+  setTimeout(function(){retry();},30000);
 }
 function renderSchedLeagues(){
   var nav=document.getElementById('schedLeagues');nav.innerHTML='';
@@ -969,11 +969,9 @@ function showNewsLoading(){
 }
 function showNewsError(retry){
   var w=document.getElementById('newsList');w.innerHTML='';
-  var d=el('div','empty','Headlines are updating.<br>Check your connection and try again.');
-  var b=el('button','sched-retry','↻ Retry');b.type='button';b.style.marginTop='12px';
-  b.addEventListener('click',retry);
-  d.appendChild(document.createElement('br'));d.appendChild(b);
+  var d=el('div','empty','Headlines are updating.<br>Retrying automatically\u2026');
   w.appendChild(d);
+  setTimeout(function(){retry();},30000);
 }
 function renderNews(arts){
   var w=document.getElementById('newsList');w.innerHTML='';
@@ -1072,11 +1070,9 @@ function showInjLoading(){
 }
 function showInjError(retry){
   var w=document.getElementById('injList');w.innerHTML='';
-  var d=el('div','empty','Injury report is updating.<br>Check your connection and try again.');
-  var b=el('button','sched-retry','↻ Retry');b.type='button';b.style.marginTop='12px';
-  b.addEventListener('click',retry);
-  d.appendChild(document.createElement('br'));d.appendChild(b);
+  var d=el('div','empty','Injury report is updating.<br>Retrying automatically\u2026');
   w.appendChild(d);
+  setTimeout(function(){retry();},30000);
 }
 function renderInjTeams(){
   var sel=document.getElementById('injTeamSelect');sel.innerHTML='';
@@ -1191,11 +1187,9 @@ function enterFantAdvice(){
       done(arts);
     }).catch(function(){
       w.innerHTML='';
-      var dd=el('div','empty','Fantasy advice is updating.<br>Check your connection and try again.');
-      var rb=el('button','sched-retry','↻ Retry');rb.type='button';rb.style.marginTop='12px';
-      rb.addEventListener('click',enterFantAdvice);
-      dd.appendChild(document.createElement('br'));dd.appendChild(rb);
+      var dd=el('div','empty','Fantasy advice is updating.<br>Retrying automatically\u2026');
       w.appendChild(dd);
+      setTimeout(function(){enterFantAdvice();},30000);
     });
 }
 function setFantSub(s){
@@ -1907,10 +1901,10 @@ document.getElementById('stakeInput').addEventListener('input',updatePayout);
 document.querySelectorAll('.qchips button').forEach(function(b){
   b.addEventListener('click',function(){document.getElementById('stakeInput').value=b.getAttribute('data-q');updatePayout();});
 });
-document.getElementById('refreshBtn').addEventListener('click',function(){
-  var cache=lsGet(CACHE_KEY,{});delete cache[curSport];lsSet(CACHE_KEY,cache);
-  loadGames(curSport,renderGames);say('Lines refreshed.');
-});
+setInterval(function(){
+  var ov=document.getElementById('oddsView');
+  if(ov&&ov.style.display!=='none'){loadGames(curSport,renderGames);}
+},120000); /* odds auto-refresh every 2 min (cache-aware) */
 /* ============ LIVE SCORE TICKER ============ */
 var TICK_LEAGUES=[{p:'football/nfl',t:'NFL'},{p:'basketball/nba',t:'NBA'},{p:'baseball/mlb',t:'MLB'},{p:'hockey/nhl',t:'NHL'}];
 function tickScores(){
@@ -2236,7 +2230,7 @@ function enterLiveWire(){
   var stEl=document.getElementById('wireStatus');
   if(stEl)stEl.textContent='updating…';
   loadLeagueInjuries(function(all){
-    if(!all){w.innerHTML='<div class="empty">Wire is updating — try refresh.</div>';if(stEl)stEl.textContent='offline';return;}
+    if(!all){w.innerHTML='<div class="empty">Wire is updating — retrying automatically.</div>';if(stEl)stEl.textContent='offline';scheduleWireRefresh();return;}
     var now=Date.now(),prev={};
     try{prev=(JSON.parse(localStorage.getItem(INJ_WIRE_KEY)||'{}').map)||{};}catch(e){}
     all.forEach(function(p){
@@ -2289,11 +2283,12 @@ renderBal();renderLeagues();initSchedules();cmEntry();pingHome();
 /* fantasy/parlay/ticker/wire init */
 try{
   tickScores();setInterval(tickScores,60000);
+  setInterval(function(){var nv=document.getElementById('newsView');if(nv&&nv.style.display!=='none'&&typeof enterNewsLeague==='function'){enterNewsLeague();}},600000);
   renderParlayBadge();
   document.getElementById('parlayBtn').addEventListener('click',openParlay);
   document.getElementById('parlayCancel').addEventListener('click',function(){document.getElementById('parlayModal').classList.remove('open');});
   document.getElementById('parlayBuy').addEventListener('click',parlayBuy);
-  document.getElementById('wireRefresh').addEventListener('click',function(){enterLiveWire();});
+  
   var _origSetFantSub=setFantSub;
   setFantSub=function(sx){_origSetFantSub(sx);if(sx==='inj'){enterLiveWire();}};
   document.getElementById('pwrTab').addEventListener('click',function(){setFantSub('pwr');});
