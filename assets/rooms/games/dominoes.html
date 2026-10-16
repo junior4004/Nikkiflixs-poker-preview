@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dominoes · Nikkiflixs Casino</title>
+<style>
+:root{
+  --ink:#f8f2df; --muted:#c9c0a6; --bg:#100c09; --panel:#1a1510; --panel2:#261d15;
+  --gold:#ddb866; --gold2:#8e672f; --felt:#0b4a35; --felt2:#082e24;
+  --red:#a9292b; --green:#35a95b; --line:#5e452a; --paper:#fffdf7; --black:#17130f;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:"Source Sans 3",system-ui,-apple-system,sans-serif;overscroll-behavior:none}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;
+  padding:10px 12px;background:#0d0a08f2;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font-size:20px;letter-spacing:.08em;color:var(--gold);flex:1;text-align:center}
+.topbar h1 small{display:block;font-size:10px;letter-spacing:.28em;color:var(--muted);font-weight:600}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;
+  font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+/* ---------- table ---------- */
+.wrap{max-width:560px;margin:0 auto;padding:10px 10px 30px}
+.felt{background:radial-gradient(ellipse at 50% 30%,#12573f 0%,var(--felt) 45%,var(--felt2) 100%);
+  border:2px solid var(--gold2);border-radius:16px;padding:10px;box-shadow:0 18px 55px #0009,inset 0 0 60px #0007}
+.botrow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),#3a2a12);
+  border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+.botmeta{flex:1}
+.botmeta .nm{font-weight:800;letter-spacing:.06em;font-size:14px}
+.botmeta .tc{font-size:12px;color:var(--muted)}
+.turnpill{font-size:11px;font-weight:800;letter-spacing:.1em;padding:6px 10px;border-radius:999px;
+  background:#0008;border:1px solid var(--line);color:var(--muted)}
+.turnpill.you{color:#0a0a0a;background:var(--gold);border-color:var(--gold)}
+/* board */
+.board{position:relative;min-height:150px;max-height:46vh;overflow-y:auto;background:#00000038;
+  border:1px solid #ffffff22;border-radius:10px;padding:8px}
+.ptile{position:absolute;transition:left .25s,top .25s}
+.endpick{animation:gpulse 1s infinite}
+@keyframes gpulse{0%,100%{filter:drop-shadow(0 0 2px #000)}50%{filter:drop-shadow(0 0 10px var(--gold))}}
+/* domino tiles */
+.dom{display:flex;background:linear-gradient(180deg,#fffefb,var(--paper) 60%,#e9e2d2);
+  border:2px solid #6b543a;border-radius:7px;box-shadow:0 3px 6px #000a;overflow:hidden}
+.dom.v{flex-direction:column}
+.dom .half{flex:1;display:flex;align-items:center;justify-content:center;padding:2px}
+.dom .div{background:#6b543a;flex:none}
+.dom:not(.v) .div{width:2px;align-self:stretch}
+.dom.v .div{height:2px;align-self:stretch}
+.pips{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  width:100%;height:100%;gap:1px}
+.pip{width:100%;aspect-ratio:1;border-radius:50%}
+.pip.on{background:radial-gradient(circle at 35% 30%,#4a3a28,var(--black));box-shadow:inset 0 1px 1px #000}
+/* hand tiles */
+.dom.handtile{cursor:pointer}
+.dom.handtile.playable{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 3px 8px #000a}
+.dom.handtile.selected{border-color:#fff;box-shadow:0 0 0 3px #fff,0 0 14px var(--gold);transform:translateY(-6px)}
+.dom.handtile:not(.playable){opacity:.55;filter:saturate(.6)}
+/* status / ends */
+.status{min-height:40px;display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:14px;font-weight:600;color:var(--ink);padding:6px 4px}
+.status b{color:var(--gold)}
+.ends{display:flex;gap:8px;justify-content:center;align-items:center;margin:2px 0 6px;font-size:12px;color:var(--muted)}
+.endval{background:#000a;border:1px solid var(--gold2);color:var(--gold);border-radius:8px;
+  padding:4px 12px;font-weight:800;font-size:15px}
+/* boneyard + actions */
+.actionbar{display:flex;gap:8px;align-items:center;justify-content:center;margin:6px 0;flex-wrap:wrap}
+.btn{min-height:48px;padding:10px 20px;border-radius:10px;border:1px solid var(--gold);
+  background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;letter-spacing:.05em}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:var(--panel);border-color:var(--line);color:var(--ink)}
+.btn:disabled{opacity:.4}
+.btn.warn{background:linear-gradient(180deg,#8e2f2f,#5c1a1a);border-color:#d88}
+.boneyard{font-size:13px;color:var(--muted);font-weight:700}
+/* player hand */
+.handlabel{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 4px;
+  font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+.hand{display:flex;gap:8px;overflow-x:auto;padding:10px 4px 14px;min-height:76px;
+  background:#00000030;border-radius:10px;border:1px solid #ffffff18}
+/* overlays */
+.throwin{margin:8px 0;padding:12px;border:1px dashed var(--gold);border-radius:10px;background:#ddb86614;
+  text-align:center;font-size:14px}
+.throwin .row{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.result{margin:10px 0;padding:16px;text-align:center;border:1px solid var(--gold);border-radius:12px;
+  background:#00000050;display:none}
+.result.show{display:block}
+.result h2{margin:0 0 6px;color:var(--gold);letter-spacing:.06em}
+.result p{margin:4px 0;color:var(--ink);font-size:14px}
+/* how to */
+.howto{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
+.howto summary{padding:12px;font-weight:800;letter-spacing:.06em;color:var(--gold);cursor:pointer;list-style:none}
+.howto .body{padding:0 14px 14px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.howto .body b{color:var(--ink)}
+.note{margin-top:10px;font-size:11.5px;color:#8a8272;text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Games</button>
+  <h1>DOMINOES<small>NIKKIFLIXS CASINO</small></h1>
+  <div class="score" id="matchScore">YOU <b>0</b> · BOT <b>0</b></div>
+</div>
+<div class="wrap">
+  <div class="felt">
+    <div class="botrow">
+      <div class="avatar">🤖</div>
+      <div class="botmeta">
+        <div class="nm">HOUSE BOT</div>
+        <div class="tc" id="botCount">7 tiles</div>
+      </div>
+      <div class="turnpill" id="turnPill">…</div>
+    </div>
+    <div class="board" id="board" aria-label="Domino table"></div>
+    <div class="ends"><span>OPEN ENDS</span><span class="endval" id="endL">–</span><span class="endval" id="endR">–</span></div>
+    <div class="status" id="status">Shuffling…</div>
+    <div class="actionbar">
+      <span class="boneyard" id="boneyardLbl">Boneyard: 14</span>
+      <button class="btn" id="drawBtn" type="button" style="display:none">DRAW</button>
+      <button class="btn ghost" id="passBtn" type="button" style="display:none">PASS</button>
+    </div>
+    <div class="throwin" id="throwinBox" style="display:none">
+      You hold <b id="dblCount">4</b> doubles. Throw in the hand for a fresh deal?
+      <div class="row">
+        <button class="btn warn" id="throwYes" type="button">THROW IN</button>
+        <button class="btn ghost" id="throwNo" type="button">KEEP PLAYING</button>
+      </div>
+    </div>
+    <div class="result" id="resultBox">
+      <h2 id="resultTitle">Round over</h2>
+      <p id="resultText"></p>
+      <div class="actionbar">
+        <button class="btn" id="nextRoundBtn" type="button">NEXT ROUND</button>
+        <button class="btn ghost" id="newMatchBtn" type="button">NEW MATCH</button>
+      </div>
+    </div>
+  </div>
+  <div class="handlabel"><span>YOUR HAND</span><span id="handCount"></span></div>
+  <div class="hand" id="hand"></div>
+  <div class="howto">
+    <summary>HOW TO PLAY</summary>
+    <div class="body">
+      <b>Goal:</b> play all your tiles first. Round winner scores the pips left in the other hand. First to <b>100</b> wins the match.<br>
+      <b>Opening:</b> double 6 plays first, then double 5, 4, 3, 2, 1, blank — in that order. No doubles at all? Then <b>6-4</b> opens. No 6-4 either? Fresh shuffle.<br>
+      <b>Play:</b> tap a glowing tile, then tap an open end if it fits both. Doubles go down <b>sideways</b>.<br>
+      <b>Stuck?</b> draw from the boneyard until you can play. Boneyard empty? You must pass.<br>
+      <b>4 doubles</b> in your opening hand? You may throw the hand in for a redeal.<br>
+      <b>Blocked</b> (nobody can play): fewest pips wins the round and scores the difference.
+    </div>
+  </div>
+  <p class="note">Tiles are for play only and have no cash value.<br>Nikkiflixs Casino · play fair, have fun.</p>
+</div>
+<script>
+(function(){
+"use strict";
+/* ================= state ================= */
+var board=document.getElementById('board'), handEl=document.getElementById('hand'),
+    statusEl=document.getElementById('status'), turnPill=document.getElementById('turnPill'),
+    endLEl=document.getElementById('endL'), endREl=document.getElementById('endR'),
+    drawBtn=document.getElementById('drawBtn'), passBtn=document.getElementById('passBtn'),
+    boneyardLbl=document.getElementById('boneyardLbl'), botCount=document.getElementById('botCount'),
+    handCount=document.getElementById('handCount'), matchScore=document.getElementById('matchScore'),
+    throwinBox=document.getElementById('throwinBox'), dblCount=document.getElementById('dblCount'),
+    resultBox=document.getElementById('resultBox'), resultTitle=document.getElementById('resultTitle'),
+    resultText=document.getElementById('resultText');
+
+var hands=[[],[]], boneyard=[], chain=[], turn=0, phase='deal',
+    selected=-1, pickEnd=false, matchPts=[0,0], passes=0, firstMove=true,
+    opener=null, botTimer=null;
+
+var TARGET=100;
+
+/* ================= helpers ================= */
+function mkSet(){
+  var s=[],a,b;
+  for(a=0;a<=6;a++)for(b=a;b<=6;b++)s.push({a:a,b:b});
+  return s;
+}
+function shuffle(s){
+  for(var i=s.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=s[i];s[i]=s[j];s[j]=t;}
+  return s;
+}
+function pips(hand){var n=0;hand.forEach(function(t){n+=t.a+t.b;});return n;}
+function isDouble(t){return t.a===t.b;}
+function tileName(t){return '['+t.a+'-'+t.b+']';}
+function say(html){statusEl.innerHTML=html;}
+function setTurn(who){
+  turnPill.textContent = who===0 ? 'YOUR TURN' : (who===1 ? "BOT'S TURN" : '…');
+  turnPill.className = 'turnpill' + (who===0 ? ' you' : '');
+}
+
+/* ================= pips rendering ================= */
+var PIPS={0:[],1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+function halfHTML(v){
+  var c='';
+  for(var i=0;i<9;i++)c+='<span class="pip'+(PIPS[v].indexOf(i)>=0?' on':'')+'"></span>';
+  return '<span class="half"><span class="pips">'+c+'</span></span>';
+}
+/* vertical=false -> horizontal tile showing [l][r]; vertical=true -> column showing [u]/[d] */
+function domHTML(l,r,vertical,px){
+  var w=vertical?Math.round(px/2):px, h=vertical?px:Math.round(px/2);
+  return '<div class="dom'+(vertical?' v':'')+'" style="width:'+w+'px;height:'+h+'px">'+
+    halfHTML(l)+'<span class="div"></span>'+halfHTML(r)+'</div>';
+}
+
+/* ================= snake layout ================= */
+function layout(){
+  board.innerHTML='';
+  if(!chain.length){board.style.minHeight='150px';return;}
+  var bw=board.clientWidth-16; if(bw<200)bw=200;
+  var S=Math.min(54,Math.floor(bw/7)); if(S<38)S=38;
+  var cols=Math.max(4,Math.floor(bw/S));
+  var gx=0,gy=0,dir=1,i,t,vertical,html,rows=1;
+  // first pass: count rows for board height
+  var tx=0,ty=0,td=1,r=1;
+  for(i=0;i<chain.length;i++){
+    if(td===1){ if(tx+1<cols)tx++; else {ty++;td=-1;r++;} }
+    else { if(tx-1>=0)tx--; else {ty++;td=1;r++;} }
+  }
+  board.style.minHeight=(r*S+16)+'px';
+  for(i=0;i<chain.length;i++){
+    t=chain[i];
+    var dbl=isDouble(t);
+    vertical = dbl ? true : false; // doubles sideways vs horizontal travel
+    // tile orientation within slot: normal tiles lie along travel, doubles across
+    var L=t.left,R=t.right;
+    if(dir===-1){var tmp=L;L=R;R=tmp;} // mirror on westbound rows so touching pips stay adjacent
+    html=domHTML(L,R,vertical,S-8);
+    var d=document.createElement('div');
+    d.className='ptile'; d.setAttribute('data-ci',i);
+    d.style.left=(gx*S+4)+'px'; d.style.top=(gy*S+8)+'px';
+    d.innerHTML=html;
+    board.appendChild(d);
+    if(dir===1){ if(gx+1<cols)gx++; else {gy++;dir=-1;} }
+    else { if(gx-1>=0)gx--; else {gy++;dir=1;} }
+  }
+  board.scrollTop=board.scrollHeight;
+  // refresh end pick highlights if active
+  if(pickEnd)markEnds();
+}
+/* ================= ends ================= */
+function openEnds(){
+  if(!chain.length)return null;
+  return {L:chain[0].left, R:chain[chain.length-1].right};
+}
+function endsPlayable(t){
+  var e=openEnds(); if(!e)return [];
+  var out=[];
+  if(t.a===e.L||t.b===e.L)out.push('L');
+  if(t.a===e.R||t.b===e.R)out.push('R');
+  return out;
+}
+
+/* ================= placement ================= */
+/* placeTile(player, handIdx, end) — end: 'L' | 'R' | null (first tile) */
+function placeTile(player,handIdx,end){
+  var t=hands[player][handIdx];
+  hands[player].splice(handIdx,1);
+  var entry;
+  if(chain.length===0){
+    entry={left:t.a,right:t.b}; // opener: a on the left
+  }else if(end==='L'){
+    var L=chain[0].left;
+    entry = (t.a===L)?{left:t.b,right:t.a}:{left:t.a,right:t.b};
+  }else{
+    var R=chain[chain.length-1].right;
+    entry = (t.a===R)?{left:t.a,right:t.b}:{left:t.b,right:t.a};
+  }
+  if(end==='L')chain.unshift(entry); else chain.push(entry);
+  selected=-1; pickEnd=false; firstMove=false;
+  render();
+  // *** win check AFTER placement + render: the last tile always lands ***
+  if(hands[player].length===0){
+    endRound(player,'domino');
+    return;
+  }
+  passes=0;
+  if(player===0){ setTurn(1); phase='bot'; botTimer=setTimeout(botPlay,900); }
+  else { setTurn(0); phase='player'; playerTurn(); }
+}
+
+/* ================= round flow ================= */
+function newRound(){
+  clearTimeout(botTimer);
+  var set=shuffle(mkSet());
+  hands=[set.slice(0,7),set.slice(7,14)];
+  boneyard=set.slice(14);
+  chain=[]; selected=-1; pickEnd=false; passes=0; firstMove=true; opener=null;
+  resultBox.className='result';
+  throwinBox.style.display='none';
+  // 4-doubles check BEFORE opener is decided
+  var pd=hands[0].filter(isDouble).length, bd=hands[1].filter(isDouble).length;
+  if(bd>=4){
+    say('House bot throws in the hand ('+bd+' doubles) — redealing…');
+    setTimeout(newRound,1200); render(); return;
+  }
+  if(pd>=4){
+    dblCount.textContent=pd;
+    throwinBox.style.display='block';
+    say('You were dealt <b>'+pd+' doubles</b>. Throw in for a fresh hand, or keep playing.');
+  }
+  opener=findOpener();
+  if(!opener){
+    say('No doubles and no 6-4 — reshuffling…');
+    setTimeout(newRound,1200); render(); return;
+  }
+  render();
+  if(pd>=4){
+    // player is still deciding on the throw-in — turn starts when they decide
+    say('You were dealt <b>'+pd+' doubles</b>. Throw in for a fresh hand, or keep playing.');
+    return;
+  }
+  startOpenerTurn();
+}
+function startOpenerTurn(){
+  if(!opener)return;
+  if(opener.player===0){
+    phase='first'; setTurn(0);
+    say('You hold the <b>'+tileName(opener.tile)+'</b> — tap it to open. (First move is yours to make.)');
+  }else{
+    phase='first'; setTurn(1);
+    say('House bot holds the <b>'+tileName(opener.tile)+'</b>…');
+    botTimer=setTimeout(function(){
+      var idx=hands[1].indexOf(opener.tile);
+      if(idx<0)return;
+      say('House bot opens with <b>'+tileName(opener.tile)+'</b>.');
+      placeTile(1,idx,null);
+    },1400);
+  }
+}
+function findOpener(){
+  var d,p,i;
+  for(d=6;d>=0;d--)for(p=0;p<2;p++){
+    i=hands[p].findIndex(function(t){return t.a===d&&t.b===d;});
+    if(i>=0)return {player:p,tile:hands[p][i]};
+  }
+  for(p=0;p<2;p++){
+    i=hands[p].findIndex(function(t){return t.a===4&&t.b===6;});
+    if(i>=0)return {player:p,tile:hands[p][i]};
+  }
+  return null;
+}
+
+/* ================= player turn ================= */
+function playableIdx(){
+  var out=[],e=openEnds(),i,t;
+  for(i=0;i<hands[0].length;i++){
+    t=hands[0][i];
+    if(!e){ if(firstMove){ if(t===opener.tile)out.push(i); } }
+    else if(t.a===e.L||t.b===e.L||t.a===e.R||t.b===e.R)out.push(i);
+  }
+  return out;
+}
+function playerTurn(){
+  phase='player';
+  var pl=playableIdx();
+  drawBtn.style.display='none'; passBtn.style.display='none';
+  if(!pl.length){
+    if(boneyard.length){
+      say('No playable tile — <b>draw</b> from the boneyard.');
+      drawBtn.style.display='inline-block';
+    }else{
+      say('No playable tile and the boneyard is empty — you must <b>pass</b>.');
+      passBtn.style.display='inline-block';
+    }
+  }else if(firstMove){
+    say('Tap your <b>'+tileName(opener.tile)+'</b> to open the round.');
+  }else{
+    say('Your turn — tap a glowing tile'+(pl.length>1?'':'')+'.');
+  }
+  render();
+}
+function onTileTap(i){
+  if(phase!=='player'&&phase!=='first')return;
+  var pl=playableIdx();
+  if(pl.indexOf(i)<0)return;
+  if(selected===i){selected=-1;pickEnd=false;render();return;}
+  selected=i; pickEnd=false;
+  var t=hands[0][i], ends=endsPlayable(t);
+  if(chain.length===0){ placeTile(0,i,null); return; } // opener
+  if(ends.length===1){ placeTile(0,i,ends[0]); }
+  else { pickEnd=true; say('Fits both ends — tap a <b>glowing end tile</b> on the table.'); render(); markEnds(); }
+}
+function markEnds(){
+  var n=chain.length; if(!n)return;
+  var tiles=board.querySelectorAll('.ptile');
+  tiles.forEach(function(el){
+    var ci=+el.getAttribute('data-ci');
+    if(ci===0||ci===n-1){el.classList.add('endpick');el.style.cursor='pointer';
+      el.onclick=function(){ if(pickEnd&&selected>=0){var end=ci===0?'L':'R';placeTile(0,selected,end);} };
+    }
+  });
+}
+
+/* ================= bot ================= */
+function botPlay(){
+  if(phase!=='bot')return;
+  var e=openEnds(),i,t,idx=-1,end=null,best=-1;
+  if(chain.length===0&&opener){ // safety: bot opener handled in newRound; fallback
+    idx=hands[1].indexOf(opener.tile); if(idx>=0){placeTile(1,idx,null);return;}
+  }
+  for(i=0;i<hands[1].length;i++){
+    t=hands[1][i];
+    var ends=endsPlayable(t);
+    if(ends.length){
+      var score=t.a+t.b+(isDouble(t)?3:0);
+      if(score>best){best=score;idx=i;end=ends.indexOf('R')>=0?'R':'L';}
+    }
+  }
+  if(idx>=0){
+    say('House bot plays <b>'+tileName(hands[1][idx])+'</b>.');
+    placeTile(1,idx,end); return;
+  }
+  if(boneyard.length){
+    var drawn=boneyard.pop();
+    hands[1].push(drawn); render();
+    say('House bot draws…');
+    botTimer=setTimeout(botPlay,800); return;
+  }
+  // bot passes
+  say('House bot passes.');
+  passes++;
+  if(passes>=2){endRound(-1,'blocked');return;}
+  setTurn(0); phase='player'; playerTurn();
+}
+
+/* ================= draw / pass ================= */
+drawBtn.addEventListener('click',function(){
+  if(phase!=='player'||!boneyard.length)return;
+  var t=boneyard.pop();
+  hands[0].push(t);
+  say('You drew '+tileName(t)+'.');
+  var pl=playableIdx();
+  if(!pl.length&&boneyard.length){ playerTurn(); return; }
+  playerTurn();
+});
+passBtn.addEventListener('click',function(){
+  if(phase!=='player')return;
+  say('You pass.');
+  passes++;
+  if(passes>=2){endRound(-1,'blocked');return;}
+  setTurn(1); phase='bot'; botTimer=setTimeout(botPlay,900);
+});
+
+/* ================= round end ================= */
+function endRound(winner,how){
+  phase='over'; clearTimeout(botTimer);
+  drawBtn.style.display='none'; passBtn.style.display='none';
+  setTurn(-1);
+  var p0=pips(hands[0]), p1=pips(hands[1]), pts=0, title='', text='';
+  if(how==='domino'){
+    pts=(winner===0?p1:p0);
+    title=winner===0?'YOU WIN THE ROUND! 🎉':'BOT WINS THE ROUND';
+    text=(winner===0?'You went out! +':'Bot went out. +')+pts+' pts '+
+      (winner===0?'(bot held '+p1+' pips).':'(you held '+p0+' pips).');
+  }else{
+    if(p0<p1){winner=0;pts=p1-p0;title='YOU WIN THE ROUND! 🎉';text='Blocked game — you held fewer pips ('+p0+' vs '+p1+'). +'+pts+' pts.';}
+    else if(p1<p0){winner=1;pts=p0-p1;title='BOT WINS THE ROUND';text='Blocked game — bot held fewer pips ('+p1+' vs '+p0+'). +'+pts+' pts.';}
+    else{winner=-1;title="ROUND TIED";text='Blocked game, even pips ('+p0+'). No points.';}
+  }
+  if(winner>=0){
+    matchPts[winner]+=pts;
+    try{if(navigator.vibrate&&winner===0)navigator.vibrate(60);}catch(e){}
+  }
+  resultTitle.textContent=title; resultText.textContent=text;
+  resultBox.className='result show';
+  updateScore();
+  say(title);
+  if(matchPts[0]>=TARGET||matchPts[1]>=TARGET){
+    resultTitle.textContent=matchPts[0]>=TARGET?'🏆 YOU WIN THE MATCH!':'BOT WINS THE MATCH';
+    resultText.textContent+=' Final: you '+matchPts[0]+' · bot '+matchPts[1]+'.';
+    document.getElementById('nextRoundBtn').style.display='none';
+  }else{
+    document.getElementById('nextRoundBtn').style.display='inline-block';
+  }
+  render();
+}
+function updateScore(){
+  matchScore.innerHTML='YOU <b>'+matchPts[0]+'</b> · BOT <b>'+matchPts[1]+'</b>';
+}
+document.getElementById('nextRoundBtn').addEventListener('click',newRound);
+document.getElementById('newMatchBtn').addEventListener('click',function(){
+  matchPts=[0,0]; updateScore(); newRound();
+});
+document.getElementById('throwYes').addEventListener('click',function(){
+  say('Hand thrown in — redealing…'); setTimeout(newRound,900);
+});
+document.getElementById('throwNo').addEventListener('click',function(){
+  throwinBox.style.display='none';
+  startOpenerTurn();
+  render();
+});
+document.getElementById('backBtn').addEventListener('click',function(){location.href='index.html';});
+
+/* ================= render ================= */
+function render(){
+  layout();
+  var e=openEnds();
+  endLEl.textContent=e?e.L:'–'; endREl.textContent=e?e.R:'–';
+  boneyardLbl.textContent='Boneyard: '+boneyard.length;
+  botCount.textContent=hands[1].length+' tiles';
+  handCount.textContent=hands[0].length+' tiles';
+  // hand
+  handEl.innerHTML='';
+  var pl=(phase==='player'||phase==='first')?playableIdx():[];
+  // sort hand: doubles first, then by pips
+  var order=hands[0].map(function(t,i){return i;}).sort(function(x,y){
+    var dx=isDouble(hands[0][x])?1:0, dy=isDouble(hands[0][y])?1:0;
+    if(dx!==dy)return dy-dx;
+    return (hands[0][y].a+hands[0][y].b)-(hands[0][x].a+hands[0][x].b);
+  });
+  order.forEach(function(i){
+    var t=hands[0][i];
+    var w=document.createElement('div');
+    w.className='dom handtile'+(pl.indexOf(i)>=0?' playable':'')+(selected===i?' selected':'');
+    w.style.width='64px'; w.style.height='34px'; w.style.flex='none';
+    w.innerHTML=halfHTML(t.a)+'<span class="div"></span>'+halfHTML(t.b);
+    (function(idx){w.addEventListener('click',function(){onTileTap(idx);});})(i);
+    handEl.appendChild(w);
+  });
+  updateScore();
+}
+
+/* ================= go ================= */
+updateScore();
+newRound();
+})();
+</script>
+</body>
+</html>
