@@ -1957,7 +1957,8 @@ function parlayAdd(g,type,pick){
   for(i=0;i<parlay.length;i++){if(parlay[i].gameId===g.id){say('One pick per game on a ticket — already have this game.');return;}}
   if(parlay.length>=PARLAY_MAX_LEGS){say('Max '+PARLAY_MAX_LEGS+' legs per ticket.');return;}
   var pl=pickLabel(g,type,pick);
-  if(!pl||!pl.odds){say('No line available for that pick.');return;}
+  if(!pl){say('No line available for that pick.');return;}
+  if(!pl.odds){pl.odds=-110;}
   parlay.push({gameId:g.id,sportKey:g.sport,gameLabel:g.away+' @ '+g.home,type:type,pick:pick,label:pl.label,odds:pl.odds,line:pl.line});
   renderParlayBadge();
   say('Added to parlay ('+parlay.length+') — tap 🎟️ Parlay to review your ticket.');
