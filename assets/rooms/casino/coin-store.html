@@ -38,6 +38,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .modal .close{min-height:48px;padding:10px 34px;border-radius:9px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
 .note{margin-top:16px;font-size:12px;color:#8a8272;line-height:1.5;text-align:center}
 </style>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAlBvODP53lfDAPD3w4U6fiz-mxpEzS7bp4pldMP64JErcBcyzpggnOn6C2kQnKMjnbh8YVFyobvgUPfs&currency=USD"></script>
 </head>
 <body>
 <div class="topbar">
@@ -46,15 +47,16 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <div class="bal"><small>COINS</small><strong id="balance">0</strong></div>
 </div>
 <div class="wrap">
-  <p class="hint">Bigger bundles mean <b>more coins per dollar</b> — the Whale is the best deal in the house. Checkout opens here once the secure cashier is connected.</p>
+  <p class="hint">Bigger bundles mean <b>more coins per dollar</b> — the Whale is the best deal in the house. Secure checkout via PayPal.</p>
   <div id="tiers"></div>
   <p class="note">Coins are for play only and have no cash value.</p>
 </div>
-<div class="modal" id="soonModal" role="dialog" aria-modal="true" aria-labelledby="soonTitle">
+<div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="panel">
-    <h2 id="soonTitle">Secure checkout coming soon</h2>
-    <p>The PayPal cashier opens right here once it&rsquo;s connected. <b>No charge was made</b> &mdash; this button is just holding your place.</p>
-    <button class="close" id="soonClose" type="button">GOT IT</button>
+    <h2 id="payTitle">Checkout</h2>
+    <p id="payDesc">Complete your purchase with PayPal.</p>
+    <div id="paypal-buttons"></div>
+    <button class="close" id="payClose" type="button" style="margin-top:12px">CANCEL</button>
   </div>
 </div>
 <script>
@@ -89,11 +91,33 @@ function money(n){return '$'+n.toFixed(2);}
     var buy=document.createElement('button');
     buy.className='buy';buy.type='button';buy.textContent='BUY';
     buy.setAttribute('aria-label','Buy '+t.name+' bundle for '+money(t.price));
-    buy.addEventListener('click',function(){document.getElementById('soonModal').classList.add('open');});
+    buy.addEventListener('click',function(){openPayPal(t);});
     d.appendChild(buy);wrap.appendChild(d);
   });
-  document.getElementById('soonClose').addEventListener('click',function(){document.getElementById('soonModal').classList.remove('open');});
-  document.getElementById('soonModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+  document.getElementById('payClose').addEventListener('click',function(){document.getElementById('payModal').classList.remove('open');});
+  document.getElementById('payModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+  window.openPayPal=function(t){
+    document.getElementById('payTitle').textContent=t.name+' — '+money(t.price);
+    document.getElementById('payDesc').innerHTML='You get <b>'+fmt(t.coins)+' coins</b> for '+money(t.price)+'. Pay with PayPal below.';
+    document.getElementById('payModal').classList.add('open');
+    document.getElementById('paypal-buttons').innerHTML='';
+    paypal.Buttons({
+      createOrder:function(data,actions){
+        return actions.order.create({purchase_units:[{amount:{value:t.price.toFixed(2)},description:t.name+' coin bundle ('+fmt(t.coins)+' coins)'}]});
+      },
+      onApprove:function(data,actions){
+        return actions.order.capture().then(function(details){
+          var b=getBank();if(b===null)b=0;
+          b+=t.coins;
+          try{localStorage.setItem(BANK_KEY,String(b));}catch(e){}
+          document.getElementById('balance').textContent=fmt(b);
+          document.getElementById('payModal').classList.remove('open');
+          alert('Payment complete! '+fmt(t.coins)+' coins added to your balance.');
+        });
+      },
+      onError:function(err){alert('Payment failed. Please try again.');}
+    }).render('#paypal-buttons');
+  };
   document.getElementById('backBtn').addEventListener('click',function(){window.history.back();});
 })();
 })();
