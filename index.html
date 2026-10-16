@@ -166,7 +166,7 @@ body.room-open #supportLauncher {
     <p class="intro-subtitle">Theater &amp; Casino</p>
     <p class="intro-est">Est. 2026</p>
     <button class="intro-enter" id="introEnter" type="button">Tap to Enter</button>
-    <button class="install-app" id="installApp" type="button">📲 Install Nikkiflixs</button>
+    <button class="install-app show" id="installApp" type="button">📲 Install Nikkiflixs</button>
     <p class="install-hint" id="installHint">To install: tap <b>Share</b> ⬆️ then <b>Add to Home Screen</b>.</p>
     <p class="intro-yt">Check out our YouTube channel</p>
   </div>
@@ -650,7 +650,7 @@ window.addEventListener('nikkiflixs:local-admin-ready',syncAdminServerState);roo
   });
 
   installBtn.addEventListener('click', function () {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) { alert('To install: tap your browser menu (⋮) then "Add to Home Screen" or "Install App".'); return; }
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then(function () {
       installBtn.classList.remove('show');
