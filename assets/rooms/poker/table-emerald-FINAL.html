@@ -155,8 +155,29 @@
     .seat.folded .pocket{display:none!important}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
   .dealer-notch{position:absolute;z-index:5;left:78%;top:10%;width:120px;height:60px;background:#120b08;border:4px solid #7a5c1e;border-bottom:none;border-radius:65px 65px 0 0;transform:translate(-50%,-50%);box-shadow:inset 0 8px 15px #000,0 2px 8px #000a;display:none}
-    #tipBtn{position:absolute;left:48%;top:70px;transform:translate(-50%,0);z-index:25;margin:0}
+    #tipBtn{position:absolute;left:78%;top:70px;transform:translate(-50%,0);z-index:25;margin:0}
     .felt-marker{display:none!important}
+
+.coin-panel{max-width:560px;text-align:center;position:relative}
+.coin-x{position:absolute;top:10px;right:14px;background:none;border:none;color:#cbb995;font-size:22px;cursor:pointer;padding:8px}
+.coin-x:hover{color:#fff}
+.coin-panel h2{color:#f4d68d;margin:0 0 6px;font-size:22px}
+.coin-sub{color:#cbb995;margin:0 0 16px;font-size:14px}
+.coin-packs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.coin-pack{border:1px solid #8a6a2f;border-radius:12px;padding:16px 8px;background:#1a120a;position:relative}
+.coin-pack.featured{border-color:#f4d68d;border-width:2px;background:#241809}
+.coin-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#f4d68d;color:#1a120a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:8px;white-space:nowrap}
+.coin-amount{font-size:20px;font-weight:800;color:#ffe9bd}
+.coin-bonus{font-size:12px;color:#7CFC00;font-weight:700;margin:4px 0}
+.coin-price{font-size:18px;color:#f4d68d;margin:8px 0;font-weight:700}
+.coin-buy{min-height:44px;width:100%;border:1px solid #e2bd6c;background:#831b24;color:#fff8e8;font-weight:800;border-radius:8px;cursor:pointer;font-size:14px}
+.coin-buy:hover{background:#a0222e}
+.coin-fine{font-size:11px;color:#8a7a5a;margin:0}
+.avatar-panel{max-width:520px;text-align:center}
+.avatar-panel h2{color:#f4d68d;margin:0 0 12px;font-size:20px}
+.avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-height:60vh;overflow-y:auto;padding:4px}
+.avatar-pick{width:100%;aspect-ratio:1;border-radius:50%;border:2px solid #8a6a2f;cursor:pointer;object-fit:cover}
+.avatar-pick:hover{border-color:#f4d68d;transform:scale(1.05)}
 </style>
 <style>#nl-badge-frame{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style>
 
@@ -217,7 +238,7 @@
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
     <button class="tool" id="funBtn" type="button" aria-label="Throwables and emotes">🎯 <span class="wide-label">FUN</span></button>
-    <button class="tool gold" id="tipBtn" type="button" style="position:absolute;left:48%;top:70px;transform:translate(-50%,0);z-index:25;margin:0;white-space:nowrap">TIP THE DEALER</button>
+    <button class="tool gold" id="tipBtn" type="button" style="position:absolute;left:78%;top:70px;transform:translate(-50%,0);z-index:25;margin:0;white-space:nowrap">TIP THE DEALER</button>
   </header>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -230,7 +251,7 @@
       <div class="muck" id="muck" aria-label="Muck pile"><i></i><i></i></div>
       <div class="motion" id="motion" aria-hidden="true"></div>
 
-      <article class="seat you empty-seat" data-index="0" style="--x:51%;--y:90%;--kx:51%;--ky:90%;--show-x:40%;--show-y:62%" aria-label="Your empty seat, bottom-center"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-01.png" alt="Ace"></div><div class="nameplate"><strong>Ace</strong><span class="stack-value">$4,892</span><button class="sit-in" id="sitIn" type="button">SIT IN</button></div><i class="blind"></i></div><div class="pocket" aria-label="Your cards, king of clubs and nine of spades"><span class="hole" data-suit="♣">K</span><span class="hole" data-suit="♠">9</span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat you empty-seat" data-index="0" style="--x:51%;--y:97%;--kx:51%;--ky:97%;--show-x:40%;--show-y:62%" aria-label="Your empty seat, bottom-center"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-01.png" alt="Ace"></div><div class="nameplate"><strong>Ace</strong><span class="stack-value">$4,892</span><button class="sit-in" id="sitIn" type="button">SIT IN</button></div><i class="blind"></i></div><div class="pocket" aria-label="Your cards, king of clubs and nine of spades"><span class="hole" data-suit="♣">K</span><span class="hole" data-suit="♠">9</span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
       <article class="seat" data-index="1" style="--x:12%;--y:92%;--kx:28%;--ky:87%;--show-x:34%;--show-y:53%;" aria-label="Ace"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-17.png" alt="Luna"></div><div class="nameplate"><strong>Luna</strong><span>$910</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
       <article class="seat" data-index="2" style="--x:10%;--y:60%;--kx:25%;--ky:67%;--show-x:35%;--show-y:42%;" aria-label="Luna"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-03.png" alt="Slick"></div><div class="nameplate"><strong>Slick</strong><span>$325</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
       <article class="seat" data-index="3" style="--x:11%;--y:32.5%;--kx:11%;--ky:32.5%;--show-x:42%;--show-y:45%;" aria-label="Slick"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-18.png" alt="Rosa V."></div><div class="nameplate"><strong>Rosa V.</strong><span>$642</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
@@ -315,7 +336,7 @@
     setTimeout(function(){
       names[target]='You';
       var strong=seat.querySelector('.nameplate strong');if(strong)strong.textContent='You';
-      var img=seat.querySelector('.portrait');if(img){img.src='assets/avatar-3.png';img.alt='You';}
+      var img=seat.querySelector('.portrait');if(img){img.src=(window.chosenAvatar||'/assets/avatars/gallery/avatar-01.png');img.alt='You';}
       seat.classList.remove('empty-seat','folded');
       delete handFolded[target];delete botProfiles[target];
       /* Clear any leftover face-down cards from the previous bot so the
@@ -1250,5 +1271,67 @@ return '<svg width="92" height="92" viewBox="0 0 92 92"><path d="M45 16 C61 14 7
 
 
 
-</body>
+
+<div class="modal open" id="coinOfferModal" role="dialog" aria-modal="true" aria-labelledby="coinOfferTitle">
+<div class="panel coin-panel">
+<button class="coin-x" id="coinOfferX" type="button" aria-label="Close">✕</button>
+<h2 id="coinOfferTitle">🪙 Welcome to the Emerald Room!</h2>
+<p class="coin-sub">Limited-time offer — extra coins on every pack!</p>
+<div class="coin-packs">
+<div class="coin-pack">
+<div class="coin-amount">25,000</div>
+<div class="coin-bonus">+5,000 BONUS</div>
+<div class="coin-price">$4.99</div>
+<button class="coin-buy" data-pack="starter">GET COINS</button>
+</div>
+<div class="coin-pack featured">
+<div class="coin-tag">MOST POPULAR</div>
+<div class="coin-amount">75,000</div>
+<div class="coin-bonus">+25,000 BONUS</div>
+<div class="coin-price">$14.99</div>
+<button class="coin-buy" data-pack="popular">GET COINS</button>
+</div>
+<div class="coin-pack">
+<div class="coin-amount">200,000</div>
+<div class="coin-bonus">+75,000 BONUS</div>
+<div class="coin-price">$39.99</div>
+<button class="coin-buy" data-pack="highroller">GET COINS</button>
+</div>
+</div>
+<p class="coin-fine">Bonus coins applied automatically at checkout.</p>
+</div>
+</div>
+
+<div class="modal" id="avatarPickerModal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle">
+<div class="panel avatar-panel">
+<h2 id="avatarPickerTitle">Choose Your Avatar</h2>
+<div class="avatar-grid"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-01.png" data-avatar="/assets/avatars/gallery/avatar-01.png" alt="Avatar 1"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-02.png" data-avatar="/assets/avatars/gallery/avatar-02.png" alt="Avatar 2"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-03.png" data-avatar="/assets/avatars/gallery/avatar-03.png" alt="Avatar 3"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-04.png" data-avatar="/assets/avatars/gallery/avatar-04.png" alt="Avatar 4"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-05.png" data-avatar="/assets/avatars/gallery/avatar-05.png" alt="Avatar 5"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-06.png" data-avatar="/assets/avatars/gallery/avatar-06.png" alt="Avatar 6"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-07.png" data-avatar="/assets/avatars/gallery/avatar-07.png" alt="Avatar 7"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-08.png" data-avatar="/assets/avatars/gallery/avatar-08.png" alt="Avatar 8"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-09.png" data-avatar="/assets/avatars/gallery/avatar-09.png" alt="Avatar 9"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-10.png" data-avatar="/assets/avatars/gallery/avatar-10.png" alt="Avatar 10"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-11.png" data-avatar="/assets/avatars/gallery/avatar-11.png" alt="Avatar 11"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-12.png" data-avatar="/assets/avatars/gallery/avatar-12.png" alt="Avatar 12"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-13.png" data-avatar="/assets/avatars/gallery/avatar-13.png" alt="Avatar 13"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-14.png" data-avatar="/assets/avatars/gallery/avatar-14.png" alt="Avatar 14"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-15.png" data-avatar="/assets/avatars/gallery/avatar-15.png" alt="Avatar 15"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-16.png" data-avatar="/assets/avatars/gallery/avatar-16.png" alt="Avatar 16"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-17.png" data-avatar="/assets/avatars/gallery/avatar-17.png" alt="Avatar 17"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-18.png" data-avatar="/assets/avatars/gallery/avatar-18.png" alt="Avatar 18"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-19.png" data-avatar="/assets/avatars/gallery/avatar-19.png" alt="Avatar 19"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-20.png" data-avatar="/assets/avatars/gallery/avatar-20.png" alt="Avatar 20"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-21.png" data-avatar="/assets/avatars/gallery/avatar-21.png" alt="Avatar 21"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-22.png" data-avatar="/assets/avatars/gallery/avatar-22.png" alt="Avatar 22"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-23.png" data-avatar="/assets/avatars/gallery/avatar-23.png" alt="Avatar 23"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-24.png" data-avatar="/assets/avatars/gallery/avatar-24.png" alt="Avatar 24"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-25.png" data-avatar="/assets/avatars/gallery/avatar-25.png" alt="Avatar 25"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-26.png" data-avatar="/assets/avatars/gallery/avatar-26.png" alt="Avatar 26"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-27.png" data-avatar="/assets/avatars/gallery/avatar-27.png" alt="Avatar 27"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-28.png" data-avatar="/assets/avatars/gallery/avatar-28.png" alt="Avatar 28"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-29.png" data-avatar="/assets/avatars/gallery/avatar-29.png" alt="Avatar 29"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-30.png" data-avatar="/assets/avatars/gallery/avatar-30.png" alt="Avatar 30"></div>
+</div>
+</div>
+<script>
+// Coin offer -> Avatar picker flow
+(function(){
+  var coinModal = document.getElementById('coinOfferModal');
+  var avatarModal = document.getElementById('avatarPickerModal');
+  // Close coin offer with X -> show avatar picker
+  document.getElementById('coinOfferX').addEventListener('click', function(){
+    coinModal.classList.remove('open');
+    avatarModal.classList.add('open');
+  });
+  // Coin buy buttons (placeholder - wire to payment later)
+  document.querySelectorAll('.coin-buy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pack = this.getAttribute('data-pack');
+      alert('Coin purchase coming soon! Pack: ' + pack);
+    });
+  });
+  // Avatar selection -> close picker, set avatar
+  document.querySelectorAll('.avatar-pick').forEach(function(img){
+    img.addEventListener('click', function(){
+      window.chosenAvatar = this.getAttribute('data-avatar');
+      avatarModal.classList.remove('open');
+    });
+  });
+})();
+</script></body>
 </html>
