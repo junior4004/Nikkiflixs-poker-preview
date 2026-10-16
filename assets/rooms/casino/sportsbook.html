@@ -149,6 +149,51 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .cmrow{display:flex;gap:8px;padding:10px;border-top:1px solid #5e452a;background:#171008}
 .cmrow input{flex:1;min-height:44px;border-radius:8px;border:1px solid #77613f;background:#050403;color:#fff;padding:0 10px;font:500 13px/1 "Source Sans 3",sans-serif;min-width:0}
 .cmrow button{flex:none;min-width:52px;min-height:44px;border-radius:8px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-size:16px}
+
+/* ============ LIVE SCORE TICKER ============ */
+.ticker-wrap{display:flex;align-items:center;background:#0d0805;border-top:1px solid #c9a22755;border-bottom:1px solid #c9a22755;overflow:hidden;min-height:34px;}
+.ticker-label{flex:0 0 auto;background:#c9a227;color:#1a0f0a;font:800 11px/1 'Barlow Condensed',sans-serif;padding:6px 10px;margin:0 0 0 8px;border-radius:4px;letter-spacing:.08em;animation:tickpulse 2s ease-in-out infinite;}
+@keyframes tickpulse{0%,100%{opacity:1}50%{opacity:.55}}
+.ticker-mask{flex:1;overflow:hidden;white-space:nowrap;}
+.ticker{display:inline-block;white-space:nowrap;animation:tickscroll 45s linear infinite;color:#f5e6c8;font:600 13px/34px 'IBM Plex Sans',sans-serif;will-change:transform;}
+.ticker .tsep{color:#c9a227;margin:0 14px;}
+.ticker .tlive{color:#7CFC90;font-weight:700;}
+.ticker .tfinal{color:#bfa76a;}
+@keyframes tickscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* ============ PARLAY ============ */
+.pbadge{display:inline-block;min-width:18px;background:#c9a227;color:#1a0f0a;font:800 11px/18px 'IBM Plex Sans',sans-serif;border-radius:9px;text-align:center;padding:0 4px;margin-left:2px;}
+.prow{display:flex;gap:6px;flex-wrap:wrap;}
+.pbtn{flex:1 1 30%;background:#241a10;border:1px dashed #c9a22788;color:#e8c86a;font:700 11px/1.4 'IBM Plex Sans',sans-serif;border-radius:6px;padding:6px 4px;cursor:pointer;}
+.pbtn:active{background:#3a2a16;}
+.pleg{background:#160f08;border:1px solid #c9a22733;border-radius:8px;padding:8px 10px;margin:0 0 8px;}
+.pleg .pl1{display:flex;justify-content:space-between;align-items:center;color:#f5e6c8;font:700 13px 'IBM Plex Sans',sans-serif;}
+.pleg .pl2{color:#9c8a68;font:500 12px 'IBM Plex Sans',sans-serif;margin-top:2px;}
+.px{background:none;border:none;color:#e06c6c;font:700 14px/1 sans-serif;cursor:pointer;padding:2px 6px;}
+/* ============ POWER RANKINGS ============ */
+.pwr-row{display:flex;align-items:center;gap:10px;background:#160f08;border:1px solid #c9a22722;border-radius:8px;padding:8px 12px;margin:0 0 6px;}
+.pwr-rank{flex:0 0 30px;font:800 16px 'Barlow Condensed',sans-serif;color:#c9a227;text-align:center;}
+.pwr-team{flex:1;color:#f5e6c8;font:600 13px 'IBM Plex Sans',sans-serif;}
+.pwr-team b{color:#e8c86a;}
+.pwr-rec{flex:0 0 52px;text-align:right;color:#9c8a68;font:600 12px 'IBM Plex Sans',sans-serif;}
+.pwr-pd{flex:0 0 44px;text-align:right;font:700 13px 'IBM Plex Sans',sans-serif;color:#7CFC90;}
+.pwr-pd.neg{color:#e06c6c;}
+/* ============ INJURY WIRE ============ */
+.wire-head{color:#f5e6c8;font:700 13px 'IBM Plex Sans',sans-serif;margin:10px 0 6px;padding:8px 10px;background:#2a0f0f;border:1px solid #e06c6c55;border-radius:8px;}
+.wire-row{display:flex;align-items:center;gap:8px;background:#160f08;border:1px solid #c9a22722;border-radius:8px;padding:7px 10px;margin:0 0 6px;}
+.wire-row .sopp{flex:1;}
+.brk{display:inline-block;background:#e06c6c;color:#fff;font:800 10px/1 'IBM Plex Sans',sans-serif;padding:4px 7px;border-radius:4px;letter-spacing:.06em;animation:tickpulse 1.6s ease-in-out infinite;}
+.wire-sub{color:#9c8a68;font:500 11px 'IBM Plex Sans',sans-serif;margin:0 0 8px;}
+/* ============ HOT/NOT + SMASH ============ */
+.trend-sec{margin:0 0 14px;}
+.trend-head{color:#f5e6c8;font:800 14px 'Barlow Condensed',sans-serif;letter-spacing:.05em;margin:12px 0 6px;text-transform:uppercase;}
+.ss-card{background:#160f08;border:1px solid #c9a22733;border-radius:10px;padding:10px 12px;margin:0 0 8px;}
+.ss-card .pname{color:#f5e6c8;font:700 14px 'IBM Plex Sans',sans-serif;}
+.ss-card .why{color:#bfa76a;font:500 12px/1.5 'IBM Plex Sans',sans-serif;margin-top:4px;}
+.ss-tag{display:inline-block;font:800 10px/1 'IBM Plex Sans',sans-serif;padding:4px 8px;border-radius:4px;letter-spacing:.06em;margin-bottom:6px;}
+.ss-tag.start{background:#1d3a1d;color:#7CFC90;}
+.ss-tag.sit{background:#3a1d1d;color:#e06c6c;}
+.ss-tag.slp{background:#1d2a3a;color:#8ecdfc;}
+
 </style>
 </head>
 <body>
@@ -156,7 +201,12 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <button class="back" id="backBtn" type="button">← Casino</button>
   <h1>🏈 Sportsbook</h1>
   <button class="back" id="myBetsBtn" type="button">🎫 My Bets</button>
+  <button class="back" id="parlayBtn" type="button">🎟️ Parlay <span id="parlayCount" class="pbadge"></span></button>
   <div class="bal"><small>GOLD COINS</small><strong id="balance">0</strong></div>
+</div>
+<div class="ticker-wrap" id="tickerWrap" aria-label="Live scores">
+  <span class="ticker-label">⚡ SCORES</span>
+  <div class="ticker-mask"><div class="ticker" id="ticker"><span>Loading live scores…</span></div></div>
 </div>
 <div class="funbanner">For fun only — gold coins have no cash value. Spreads shown are real Vegas-style lines.</div>
 <div style="text-align:center;padding:12px;">
@@ -199,8 +249,15 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
     <button class="vtab" id="ssTab" type="button">🎯 Start/Sit</button>
     <button class="vtab" id="slpTab" type="button">😴 Sleepers</button>
     <button class="vtab" id="cmpTab" type="button">⚖️ Compare</button>
+    <button class="vtab" id="pwrTab" type="button">📊 Power</button>
+    <button class="vtab" id="hotTab" type="button">🔥 Hot/Not</button>
   </div>
   <div id="fantInjView">
+    <div id="injWireWrap">
+      <div class="wire-head" style="background:#160f08;border-color:#c9a22733;">⚡ <b>LIVE INJURY WIRE</b> — <span id="wireStatus">connecting…</span> <button type="button" id="wireRefresh" style="float:right;background:none;border:1px solid #c9a22788;color:#e8c86a;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;">↻ Refresh</button></div>
+      <div class="wire-sub">Breaking injuries across all 32 teams · auto-refreshes every 3 min on game days</div>
+      <div id="injWire"></div>
+    </div>
     <div class="sched-controls"><select id="injTeamSelect" aria-label="Choose a team for injury report"></select></div>
     <div class="fant-note">Injury report · live roster data via ESPN</div>
     <div id="injList"></div>
@@ -227,6 +284,14 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
     </div>
     <div id="cmpOut"></div>
   </div>
+  <div id="fantPwrView" style="display:none">
+    <div class="fant-note">📊 NFL Power Rankings · computed live from win% + point differential</div>
+    <div id="pwrList"></div>
+  </div>
+  <div id="fantHotView" style="display:none">
+    <div class="fant-note">🔥 Hot/Not · who's trending in fantasy headlines right now</div>
+    <div id="hotList"></div>
+  </div>
 </div>
 
 <div class="modal" id="slipModal" role="dialog" aria-modal="true">
@@ -249,6 +314,19 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   </div>
 </div>
 
+
+<div class="modal" id="parlayModal" role="dialog" aria-modal="true">
+  <div class="mcard">
+    <h2>🎟️ Parlay Ticket</h2>
+    <p class="sub">5 gold coins per ticket · every pick must win · pushes don't kill your ticket</p>
+    <div id="parlayLegs"></div>
+    <div class="payout" id="parlayPayout"></div>
+    <div class="mactions">
+      <button class="cancel" id="parlayCancel" type="button">Close</button>
+      <button class="place" id="parlayBuy" type="button">Buy Ticket — 5 GC</button>
+    </div>
+  </div>
+</div>
 <div class="modal" id="betsModal" role="dialog" aria-modal="true">
   <div class="mcard">
     <h2>🎫 My bets</h2>
@@ -442,6 +520,13 @@ function settleOpenBets(){
   var bets=getBets(),changed=false,bal=getBank()||0;
   bets.forEach(function(b){
     if(b.status!=='open')return;
+    if(b.type==='parlay'){
+      var pr=settleParlayLegs(b);
+      if(!pr)return;
+      b.status=pr;b.finalScore=b.legs.length+' legs';
+      if(pr==='won')bal+=b.payout;
+      changed=true;return;
+    }
     var s=scoreFor(b),hs=null,as=null,done=false;
     if(s&&s.completed){hs=s.homeScore;as=s.awayScore;done=true;}
     else if(b.demoFinal){hs=b.demoFinal.home;as=b.demoFinal.away;done=true;}
@@ -522,6 +607,15 @@ function renderGames(games){
       totB.addEventListener('click',function(){openSlip(g,'total','under');});
       row2.appendChild(totB);
       d.appendChild(row2);
+      var prow=document.createElement('div');prow.className='oddsrow prow';prow.style.marginTop='8px';
+      prow.appendChild(parlayBtn(g,g.awayAbbr+' '+fmtSpread(-g.spreadHome),'spread','away'));
+      prow.appendChild(parlayBtn(g,g.homeAbbr+' '+fmtSpread(g.spreadHome),'spread','home'));
+      prow.appendChild(parlayBtn(g,g.awayAbbr+' ML','moneyline','away'));
+      prow.appendChild(parlayBtn(g,g.homeAbbr+' ML','moneyline','home'));
+      var tOv=g.totalLine!=null?('O '+g.totalLine):'O —',tUn=g.totalLine!=null?('U '+g.totalLine):'U —';
+      prow.appendChild(parlayBtn(g,tOv,'total','over'));
+      prow.appendChild(parlayBtn(g,tUn,'total','under'));
+      d.appendChild(prow);
     } else {
       var f=document.createElement('div');f.style.cssText='font:700 13px/1.5 "Source Sans 3",sans-serif;color:#9fd08a;text-align:center;padding:4px;';
       f.textContent='Final: '+g.away+' '+g.awayScore+' — '+g.home+' '+g.homeScore;
@@ -591,6 +685,11 @@ function renderBets(){
   bets.forEach(function(b){
     var d=document.createElement('div');d.className='bet';
     var st=b.status==='open'?'OPEN':b.status==='won'?'WON ✓':b.status==='lost'?'LOST':'PUSH';
+    if(b.type==='parlay'){
+      d.innerHTML='<div class="bl1"><span>🎟️ '+b.legs.length+'-leg parlay @ '+fmtOdds(b.odds)+'</span><span class="st '+b.status+'">'+st+'</span></div>'+
+        '<div class="bl2">'+b.legs.map(function(l){return l.label;}).join('<br>')+'<br>Stake: 5 GC → <b>'+b.payout+' GC</b>'+(b.finalScore?' · '+b.finalScore:'')+'</div>';
+      list.appendChild(d);return;
+    }
     d.innerHTML='<div class="bl1"><span>'+b.label+'</span><span class="st '+b.status+'">'+st+'</span></div>'+
       '<div class="bl2">'+b.gameLabel+(b.finalScore?' · Final '+b.finalScore:'')+'<br>Stake: '+fmt(b.stake)+' GC @ '+fmtOdds(b.odds)+'</div>';
     list.appendChild(d);
@@ -1106,15 +1205,21 @@ function setFantSub(s){
   document.getElementById('fantSSView').style.display=s==='ss'?'':'none';
   document.getElementById('fantSlpView').style.display=s==='slp'?'':'none';
   document.getElementById('fantCmpView').style.display=s==='cmp'?'':'none';
+  document.getElementById('fantPwrView').style.display=s==='pwr'?'':'none';
+  document.getElementById('fantHotView').style.display=s==='hot'?'':'none';
   document.getElementById('injTab').className='vtab'+(s==='inj'?' active':'');
   document.getElementById('advTab').className='vtab'+(s==='adv'?' active':'');
   document.getElementById('ssTab').className='vtab'+(s==='ss'?' active':'');
   document.getElementById('slpTab').className='vtab'+(s==='slp'?' active':'');
   document.getElementById('cmpTab').className='vtab'+(s==='cmp'?' active':'');
+  document.getElementById('pwrTab').className='vtab'+(s==='pwr'?' active':'');
+  document.getElementById('hotTab').className='vtab'+(s==='hot'?' active':'');
   if(s==='adv')enterFantAdvice();
   if(s==='ss')enterStartSit();
   if(s==='slp')enterSleepers();
   if(s==='cmp')enterCompare();
+  if(s==='pwr')enterPower();
+  if(s==='hot')enterHotNot();
 }
 /* ============ FANTASY DEEP: START/SIT + SLEEPERS + PLAYER COMPARE (Jerry's order) ============ */
 /* Jerry: fantasy info is the draw — free, accurate, up-to-date. Freshness law applies everywhere. */
@@ -1253,6 +1358,9 @@ function enterStartSit(){
       });
     });
   });
+
+  /* smash/cold spots from real game totals */
+  try{renderSmashSpots(w);}catch(e){}
 }
 /* ---- SLEEPERS ---- */
 function enterSleepers(){
@@ -1321,6 +1429,9 @@ function enterSleepers(){
       });
     });
   });
+
+  /* next-week radar */
+  try{renderNextWeekRadar(w);}catch(e){}
 }
 /* ---- PLAYER COMPARE ---- */
 /* ---- PLAYER COMPARE (boxscore-powered: reliable recent-form stats) ---- */
@@ -1800,7 +1911,395 @@ document.getElementById('refreshBtn').addEventListener('click',function(){
   var cache=lsGet(CACHE_KEY,{});delete cache[curSport];lsSet(CACHE_KEY,cache);
   loadGames(curSport,renderGames);say('Lines refreshed.');
 });
+/* ============ LIVE SCORE TICKER ============ */
+var TICK_LEAGUES=[{p:'football/nfl',t:'NFL'},{p:'basketball/nba',t:'NBA'},{p:'baseball/mlb',t:'MLB'},{p:'hockey/nhl',t:'NHL'}];
+function tickScores(){
+  var jobs=TICK_LEAGUES.map(function(lg){
+    return espn(lg.p+'/scoreboard').then(function(d){return {t:lg.t,d:d};}).catch(function(){return null;});
+  });
+  Promise.all(jobs).then(function(rs){
+    var items=[];
+    rs.forEach(function(r){
+      if(!r||!r.d||!r.d.events)return;
+      r.d.events.forEach(function(e){
+        var comp=e.competitions&&e.competitions[0];if(!comp)return;
+        var st=comp.status&&comp.status.type||{};
+        var cs=comp.competitors||[],home=null,away=null;
+        cs.forEach(function(c){if(c.homeAway==='home')home=c;else away=c;});
+        if(!home||!away)return;
+        var hab=home.team.abbreviation||home.team.shortDisplayName,aab=away.team.abbreviation||away.team.shortDisplayName;
+        var hs=home.score==null?'':home.score,as=away.score==null?'':away.score;
+        var txt,cls='';
+        if(st.state==='in'){txt='● LIVE '+r.t+' '+aab+' '+as+' @ '+hab+' '+hs+' '+(st.shortDetail||'');cls='tlive';}
+        else if(st.state==='post'){txt=r.t+' '+aab+' '+as+' @ '+hab+' '+hs+' (Final)';cls='tfinal';}
+        else{txt=r.t+' '+aab+' @ '+hab+' ('+(st.shortDetail||'upcoming')+')';}
+        items.push({live:st.state==='in',txt:txt,cls:cls});
+      });
+    });
+    items.sort(function(a,b){return (b.live?1:0)-(a.live?1:0);});
+    renderTicker(items.slice(0,40));
+  });
+}
+function renderTicker(items){
+  var t=document.getElementById('ticker');if(!t)return;
+  if(!items.length){t.innerHTML='<span>No games on right now — check back on game day.</span>';return;}
+  var html=items.map(function(it){return '<span class="'+it.cls+'">'+it.txt+'</span>';}).join('<span class="tsep">◆</span>');
+  t.innerHTML=html+'<span class="tsep">◆</span>'+html;
+}
+/* ============ PARLAY ============ */
+var parlay=[];
+var PARLAY_STAKE=5,PARLAY_MAX_LEGS=10;
+function amToDec(o){return o>0?1+o/100:1+100/Math.abs(o);}
+function decToAm(d){if(d>=2)return Math.round((d-1)*100);return Math.round(-100/(d-1));}
+function parlayBtn(g,label,type,pick){
+  var b=document.createElement('button');b.type='button';b.className='pbtn';
+  b.innerHTML='<small style="color:#c9a227">+</small> '+label;
+  b.title='Add to parlay';
+  b.addEventListener('click',function(){parlayAdd(g,type,pick);});
+  return b;
+}
+function parlayAdd(g,type,pick){
+  var i;
+  for(i=0;i<parlay.length;i++){if(parlay[i].gameId===g.id){say('One pick per game on a ticket — already have this game.');return;}}
+  if(parlay.length>=PARLAY_MAX_LEGS){say('Max '+PARLAY_MAX_LEGS+' legs per ticket.');return;}
+  var pl=pickLabel(g,type,pick);
+  if(!pl||!pl.odds){say('No line available for that pick.');return;}
+  parlay.push({gameId:g.id,sportKey:g.sport,gameLabel:g.away+' @ '+g.home,type:type,pick:pick,label:pl.label,odds:pl.odds,line:pl.line});
+  renderParlayBadge();
+  say('Added to parlay ('+parlay.length+') — tap 🎟️ Parlay to review your ticket.');
+}
+function parlayOdds(){
+  var dec=1;parlay.forEach(function(p){dec*=amToDec(p.odds);});return decToAm(dec);
+}
+function parlayPayout(){
+  var dec=1;parlay.forEach(function(p){dec*=amToDec(p.odds);});
+  return Math.round(PARLAY_STAKE*dec);
+}
+function renderParlayBadge(){
+  var c=document.getElementById('parlayCount');if(c)c.textContent=parlay.length?('('+parlay.length+')'):'';
+}
+function openParlay(){renderParlay();document.getElementById('parlayModal').classList.add('open');}
+function renderParlay(){
+  var w=document.getElementById('parlayLegs');w.innerHTML='';
+  if(!parlay.length){w.appendChild(el('div','empty','No picks yet.<br>Tap <b>+</b> on any odds button to build your ticket.'));}
+  parlay.forEach(function(p,i){
+    var d=el('div','pleg');
+    d.innerHTML='<div class="pl1"><span>'+p.label+'</span><button class="px" data-i="'+i+'" type="button" aria-label="Remove">✕</button></div>'+
+      '<div class="pl2">'+p.gameLabel+' · '+fmtOdds(p.odds)+'</div>';
+    w.appendChild(d);
+  });
+  var xs=w.querySelectorAll('.px');
+  for(var k=0;k<xs.length;k++){
+    (function(b){b.addEventListener('click',function(){parlay.splice(parseInt(b.getAttribute('data-i'),10),1);renderParlay();renderParlayBadge();});})(xs[k]);
+  }
+  var po=document.getElementById('parlayPayout');
+  if(parlay.length>=2){
+    po.innerHTML='Combined odds: <b>'+fmtOdds(parlayOdds())+'</b><br>'+PARLAY_STAKE+' GC → <b>'+parlayPayout().toLocaleString()+' GC</b> if all '+parlay.length+' hit';
+  }else{
+    po.innerHTML='Add at least <b>2 picks</b> (different games) to buy a ticket.';
+  }
+}
+function parlayBuy(){
+  if(parlay.length<2){say('Add at least 2 picks to your ticket first.');return;}
+  var bal=getBank()||0;
+  if(bal<PARLAY_STAKE){say('Not enough coins — grab more in the Coin Store.');return;}
+  var odds=parlayOdds(),payout=parlayPayout();
+  var ticket={
+    id:'p'+Date.now(),type:'parlay',
+    gameLabel:parlay.length+'-leg parlay',
+    legs:parlay.map(function(p){return {gameId:p.gameId,sportKey:p.sportKey,gameLabel:p.gameLabel,type:p.type,pick:p.pick,label:p.label,line:p.line,odds:p.odds};}),
+    odds:odds,stake:PARLAY_STAKE,payout:payout,
+    status:'open',placedAt:Date.now()
+  };
+  var bets=getBets();bets.unshift(ticket);setBets(bets);
+  setBank(bal-PARLAY_STAKE);renderBal();
+  parlay=[];renderParlayBadge();renderParlay();
+  document.getElementById('parlayModal').classList.remove('open');
+  say('🎟️ Parlay ticket purchased! 5 GC deducted automatically. Good luck 🍀');
+  if(settleOpenBets()){renderBal();}
+  renderBets();
+}
+function settleParlayLegs(b){
+  for(var i=0;i<b.legs.length;i++){
+    var leg=b.legs[i];
+    var sc=scoreFor({sportKey:leg.sportKey,gameId:leg.gameId});
+    if(!sc||!sc.completed)return null;
+    var r=settleBet({type:leg.type,pick:leg.pick,line:leg.line},sc.homeScore,sc.awayScore);
+    if(!r)return null;
+    if(r==='lost')return 'lost';
+  }
+  return 'won';
+}
+/* ============ POWER RANKINGS ============ */
+var PWR_CACHE_KEY='nikkiflixs_pwr_cache',PWR_CACHE_MS=6*3600*1000;
+function enterPower(){
+  var w=document.getElementById('pwrList');w.innerHTML='';
+  w.appendChild(el('div','spin','Ranking all 32 teams…'));
+  loadPowerRankings(function(out){
+    w.innerHTML='';
+    if(!out||!out.teams||!out.teams.length){w.appendChild(el('div','empty','Power rankings are updating.<br>Check your connection and try again.'));return;}
+    out.teams.forEach(function(t,i){
+      var r=el('div','pwr-row');
+      var pdCls=t.pd<0?'pwr-pd neg':'pwr-pd';
+      r.innerHTML='<span class="pwr-rank">'+(i+1)+'</span>'+
+        '<span class="pwr-team"><b>'+t.abbr+'</b> '+t.name+'</span>'+
+        '<span class="pwr-rec">'+t.w+'-'+t.l+(t.t?'-'+t.t:'')+'</span>'+
+        '<span class="'+pdCls+'">'+(t.pd>0?'+':'')+t.pd+'</span>';
+      w.appendChild(r);
+    });
+    var f=el('div','fant-note');
+    f.textContent='Week '+out.week+' · ranked by win% then point differential · refreshes every 6 hours';
+    w.appendChild(f);
+  });
+}
+function loadPowerRankings(cb){
+  try{
+    var c=JSON.parse(localStorage.getItem(PWR_CACHE_KEY)||'null');
+    if(c&&Date.now()-c.ts<PWR_CACHE_MS){cb(c);return;}
+  }catch(e){}
+  espn('football/nfl/scoreboard').then(function(d0){
+    var week=(d0.week&&d0.week.number)||6;
+    var jobs=[];
+    for(var wk=1;wk<=week;wk++){
+      (function(wk){jobs.push(espn('football/nfl/scoreboard?week='+wk).catch(function(){return null;}));})(wk);
+    }
+    return Promise.all(jobs).then(function(rs){return {week:week,rs:rs};});
+  }).then(function(x){
+    var teams={};
+    x.rs.forEach(function(d){
+      if(!d||!d.events)return;
+      d.events.forEach(function(e){
+        var comp=e.competitions&&e.competitions[0];if(!comp)return;
+        var st=comp.status&&comp.status.type||{};
+        if(st.state!=='post')return;
+        var cs=comp.competitors||[],home=null,away=null;
+        cs.forEach(function(c){if(c.homeAway==='home')home=c;else away=c;});
+        if(!home||!away)return;
+        var hs=parseInt(home.score,10)||0,as=parseInt(away.score,10)||0;
+        [[home,hs,as],[away,as,hs]].forEach(function(xx){
+          var tm=xx[0],pf=xx[1],pa=xx[2];
+          var id=tm.team.id;
+          var k=teams[id]||{id:id,name:tm.team.displayName,abbr:tm.team.abbreviation,w:0,l:0,t:0,pf:0,pa:0};
+          k.pf+=pf;k.pa+=pa;
+          if(pf>pa)k.w++;else if(pa>pf)k.l++;else k.t++;
+          teams[id]=k;
+        });
+      });
+    });
+    var arr=Object.keys(teams).map(function(k){
+      var t=teams[k];t.pd=t.pf-t.pa;var gp=t.w+t.l+t.t;t.wp=gp?((t.w+t.t*0.5)/gp):0;return t;
+    });
+    arr.sort(function(a,b){return (b.wp-a.wp)||(b.pd-a.pd);});
+    var out={week:x.week,teams:arr,ts:Date.now()};
+    try{localStorage.setItem(PWR_CACHE_KEY,JSON.stringify(out));}catch(e){}
+    cb(out);
+  }).catch(function(){cb(null);});
+}
+/* ============ SMASH / COLD SPOTS (start/sit boost) ============ */
+function thisWeekTotals(){
+  try{
+    var c=JSON.parse(localStorage.getItem(CACHE_KEY)||'{}');
+    var n=c['nfl'];
+    if(n&&n.games)return n.games.filter(function(g){return g.totalLine!=null&&g.status!=='final';});
+  }catch(e){}
+  return [];
+}
+function renderSmashSpots(w){
+  var games=thisWeekTotals();
+  if(games.length<2)return;
+  games.sort(function(a,b){return b.totalLine-a.totalLine;});
+  var sec=el('div','trend-sec');
+  var h=el('div','trend-head');h.textContent='💥 Smash spots — highest totals this week';sec.appendChild(h);
+  games.slice(0,3).forEach(function(g){
+    var d=el('div','ss-card');
+    d.innerHTML='<div class="pname">'+g.away+' @ '+g.home+'</div>'+
+      '<div class="why">Total '+g.totalLine+' — expect fireworks. Start your studs from this game with confidence.</div>';
+    sec.appendChild(d);
+  });
+  var h2=el('div','trend-head');h2.textContent='🧊 Cold spots — lowest totals this week';sec.appendChild(h2);
+  games.slice(-3).reverse().forEach(function(g){
+    var d=el('div','ss-card');
+    d.innerHTML='<div class="pname">'+g.away+' @ '+g.home+'</div>'+
+      '<div class="why">Total '+g.totalLine+' — likely grind. Temper expectations for fringe starters here.</div>';
+    sec.appendChild(d);
+  });
+  var f=el('div','fant-note');f.textContent='Totals from live Vegas lines — high totals = more fantasy points to go around';sec.appendChild(f);
+  w.appendChild(sec);
+}
+/* ============ NEXT-WEEK SLEEPER RADAR ============ */
+function renderNextWeekRadar(w){
+  espn('football/nfl/scoreboard').then(function(d0){
+    var week=(d0.week&&d0.week.number)||6;
+    return espn('football/nfl/scoreboard?week='+(week+1)).then(function(d){
+      return {week:week+1,evs:(d.events||[])};
+    });
+  }).then(function(x){
+    if(!x.evs.length)return;
+    var sec=el('div','trend-sec');
+    var h=el('div','trend-head');h.textContent='📅 Next week radar — Week '+x.week+' matchups to stash for';sec.appendChild(h);
+    x.evs.slice(0,6).forEach(function(e){
+      var comp=e.competitions&&e.competitions[0];if(!comp)return;
+      var cs=comp.competitors||[],home=null,away=null;
+      cs.forEach(function(c){if(c.homeAway==='home')home=c;else away=c;});
+      if(!home||!away)return;
+      var d=el('div','ss-card');
+      d.innerHTML='<div class="pname">'+away.team.displayName+' @ '+home.team.displayName+'</div>'+
+        '<div class="why">Stash breakout candidates from these teams now before the waiver rush.</div>';
+      sec.appendChild(d);
+    });
+    w.appendChild(sec);
+  }).catch(function(){});
+}
+/* ============ HOT / NOT ============ */
+var HOT_RX=/breakout|erupt|career|monster|elite|on fire|heating up|must-add|league winner|surging|emerging/i;
+var NOT_RX=/\bbust\b|struggl|bench|drop him|dud|\bcold\b|fading|disappoint|benched/i;
+function enterHotNot(){
+  var w=document.getElementById('hotList');w.innerHTML='';
+  w.appendChild(el('div','spin','Reading the room…'));
+  fantFreshArts(function(arts){
+    if(!arts){w.innerHTML='';w.appendChild(el('div','empty','Trends are updating.<br>Check your connection and try again.'));return;}
+    loadPlayerIndex(function(idx){
+      var hot={},not={};
+      arts.forEach(function(a){
+        var h=a.headline,bucket=null;
+        if(HOT_RX.test(h))bucket=hot;else if(NOT_RX.test(h))bucket=not;else return;
+        namesInHeadline(h,idx).forEach(function(p){
+          if(!/^(QB|RB|WR|TE)$/.test(p.pos))return;
+          if(!bucket[p.id])bucket[p.id]={p:p,n:0,why:h};
+          bucket[p.id].n++;
+        });
+      });
+      w.innerHTML='';
+      renderTrendSec(w,'🔥 Heating Up',hot);
+      renderTrendSec(w,'🧊 Cooling Off',not);
+      if(!Object.keys(hot).length&&!Object.keys(not).length){
+        w.appendChild(el('div','empty','No strong trends in the headlines right now.<br>Check back after the games.'));
+      }
+      var f=el('div','fant-note');f.textContent='Scanned from ESPN fantasy headlines — most-mentioned players by sentiment';w.appendChild(f);
+    });
+  });
+}
+function renderTrendSec(w,title,map){
+  var keys=Object.keys(map).sort(function(a,b){return map[b].n-map[a].n;}).slice(0,8);
+  if(!keys.length)return;
+  var h=el('div','trend-head');h.textContent=title;w.appendChild(h);
+  keys.forEach(function(k){
+    var t=map[k],d=el('div','ss-card');
+    d.innerHTML='<div class="pname">'+t.p.name+' <small style="color:#9c8a68">'+t.p.pos+' · '+t.p.team+'</small></div>'+
+      '<div class="why">'+t.why+'</div>';
+    w.appendChild(d);
+  });
+}
+/* ============ LIVE INJURY WIRE ============ */
+var INJ_WIRE_KEY='nikkiflixs_inj_wire',INJ_WIRE_MS=3*60*1000,injWireTimer=null;
+function loadLeagueInjuries(cb){
+  fantNflTeams(function(teams){
+    if(!teams||!teams.length){cb(null);return;}
+    var jobs=teams.map(function(tm){
+      return espn('football/nfl/teams/'+encodeURIComponent(tm.id)+'/roster')
+        .then(function(d){
+          var out=[];
+          (d.athletes||[]).forEach(function(g){
+            (g.items||[]).forEach(function(pl){
+              var st=(pl.status&&pl.status.type)||'active';
+              if(st==='active')return;
+              var inj=(pl.injuries&&pl.injuries[0])||{};
+              out.push({
+                id:String(pl.id),
+                name:pl.displayName||'',
+                pos:(pl.position&&pl.position.abbreviation)||'',
+                team:tm.abbr||tm.name,
+                status:(pl.status&&pl.status.name)||st,
+                detail:inj.status||'',
+                date:inj.date||''
+              });
+            });
+          });
+          return out;
+        }).catch(function(){return [];});
+    });
+    Promise.all(jobs).then(function(all){
+      var flat=[];all.forEach(function(a){flat=flat.concat(a);});
+      cb(flat);
+    });
+  });
+}
+function injSeverity(st){
+  st=(st||'').toLowerCase();
+  if(/out|injured reserve|ir\b/.test(st))return 0;
+  if(/doubtful/.test(st))return 1;
+  if(/questionable/.test(st))return 2;
+  return 3;
+}
+function enterLiveWire(){
+  var w=document.getElementById('injWire');if(!w)return;
+  var stEl=document.getElementById('wireStatus');
+  if(stEl)stEl.textContent='updating…';
+  loadLeagueInjuries(function(all){
+    if(!all){w.innerHTML='<div class="empty">Wire is updating — try refresh.</div>';if(stEl)stEl.textContent='offline';return;}
+    var now=Date.now(),prev={};
+    try{prev=(JSON.parse(localStorage.getItem(INJ_WIRE_KEY)||'{}').map)||{};}catch(e){}
+    all.forEach(function(p){
+      var old=prev[p.id];
+      p._seenTs=(old&&old.seenTs)?old.seenTs:now;
+      p._isNew=!old||old.status!==p.status;
+      p._breaking=p._isNew&&(now-p._seenTs)<3600*1000;
+    });
+    var map={};all.forEach(function(p){map[p.id]={status:p.status,seenTs:p._seenTs};});
+    try{localStorage.setItem(INJ_WIRE_KEY,JSON.stringify({ts:now,map:map}));}catch(e){}
+    all.sort(function(a,b){
+      return ((b._breaking?1:0)-(a._breaking?1:0))||(injSeverity(a.status)-injSeverity(b.status));
+    });
+    w.innerHTML='';
+    var br=all.filter(function(p){return p._breaking;});
+    if(br.length){
+      var h=el('div','wire-head');h.innerHTML='🔴 <b>BREAKING</b> — reported in the last hour ('+br.length+')';w.appendChild(h);
+    }
+    all.slice(0,25).forEach(function(p){
+      var r=el('div','wire-row');
+      r.innerHTML=(p._breaking?'<span class="brk">NEW</span>':'')+
+        '<span class="sopp">'+p.name+' <small style="color:#9c8a68">'+p.pos+' · '+p.team+'</small></span>'+
+        '<span class="ssc"><small>'+p.status+'</small>'+(p.detail?' '+p.detail:'')+'</span>';
+      w.appendChild(r);
+    });
+    var f=el('div','wire-sub');f.textContent=all.length+' players on the wire · '+new Date(now).toLocaleTimeString();w.appendChild(f);
+    if(stEl)stEl.textContent='live · '+new Date(now).toLocaleTimeString();
+    scheduleWireRefresh();
+  });
+}
+function scheduleWireRefresh(){
+  if(injWireTimer)clearTimeout(injWireTimer);
+  injWireTimer=setTimeout(function(){
+    var v=document.getElementById('fantInjView');
+    if(v&&v.style.display!=='none')enterLiveWire();
+  },INJ_WIRE_MS);
+}
+function isGameDay(cb){
+  espn('football/nfl/scoreboard').then(function(d){
+    var evs=d.events||[],today=new Date().toDateString(),found=false;
+    for(var i=0;i<evs.length;i++){
+      var dt=new Date(evs[i].date);
+      if(dt.toDateString()===today){found=true;break;}
+    }
+    cb(found);
+  }).catch(function(){cb(false);});
+}
+
 renderBal();renderLeagues();initSchedules();cmEntry();pingHome();
+/* fantasy/parlay/ticker/wire init */
+try{
+  tickScores();setInterval(tickScores,60000);
+  renderParlayBadge();
+  document.getElementById('parlayBtn').addEventListener('click',openParlay);
+  document.getElementById('parlayCancel').addEventListener('click',function(){document.getElementById('parlayModal').classList.remove('open');});
+  document.getElementById('parlayBuy').addEventListener('click',parlayBuy);
+  document.getElementById('wireRefresh').addEventListener('click',function(){enterLiveWire();});
+  var _origSetFantSub=setFantSub;
+  setFantSub=function(sx){_origSetFantSub(sx);if(sx==='inj'){enterLiveWire();}};
+  document.getElementById('pwrTab').addEventListener('click',function(){setFantSub('pwr');});
+  document.getElementById('hotTab').addEventListener('click',function(){setFantSub('hot');});
+}catch(e){}
+
 loadGames(curSport,function(games){
   renderGames(games);
   refreshScores(function(){if(settleOpenBets()){renderBal();say('Bets settled! Check 🎫 My Bets.');}});
