@@ -420,6 +420,7 @@ function revealStage(){
   setTimeout(function(){ introFilm.classList.add('done'); },850); /* hide card after fade completes */
 }
 function finishIntro(){ /* v13: intro audio stops DEAD the moment the intro finishes or is skipped — zero bleed into the lobby */
+  openingAudioFinished=true;
   try{ openingVoice.pause(); openingVoice.currentTime=0; }catch(e){}
   if(typeof wsSyncTimer!=="undefined"&&wsSyncTimer){clearInterval(wsSyncTimer);wsSyncTimer=null;} var _ws=document.getElementById("walkShow"); if(_ws)_ws.classList.remove("walk");
   var skipBtn=document.getElementById('skip-walk');
