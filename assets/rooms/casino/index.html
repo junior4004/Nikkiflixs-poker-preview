@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
   <link rel="icon" href="data:," />
-  <title>Nikkiflixs Casino</title>
+  <title>Nikkiflixs Poker Club</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -198,13 +198,13 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
   <div class="splash-plaque"><div class="splash-name">Nikkiflixs</div><div class="splash-tag">THEATER &amp; CASINO</div><div class="splash-est">MOVIES · TABLES · GAMES</div></div>
 </section>
 <section class="lobby-scene" id="lobbyScene" aria-label="Nikkiflixs showroom">
-  <img class="lobby-bg" src="assets/casino-floor.webp" alt="A dramatic gold-lit casino showroom and stage">
+  <img class="lobby-bg" src="assets/casino-floor.webp" alt="A dramatic gold-lit poker club showroom and stage">
   <div class="stage-lights" aria-hidden="true"></div><div class="curtain left" aria-hidden="true"></div><div class="curtain right" aria-hidden="true"></div><div class="valance" aria-hidden="true"></div>
   <nav class="room-choices" aria-label="Choose a room">
     <a class="room-choice" href="https://muse.ai/s/nikkiflix-poker-gz65ou1pcxdw" target="_blank" rel="noopener noreferrer"><small>NIKKI HOSTS</small><strong>Poker Room</strong></a>
     <a class="room-choice" href="https://muse.ai/s/nikkiflix-game-room-xwd67wzxmxpxmoxq" target="_blank" rel="noopener noreferrer"><small>NIKKI HOSTS</small><strong>Game Room</strong></a>
     <a class="room-choice" href="https://muse.ai/s/nicki-flakes-theater-ck67xbxk6xxxutxy" target="_blank" rel="noopener noreferrer"><small>PROMISE HOSTS</small><strong>Movie Theater</strong></a>
-    <button class="room-choice" id="enterCasino"><small>PROMISE HOSTS</small><strong>Casino</strong></button>
+    <button class="room-choice" id="enterCasino"><small>PROMISE HOSTS</small><strong>Poker Club</strong></button>
   </nav>
 </section>
 <main class="app hidden" id="casinoRoom">
@@ -213,13 +213,13 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
     <div class="wallet" aria-label="Session gold coin balance"><span>SESSION COINS</span><strong id="galleryBalance">10,000</strong><span>GC</span></div>
   </div>
   <section class="machine-gallery" id="machineGallery" aria-labelledby="floorTitle">
-    <header class="lobby-hero"><div class="lobby-copy"><p class="eyebrow">Promise &middot; Casino</p><h1 id="floorTitle">Choose your machine</h1><p>Classic cabinets and modern bonus play. Tap a machine to take your seat.</p><p class="hero-line" id="heroLine" aria-live="polite"></p></div><div class="lobby-host" aria-label="Promise, your casino host"><img src="assets/promise-avatar.webp" alt="Promise, your casino host"></div></header>
-    <nav class="machine-tabs" id="machineTabs" aria-label="Casino machines"></nav>
+    <header class="lobby-hero"><div class="lobby-copy"><p class="eyebrow">Promise &middot; Poker Club</p><h1 id="floorTitle">Choose your machine</h1><p>Classic cabinets and modern bonus play. Tap a machine to take your seat.</p><p class="hero-line" id="heroLine" aria-live="polite"></p></div><div class="lobby-host" aria-label="Promise, your casino host"><img src="assets/promise-avatar.webp" alt="Promise, your casino host"></div></header>
+    <nav class="machine-tabs" id="machineTabs" aria-label="Poker Club machines"></nav>
   </section>
   <section class="play-view hidden" id="playView">
     <div class="play-toolbar"><button class="machine-menu-button" id="machineMenuButton" aria-haspopup="true" aria-expanded="false" aria-label="Open machine menu">☰ <span>Menu</span></button><button id="quickRulesBtn">Paytable &amp; Rules</button><div class="machine-menu" id="machineMenu" hidden><button id="backLobbyMachine">Back to Lobby</button><button id="backMachines">All machines</button><button id="rulesBtn">Paytable &amp; Rules</button><button id="soundBtn">Volume on</button></div></div>
     <section class="stage" aria-live="polite">
-      <div class="machine"><div class="cabinet"><img class="cabinet-art" id="cabinetArt" src="assets/cabinet-diamonds.webp" alt="Triple Diamond 3D slot machine cabinet"><header class="marquee"><div class="cabinet-brand">Nikkiflixs Casino</div><h2 id="machineTitle">Triple Diamond</h2><p id="machineSubtitle">One line. Three diamonds. Forty times your bet.</p></header><div class="screen-wrap"><div class="screen"><div class="payline" id="payline"></div><div class="reels" id="reels" aria-label="Slot machine reels"></div><div class="spin-meter" id="spinMeter" aria-hidden="true"></div><div class="particles" id="particles"></div></div></div><div class="console"><div class="readout"><span class="message" id="message">Choose your bet and spin.</span><span class="win" id="win">0 GC</span></div><div class="controls"><div class="betbox" aria-label="Bet controls"><button id="betDown" aria-label="Lower bet">−</button><span><small>BET</small><b id="bet">50</b></span><button id="betUp" aria-label="Raise bet">+</button></div><div class="machine-balance" aria-label="Session coin balance"><small>BALANCE</small><strong id="balance">10,000</strong><span>GC</span></div><button class="spin" id="spinBtn">Spin</button></div></div></div></div>
+      <div class="machine"><div class="cabinet"><img class="cabinet-art" id="cabinetArt" src="assets/cabinet-diamonds.webp" alt="Triple Diamond 3D slot machine cabinet"><header class="marquee"><div class="cabinet-brand">Nikkiflixs Poker Club</div><h2 id="machineTitle">Triple Diamond</h2><p id="machineSubtitle">One line. Three diamonds. Forty times your bet.</p></header><div class="screen-wrap"><div class="screen"><div class="payline" id="payline"></div><div class="reels" id="reels" aria-label="Slot machine reels"></div><div class="spin-meter" id="spinMeter" aria-hidden="true"></div><div class="particles" id="particles"></div></div></div><div class="console"><div class="readout"><span class="message" id="message">Choose your bet and spin.</span><span class="win" id="win">0 GC</span></div><div class="controls"><div class="betbox" aria-label="Bet controls"><button id="betDown" aria-label="Lower bet">−</button><span><small>BET</small><b id="bet">50</b></span><button id="betUp" aria-label="Raise bet">+</button></div><div class="machine-balance" aria-label="Session coin balance"><small>BALANCE</small><strong id="balance">10,000</strong><span>GC</span></div><button class="spin" id="spinBtn">Spin</button></div></div></div></div>
       <button class="lever" id="lever" aria-label="Pull lever to spin"><span class="lever-track"><span class="lever-stick"><span class="lever-ball"></span></span><span class="lever-label">Pull</span></span></button>
     </section>
   </section>
