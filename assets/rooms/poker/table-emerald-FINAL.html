@@ -20,7 +20,7 @@
     button{font:inherit;color:inherit}
     .room{height:100dvh;min-height:560px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#351018 0,#16070b 48%,#050304 100%)}
     .room::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.26;background-image:radial-gradient(circle at 10% 18%,#ffd588 0 1px,transparent 1.8px),linear-gradient(90deg,transparent 49.7%,#ffd58810 50%,transparent 50.3%);background-size:74px 74px,100% 100%}
-    .toolbar{height:48px;padding:max(8px,env(safe-area-inset-top)) 14px 8px;position:relative;z-index:40;display:flex;align-items:center;gap:10px;background:#070506f2;border-bottom:1px solid var(--line);box-shadow:0 8px 24px #000b}
+    .toolbar{height:62px;padding:max(8px,env(safe-area-inset-top)) 14px 8px;position:relative;z-index:40;display:flex;align-items:center;gap:10px;background:#070506f2;border-bottom:1px solid var(--line);box-shadow:0 8px 24px #000b}
     .table-id{padding:8px 16px;border-radius:8px;background:linear-gradient(180deg,#1f8a4c,#0d5b2c);border:1px solid #6fdc9a;box-shadow:inset 0 1px #ffffff40,0 4px 10px #000b}.table-id strong,.table-id span{display:block}.table-id strong{font:800 16px/1 "Barlow Condensed",sans-serif}.table-id span{margin-top:4px;color:#ffe9a8;font:700 9px/1 sans-serif;white-space:nowrap}
     .toolbar-spacer{flex:1}.tool{height:42px;min-width:42px;padding:0 12px;border-radius:8px;border:1px solid #ffffff2f;background:#19191e;box-shadow:0 4px 10px #0009;font-weight:800;cursor:pointer}.tool.gold{border-color:#e5ba53;color:#ffe79b;background:#241a0d}.tool:disabled{opacity:.45;cursor:not-allowed}.tool .wide-label{margin-left:6px;font-size:10px}
     .tip-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;background:#000a}
@@ -41,15 +41,15 @@
     .table{position:absolute;left:14%;top:31%;width:72%;height:42%;border-radius:50%;background:linear-gradient(90deg,#180604 0,#563019 1.8%,#d79852 4%,#6d3a1d 6.2%,#2d150d 9%,#2d150d 91%,#6d3a1d 93.8%,#d79852 96%,#563019 98.2%,#180604 100%);box-shadow:0 22px 44px #000f,0 0 0 3px #080504,0 0 0 7px #6d3c20,0 0 34px #bc6a2e35}
     .table::before{content:"";position:absolute;inset:18px 26px;border-radius:50%;border:3px solid #310710;background-color:#0e5b2c;background-image:linear-gradient(125deg,transparent 4% 18%,rgba(255,235,219,.12) 29%,rgba(255,248,234,.33) 36%,rgba(255,207,190,.11) 44%,transparent 57%),linear-gradient(74deg,transparent 0 46%,rgba(255,226,206,.16) 58%,transparent 70%),url("assets/green-felt.png");background-size:auto,auto,100% 100%;background-position:center;background-repeat:no-repeat;background-blend-mode:screen,screen,normal;box-shadow:inset 0 0 88px #260008,inset 0 0 0 2px #e0a36a45}
     .table::after{content:"";position:absolute;inset:24px 32px;border-radius:50%;background:linear-gradient(116deg,transparent 8%,rgba(255,255,255,.04) 23%,rgba(255,225,199,.20) 33%,transparent 51%);mix-blend-mode:screen}
-    .brand{position:absolute;z-index:3;left:50%;top:44%;transform:translate(-50%,-50%);font:400 88px/.9 "Great Vibes Local",cursive;color:#f6d36f;text-shadow:0 3px 6px #41000b,0 0 14px #ffd361aa;white-space:nowrap;text-align:center}.brand small{display:block;font:400 34px/.9 "Great Vibes Local",cursive;color:#f6d36f;text-shadow:0 2px 4px #41000b;margin-top:2px}
-    .dealer{position:absolute;z-index:18;left:48%;top:29%;width:96px;transform:translate(-50%,-50%);text-align:center}.dealer img{display:block;width:96px;height:112px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 10px #000e)}.dealer-name{display:inline-block;margin-top:-8px;padding:5px 9px;border:1px solid #d7a44d;border-radius:7px;background:#15100df2;color:#ffe7ad;font:700 9px/1 sans-serif;box-shadow:0 4px 9px #000d}.dealer-button{position:absolute;right:-3px;bottom:15px;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:#fff8e8;color:#111;border:2px solid #ad8e50;font:800 11px/1 "Barlow Condensed";box-shadow:0 3px 8px #000b}
+    .brand{position:absolute;z-index:3;left:50%;top:66%;transform:translate(-50%,-50%);font:400 72px/.8 "Great Vibes Local",cursive;color:#f6d36f;text-shadow:0 3px 4px #41000b,0 0 10px #ffd3618c;white-space:nowrap}
+    .dealer{position:absolute;z-index:18;left:48%;top:9%;width:96px;transform:translate(-50%,-50%);text-align:center}.dealer img{display:block;width:96px;height:112px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 10px #000e)}.dealer-name{display:inline-block;margin-top:-8px;padding:5px 9px;border:1px solid #d7a44d;border-radius:7px;background:#15100df2;color:#ffe7ad;font:700 9px/1 sans-serif;box-shadow:0 4px 9px #000d}.dealer-button{position:absolute;right:-3px;bottom:15px;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:#fff8e8;color:#111;border:2px solid #ad8e50;font:800 11px/1 "Barlow Condensed";box-shadow:0 3px 8px #000b}
     .seat{position:absolute;inset:0;z-index:14;pointer-events:none}.pod{position:absolute;left:var(--x);top:var(--y);width:142px;height:132px;transform:translate(-50%,-50%);text-align:center}.portrait-wrap{position:absolute;left:50%;top:0;width:74px;height:84px;transform:translateX(-50%)}.portrait{display:block;width:74px;height:84px;border-radius:50% / 46%;object-fit:cover;border:4px solid #d9b557;background:#21151d;box-shadow:0 8px 16px #000f}.turn-ring{--arc:1turn;--ring:var(--green);position:absolute;inset:-8px;border-radius:50% / 46%;display:none;background:conic-gradient(from -90deg,var(--ring) 0 var(--arc),transparent var(--arc) 1turn);filter:drop-shadow(0 0 7px var(--ring));-webkit-mask:radial-gradient(ellipse at center,transparent 62%,#000 64% 76%,transparent 78%);mask:radial-gradient(ellipse at center,transparent 62%,#000 64% 76%,transparent 78%)}.seat.active .turn-ring{display:block;animation:drainGreen 20s linear forwards}.seat.active.warning .turn-ring{--ring:var(--danger);animation:drainRed 10s linear forwards}@property --arc{syntax:"<angle>";inherits:false;initial-value:1turn}@keyframes drainGreen{from{--arc:1turn}to{--arc:0turn}}@keyframes drainRed{from{--arc:1turn}to{--arc:0turn}}
     .nameplate{position:absolute;left:0;right:0;top:86px;height:44px;padding:6px 9px;border-radius:8px;background:linear-gradient(180deg,#272320,#080708);border:1px solid #e2af4f;box-shadow:0 6px 12px #000e}.nameplate strong,.nameplate span{display:block;white-space:nowrap}.nameplate strong{font:700 14px/1 sans-serif}.nameplate span{margin-top:6px;color:#ffd36f;font:800 13px/1 sans-serif}.seat.folded .portrait{filter:grayscale(.8) brightness(.55)}.seat.folded .nameplate::after{content:"FOLDED";position:absolute;inset:0;display:grid;place-items:center;border-radius:7px;background:#090708e8;color:#ffbdc2;font:800 13px/1 "Barlow Condensed";letter-spacing:.08em}.sit-in{display:none;position:absolute;inset:4px;border:1px solid #f3cf6d;border-radius:6px;background:linear-gradient(180deg,#b8872d,#654216);color:#fff9df;font:800 14px/1 "Barlow Condensed";letter-spacing:.05em;cursor:pointer;pointer-events:auto}.seat.empty-seat .sit-in{display:block}.seat.empty-seat .stack-value{visibility:hidden}.seat.empty-seat.folded .nameplate::after,.seat.you.folded .nameplate::after{display:none}.seat.empty-seat .portrait{filter:grayscale(.45) brightness(.7)}.seat.empty-seat .seat-chips,.seat.empty-seat .pocket{display:none}.seat.you.empty-seat .seat-chips,.seat.you.empty-seat .pocket{display:flex}
     .blind{position:absolute;z-index:4;right:-12px;top:68px;min-width:34px;height:34px;padding:0 4px;display:none;place-items:center;border-radius:50%;background:#f5d46d;color:#2c1900;border:3px solid #8f6515;box-shadow:0 0 0 3px #130a08,0 4px 10px #000d,0 0 10px #f5d46d80;font:800 12px/1 "Barlow Condensed"}.blind.show{display:grid}
     .pocket{position:absolute;z-index:13;left:50%;top:132px;transform:translateX(-50%);display:flex;gap:6px}.hole{width:46px;height:64px;padding:7px 5px;position:relative;border-radius:6px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 27px/.85 "Barlow Condensed";box-shadow:0 5px 9px #000c;opacity:0}.hole.red{color:#c20f25}.hole::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}.hole.back{background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 5px 9px #000c}.hole.back::after{content:""}.seat.you .hole{width:50px;height:70px;font-size:31px;padding:8px 6px}
     .seat-chips{position:absolute;z-index:10;left:var(--kx);top:var(--ky);width:44px;height:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 5px 4px #000e)}.seat-chips i{position:absolute;left:6px;width:31px;height:14px;border-radius:50%;border:2px dashed #fff8d3;background:radial-gradient(ellipse,#f5d9de 0 18%,#bd2038 19% 56%,#74101f 57%);box-shadow:0 3px 0 #3b0710,inset 0 0 0 2px #ffffff26}.seat-chips i:nth-child(1){bottom:0}.seat-chips i:nth-child(2){bottom:7px;background:radial-gradient(ellipse,#d9edff 0 18%,#1767b9 19% 56%,#0a3a78 57%)}.seat-chips i:nth-child(3){bottom:14px;background:radial-gradient(ellipse,#fff1bd 0 18%,#d69c19 19% 56%,#875a08 57%)}.seat-chips i:nth-child(4){bottom:21px}.seat-chips.empty{opacity:.22}
     .pot{position:absolute;z-index:12;left:50%;top:39%;transform:translate(-50%,-50%);text-align:center}.pot-chips{position:relative;width:92px;height:48px;margin:auto;opacity:0;filter:drop-shadow(0 5px 5px #000c)}.pot-chips i{position:absolute;width:32px;height:14px;border-radius:50%;border:2px dashed #fff8d3;background:#b91f37;box-shadow:0 3px 0 #3b0710}.pot-chips i:nth-child(1){left:4px;bottom:0}.pot-chips i:nth-child(2){left:30px;bottom:1px;background:#216dbd}.pot-chips i:nth-child(3){left:56px;bottom:0;background:#d5a01f}.pot-chips i:nth-child(4){left:18px;bottom:12px;background:#216dbd}.pot-chips i:nth-child(5){left:44px;bottom:13px;background:#d5a01f}.pot-chips i:nth-child(6){left:31px;bottom:26px}.pot-label{display:inline-block;padding:6px 12px;border-radius:999px;background:#070709f4;border:1px solid #ffffff5a;box-shadow:0 5px 12px #000b;font:700 12px/1 sans-serif}.pot-label b{color:var(--gold);margin-left:4px}
-    .board{position:absolute;z-index:10;left:50%;top:62%;transform:translate(-50%,-50%);display:flex;gap:0px;justify-content:center;align-items:center}.board-card{width:46px;height:66px;padding:7px 4px;position:relative;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 25px/.85 "Barlow Condensed";box-shadow:0 6px 10px #000c;opacity:0}.board-card.red{color:#c20f25}.board-card::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}
+    .board{position:absolute;z-index:10;left:58%;top:58%;transform:translate(-50%,-50%);display:flex;gap:2px}.board-card{width:46px;height:66px;padding:7px 4px;position:relative;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 25px/.85 "Barlow Condensed";box-shadow:0 6px 10px #000c;opacity:0}.board-card.red{color:#c20f25}.board-card::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}
     .muck{position:absolute;z-index:8;left:37%;top:40%;width:36px;height:24px;opacity:0}.muck.show{opacity:1}.muck i{position:absolute;inset:0;border-radius:4px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:0 4px 8px #000c}.muck i:nth-child(2){transform:translate(4px,-2px) rotate(7deg)}
     .deck{position:absolute;z-index:20;left:62%;top:34%;width:38px;height:54px;transform:translate(-50%,-50%);opacity:0}.deck.show{opacity:1}.deck i{position:absolute;inset:0;border-radius:5px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 4px 8px #000b}.deck i:nth-child(2){transform:translate(3px,-3px)}.deck i:nth-child(3){transform:translate(6px,-6px)}.deck.shuffle i:nth-child(1){animation:shuffleL .38s ease-in-out 5}.deck.shuffle i:nth-child(2){animation:shuffleR .38s ease-in-out 5}.deck.shuffle i:nth-child(3){animation:shuffleT .38s ease-in-out 5}@keyframes shuffleL{50%{transform:translate(-34px,5px) rotate(-14deg)}}@keyframes shuffleR{50%{transform:translate(38px,-2px) rotate(15deg)}}@keyframes shuffleT{50%{transform:translate(6px,-22px) rotate(6deg)}}
     .motion{position:absolute;inset:0;z-index:25;pointer-events:none}.flying-card,.fold-card{--dx:0px;--dy:0px;position:absolute;width:32px;height:46px;border-radius:5px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 5px 9px #000d}.flying-card{animation:deal .42s cubic-bezier(.2,.75,.25,1) forwards}.fold-card{animation:fold .72s cubic-bezier(.2,.75,.25,1) forwards}@keyframes deal{from{transform:translate(0,0) rotate(-7deg) scale(.86)}to{transform:translate(var(--dx),var(--dy)) rotate(0) scale(1)}}@keyframes fold{0%{transform:translate(0,0) rotate(0);opacity:1}75%{transform:translate(calc(var(--dx)*.8),calc(var(--dy)*.8 - 13px)) rotate(210deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(350deg) scale(.35);opacity:0}}
@@ -61,7 +61,7 @@
     .start-gate{position:fixed;z-index:95;inset:62px 0 0;display:grid;place-items:center;padding:18px;background:#05030452;cursor:pointer;touch-action:manipulation}.start-gate.hidden{display:none}.start-prompt{min-width:178px;min-height:58px;padding:12px 24px;border:2px solid #f0c75d;border-radius:9px;background:linear-gradient(180deg,#b92332,#74101b);color:#fff8e7;box-shadow:inset 0 1px #ffffff55,0 8px 24px #000e,0 0 18px #f0c75d42;font:800 19px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;cursor:pointer}.start-prompt:focus-visible{outline:3px solid #fff;outline-offset:4px}
     .modal{position:fixed;z-index:100;inset:0;display:none;place-items:center;padding:18px;background:#000c}.modal.open{display:grid}.panel{position:relative;width:min(390px,100%);padding:20px;border:1px solid #d8a94b;border-radius:12px;background:linear-gradient(180deg,#21181a,#090708);box-shadow:0 20px 60px #000}.panel h2{margin:0 0 7px;font:800 25px/1 "Barlow Condensed"}.panel p{margin:0 0 14px;color:#e7d9ca;font-size:12px;line-height:1.45}.close{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:1px solid #ffffff35;background:#171315;font-size:20px;cursor:pointer}.balance-row{display:flex;justify-content:space-between;padding:10px 0;border-block:1px solid #ffffff25;font-size:13px}.balance-row b{color:#ffd46f}.panel label{display:block;margin-top:14px;font-size:12px;font-weight:700}.panel input{width:100%;margin:10px 0;accent-color:#bc2632}.amount{font:800 21px/1 "Barlow Condensed";color:#ffd46f}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.modal-actions button{min-height:42px;border-radius:7px;border:1px solid #ffffff35;background:#22242a;font-weight:800;font-size:10px}.modal-actions .primary{background:#9b741f;border-color:#e8bf5b}.modal-actions .leave{grid-column:1/-1;background:#681b23;border-color:#d45762}.cashier-note{display:none;margin-top:10px;padding:9px;border-radius:7px;background:#160e10;color:#ffe0a0;font-size:10px}.cashier-note.show{display:block}
     .raise-readout{display:flex;align-items:baseline;justify-content:space-between;margin:14px 0 8px;padding:12px 14px;border:1px solid #ffffff30;border-radius:8px;background:#0b090a}.raise-readout span{color:#d9cab9;font-size:11px;font-weight:700}.raise-readout output{color:#ffd46f;font:800 26px/1 "Barlow Condensed"}.raise-slider{width:100%;height:28px;margin:0 0 12px;accent-color:#d44a54;cursor:pointer}.raise-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.raise-option{min-height:46px;padding:7px 5px;border:1px solid #ffffff38;border-radius:8px;background:#201b1e;text-align:center;cursor:pointer}.raise-option strong{display:block;font:800 11px/1 "Barlow Condensed";letter-spacing:.03em}.raise-option span{display:block;margin-top:5px;color:#ffd46f;font:800 15px/1 "Barlow Condensed"}.raise-option.selected{border-color:#f0c75d;background:#4b251b;box-shadow:inset 0 0 0 1px #f0c75d}.raise-confirm{width:100%;min-height:44px;margin-top:12px;border:1px solid #f27b84;border-radius:7px;background:linear-gradient(180deg,#b63b46,#621720);font-weight:800;cursor:pointer}.raise-confirm:disabled{opacity:.38;cursor:not-allowed}.raise-cancel{width:100%;min-height:38px;margin-top:8px;border:1px solid #ffffff35;border-radius:7px;background:#22242a;font-weight:800;cursor:pointer}
-    @media(max-width:620px){.toolbar{height:58px;padding-inline:8px;gap:6px}.stage{inset:58px 0 112px}.table-id{padding:7px 9px}.table-id strong{font-size:13px}.table-id span{font-size:8px}.tool{height:38px;min-width:38px;padding:0 9px}.tool .wide-label{display:none}.controls{width:100%;border-radius:0}.control-top{gap:10px}.control-top span{display:none}.talk{min-width:112px}.action{height:42px;font-size:10px}.toast{bottom:106px}.camera{width:740px;height:1120px}.table{left:3.5%;top:36%;width:93%;height:27%}.brand{top:64%;font-size:58px}.dealer{left:48%;top:29%}.deck{left:62%;top:40%}.seat[data-index="0"]{--x:51%;--y:88%;--kx:51%;--ky:88%;--show-x:39%;}.seat[data-index="1"]{--x:12%;--y:92%;--kx:12%;--ky:92%;--show-x:33%;}.seat[data-index="2"]{--x:10%;--y:60%;--kx:10%;--ky:60%;--show-x:35%;}.seat[data-index="3"]{--x:11%;--y:32.5%;--kx:11%;--ky:32.5%;--show-x:42%;}.seat[data-index="4"]{--x:47%;--y:7%;--kx:47%;--ky:7%;--show-x:50%;}.seat[data-index="5"]{--x:85%;--y:31%;--kx:85%;--ky:31%;--show-x:58%;}.seat[data-index="6"]{--x:91%;--y:59%;--kx:91%;--ky:59%;--show-x:65%;}.seat[data-index="7"]{--x:88%;--y:92%;--kx:88%;--ky:92%;--show-x:67%;}.pot{top:38%;left:50%}.board{top:63%;left:50%;gap:6px}.board-card{width:34px;height:50px;font-size:22px}.muck{top:40%}}
+    @media(max-width:620px){.toolbar{height:58px;padding-inline:8px;gap:6px}.stage{inset:58px 0 112px}.table-id{padding:7px 9px}.table-id strong{font-size:13px}.table-id span{font-size:8px}.tool{height:38px;min-width:38px;padding:0 9px}.tool .wide-label{display:none}.controls{width:100%;border-radius:0}.control-top{gap:10px}.control-top span{display:none}.talk{min-width:112px}.action{height:42px;font-size:10px}.toast{bottom:106px}.camera{width:740px;height:1120px}.table{left:3.5%;top:36%;width:93%;height:27%}.brand{top:64%;font-size:58px}.dealer{left:48%;top:27%}.deck{left:62%;top:40%}.seat[data-index="0"]{--x:50%;--y:92%;--kx:50%;--ky:92%;--show-x:39%;}.seat[data-index="1"]{--x:21%;--y:86%;--kx:21%;--ky:86%;--show-x:33%;}.seat[data-index="2"]{--x:8%;--y:68%;--kx:8%;--ky:68%;--show-x:35%;}.seat[data-index="3"]{--x:12%;--y:31%;--kx:12%;--ky:31%;--show-x:42%;}.seat[data-index="4"]{--x:45%;--y:10%;--kx:45%;--ky:10%;--show-x:50%;}.seat[data-index="5"]{--x:88%;--y:31%;--kx:88%;--ky:31%;--show-x:58%;}.seat[data-index="6"]{--x:91%;--y:66%;--kx:91%;--ky:66%;--show-x:65%;}.seat[data-index="7"]{--x:78%;--y:88%;--kx:78%;--ky:88%;--show-x:67%;}.pot{top:38%;left:50%}.board{top:50%;left:50%;gap:3px}.board-card{width:34px;height:50px;font-size:22px}.muck{top:40%}}
     /* Portrait rail layout: one coherent camera, table, and seat system. */
     .stage{inset:62px 0 100px}
     .camera{width:430px;height:700px}
@@ -69,13 +69,13 @@
     .table::before{inset:15px 22px;border-radius:47% / 16%}
     .table::after{inset:21px 28px;border-radius:47% / 16%}
     .brand{top:66%;font-size:59px}
-    .dealer{left:78%;top:4%;width:82px}.dealer img{width:82px;height:96px}.dealer-name{font-size:8px}
+    .dealer{left:78%;top:2%;width:82px}.dealer img{width:82px;height:96px}.dealer-name{font-size:8px}
     .pod{width:130px;height:122px}.portrait-wrap{width:72px;height:78px}.portrait{width:72px;height:78px}.nameplate{top:79px;height:41px;padding:5px 8px}.nameplate strong{font-size:13px}.nameplate span{margin-top:5px;font-size:12px}
     .pocket{top:121px;gap:14px}.hole{width:44px;height:62px;padding:6px 4px;border-radius:6px;font-size:27px}.seat.you .hole{width:48px;height:68px;font-size:30px}
     .seat-chips{width:48px;height:42px}.seat-chips i{left:7px;width:34px;height:15px}
     .seat-chips i:nth-child(2){bottom:-5px}.seat-chips i:nth-child(3){bottom:16px}.seat-chips i:nth-child(4){bottom:24px}
     .pot{top:38%}.pot-chips{width:98px;height:52px}.pot-label{padding:6px 13px;font-size:13px}
-    .board{top:63%;gap:6px}.board-card{width:58px;height:82px;padding:8px 5px;font-size:32px}
+    .board{top:49%;gap:14px}.board-card{width:58px;height:82px;padding:8px 5px;font-size:32px}
     .muck{left:32%;top:40%;width:42px;height:29px}.deck{left:72%;top:17%}
     .seat[data-index="1"] .pocket,.seat[data-index="2"] .pocket,.seat[data-index="3"] .pocket{left:-2px;top:85px;transform:none;flex-direction:column;gap:3px}
     .seat[data-index="5"] .pocket,.seat[data-index="6"] .pocket,.seat[data-index="7"] .pocket{left:auto;right:-2px;top:85px;transform:none;flex-direction:column;gap:3px}
@@ -83,7 +83,7 @@
     .seat[data-index="5"] .seat-chips,.seat[data-index="6"] .seat-chips,.seat[data-index="7"] .seat-chips{left:80%!important}
     .controls{width:min(520px,100%);padding:8px 10px calc(9px + env(safe-area-inset-bottom));border-radius:12px 12px 0 0}.control-top{height:31px;margin-bottom:8px}.talk{height:31px;min-width:124px;margin-left:18px}.actions{gap:9px}.action{height:40px}
     @media(max-width:620px){
-      .stage{inset:58px 0 106px}.camera{width:430px;height:700px}.brand{font-size:56px}.dealer{left:78%;top:4%}
+      .stage{inset:58px 0 106px}.camera{width:430px;height:700px}.brand{font-size:56px}.dealer{left:78%;top:2%}
       .table{left:6%;top:2%;width:88%;height:96%}.pot{top:38%}.board{top:49%}.muck{top:40%}
       .controls{width:100%;border-radius:0}.control-top{gap:8px}.talk{min-width:122px;margin-left:12px}.action{height:42px;font-size:10px}
     }
@@ -99,7 +99,7 @@
     .board{top:42%}
     .muck{left:36%;top:39%}
     .deck{left:72%;top:6%}
-    .dealer{left:80%;top:6%}
+    .dealer{left:80%;top:4%}
     .pod{width:110px}
     .nameplate{left:0;right:0}
     .seat[data-index="6"] .pod,.seat[data-index="4"] .pod{width:130px}
@@ -129,7 +129,7 @@
     .table{left:19.65%;top:10%;width:69.7%;height:82%;border-radius:40% / 20%}
     .table::before{border-radius:48% / 20%}
     .table::after{border-radius:48% / 20%}
-    .dealer{left:72%;top:18%}
+    .dealer{left:72%;top:16%}
     .pot{top:32%}.board{top:42%}.muck{top:46%}.deck{left:68%;top:24%}
 .seat[data-index="1"] .pocket,.seat[data-index="5"] .pocket{left:calc(50% - 3px)!important}
 .seat[data-index="1"] .seat-chips,.seat[data-index="5"] .seat-chips{left:calc(50% + 55px)!important}
@@ -143,7 +143,7 @@
     @media(max-width:620px){
       .camera{width:560px;height:760px}
       .table{left:19.65%;top:18%;width:60.7%;height:82%}
-      .dealer{left:72%;top:18%}
+      .dealer{left:72%;top:16%}
       .pot{top:32%}.board{top:42%}.muck{top:46%}
       .talk{left:8px;top:6%}
     }
@@ -154,31 +154,7 @@
     .seat[data-view-slot="0"] .pocket .hole+.hole,.seat[data-view-slot="4"] .pocket .hole+.hole{margin-left:0}
     .seat.folded .pocket{display:none!important}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-  .dealer-notch{position:absolute;z-index:5;left:78%;top:10%;width:120px;height:60px;background:#120b08;border:4px solid #7a5c1e;border-bottom:none;border-radius:65px 65px 0 0;transform:translate(-50%,-50%);box-shadow:inset 0 8px 15px #000,0 2px 8px #000a;display:none}
-    #tipBtn{position:absolute;left:78%;top:70px;transform:translate(-50%,0);z-index:25;margin:0}
-    .felt-marker{display:none!important}
-
-.coin-panel{max-width:560px;text-align:center;position:relative}
-.coin-x{position:absolute;top:10px;right:14px;background:none;border:none;color:#cbb995;font-size:22px;cursor:pointer;padding:8px}
-.coin-x:hover{color:#fff}
-.coin-panel h2{color:#f4d68d;margin:0 0 6px;font-size:22px}
-.coin-sub{color:#cbb995;margin:0 0 16px;font-size:14px}
-.coin-packs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-.coin-pack{border:1px solid #8a6a2f;border-radius:12px;padding:16px 8px;background:#1a120a;position:relative}
-.coin-pack.featured{border-color:#f4d68d;border-width:2px;background:#241809}
-.coin-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#f4d68d;color:#1a120a;font-size:10px;font-weight:800;padding:2px 8px;border-radius:8px;white-space:nowrap}
-.coin-amount{font-size:20px;font-weight:800;color:#ffe9bd}
-.coin-bonus{font-size:12px;color:#7CFC00;font-weight:700;margin:4px 0}
-.coin-price{font-size:18px;color:#f4d68d;margin:8px 0;font-weight:700}
-.coin-buy{min-height:44px;width:100%;border:1px solid #e2bd6c;background:#831b24;color:#fff8e8;font-weight:800;border-radius:8px;cursor:pointer;font-size:14px}
-.coin-buy:hover{background:#a0222e}
-.coin-fine{font-size:11px;color:#8a7a5a;margin:0}
-.avatar-panel{max-width:520px;text-align:center}
-.avatar-panel h2{color:#f4d68d;margin:0 0 12px;font-size:20px}
-.avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-height:60vh;overflow-y:auto;padding:4px}
-.avatar-pick{width:100%;aspect-ratio:1;border-radius:50%;border:2px solid #8a6a2f;cursor:pointer;object-fit:cover}
-.avatar-pick:hover{border-color:#f4d68d;transform:scale(1.05)}
-</style>
+  </style>
 <style>#nl-badge-frame{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style>
 
 <style>
@@ -233,17 +209,17 @@
 <body>
 <main class="room" aria-label="Nikkiflixs eight-player poker demonstration">
   <header class="toolbar">
-    <div class="table-id" style="margin-left:70px"><span>$2/$5 · 8-MAX</span></div><div class="toolbar-spacer"></div>
-    
+    <div class="table-id" style="margin-left:70px"><strong>Emerald Room</strong><span>$2/$5 · 8-MAX</span></div><div class="toolbar-spacer"></div>
+    <button class="tool" id="leavePoker" type="button" aria-label="Leave the table">✕ <span class="wide-label">LEAVE</span></button>
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
     <button class="tool" id="funBtn" type="button" aria-label="Throwables and emotes">🎯 <span class="wide-label">FUN</span></button>
-    <button class="tool gold" id="tipBtn" type="button" style="position:absolute;left:78%;top:70px;transform:translate(-50%,0);z-index:25;margin:0;white-space:nowrap">TIP THE DEALER</button>
+    <button class="tool gold" id="tipBtn" type="button" aria-label="Tip the dealer">💰 <span class="wide-label">TIP</span></button>
   </header>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
-      <div class="table"><div class="brand">Nikkiflixs<small>Est. 2026</small></div></div>
-      <div class="table-markers" aria-label="Rotating dealer and blind positions"></span></span></span></div>
+      <div class="table"><div class="brand">Nikkiflixs</div></div>
+      <div class="table-markers" aria-label="Rotating dealer and blind positions"><span class="marker-group" id="dealerMarker"><i class="felt-marker dealer-disc show">D</i></span><span class="marker-group" id="sbMarker"><i class="felt-marker show">SB</i></span><span class="marker-group" id="bbMarker"><i class="felt-marker show">BB</i></span></div>
       <div class="dealer" aria-label="Nikki, permanent dealer"><img src="assets/nikki.png" alt="Nikki, the dealer, in a black uniform with gold trim"><span class="dealer-name">Nikki · Dealer</span></div>
       <div class="deck" id="deck" aria-label="Deck being shuffled"><i></i><i></i><i></i></div>
       <div class="pot" id="potArea" aria-label="Pot: 0 dollars"><div class="pot-chips" id="potChips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><span id="potValue" hidden>$0</span></div>
@@ -251,14 +227,14 @@
       <div class="muck" id="muck" aria-label="Muck pile"><i></i><i></i></div>
       <div class="motion" id="motion" aria-hidden="true"></div>
 
-      <article class="seat you empty-seat" data-index="0" style="--x:51%;--y:97%;--kx:51%;--ky:97%;--show-x:40%;--show-y:62%" aria-label="Your empty seat, bottom-center"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-01.png" alt="Ace"></div><div class="nameplate"><strong>Ace</strong><span class="stack-value">$4,892</span><button class="sit-in" id="sitIn" type="button">SIT IN</button></div><i class="blind"></i></div><div class="pocket" aria-label="Your cards, king of clubs and nine of spades"><span class="hole" data-suit="♣">K</span><span class="hole" data-suit="♠">9</span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="1" style="--x:12%;--y:92%;--kx:28%;--ky:87%;--show-x:34%;--show-y:53%;" aria-label="Ace"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-17.png" alt="Luna"></div><div class="nameplate"><strong>Luna</strong><span>$910</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="2" style="--x:10%;--y:60%;--kx:25%;--ky:67%;--show-x:35%;--show-y:42%;" aria-label="Luna"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-03.png" alt="Slick"></div><div class="nameplate"><strong>Slick</strong><span>$325</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="3" style="--x:11%;--y:32.5%;--kx:11%;--ky:32.5%;--show-x:42%;--show-y:45%;" aria-label="Slick"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-18.png" alt="Rosa V."></div><div class="nameplate"><strong>Rosa V.</strong><span>$642</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="4" style="--x:47%;--y:7%;--kx:47%;--ky:7%;--show-x:50%;--show-y:43%;" aria-label="Rosa V."><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-02.png" alt="Marcus"></div><div class="nameplate"><strong>Marcus</strong><span>$835</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="5" style="--x:85%;--y:31%;--kx:85%;--ky:31%;" aria-label="Marcus"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-21.png" alt="Blondie"></div><div class="nameplate"><strong>Blondie</strong><span>$477</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="6" style="--x:91%;--y:59%;--kx:75%;--ky:67%;--show-x:65%;--show-y:42%;" aria-label="Blondie"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-09.png" alt="Raj"></div><div class="nameplate"><strong>Raj</strong><span>$718</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
-      <article class="seat" data-index="7" style="--x:88%;--y:92%;--kx:72%;--ky:87%;--show-x:66%;--show-y:53%;" aria-label="Raj"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="/assets/avatars/gallery/avatar-16.png" alt="Ginger"></div><div class="nameplate"><strong>Ginger</strong><span>$560</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat you empty-seat" data-index="0" style="--x:50%;--y:92%;--kx:50%;--ky:92%;--show-x:40%;--show-y:62%" aria-label="Your empty seat, bottom-center"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-3.png" alt="You"></div><div class="nameplate"><strong>You</strong><span class="stack-value">$4,892</span><button class="sit-in" id="sitIn" type="button">SIT IN</button></div><i class="blind"></i></div><div class="pocket" aria-label="Your cards, king of clubs and nine of spades"><span class="hole" data-suit="♣">K</span><span class="hole" data-suit="♠">9</span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="1" style="--x:21%;--y:86%;--kx:21%;--ky:86%;--show-x:34%;--show-y:53%;" aria-label="Rosa"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-5.png" alt="Rosa V."></div><div class="nameplate"><strong>Rosa V.</strong><span>$910</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="2" style="--x:8%;--y:68%;--kx:8%;--ky:68%;--show-x:35%;--show-y:42%;" aria-label="Tony"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-1.png" alt="Tony C."></div><div class="nameplate"><strong>Tony C.</strong><span>$325</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="3" style="--x:12%;--y:31%;--kx:12%;--ky:31%;--show-x:42%;--show-y:45%;" aria-label="Maya"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-2.png" alt="Maya R."></div><div class="nameplate"><strong>Maya R.</strong><span>$642</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="4" style="--x:45%;--y:10%;--kx:45%;--ky:10%;--show-x:50%;--show-y:43%;" aria-label="Ava"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-5.png" alt="Ava K."></div><div class="nameplate"><strong>Ava K.</strong><span>$835</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="5" style="--x:88%;--y:31%;--kx:88%;--ky:31%;" aria-label="Dre"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-4.png" alt="Dre L."></div><div class="nameplate"><strong>Dre L.</strong><span>$477</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="6" style="--x:91%;--y:66%;--kx:91%;--ky:66%;--show-x:65%;--show-y:42%;" aria-label="Marcus"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-6.png" alt="Marcus J."></div><div class="nameplate"><strong>Marcus J.</strong><span>$718</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
+      <article class="seat" data-index="7" style="--x:78%;--y:88%;--kx:78%;--ky:88%;--show-x:66%;--show-y:53%;" aria-label="Luis"><div class="pod"><div class="portrait-wrap"><span class="turn-ring"></span><img class="portrait" src="assets/avatar-1.png" alt="Luis G."></div><div class="nameplate"><strong>Luis G.</strong><span>$560</span></div><i class="blind"></i></div><div class="pocket"><span class="hole back"></span><span class="hole back"></span></div><div class="seat-chips"><i></i><i></i><i></i><i></i></div></article>
     </div>
   </section>
   <button class="talk" id="talk" type="button">HOLD TO TALK</button>
@@ -295,14 +271,14 @@
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
   /* v22 bot seating: filler bots keep every table alive until the player base grows.
-     Set window.NIKKIFLIXS_BOTS_ENABLED=true BEFORE this script runs to disable all bots. */
+     Set window.NIKKIFLIXS_BOTS_ENABLED=false BEFORE this script runs to disable all bots. */
   var BOTS_ENABLED=(function(){try{if(typeof window!=='undefined'){if(window.NIKKIFLIXS_BOTS_ENABLED===false)return false;if(window.location&&window.location.search.indexOf('nobots=1')>-1)return false;if(window.localStorage&&window.localStorage.getItem('nikkiflixs_bots')==='off')return false;}}catch(e){}return true;})();
   var humanSeats={},humanSeated=false,botProfiles={};
-  var botNamePool=['Ace','Luna','Slick','Rosa V.','Marcus','Blondie','Raj','Ginger','Diego','Keisha','Viktor','Priya','Chen','Fatima','Bruno','Aaliyah','Omar','Sofia','Jamal','Yuki','Pablo','Nadia','Rex','Zara','Kai','Elena','Dre','Mia','Leo','Carmen'];
-  var botAvatarPool=['/assets/avatars/gallery/avatar-01.png','/assets/avatars/gallery/avatar-17.png','/assets/avatars/gallery/avatar-03.png','/assets/avatars/gallery/avatar-18.png','/assets/avatars/gallery/avatar-02.png','/assets/avatars/gallery/avatar-21.png','/assets/avatars/gallery/avatar-09.png','/assets/avatars/gallery/avatar-16.png','/assets/avatars/gallery/avatar-07.png','/assets/avatars/gallery/avatar-26.png','/assets/avatars/gallery/avatar-10.png','/assets/avatars/gallery/avatar-24.png','/assets/avatars/gallery/avatar-04.png','/assets/avatars/gallery/avatar-20.png','/assets/avatars/gallery/avatar-11.png','/assets/avatars/gallery/avatar-22.png','/assets/avatars/gallery/avatar-05.png','/assets/avatars/gallery/avatar-27.png','/assets/avatars/gallery/avatar-08.png','/assets/avatars/gallery/avatar-19.png','/assets/avatars/gallery/avatar-15.png','/assets/avatars/gallery/avatar-29.png','/assets/avatars/gallery/avatar-06.png','/assets/avatars/gallery/avatar-25.png','/assets/avatars/gallery/avatar-13.png','/assets/avatars/gallery/avatar-28.png','/assets/avatars/gallery/avatar-12.png','/assets/avatars/gallery/avatar-30.png','/assets/avatars/gallery/avatar-14.png','/assets/avatars/gallery/avatar-23.png'];
+  var botNamePool=['Rosa V.','Tony C.','Maya R.','Ava K.','Dre L.','Marcus J.','Luis G.','Sofia M.','Jake P.','Nina S.','Omar H.','Tina W.','Rico D.','Elena F.','Sam K.','Priya N.','Leo B.','Mia T.','Chris E.','Dana L.','Victor R.','Holly J.','Frank N.','Grace P.'];
+  var botAvatarPool=['assets/avatar-1.png','assets/avatar-2.png','assets/avatar-3.png','assets/avatar-4.png','assets/avatar-5.png','assets/avatar-6.png'];
   var botChatLines=['nh','nice hand','gg','tough one','wow','nice','good game','ooh'];
   function setupBots(){
-    if(!BOTS_ENABLED){for(var i=1;i<8;i++){sittingOut[i]=true;}logEvent('bots-disabled',{flag:'NIKKIFLIXS_BOTS_ENABLED=true'});return;}
+    if(!BOTS_ENABLED){for(var i=1;i<8;i++){sittingOut[i]=true;}logEvent('bots-disabled',{flag:'NIKKIFLIXS_BOTS_ENABLED=false'});return;}
     var pool=botNamePool.slice();
     for(var s=pool.length-1;s>0;s--){var j=Math.floor(Math.random()*(s+1)),t=pool[s];pool[s]=pool[j];pool[j]=t;}
     var styles=['tight','loose','aggressive','balanced','passive'];
@@ -336,7 +312,7 @@
     setTimeout(function(){
       names[target]='You';
       var strong=seat.querySelector('.nameplate strong');if(strong)strong.textContent='You';
-      var img=seat.querySelector('.portrait');if(img){img.src=(window.chosenAvatar||'/assets/avatars/gallery/avatar-01.png');img.alt='You';}
+      var img=seat.querySelector('.portrait');if(img){img.src='assets/avatar-3.png';img.alt='You';}
       seat.classList.remove('empty-seat','folded');
       delete handFolded[target];delete botProfiles[target];
       /* Clear any leftover face-down cards from the previous bot so the
@@ -415,7 +391,7 @@
   unlockAlerts=function(){var r=_unlockAlerts();try{loadSfx()}catch(e){}return r};
   function chooseSeatTiming(playImmediately){
     document.getElementById('seatChoiceModal').classList.remove('open');
-    if(playImmediately){if(handRunning){pendingJoinNextHand=true;waitingForBigBlind=false;say('You will play the next hand')}else{delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('You are in');shuffleAndDeal()}}
+    if(playImmediately){if(handRunning){pendingJoinNextHand=true;waitingForBigBlind=false;say('You will play the next hand')}else{delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('You are in')}}
     else{waitingForBigBlind=true;say('Waiting for your big blind')}
     logEvent('seat-timing',{choice:playImmediately?'play-now':'wait-for-big-blind',seat:localSeatAbsolute})
   }
@@ -435,7 +411,7 @@
     if(toWinner){slidePotToWinner(Number(seat.getAttribute('data-index')),amount);return}
     var seatIndex=Number(seat.getAttribute('data-index'));postRoundBet(seatIndex,amount,'BET',true)
   }
-  var betPositions=[['54%','78%'],['27%','71%'],['21%','66%'],['26%','40%'],['47%','27%'],['73%','33%'],['79%','57%'],['73%','71%'],['34%','72%'],['34%','56%'],['34%','37%'],['46%','28%'],['66%','37%'],['66%','56%'],['66%','72%']];
+  var betPositions=[['50%','78%'],['27%','71%'],['21%','62%'],['26%','36%'],['47%','23%'],['73%','29%'],['79%','53%'],['73%','71%'],['34%','72%'],['34%','56%'],['34%','37%'],['46%','28%'],['66%','37%'],['66%','56%'],['66%','72%']];
   function updateBetPositions(){Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=betPositions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
   updateBetPositions();
   function restoreName(index){var plate=seats[index].querySelector('.nameplate'),strong=plate.querySelector('strong');strong.textContent=names[index];plate.classList.remove('action-state','action-bet','action-raise','action-call','action-check','action-all-in','action-small-blind','action-big-blind')}
@@ -466,15 +442,14 @@
   }
   function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');playSfx('card-muck',.5);cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
-  var markerPositions=[['54%','78%'],['28%','72%'],['22%','50%'],['28%','32%'],['50%','32%'],['66%','38%'],['72%','58%'],['70%','76%']];
+  var markerPositions=[['50%','80%'],['27%','71%'],['20%','50%'],['27%','30%'],['50%','24%'],['73%','42%'],['80%','51%'],['73%','71%']];
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index])return index}return after}
   function dealerIndex(){return dealerButton}
   function smallBlindIndex(){return(dealerButton+1)%8}
   function bigBlindIndex(){return(dealerButton+2)%8}
   function advanceBlindTrio(){dealerButton=(dealerButton+1)%8}
   function placeMarker(id,absoluteIndex){var marker=document.getElementById(id),position=markerPositions[screenSlot(absoluteIndex)];marker.style.setProperty('--mx',position[0]);marker.style.setProperty('--my',position[1]);marker.setAttribute('data-seat',absoluteIndex);marker.setAttribute('data-view-slot',screenSlot(absoluteIndex))}
-  function setBlinds(){seats.forEach(function(s){var m=s.querySelector('.blind');m.classList.remove('show');m.textContent='';var np=s.querySelector('.nameplate strong');if(np&&np.dataset.origName)np.textContent=np.dataset.origName;});var dealer=dealerIndex(),sb=smallBlindIndex(),bb=bigBlindIndex(),first=sb,dealerMarker=document.getElementById('dealerMarker'),sbMarker=document.getElementById('sbMarker'),bbMarker=document.getElementById('bbMarker');placeMarker('dealerMarker',dealer);placeMarker('sbMarker',sb);placeMarker('bbMarker',bb);
-  [['dealer',dealer,'DEALER'],['sb',sb,'SMALL BLIND'],['bb',bb,'BIG BLIND']].forEach(function(r){var seat=document.querySelector('.seat[data-index="'+r[1]+'"]');if(seat){var np=seat.querySelector('.nameplate strong');if(np){if(!np.dataset.origName)np.dataset.origName=np.textContent;np.textContent=r[2];}}});dealerMarker.setAttribute('aria-label','Dealer button: '+names[dealer]);sbMarker.setAttribute('aria-label','Small blind: '+names[sb]);bbMarker.setAttribute('aria-label','Big blind: '+names[bb]);logEvent('markers-positioned',{dealer:dealer,smallBlind:sb,bigBlind:bb,firstCard:first,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]})}
+  function setBlinds(){seats.forEach(function(s){var m=s.querySelector('.blind');m.classList.remove('show');m.textContent='' });var dealer=dealerIndex(),sb=smallBlindIndex(),bb=bigBlindIndex(),first=sb,dealerMarker=document.getElementById('dealerMarker'),sbMarker=document.getElementById('sbMarker'),bbMarker=document.getElementById('bbMarker');placeMarker('dealerMarker',dealer);placeMarker('sbMarker',sb);placeMarker('bbMarker',bb);dealerMarker.setAttribute('aria-label','Dealer button: '+names[dealer]);sbMarker.setAttribute('aria-label','Small blind: '+names[sb]);bbMarker.setAttribute('aria-label','Big blind: '+names[bb]);logEvent('markers-positioned',{dealer:dealer,smallBlind:sb,bigBlind:bb,firstCard:first,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]})}
   function disableActions(){buttons.forEach(function(b){b.disabled=true})}
   function enableActions(toCall){var fold=document.querySelector('[data-action="fold"]'),check=document.querySelector('[data-action="check"]'),call=document.querySelector('[data-action="call"]'),raise=document.querySelector('[data-action="raise"]');fold.disabled=false;raise.disabled=false;check.disabled=!!toCall;call.disabled=!toCall;call.textContent=toCall?'CALL $'+toCall:'CALL'}
   function closeRaiseModal(){document.getElementById('raiseModal').classList.remove('open');selectedRaiseTo=null;document.getElementById('confirmRaise').disabled=true}
@@ -1271,67 +1246,5 @@ return '<svg width="92" height="92" viewBox="0 0 92 92"><path d="M45 16 C61 14 7
 
 
 
-
-<div class="modal open" id="coinOfferModal" role="dialog" aria-modal="true" aria-labelledby="coinOfferTitle">
-<div class="panel coin-panel">
-<button class="coin-x" id="coinOfferX" type="button" aria-label="Close">✕</button>
-<h2 id="coinOfferTitle">🪙 Welcome to the Emerald Room!</h2>
-<p class="coin-sub">Limited-time offer — extra coins on every pack!</p>
-<div class="coin-packs">
-<div class="coin-pack">
-<div class="coin-amount">25,000</div>
-<div class="coin-bonus">+5,000 BONUS</div>
-<div class="coin-price">$4.99</div>
-<button class="coin-buy" data-pack="starter">GET COINS</button>
-</div>
-<div class="coin-pack featured">
-<div class="coin-tag">MOST POPULAR</div>
-<div class="coin-amount">75,000</div>
-<div class="coin-bonus">+25,000 BONUS</div>
-<div class="coin-price">$14.99</div>
-<button class="coin-buy" data-pack="popular">GET COINS</button>
-</div>
-<div class="coin-pack">
-<div class="coin-amount">200,000</div>
-<div class="coin-bonus">+75,000 BONUS</div>
-<div class="coin-price">$39.99</div>
-<button class="coin-buy" data-pack="highroller">GET COINS</button>
-</div>
-</div>
-<p class="coin-fine">Bonus coins applied automatically at checkout.</p>
-</div>
-</div>
-
-<div class="modal" id="avatarPickerModal" role="dialog" aria-modal="true" aria-labelledby="avatarPickerTitle">
-<div class="panel avatar-panel">
-<h2 id="avatarPickerTitle">Choose Your Avatar</h2>
-<div class="avatar-grid"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-01.png" data-avatar="/assets/avatars/gallery/avatar-01.png" alt="Avatar 1"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-02.png" data-avatar="/assets/avatars/gallery/avatar-02.png" alt="Avatar 2"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-03.png" data-avatar="/assets/avatars/gallery/avatar-03.png" alt="Avatar 3"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-04.png" data-avatar="/assets/avatars/gallery/avatar-04.png" alt="Avatar 4"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-05.png" data-avatar="/assets/avatars/gallery/avatar-05.png" alt="Avatar 5"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-06.png" data-avatar="/assets/avatars/gallery/avatar-06.png" alt="Avatar 6"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-07.png" data-avatar="/assets/avatars/gallery/avatar-07.png" alt="Avatar 7"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-08.png" data-avatar="/assets/avatars/gallery/avatar-08.png" alt="Avatar 8"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-09.png" data-avatar="/assets/avatars/gallery/avatar-09.png" alt="Avatar 9"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-10.png" data-avatar="/assets/avatars/gallery/avatar-10.png" alt="Avatar 10"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-11.png" data-avatar="/assets/avatars/gallery/avatar-11.png" alt="Avatar 11"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-12.png" data-avatar="/assets/avatars/gallery/avatar-12.png" alt="Avatar 12"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-13.png" data-avatar="/assets/avatars/gallery/avatar-13.png" alt="Avatar 13"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-14.png" data-avatar="/assets/avatars/gallery/avatar-14.png" alt="Avatar 14"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-15.png" data-avatar="/assets/avatars/gallery/avatar-15.png" alt="Avatar 15"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-16.png" data-avatar="/assets/avatars/gallery/avatar-16.png" alt="Avatar 16"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-17.png" data-avatar="/assets/avatars/gallery/avatar-17.png" alt="Avatar 17"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-18.png" data-avatar="/assets/avatars/gallery/avatar-18.png" alt="Avatar 18"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-19.png" data-avatar="/assets/avatars/gallery/avatar-19.png" alt="Avatar 19"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-20.png" data-avatar="/assets/avatars/gallery/avatar-20.png" alt="Avatar 20"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-21.png" data-avatar="/assets/avatars/gallery/avatar-21.png" alt="Avatar 21"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-22.png" data-avatar="/assets/avatars/gallery/avatar-22.png" alt="Avatar 22"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-23.png" data-avatar="/assets/avatars/gallery/avatar-23.png" alt="Avatar 23"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-24.png" data-avatar="/assets/avatars/gallery/avatar-24.png" alt="Avatar 24"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-25.png" data-avatar="/assets/avatars/gallery/avatar-25.png" alt="Avatar 25"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-26.png" data-avatar="/assets/avatars/gallery/avatar-26.png" alt="Avatar 26"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-27.png" data-avatar="/assets/avatars/gallery/avatar-27.png" alt="Avatar 27"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-28.png" data-avatar="/assets/avatars/gallery/avatar-28.png" alt="Avatar 28"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-29.png" data-avatar="/assets/avatars/gallery/avatar-29.png" alt="Avatar 29"><img class="avatar-pick" src="/assets/avatars/gallery/avatar-30.png" data-avatar="/assets/avatars/gallery/avatar-30.png" alt="Avatar 30"></div>
-</div>
-</div>
-<script>
-// Coin offer -> Avatar picker flow
-(function(){
-  var coinModal = document.getElementById('coinOfferModal');
-  var avatarModal = document.getElementById('avatarPickerModal');
-  // Close coin offer with X -> show avatar picker
-  document.getElementById('coinOfferX').addEventListener('click', function(){
-    coinModal.classList.remove('open');
-    avatarModal.classList.add('open');
-  });
-  // Coin buy buttons (placeholder - wire to payment later)
-  document.querySelectorAll('.coin-buy').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var pack = this.getAttribute('data-pack');
-      alert('Coin purchase coming soon! Pack: ' + pack);
-    });
-  });
-  // Avatar selection -> close picker, set avatar
-  document.querySelectorAll('.avatar-pick').forEach(function(img){
-    img.addEventListener('click', function(){
-      window.chosenAvatar = this.getAttribute('data-avatar');
-      avatarModal.classList.remove('open');
-    });
-  });
-})();
-</script></body>
+</body>
 </html>
