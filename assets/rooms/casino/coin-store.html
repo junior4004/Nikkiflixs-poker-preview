@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Coin Store · Nikkiflixs Casino</title>
+<title>Gold Coin Store · Nikkiflixs Poker Club</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
 *{box-sizing:border-box}
@@ -122,5 +122,76 @@ function money(n){return '$'+n.toFixed(2);}
 })();
 })();
 </script>
+
+<!-- Rewarded Ad: Watch commercial for free gold coins -->
+<div class="rewarded-ad-section" style="margin:24px auto;max-width:420px;text-align:center;padding:20px;border:2px solid #f0c671;border-radius:12px;background:#1a0f08">
+  <h3 style="color:#ffe9b0;margin:0 0 8px">Out of Coins?</h3>
+  <p style="color:#c9ad7a;margin:0 0 16px">Watch a short commercial and get <strong style="color:#ffe9b0">500 FREE Gold Coins</strong>!</p>
+  <button id="watchAdBtn" type="button" style="min-width:200px;min-height:52px;padding:12px 24px;border:1px solid #ffe2a0;background:#8c1822;color:#fff8e8;font-weight:800;letter-spacing:.05em;cursor:pointer;border-radius:8px">📺 WATCH & EARN 500 COINS</button>
+  <p style="color:#8a7a5a;font-size:12px;margin:12px 0 0">No purchase necessary. Free coins have no cash value.</p>
+</div>
+
+<!-- Ad modal -->
+<div id="adModal" style="display:none;position:fixed;inset:0;z-index:999;background:#000;align-items:center;justify-content:center">
+  <div style="position:relative;width:100%;max-width:640px">
+    <video id="adVideo" style="width:100%;border-radius:8px" playsinline controlsList="nodownload">
+      <source src="../../commercial/nikkiflixs-commercial-horizontal.mp4" type="video/mp4">
+    </video>
+    <div id="adCountdown" style="position:absolute;top:12px;right:12px;background:#000a;color:#fff;padding:6px 12px;border-radius:6px;font-weight:700">Ad ends in <span id="adTimer">30</span>s</div>
+    <button id="closeAdBtn" type="button" style="display:none;position:absolute;bottom:12px;right:12px;padding:10px 20px;background:#8c1822;color:#fff;border:1px solid #ffe2a0;border-radius:6px;cursor:pointer;font-weight:700">CLAIM 500 COINS</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var modal = document.getElementById('adModal');
+  var video = document.getElementById('adVideo');
+  var watchBtn = document.getElementById('watchAdBtn');
+  var closeBtn = document.getElementById('closeAdBtn');
+  var timerEl = document.getElementById('adTimer');
+  var countdownEl = document.getElementById('adCountdown');
+  var timer = null;
+  var secondsLeft = 30;
+  
+  watchBtn.addEventListener('click', function(){
+    modal.style.display = 'flex';
+    video.play();
+    secondsLeft = 30;
+    timerEl.textContent = secondsLeft;
+    closeBtn.style.display = 'none';
+    countdownEl.style.display = 'block';
+    timer = setInterval(function(){
+      secondsLeft--;
+      timerEl.textContent = secondsLeft;
+      if(secondsLeft <= 0){
+        clearInterval(timer);
+        countdownEl.style.display = 'none';
+        closeBtn.style.display = 'block';
+      }
+    }, 1000);
+  });
+  
+  video.addEventListener('ended', function(){
+    clearInterval(timer);
+    countdownEl.style.display = 'none';
+    closeBtn.style.display = 'block';
+  });
+  
+  closeBtn.addEventListener('click', function(){
+    // Grant 500 gold coins
+    var coins = parseInt(localStorage.getItem('nikkiflixs_gold_coins') || '0');
+    coins += 500;
+    localStorage.setItem('nikkiflixs_gold_coins', coins.toString());
+    modal.style.display = 'none';
+    video.pause();
+    video.currentTime = 0;
+    alert('500 FREE Gold Coins added! You now have ' + coins + ' coins.');
+    // Refresh displayed balance if element exists
+    var balEl = document.querySelector('.coin-balance, #coinBalance');
+    if(balEl) balEl.textContent = coins;
+  });
+})();
+</script>
+
 </body>
 </html>
