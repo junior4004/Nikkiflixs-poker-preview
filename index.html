@@ -163,7 +163,7 @@ body.room-open #supportLauncher {
   <div class="intro-sign">
     <p class="intro-brand">Nikkiflixs</p>
     <div class="intro-divider" aria-hidden="true"></div>
-    <p class="intro-subtitle">Theater &amp; Casino</p>
+    <p class="intro-subtitle">Theater &amp; Poker Club</p>
     <p class="intro-est">Est. 2026</p>
     <button class="intro-enter" id="introEnter" type="button">Tap to Enter</button>
     <button class="install-app show" id="installApp" type="button">📲 Install Nikkiflixs</button>
@@ -171,7 +171,7 @@ body.room-open #supportLauncher {
     <p class="intro-yt">Check out our YouTube channel</p>
   </div>
 </section>
-<main id="showroom" class="stage" aria-label="Nikkiflixs Theater and Casino">
+<main id="showroom" class="stage" aria-label="Nikkiflixs Theater and Poker Club">
 <img class="stage-bg" src="assets/stage-scene.jpg" alt="A grand theater stage with spotlights and a broad staircase">
 <div class="stage-architecture" aria-hidden="true"><div class="gold-arch arch-left"></div><div class="gold-arch arch-right"></div><div class="backdrop-glow"></div><div class="staircase"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
 <div class="valance" aria-hidden="true"></div>
@@ -179,13 +179,13 @@ body.room-open #supportLauncher {
 <div class="lobby-hosts" aria-label="Nikki and Promise are here to help you choose">
 <figure class="lobby-host nikki"><img src="assets/nikki-avatar.webp" alt="Nikki, with long straight black hair and a black uniform with gold trim"><figcaption>Nikki<small>Poker · Game Room · Theater</small></figcaption></figure>
 <p class="lobby-prompt" aria-live="polite">So — what are we doing tonight?</p>
-<figure class="lobby-host promise"><img src="assets/promise-avatar.webp" alt="Promise, with long curly reddish-auburn hair, a nose stud and a black outfit with gold trim"><figcaption>Promise<small>Casino · Radio</small></figcaption></figure>
+<figure class="lobby-host promise"><img src="assets/promise-avatar.webp" alt="Promise, with long curly reddish-auburn hair, a nose stud and a black outfit with gold trim"><figcaption>Promise<small>Poker Club · Radio</small></figcaption></figure>
 </div>
 <div class="rooms">
 <button class="room poker" data-room="poker"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">01 · CARDS</span><h2>Poker</h2><p>Hold’em and Omaha tables, ready for a seat.</p></span></button>
 <button class="room games" data-room="games"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">02 · TABLETOP</span><h2>Game Room</h2><p>Cards, boards, dominoes, dice and more.</p></span></button>
 <button class="room theater" data-room="theater"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">03 · WATCH</span><h2>Theater</h2><p>Free movies, classic TV, news and antenna TV.</p></span></button>
-<button class="room casino" data-room="casino"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">04 · SLOTS</span><h2>Casino</h2><p>Classic reels and modern bonus machines.</p></span></button>
+<button class="room casino" data-room="casino"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">04 · SLOTS</span><h2>Poker Club</h2><p>Classic reels and modern bonus machines.</p></span></button>
 <button class="room casino" data-room="sportsbook"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">05 · SPORTS</span><h2>🏈 Sportsbook</h2><p>Live odds, scores and gold-coin fun bets.</p></span></button>
 <button class="room radio" data-room="radio"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">06 · MUSIC</span><h2>Radio</h2><p>Live local stations and music videos by genre.</p></span></button>
 <button class="room tables" data-room="tables"><span class="room-arrow" aria-hidden="true">›</span><span class="room-copy"><span class="room-num">07 · TABLES</span><h2>Table Games</h2><p>Blackjack and craps, live on the felt.</p></span></button>
@@ -224,7 +224,7 @@ body.room-open #supportLauncher {
 <button class="room-tab" type="button" data-switch-room="poker">Poker</button>
 <button class="room-tab" type="button" data-switch-room="games">Game Room</button>
 <button class="room-tab" type="button" data-switch-room="theater">Theater</button>
-<button class="room-tab" type="button" data-switch-room="casino">Casino</button>
+<button class="room-tab" type="button" data-switch-room="casino">Poker Club</button>
 <button class="room-tab" type="button" data-switch-room="tables">Tables</button>
 </div>
 <span class="room-admin-badge hidden" id="roomAdminBadge">ADMIN · FREE PLAY</span>
@@ -271,7 +271,7 @@ body.room-open #supportLauncher {
 <div class="support-messages" id="supportMessages" aria-live="polite" aria-label="Support conversation"></div>
 <div class="support-quick" id="supportQuick"><p>Quick topics</p><div class="support-topics">
 <button class="support-topic" type="button" data-support-topic="poker">Poker</button>
-<button class="support-topic" type="button" data-support-topic="casino">Casino</button>
+<button class="support-topic" type="button" data-support-topic="casino">Poker Club</button>
 <button class="support-topic" type="button" data-support-topic="games">Game Room</button>
 <button class="support-topic" type="button" data-support-topic="movies">Movies</button>
 <button class="support-topic" type="button" data-support-topic="coins">Gold coins</button>
@@ -299,7 +299,7 @@ var legacyRoomLinks={'nikkiflix-poker-gz65ou1pcxdw':'poker','nikkiflix-game-room
 var data={
 poker:{kicker:'Nikki · Poker Room',title:'Choose Your Table',sub:'Every table opens on the full poker floor. Pick your game and take your seat.',line:'<b>Nikki:</b> Welcome to the poker room! The cards are in the air and there’s a seat with your name on it — which table are we playing tonight?',voice:'assets/nikki-04-poker-entry.mp3',items:[['Texas Hold’em · 8-Max','200 tokens buy-in · Blinds 5/10','poker','table-01.webp','6/8'],['Texas Hold’em · 8-Max','400 tokens buy-in · Blinds 10/20','poker','table-02.webp','8/8'],['Texas Hold’em · 8-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-03.webp','4/8'],['Texas Hold’em · 8-Max','2,500 tokens buy-in · Blinds 50/100','poker','table-04.webp','7/8'],['Texas Hold’em · 8-Max','5,000 tokens buy-in · Blinds 100/200','poker','table-05.webp','5/8'],['Texas Hold’em · 6-Max','200 tokens buy-in · Blinds 5/10','poker','table-06.webp','3/6'],['Texas Hold’em · 6-Max','400 tokens buy-in · Blinds 10/20','poker','table-07.webp','6/6'],['Texas Hold’em · 6-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-08.webp','2/6'],['Texas Hold’em · 6-Max','2,500 tokens buy-in · Blinds 50/100','poker','table-09.webp','5/6'],['Texas Hold’em · 8-Max','10,000 tokens buy-in · Blinds 200/400','poker','table-10.webp','6/8'],['Pot-Limit Omaha · 6-Max','400 tokens buy-in · Blinds 10/20','poker','table-11.webp','4/6'],['Pot-Limit Omaha · 8-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-12.webp','6/8'],['Pineapple · 6-Max','200 tokens buy-in · Blinds 5/10','poker','table-13.webp','3/6'],['Pineapple · 8-Max','400 tokens buy-in · Blinds 10/20','poker','table-14.webp','5/8'],['Seven Card Stud · 8-Max','400 tokens buy-in · Blinds 10/20','poker','table-15.webp','4/8'],['Seven Card Stud · 6-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-16.webp','3/6'],['Draw Poker · 6-Max','200 tokens buy-in · Blinds 5/10','poker','table-17.webp','2/6'],['Lowball · 6-Max','400 tokens buy-in · Blinds 10/20','poker','table-18.webp','3/6'],['Crazy Pineapple · 6-Max','400 tokens buy-in · Blinds 10/20','poker','table-19.webp','4/6'],['Omaha Hi-Lo · 8-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-20.webp','6/8'],['Razz · 6-Max','200 tokens buy-in · Blinds 5/10','poker','table-21.webp','3/6'],['7-Card Stud Hi-Lo · 8-Max','400 tokens buy-in · Blinds 10/20','poker','table-22.webp','5/8'],['Big O · 6-Max','1,000 tokens buy-in · Blinds 25/50','poker','table-23.webp','4/6']]},
 games:{kicker:'Nikki · Game Room',title:'Pick Your Game',sub:'Fourteen complete games. Choose one and the game room opens with every table ready.',line:'<b>Nikki:</b> Welcome to the game room! Spades, hearts, chess, checkers and more — pick your game and let’s play!',voice:'assets/nikki-05-gameroom-entry.mp3',items:[['Chess','Classic strategy with three piece sets','game'],['Checkers','Forced captures and multi-jumps','game'],['Spades','Partnership bidding to 500','game'],['Hearts','Pass, dodge points, shoot the moon','game'],['Double-Deck Pinochle','House rules · no passing','game'],['Single-Deck Pinochle','Classic two-player stock game','game'],['Cribbage','Pegging and show scoring to 121','game'],['Dominoes','Block or draw · double-six','game'],['Go Fish','Ask, fish and build books','game'],['UNO','Color, number, action — call UNO','game'],['Crazy Eights','Wild eights and draw-twos','game'],['Old Maid','Make pairs and avoid the queen','game'],['Farkle','Six dice · race to 10,000','game'],['Yahtzee','Thirteen turns · complete scorecard','game']]},
-casino:{kicker:'Promise · Casino',title:'Choose Your Machine',sub:'Classic cabinets and modern bonus play. See every machine from the front before you sit down.',line:'<b>Promise:</b> Welcome to the casino! The reels are hot and the tables are waiting — what are we playing today?',voice:'assets/promise-04-casino-entry.mp3',items:[['Triple Diamond','3 reels · 1 payline · diamond jackpot','casino','DDD'],['Lucky Sevens','3 reels · 1 payline · red 7 top prize','casino','777'],['Nikkiflixs Nights','5 reels · 5 lines · free-spins bonus','casino','NFX']]},
+casino:{kicker:'Promise · Poker Club',title:'Choose Your Machine',sub:'Classic cabinets and modern bonus play. See every machine from the front before you sit down.',line:'<b>Promise:</b> Welcome to the poker club! The reels are hot and the tables are waiting — what are we playing today?',voice:'assets/promise-04-casino-entry.mp3',items:[['Triple Diamond','3 reels · 1 payline · diamond jackpot','casino','DDD'],['Lucky Sevens','3 reels · 1 payline · red 7 top prize','casino','777'],['Nikkiflixs Nights','5 reels · 5 lines · free-spins bonus','casino','NFX']]},
 theater:{kicker:'Nikki · Movie Theater',title:'Now Showing',sub:'Tap a poster to open the Netflix-style theater, with movies, classic TV, free news and antenna TV.',line:'<b>Nikki:</b> Welcome to the theater! Which movie would you like to watch?',voice:'assets/nikki-theater-welcome.mp3',items:[['Night of the Living Dead','1968 · Horror','poster','assets/posters/night-of-the-living-dead-1080p.jpg'],['House on Haunted Hill','1959 · Mystery','poster','assets/posters/house-on-haunted-hill-ipod.jpg'],['The Phantom of the Opera','1925 · Silent horror','poster','assets/posters/thephantomoftheopera.jpg'],['The Cabinet of Dr. Caligari','1920 · Expressionist horror','poster','assets/posters/daskabinettdesdoktorcaligarithecabinetofdrcaligari.jpg'],['Carnival of Souls','1962 · Psychological horror','poster','assets/posters/carnivalofsouls.jpg'],['Horror Express','1972 · Science-fiction horror','poster','assets/posters/horror-express.jpg']]},
 radio:{kicker:'Promise · Radio Station',title:'Nikkiflixs Radio',sub:'Live local stations and music videos by genre.',line:'',voice:'',items:[]},
 tables:{kicker:'Table Games',title:'Table Games',sub:'Blackjack and craps on real felt. Pick your table.',line:'',voice:'',items:[]},
@@ -312,7 +312,7 @@ var openingCues=[
 {start:1.300,end:2.480,host:'promise',words:[{start:1.300,end:1.540,text:'And'},{start:1.540,end:1.680,text:'I'},{start:1.680,end:1.920,text:'am'},{start:1.920,end:2.480,text:'Promise.'}]},
 {start:3.180,end:4.560,host:'together',words:[{start:3.180,end:3.400,text:'And'},{start:3.400,end:3.620,text:"we're"},{start:3.620,end:3.860,text:'your'},{start:3.860,end:4.560,text:'hosts.'}]},
 {start:5.360,end:9.380,host:'nikki',words:[{start:5.360,end:5.380,text:'If'},{start:5.380,end:5.560,text:"you're"},{start:5.560,end:5.680,text:'here'},{start:5.680,end:5.860,text:'for'},{start:5.860,end:6.180,text:'cards —'},{start:6.460,end:6.620,text:'poker,'},{start:6.860,end:7.160,text:'pinochle,'},{start:7.300,end:7.420,text:'or'},{start:7.420,end:7.760,text:'hearts,'},{start:8.020,end:8.140,text:'all'},{start:8.140,end:8.260,text:'of'},{start:8.260,end:8.600,text:'it —'},{start:8.740,end:8.800,text:'come'},{start:8.800,end:9.000,text:'with'},{start:9.000,end:9.380,text:'me.'}]},
-{start:9.540,end:13.460,host:'promise',words:[{start:9.540,end:9.700,text:'And'},{start:9.700,end:9.820,text:'if'},{start:9.820,end:10.040,text:"you're"},{start:10.040,end:10.280,text:'feeling'},{start:10.280,end:10.580,text:'the'},{start:10.580,end:10.920,text:'slots'},{start:10.920,end:11.320,text:'and'},{start:11.320,end:11.520,text:'the'},{start:11.520,end:11.760,text:'casino'},{start:11.760,end:12.360,text:'games,'},{start:12.820,end:13.060,text:'follow'},{start:13.060,end:13.460,text:'me.'}]},
+{start:9.540,end:13.460,host:'promise',words:[{start:9.540,end:9.700,text:'And'},{start:9.700,end:9.820,text:'if'},{start:9.820,end:10.040,text:"you're"},{start:10.040,end:10.280,text:'feeling'},{start:10.280,end:10.580,text:'the'},{start:10.580,end:10.920,text:'slots'},{start:10.920,end:11.320,text:'and'},{start:11.320,end:11.520,text:'the'},{start:11.520,end:11.760,text:'poker club'},{start:11.760,end:12.360,text:'games,'},{start:12.820,end:13.060,text:'follow'},{start:13.060,end:13.460,text:'me.'}]},
 {start:13.640,end:15.780,host:'nikki',words:[{start:13.640,end:13.900,text:"We've"},{start:13.900,end:14.040,text:'also'},{start:14.040,end:14.240,text:'got'},{start:14.240,end:14.400,text:'the'},{start:14.400,end:14.580,text:'game'},{start:14.580,end:14.840,text:'room'},{start:14.840,end:15.120,text:'and'},{start:15.120,end:15.260,text:'the'},{start:15.260,end:15.420,text:'movie'},{start:15.420,end:15.780,text:'theater.'}]},
 {start:16.700,end:19.680,host:'promise',words:[{start:16.700,end:18.180,text:'So —'},{start:18.820,end:18.980,text:'what'},{start:18.980,end:19.080,text:'are'},{start:19.080,end:19.120,text:'we'},{start:19.120,end:19.340,text:'doing'},{start:19.340,end:19.680,text:'tonight?'}]}
 ]
@@ -322,7 +322,7 @@ var wsCues=[
   {start:1.3,  end:2.48, host:'promise',  text:"And I am Promise."},
   {start:3.18, end:4.56, host:'together', text:"And we're your hosts."},
   {start:5.36, end:9.38, host:'nikki',    text:"If you're here for cards \u2014 poker, pinochle, or hearts, all of it \u2014 come with me."},
-  {start:9.54, end:13.46,host:'promise',  text:"And if you're feeling the slots and the casino games, follow me."},
+  {start:9.54, end:13.46,host:'promise',  text:"And if you're feeling the slots and the poker club games, follow me."},
   {start:13.64,end:15.78,host:'nikki',    text:"We've also got the game room and the movie theater."},
   {start:16.7, end:19.68,host:'promise',  text:"So \u2014 what are we doing tonight?"}
 ];
@@ -496,15 +496,15 @@ document.querySelectorAll('[data-room]').forEach(function(b){b.addEventListener(
 
 var supportAnswers={
 poker:'The Poker Room has Texas Hold’em tables. For now, you play against house bots. Multiplayer and games with real players will arrive with the server launch.',
-casino:'The Casino has slot machines and video poker. You play with gold coins for fun; it is a social casino only, with no real-money gambling and no cash-out.',
+casino:'The Poker Club has slot machines and video poker. You play with gold coins for fun; it is a social poker club only, with no real-money gambling and no cash-out.',
 games:'The Game Room has spades, hearts, pinochle, chess, checkers, cribbage, dominoes, Go Fish, Old Maid, UNO, Yahtzee and Farkle.',
 movies:'The Movie Theater offers free public-domain movies. Pick a movie from the theater and enjoy the show.',
-coins:'Gold coins are the fun coins used across Nikkiflixs, and they are available in the coin store. This is a social casino only: there is no real-money gambling and no cash-out, ever.',
+coins:'Gold coins are the fun coins used across Nikkiflixs, and they are available in the coin store. This is a social poker club only: there is no real-money gambling and no cash-out, ever.',
 rules:'Every game has a Rules button or rules screen at its table. Poker tables follow Texas Hold’em rules. Pinochle follows Jerry’s house rules, including no passing—ever.',
 account:'Sign-in and saved accounts will arrive with the server launch. Right now, everything runs in your browser and resets when you close the tab.',
 multiplayer:'Playing against real people will arrive with the server launch. Right now, house bots fill the tables so you can play.',
 troubleshooting:'If something looks wrong, reload the page first. Then check your internet connection and update your browser. If a game freezes, leave the game and come back in from the lobby.',
-hosts:'Nikki hosts poker, the game room, and the theater. Promise hosts the casino and the radio station.'
+hosts:'Nikki hosts poker, the game room, and the theater. Promise hosts the poker club and the radio station.'
 };
 var supportLauncher=document.getElementById('supportLauncher'),supportPanel=document.getElementById('supportPanel'),supportShade=document.getElementById('supportShade'),supportClose=document.getElementById('supportClose'),supportFooterClose=document.getElementById('supportFooterClose'),supportMessages=document.getElementById('supportMessages'),supportCompose=document.getElementById('supportCompose'),supportQuestion=document.getElementById('supportQuestion'),supportBoss=document.getElementById('supportBoss'),supportBossOpen=document.getElementById('supportBossOpen'),supportBossBack=document.getElementById('supportBossBack'),supportFormNote=document.getElementById('supportFormNote'),supportLastFocus=null,supportStarted=false;
 function setSupportLobbyVisibility(show){if(!show&&supportPanel.classList.contains('open'))closeSupport();supportLauncher.classList.toggle('hidden',!show);if(!show)supportLauncher.setAttribute('aria-expanded','false');if(typeof adminLauncher!=='undefined'&&adminLauncher){adminLauncher.classList.toggle('hidden',!show);if(!show)adminLauncher.setAttribute('aria-expanded','false')}}
@@ -561,7 +561,7 @@ window.addEventListener('nikkiflixs:local-admin-ready',syncAdminServerState);roo
   var promiseAudio=new Audio('assets/promise-lobby.mp3');
   var nikkiAudio=new Audio('assets/nikki-lobby.mp3');
   var PROMPT_DEFAULT='So \u2014 what are we doing tonight?';
-  var PROMISE_LINE="The casino's my room. Slots, blackjack, all of it. Come pick your game.";
+  var PROMISE_LINE="The poker club's my room. Slots, blackjack, all of it. Come pick your game.";
   var NIKKI_LINE="Poker's my table. Texas Hold'em. Choose your buy-in and take a seat.";
   var activeTimers=[];
 
