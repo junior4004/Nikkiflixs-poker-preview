@@ -131,14 +131,14 @@
     .table::after{border-radius:48% / 20%}
     .dealer{left:72%;top:18%}
     .pot{top:45%}.board{top:55%}.muck{top:46%}.deck{left:68%;top:24%}
-    .seat[data-view-slot="0"]{--x:50%!important;--y:99%!important;--kx:64%!important;--ky:92%!important}
-    .seat[data-view-slot="1"]{--x:9.5%!important;--y:83%!important;--kx:29%!important;--ky:82%!important}
-    .seat[data-view-slot="2"]{--x:8%!important;--y:59%!important;--kx:27.5%!important;--ky:59%!important}
-    .seat[data-view-slot="3"]{--x:9.5%!important;--y:33%!important;--kx:29%!important;--ky:33%!important}
-    .seat[data-view-slot="4"]{--x:46%!important;--y:8%!important;--kx:61%!important;--ky:21%!important}
-    .seat[data-view-slot="5"]{--x:90.5%!important;--y:33%!important;--kx:71%!important;--ky:33%!important}
-    .seat[data-view-slot="6"]{--x:92%!important;--y:59%!important;--kx:72.5%!important;--ky:59%!important}
-    .seat[data-view-slot="7"]{--x:90.5%!important;--y:83%!important;--kx:71%!important;--ky:82%!important}
+    .seat[data-view-slot="0"]{--x:50%!important;--y:86%!important;--kx:64%!important;--ky:90%!important}
+    .seat[data-view-slot="1"]{--x:9.5%!important;--y:79%!important;--kx:29%!important;--ky:78%!important}
+    .seat[data-view-slot="2"]{--x:9.5%!important;--y:59%!important;--kx:29%!important;--ky:59%!important}
+    .seat[data-view-slot="3"]{--x:9.5%!important;--y:39%!important;--kx:29%!important;--ky:39%!important}
+    .seat[data-view-slot="4"]{--x:46%!important;--y:10%!important;--kx:61%!important;--ky:21%!important}
+    .seat[data-view-slot="5"]{--x:90.5%!important;--y:39%!important;--kx:71%!important;--ky:39%!important}
+    .seat[data-view-slot="6"]{--x:90.5%!important;--y:59%!important;--kx:71%!important;--ky:59%!important}
+    .seat[data-view-slot="7"]{--x:90.5%!important;--y:79%!important;--kx:71%!important;--ky:78%!important}
     .seat[data-view-slot="0"] .pod,.seat[data-view-slot="4"] .pod{width:130px}
     .seat[data-view-slot="1"] .portrait-wrap,.seat[data-view-slot="2"] .portrait-wrap,.seat[data-view-slot="3"] .portrait-wrap{left:62%;z-index:2}
     .seat[data-view-slot="5"] .portrait-wrap,.seat[data-view-slot="6"] .portrait-wrap,.seat[data-view-slot="7"] .portrait-wrap{left:38%;z-index:2}
@@ -259,8 +259,7 @@
     .bj-bet-stack{position:absolute;z-index:16;left:50%;top:78%;width:78px;height:50px;transform:translate(-50%,-50%);pointer-events:none}.bj-bet-stack i{position:absolute;left:20px;bottom:calc(var(--level)*7px);width:40px;height:17px;border-radius:50%;border:3px dashed #fff4d3;background:radial-gradient(ellipse,#fff8dc 0 17%,#c32637 18% 57%,#68101b 59%);box-shadow:0 3px 0 #351017}.bj-bet-stack.output i{animation:chipsToDealer 1s ease-in forwards}.bj-bet-stack.input i{animation:chipsToPlayer 1s ease-out forwards}@keyframes chipsToDealer{to{transform:translate(20px,-265px) scale(.8);opacity:0}}@keyframes chipsToPlayer{from{transform:translate(20px,-260px) scale(.8);opacity:.3}to{transform:none;opacity:1}}
     .bj-status{position:absolute;z-index:18;left:50%;top:47%;width:min(480px,62%);transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px}.bj-status .casino-message{min-height:36px;margin:0;padding:6px 12px;font-size:13px}.bj-score{padding:6px 9px;border:1px solid #e3c373;background:#06130e;color:#ffe6a0;font:800 12px/1 "Barlow Condensed";white-space:nowrap}
     @media(max-width:720px){.casino-table-room.blackjack-mode .casino-stage{inset:58px 0 100px;padding:5px}.blackjack-felt{width:100%;height:calc(100dvh - 164px);min-height:470px;border-radius:42% 42% 10% 10% / 17% 17% 6% 6%;transform:none}.blackjack-felt::before{inset:10px 8px}.blackjack-felt::after{top:43%;font-size:9px;width:76%;padding:9px 0}.bj-dealer-station{top:-22px;transform:translateX(-50%) scale(.75);transform-origin:top center}.bj-shoe{left:68%;top:5%;transform:scale(.72) skewX(-8deg)}.bj-discard{left:23%;top:6%;transform:scale(.72)}.blackjack-felt .play-card{width:44px;height:63px;font-size:21px}.blackjack-felt .play-card b{font-size:18px}.bj-dealer-hand{top:13%;gap:4px}.bj-player-hand{top:53%;gap:4px}.bj-status{top:42%;width:90%;gap:5px}.bj-status .casino-message{font-size:10px}.bj-score{font-size:9px}.bj-seat:nth-child(1),.bj-seat:nth-child(5){display:none}.bj-seat:nth-child(2){--sx:20%;--sy:75%}.bj-seat:nth-child(4){--sx:80%;--sy:75%}.bj-seat:nth-child(3){--sy:84%}.bj-circle{width:52px;height:52px;border-width:3px;font-size:7px}.bj-circle strong{font-size:11px}.bj-chip-crescent{bottom:-20px;width:350px;transform:translateX(-50%) scale(.76);transform-origin:bottom center}.bj-bet-stack{top:73%}.bj-dealer-arm{width:120px}.casino-table-room.blackjack-mode .casino-controls{min-height:100px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}}
-  
-    .seat[data-view-slot="0"]{--x:50%!important;--y:99%!important;--kx:64%!important;--ky:92%!important}
+      .seat[data-view-slot="0"]{--x:50%!important;--y:99%!important;--kx:64%!important;--ky:92%!important}
     .seat[data-view-slot="1"]{--x:9.5%!important;--y:83%!important;--kx:29%!important;--ky:82%!important}
     .seat[data-view-slot="2"]{--x:8%!important;--y:59%!important;--kx:27.5%!important;--ky:59%!important}
     .seat[data-view-slot="3"]{--x:9.5%!important;--y:33%!important;--kx:29%!important;--ky:33%!important}
@@ -268,7 +267,6 @@
     .seat[data-view-slot="5"]{--x:90.5%!important;--y:33%!important;--kx:71%!important;--ky:33%!important}
     .seat[data-view-slot="6"]{--x:92%!important;--y:59%!important;--kx:72.5%!important;--ky:59%!important}
     .seat[data-view-slot="7"]{--x:90.5%!important;--y:83%!important;--kx:71%!important;--ky:82%!important}
-
 </style>
 </head>
 <body>
