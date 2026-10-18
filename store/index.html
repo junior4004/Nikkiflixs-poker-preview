@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikkiflixs Game Supply Company — Casino Assets for Builders</title>
+<style>
+  :root {
+    --gold: #d4af37;
+    --gold-light: #f4d47c;
+    --bg: #0a0a0f;
+    --bg-card: #14141c;
+    --bg-card-hover: #1c1c28;
+    --text: #f0ead8;
+    --text-dim: #a09a88;
+    --green: #1a6b3c;
+    --red: #a02020;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .license-banner {
+    background: linear-gradient(90deg, #1a2a1a, #0f1f0f);
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 900px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  .license-banner strong { color: var(--gold-light); }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,15,0.95);
+    z-index: 100;
+    border-bottom: 1px solid #2a2a3a;
+  }
+  nav a {
+    color: var(--gold);
+    text-decoration: none;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+  nav a:hover { background: var(--gold); color: #000; }
+  section { max-width: 1200px; margin: 0 auto; padding: 3rem 1rem 1rem; }
+  section h2 {
+    color: var(--gold);
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+  section .sub { color: var(--text-dim); margin-bottom: 1.5rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    background: #0a0a0f;
+  }
+  .card img.tall { height: 280px; object-fit: contain; background: #000; }
+  .card-body { padding: 1.2rem; }
+  .card-body h3 { color: var(--gold-light); margin-bottom: 0.4rem; font-size: 1.15rem; }
+  .card-body p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 0.8rem; }
+  .price {
+    font-size: 1.6rem;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+  }
+  .price small { font-size: 0.8rem; color: var(--text-dim); font-weight: normal; }
+  /* ===== LICENSE TIER TOGGLE ===== */
+  .license-toggle {
+    display: flex;
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 0.8rem;
+  }
+  .license-toggle button {
+    flex: 1;
+    padding: 0.45rem 0.5rem;
+    background: transparent;
+    color: var(--text-dim);
+    border: none;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .license-toggle button.active {
+    background: var(--gold);
+    color: #000;
+    font-weight: bold;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, var(--gold), #b8962e);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn.disabled { background: #3a3a4a; color: #888; cursor: not-allowed; }
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .avatar-grid img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #2a2a3a;
+    transition: border-color 0.2s;
+  }
+  .avatar-grid img:hover { border-color: var(--gold); }
+  .badge {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .badge.premium { background: var(--gold); color: #000; }
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-dim);
+    border-top: 1px solid #2a2a3a;
+    margin-top: 3rem;
+  }
+  footer a { color: var(--gold); }
+  .terms {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid #2a2a3a;
+  }
+  .terms h3 { color: var(--gold); margin-bottom: 0.8rem; }
+  .terms ul { padding-left: 1.5rem; color: var(--text-dim); }
+  .terms li { margin-bottom: 0.4rem; }
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.8rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== ANIMATED AVATAR GESTURES ===== */
+  @keyframes gesture-laugh {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-26px) rotate(-5deg); }
+    50% { transform: translateY(0) rotate(0deg); }
+    75% { transform: translateY(-14px) rotate(5deg); }
+  }
+  @keyframes gesture-angry {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-16px, 4px) rotate(-7deg); }
+    30% { transform: translate(16px, 4px) rotate(7deg); }
+    45% { transform: translate(-12px, 8px) rotate(-5deg); }
+    60% { transform: translate(12px, 14px) rotate(5deg); }
+    75% { transform: translate(0, 24px) rotate(0deg); }
+  }
+  @keyframes gesture-facepalm {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(-16deg) translate(-10px, 6px); }
+    50% { transform: rotate(-16deg) translate(10px, 6px); }
+    75% { transform: rotate(-10deg) translate(0, 10px); }
+  }
+  @keyframes gesture-celebrate {
+    0%, 100% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-34px) scale(1.1); }
+    55% { transform: translateY(0) scale(1); }
+    80% { transform: translateY(-18px) scale(1.05); }
+  }
+  @keyframes gesture-check {
+    0%, 100% { transform: translateY(0); }
+    15% { transform: translateY(14px); }
+    30% { transform: translateY(0); }
+    45% { transform: translateY(14px); }
+    60% { transform: translateY(0); }
+  }
+  @keyframes gesture-thinking {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-14px) rotate(-4deg); }
+    75% { transform: translateX(14px) rotate(4deg); }
+  }
+  @keyframes gesture-nod {
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(10px); }
+    40% { transform: translateY(0); }
+    60% { transform: translateY(10px); }
+    80% { transform: translateY(0); }
+  }
+  @keyframes gesture-fold {
+    0%, 100% { transform: translateX(0); opacity: 1; }
+    50% { transform: translateX(34px); opacity: 0.55; }
+  }
+  @keyframes gesture-bluff {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    12% { transform: translateX(-15px) rotate(-4deg); }
+    24% { transform: translateX(15px) rotate(4deg); }
+    36% { transform: translateX(-15px) rotate(-4deg); }
+    48% { transform: translateX(0) rotate(0deg); }
+  }
+  @keyframes gesture-shuffle {
+    0%, 100% { transform: translateY(0); }
+    10% { transform: translateY(-8px); }
+    20% { transform: translateY(8px); }
+    30% { transform: translateY(-8px); }
+    40% { transform: translateY(8px); }
+    50% { transform: translateY(-8px); }
+    60% { transform: translateY(8px); }
+    70% { transform: translateY(-8px); }
+    80% { transform: translateY(0); }
+  }
+  .avatar-tile {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #2a2a3a;
+    cursor: pointer;
+    background: #0a0a0f;
+    aspect-ratio: 3/4;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .avatar-tile:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .avatar-tile .gesture-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Zoom the avatar so gesture transforms move the PERSON inside the
+       frame instead of rocking the whole tile. transform-origin at the
+       bottom keeps them planted like they're seated. */
+    scale: 1.28;
+    transform-origin: 50% 88%;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .avatar-tile.g-laugh .gesture-img { animation-name: gesture-laugh; }
+  .avatar-tile.g-angry .gesture-img { animation-name: gesture-angry; }
+  .avatar-tile.g-facepalm .gesture-img { animation-name: gesture-facepalm; }
+  .avatar-tile.g-celebrate .gesture-img { animation-name: gesture-celebrate; }
+  .avatar-tile.g-check .gesture-img { animation-name: gesture-check; }
+  .avatar-tile.g-thinking .gesture-img { animation-name: gesture-thinking; }
+  .avatar-tile.g-nod .gesture-img { animation-name: gesture-nod; }
+  .avatar-tile.g-fold .gesture-img { animation-name: gesture-fold; }
+  .avatar-tile.g-bluff .gesture-img { animation-name: gesture-bluff; }
+  .avatar-tile.g-shuffle .gesture-img { animation-name: gesture-shuffle; }
+  .gesture-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.72);
+    color: var(--gold-light);
+    font-size: 0.68rem;
+    text-align: center;
+    padding: 0.25rem 0.2rem;
+    letter-spacing: 0.5px;
+    pointer-events: none;
+  }
+  .avatar-tile .tap-hint {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0,0,0,0.6);
+    color: var(--gold);
+    font-size: 0.62rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 8px;
+    pointer-events: none;
+  }
+  .avatar-note {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 0.4rem 0 1rem;
+  }
+  .avatar-note strong { color: var(--gold-light); }
+
+  /* ===== FULL-BODY MODAL ===== */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal-box {
+    background: var(--bg-card);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 1.2rem;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.8rem;
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-size: 1.6rem;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .seat-mockup {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 38%, #2a5c8a 0%, #17456e 45%, #0d2c49 100%);
+    border: 10px solid transparent;
+    border-image: linear-gradient(135deg, #8a8a8a, #e8e8e8, #8a8a8a, #d0d0d0, #8a8a8a) 1;
+    min-height: 340px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .seat-mockup::before {
+    content: "♠ Nikkiflixs Poker Club ♠";
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(212,175,55,0.5);
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+  }
+  .seat-mockup img {
+    width: 68%;
+    max-width: 300px;
+    display: block;
+    margin-top: 44px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,0.55));
+  }
+  .seat-nameplate {
+    position: absolute;
+    bottom: 10px;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    padding: 0.3rem 1.2rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+  }
+  .modal-box h3 { color: var(--gold-light); margin-bottom: 0.3rem; }
+  .modal-box .modal-desc { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; }
+  .modal-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .modal-actions .btn { flex: 1; min-width: 160px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>♠ NIKKIFLIXS GAME SUPPLY COMPANY ♠</h1>
+  <p>Professional casino assets — tables, avatars, cards, dice. Built by players, for builders.<br>
+  Drop them into your casino and go live.</p>
+</header>
+
+<div class="license-banner">
+  <strong>Two License Tiers:</strong>
+  <strong>Single Casino</strong> — one casino / business. Contractors need their own license.
+  &nbsp;•&nbsp; <strong>Multi Casino</strong> (~2.5&times;) — covers parent, child &amp; sister companies; contractors on your project are covered.
+  No resale. No redistribution. <a href="#terms" style="color:var(--gold-light);">Full terms ↓</a>
+</div>
+
+<nav>
+  <a href="#tables">Tables</a>
+  <a href="#avatars">Avatars</a>
+  <a href="#cards">Cards</a>
+  <a href="#dice">Dice</a>
+  <a href="#terms">License</a>
+</nav>
+
+<!-- TABLES -->
+<section id="tables">
+  <h2>Poker Tables</h2>
+  <p class="sub">Complete, working multiplayer tables. Buy once, clone unlimited for your casino.</p>
+  <div class="grid">
+    <div class="card">
+      <img src="images/tables/red-flagship-table.png" alt="Red Poker Table — Flagship">
+      <div class="card-body">
+        <h3>Red Poker Table <span class="badge premium">FLAGSHIP</span></h3>
+        <p>The one we started with — our flagship. 8 seats, full multiplayer Texas Hold'em. Buy the table shell and add your own seating, or pair it with our avatars.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="65" data-multi="165">$65 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="images/tables/game-desktop.png" alt="Oval Poker Table">
+      <div class="card-body">
+        <h3>Oval Poker Table</h3>
+        <p>5-player oval table in blue or purple felt. Perfect for smaller games with friends. Same quality, fewer seats.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="28" data-multi="70">$28 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="images/tables/black-round-table.png" alt="Round Table">
+      <div class="card-body">
+        <h3>Round Table (Black Felt)</h3>
+        <p>2-player round table with black felt. Doubles as a 4-5 player blackjack table. Compact and versatile.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="12" data-multi="30">$12 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVATARS -->
+<section id="avatars">
+  <h2>3D Avatars</h2>
+  <p class="sub">Full-body 3D poker player avatars. Pixar-quality renders, diverse faces, ready to drop into any table.</p>
+  
+  <div class="grid" style="margin-bottom:2rem;">
+    <div class="card">
+      <img src="images/avatars/nikki.png" alt="Nikki Avatar" class="tall">
+      <div class="card-body">
+        <h3>Nikki — Dealer Avatar <span class="badge premium">BESTSELLER</span></h3>
+        <p>Our signature dealer. 3D animated, professional casino host quality. The one players ask about.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="15" data-multi="38">$15 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body" style="text-align:center;padding:2rem 1.2rem;">
+        <h3>Full Pack — All 24 Avatars</h3>
+        <p>Every avatar in the collection. 24 unique 3D full-body players — men, women, all ages, diverse styles. Best value.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="50" data-multi="125" data-single-note="one-time / save $22" data-multi-note="one-time / save $67">$50 <small>one-time / save $22</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Full Pack</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body" style="text-align:center;padding:2rem 1.2rem;">
+        <h3>Single Avatar</h3>
+        <p>Pick any individual avatar from the collection below. Yours to use in your casino.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="3" data-multi="8">$3 <small>each</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Browse Below</a>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--gold-light);margin-bottom:0.3rem;">The Collection (24 Avatars) — <span style="font-size:0.85rem;color:var(--text-dim);">they're alive. Watch them.</span></h3>
+  <p class="avatar-note"><strong>Tap any avatar</strong> to see it full-body in a poker seat. Each one cycles through 10 gestures live — laughing, bad-beat table slams, facepalms, big-win celebrations, checking, thinking, nodding, folding, bluffing, and chip shuffling.</p>
+  <div class="avatar-grid" id="avatarGrid"></div>
+
+  <div class="grid" style="margin-top:1.5rem;">
+    <div class="card">
+      <div class="card-body" style="text-align:center;padding:2rem 1.2rem;">
+        <h3>Avatar + Seat Bundle <span class="badge">DROP-IN READY</span></h3>
+        <p>Avatar pre-seated in a styled poker seat. Drop the whole thing into your table — no positioning work. Avatar + seat frame + nameplate.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="15" data-multi="38">$15 <small>one-time / per avatar</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Bundle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section id="cards">
+  <h2>3D Card Deck</h2>
+  <p class="sub">Premium 3D-rendered playing cards. Full 52-card deck + blue and purple backs.</p>
+  <div class="grid">
+    <div class="card">
+      <img src="images/cards/AS.webp" alt="Ace of Spades" class="tall">
+      <div class="card-body">
+        <h3>3D Card Deck — Full 52 <span class="badge">NEW</span></h3>
+        <p>All 52 cards in stunning 3D. Ornate suit symbols, gold borders, warm casino lighting. Includes blue &amp; purple card backs.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="28" data-multi="70">$28 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="images/cards/card-back-blue.webp" alt="Card Back" class="tall">
+      <div class="card-body">
+        <h3>Card Backs Only</h3>
+        <p>Blue and purple diamond-weave card backs with gold accents. For builders who have their own faces.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="10" data-multi="25">$10 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DICE -->
+<section id="dice">
+  <h2>Dice</h2>
+  <p class="sub">High-quality 3D dice for craps and dice games.</p>
+  <div class="grid">
+    <div class="card">
+      <img src="images/dice/dice-red-6.webp" alt="Red Dice" class="tall">
+      <div class="card-body">
+        <h3>Red Dice Set (1-6)</h3>
+        <p>Full set of 6 red 3D dice. Crisp, professional, ready for any dice game.</p>
+        <div class="license-toggle">
+          <button type="button" class="active" data-tier="single">Single Casino</button>
+          <button type="button" data-tier="multi">Multi Casino</button>
+        </div>
+        <div class="price" data-single="12" data-multi="30">$12 <small>one-time</small></div>
+        <a href="#" class="btn" onclick="alert('Checkout coming soon!');return false;">Buy Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMS -->
+<section id="terms">
+  <div class="terms">
+    <h3>License Terms</h3>
+    <h4 style="color:var(--gold-light);margin:1rem 0 0.5rem;">Single Casino (standard)</h4>
+    <ul>
+      <li>Covers <strong>ONE</strong> casino / business / website.</li>
+      <li><strong>Buy once, use forever</strong> in that casino. Clone as many tables as you need.</li>
+      <li>Contractors working on your project need their <strong>own</strong> license.</li>
+    </ul>
+    <h4 style="color:var(--gold-light);margin:1rem 0 0.5rem;">Multi Casino (~2.5&times; price)</h4>
+    <ul>
+      <li>Covers your entity <strong>plus</strong> parent, child, and sister companies.</li>
+      <li>Contractors working on <strong>your</strong> project are covered — no separate license needed.</li>
+      <li>Same buy-once-use-forever terms, wider coverage.</li>
+    </ul>
+    <h4 style="color:var(--gold-light);margin:1rem 0 0.5rem;">General (both tiers)</h4>
+    <ul>
+      <li><strong>No resale.</strong> You cannot sell, give away, or redistribute our assets to others.</li>
+      <li><strong>We can revoke</strong> your license if you violate these terms.</li>
+      <li>All sales final. Digital products, no refunds.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FULL-BODY MODAL -->
+<div class="modal-backdrop" id="avatarModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="seat-mockup">
+      <img id="modalAvatarImg" src="" alt="Avatar full body">
+      <div class="seat-nameplate" id="modalAvatarName">Avatar</div>
+    </div>
+    <h3 id="modalAvatarTitle">Avatar</h3>
+    <p class="modal-desc">Full-body 3D render, seated and ready. Buy the avatar alone, or grab the <strong style="color:var(--gold-light)">Avatar + Seat Bundle</strong> — pre-seated, drop-in ready for your table.</p>
+    <div class="license-toggle" style="max-width:320px;margin:0 auto 1rem;">
+      <button type="button" class="active" data-tier="single">Single Casino</button>
+      <button type="button" data-tier="multi">Multi Casino</button>
+    </div>
+    <div class="modal-actions">
+      <a href="#" class="btn" data-label="Avatar Alone" data-single="3" data-multi="8" onclick="alert('Avatar — Checkout coming soon!');return false;">Avatar Alone — $3</a>
+      <a href="#" class="btn" data-label="Avatar + Seat" data-single="15" data-multi="38" onclick="alert('Avatar + Seat Bundle — Checkout coming soon!');return false;">Avatar + Seat — $15</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong style="color:var(--gold)">Nikkiflixs Game Supply Company</strong></p>
+  <p>Professional casino assets for builders. Better, cheaper, faster.</p>
+  <p style="margin-top:1rem;font-size:0.85rem;">© 2026 Nikkiflixs Poker Club and Entertainment. All rights reserved.</p>
+</footer>
+
+<script>
+  // Animated avatar tiles with gesture cycling + full-body modal
+  const GESTURES = [
+    { cls: 'g-laugh',     label: '😂 Laughing it off...' },
+    { cls: 'g-angry',     label: '😡 Bad beat! Table slam!' },
+    { cls: 'g-facepalm',  label: '🤦 Oh no... facepalm' },
+    { cls: 'g-celebrate', label: '🎉 BIG WIN! Celebrating!' },
+    { cls: 'g-check',     label: '✌️ Checking... tap tap' },
+    { cls: 'g-thinking',  label: '🤔 Hmm, thinking...' },
+    { cls: 'g-nod',       label: '👍 Nice hand.' },
+    { cls: 'g-fold',      label: '🃏 Folding... cards away' },
+    { cls: 'g-bluff',     label: '👀 Bluffing?' },
+    { cls: 'g-shuffle',   label: '🎰 Shuffling chips...' }
+  ];
+  const ALL_GESTURE_CLS = GESTURES.map(function(g) { return g.cls; });
+  const AVATAR_NAMES = {
+    1:'The Regular', 2:'The Veteran', 3:'The Kid', 4:'The Pro',
+    5:'Scarlet', 6:'The Suit', 7:'Grandma', 8:'Ginger',
+    9:'Blondie', 10:'Silver Fox', 11:'Goldie', 12:'The Scholar',
+    13:'Latina Heat', 14:'Pops', 15:'The Queen', 16:'El Jefe',
+    17:'Teal', 18:'Sunshine', 19:'Nana', 20:'Ink',
+    21:'The Cowboy', 22:'The Biker', 23:'El Deportista', 24:'The Widow'
+  };
+  const grid = document.getElementById('avatarGrid');
+  const modal = document.getElementById('avatarModal');
+  const modalImg = document.getElementById('modalAvatarImg');
+  const modalName = document.getElementById('modalAvatarName');
+  const modalTitle = document.getElementById('modalAvatarTitle');
+
+  for (let i = 1; i <= 24; i++) {
+    const num = String(i).padStart(2, '0');
+    const name = AVATAR_NAMES[i] || ('Avatar ' + i);
+    const tile = document.createElement('div');
+    tile.className = 'avatar-tile g-laugh';
+    tile.innerHTML =
+      '<img class="gesture-img" src="images/avatars/player-' + num + '.webp" alt="' + name + '" loading="lazy">' +
+      '<div class="tap-hint">tap me</div>' +
+      '<div class="gesture-label">' + GESTURES[0].label + '</div>';
+    // Stagger the start so tiles are not in sync
+    const startIdx = i % GESTURES.length;
+    tile.classList.remove('g-laugh');
+    tile.classList.add(GESTURES[startIdx].cls);
+    tile.querySelector('.gesture-label').textContent = GESTURES[startIdx].label;
+    // Cycle gestures every 3s
+    let gIdx = startIdx;
+    setInterval((function(t, lbl) {
+      return function() {
+        gIdx = (gIdx + 1) % GESTURES.length;
+        t.classList.remove.apply(t.classList, ALL_GESTURE_CLS);
+        t.classList.add(GESTURES[gIdx].cls);
+        lbl.textContent = GESTURES[gIdx].label;
+      };
+    })(tile, tile.querySelector('.gesture-label')), 3000);
+    // Click → full-body modal
+    tile.addEventListener('click', (function(n, nm) {
+      return function() {
+        modalImg.src = 'images/avatars/player-' + n + '.webp';
+        modalName.textContent = nm;
+        modalTitle.textContent = nm + ' — Full Body';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      };
+    })(num, name));
+    grid.appendChild(tile);
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // License tier toggles — Single Casino vs Multi Casino
+  document.querySelectorAll('.license-toggle').forEach(function(toggle) {
+    const scope = toggle.closest('.card, .modal-box');
+    toggle.querySelectorAll('button').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        toggle.querySelectorAll('button').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        const multi = btn.dataset.tier === 'multi';
+        // Update the price display in this card
+        const priceEl = scope ? scope.querySelector('.price') : null;
+        if (priceEl && priceEl.dataset.single) {
+          const p = multi ? priceEl.dataset.multi : priceEl.dataset.single;
+          const note = multi
+            ? (priceEl.dataset.multiNote || 'one-time')
+            : (priceEl.dataset.singleNote || priceEl.querySelector('small').textContent);
+          priceEl.innerHTML = '$' + p + ' <small>' + note + '</small>';
+        }
+        // Update modal buy buttons
+        if (scope && scope.classList.contains('modal-box')) {
+          scope.querySelectorAll('.modal-actions .btn[data-single]').forEach(function(b) {
+            const bp = multi ? b.dataset.multi : b.dataset.single;
+            b.textContent = b.dataset.label + ' — $' + bp;
+          });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
