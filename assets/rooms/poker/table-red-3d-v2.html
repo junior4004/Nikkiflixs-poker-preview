@@ -449,6 +449,62 @@
   var activeConfig={game:'holdem',maxSeats:8,sb:25,bb:50,holeCards:2,freeTable:false},timers=[],pot=0,dealerButton=1,handRunning=false,pendingUser=null,pendingRaiseState=null,selectedRaiseTo=null,audio=null,alertsUnlocked=false,gameStarted=true,alertCount=0,micStream=null,toastTimer=null,bank=500,minimumBuyin=2000,handFolded={},handAllIn={},sittingOut={0:true},waitingForBigBlind=false,pendingJoinNextHand=false,seatHoldTimer=null,seatHoldUntil=0,turnToken=0,handNumber=0,gameSpeed=1,auditLog=[],localSeatAbsolute=0,roundBetTotals=[0,0,0,0,0,0,0,0],currentAggressor=null,liveTransport=null,reconnecting=false,lastServerRevision=0,reconnectBannerTimer=null,leaderboardRevision=0,accountRevision=0,accountConnected=false,dailyBonusAvailable=false,dailyBonusPending=false;
   function screenSlot(absoluteSeat){return(absoluteSeat-localSeatAbsolute+8)%8}
   function applyViewerPerspective(absoluteSeat){localSeatAbsolute=((Number(absoluteSeat)||0)%8+8)%8;seats.forEach(function(seat){var absolute=Number(seat.getAttribute('data-index'));seat.setAttribute('data-absolute-seat',absolute);seat.setAttribute('data-view-slot',screenSlot(absolute))});if(document.getElementById('dealerMarker'))setBlinds();if(document.getElementById('betLayer'))updateBetPositions();fitCamera();logEvent('viewer-perspective',{localAbsoluteSeat:localSeatAbsolute,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]});return seats.map(function(seat){return{absolute:Number(seat.getAttribute('data-index')),viewSlot:Number(seat.getAttribute('data-view-slot'))}})}
+  /* === AVATAR GESTURE SYSTEM (DEMO) ===
+     Video-swap gestures for the local player (seat 0).
+     When a gesture triggers, the avatar <img> is temporarily replaced
+     with a <video> playing the gesture, then swapped back.
+     If video fails to load, falls back to static image silently.
+     Display-only: does not touch game logic. */
+  var GESTURE_BASE='assets/gestures/';
+  var gestureTimers={};
+  function playGesture(seatIndex,gestureName,durationMs){
+    try{
+      var seat=seats[seatIndex];
+      if(!seat)return;
+      var wrap=seat.querySelector('.portrait-wrap');
+      if(!wrap)return;
+      var img=wrap.querySelector('img.portrait');
+      if(!img||wrap.querySelector('video.gesture-video'))return; // already playing
+      var originalSrc=img.getAttribute('src');
+      var video=document.createElement('video');
+      video.className='portrait gesture-video';
+      video.setAttribute('playsinline','');
+      video.setAttribute('muted','');
+      video.setAttribute('preload','auto');
+      // Match portrait styling
+      video.style.display='block';
+      video.style.width='100%';
+      video.style.height='100%';
+      video.style.objectFit='cover';
+      var swapped=false;
+      function restore(){
+        if(!swapped)return;swapped=false;
+        try{
+          if(video.parentNode===wrap){wrap.replaceChild(img,video);}
+          try{video.pause();}catch(e){}
+          video.removeAttribute('src');video.load();
+        }catch(e){}
+      }
+      video.addEventListener('error',function(){restore();},{once:true});
+      video.addEventListener('ended',function(){restore();},{once:true});
+      var fallbackMs=durationMs||4000;
+      var timer=setTimeout(function(){restore();},fallbackMs+500);
+      gestureTimers[seatIndex+'_'+gestureName]=timer;
+      video.src=GESTURE_BASE+gestureName+'.mp4';
+      wrap.replaceChild(video,img);swapped=true;
+      var playPromise=video.play();
+      if(playPromise&&playPromise.catch){playPromise.catch(function(){restore();clearTimeout(timer);});}
+    }catch(e){/* silent fallback */}
+  }
+  /* Demo: point seat 0 ("You") at the cowboy avatar so gesture videos match.
+     Remove this block when real per-avatar videos are ready. */
+  (function(){
+    try{
+      var youImg=document.querySelector('.seat[data-index="0"] img.portrait');
+      if(youImg){youImg.src='assets/gestures/cowboy-still.webp';}
+    }catch(e){}
+  })();
+  /* === END GESTURE SYSTEM === */
   window.__pokerTest={setSpeed:function(value){gameSpeed=Math.max(.02,Math.min(1,Number(value)||1))},setViewerSeat:applyViewerPerspective,getLog:function(){return auditLog.slice()},getState:function(){return{started:gameStarted,alertsUnlocked:alertsUnlocked,audioState:audio?audio.state:'not-created',handNumber:handNumber,dealer:dealerIndex(),smallBlind:smallBlindIndex(),bigBlind:bigBlindIndex(),localSeatAbsolute:localSeatAbsolute,pot:pot,running:handRunning,stacks:stacks.slice(),folded:Object.keys(handFolded),sittingOut:Object.keys(sittingOut),pendingJoinNextHand:pendingJoinNextHand,seatHoldSeconds:seatHoldUntil?Math.max(0,Math.ceil((seatHoldUntil-Date.now())/1000)):0,actionsEnabled:buttons.some(function(button){return !button.disabled}),reconnecting:reconnecting,serverRevision:lastServerRevision,accountConnected:accountConnected,accountRevision:accountRevision,accountBalance:bank,dailyBonusAvailable:dailyBonusAvailable,freeTable:activeConfig.freeTable,minimumBuyin:minimumBuyin}}};
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
@@ -553,7 +609,7 @@
     clearTurn();var seat=seats[index],token=turnToken;void seat.offsetWidth;seat.classList.add('active');statusMain.textContent=label+' · '+names[index]+' acts';logEvent('turn',{round:label,seat:index,name:names[index],toCall:toCall});var turnAlert=alertUserTurn(index,false);
     if(index===localSeatAbsolute){alertCount++;toast.setAttribute('aria-label','Your turn alerts '+alertCount+'; loud beep '+(turnAlert.beeped?'played':'blocked')+'; vibration '+(turnAlert.buzzed?'sent':'unavailable'))}
     logEvent('turn-alert',{seat:index,userTurn:index===localSeatAbsolute,audioState:audio?audio.state:'not-created',beeped:turnAlert.beeped,buzzed:turnAlert.buzzed,suppressed:turnAlert.suppressed});
-    if(index===localSeatAbsolute){enableActions(toCall);pendingUser=onChoice;pendingRaiseState=raiseState}else pendingUser=null;
+    if(index===localSeatAbsolute){enableActions(toCall);pendingUser=onChoice;pendingRaiseState=raiseState;playGesture(0,'thinking',2500)}else pendingUser=null;
     later(20000,function(){if(token===turnToken&&seat.classList.contains('active')){seat.classList.add('warning');var warningAlert=alertUserTurn(index,true);logEvent('turn-warning-alert',{seat:index,userTurn:index===localSeatAbsolute,beeped:warningAlert.beeped,buzzed:warningAlert.buzzed,suppressed:warningAlert.suppressed})}});
     if(index===localSeatAbsolute){later(navigator.webdriver?180000:30000,function(){if(token===turnToken&&pendingUser){var cb=pendingUser;pendingUser=null;closeRaiseModal();disableActions();sittingOut[index]=true;logEvent('timeout',{seat:index,action:'fold',sittingOut:true});cb('fold')}})}else{later(1300+Math.floor(Math.random()*2400),function(){if(token===turnToken&&seat.classList.contains('active'))onChoice(null)})}
   }
@@ -621,14 +677,14 @@
       if(closed()){clearTurn();statusMain.textContent=label+' COMPLETE · BETS MOVE TO POT';statusTrail.textContent='All active players acted and all bets are equal';logEvent('round-complete',{round:label,trail:trail.slice(),currentBet:currentBet});later(360,function(){collectRoundBets(function(){later(260,done)})});return}
       var index=nextActive();if(index<0){collectRoundBets(done);return}var planned=policy(index,{currentBet:currentBet,contribution:contributions[index]},label),toCall=Math.max(0,currentBet-contributions[index]);
       startTurn(index,label,toCall,function(choice){var userChoice=index===0&&typeof choice==='object'?choice:null,actual=index===0?(userChoice?userChoice.action:choice):planned.choice;if(actual==='check'&&toCall)actual='call';if(actual==='call'&&!toCall)actual='check';trail.push(names[index]);statusTrail.textContent='CLOCKWISE · '+trail.join(' → ');logEvent('action',{round:label,seat:index,name:names[index],action:actual,toCall:toCall});
-        if(actual==='fold'){acted[index]=true;handFolded[index]=true;foldCards(seats[index],next);return}
+        if(actual==='fold'){acted[index]=true;handFolded[index]=true;if(index===0)playGesture(0,'folding',3000);foldCards(seats[index],next);return}
         if(actual==='raise'){
           var oldCurrentBet=currentBet,target=userChoice?userChoice.to:Math.max(currentBet+lastFullRaise,currentBet+(planned.raiseBy||lastFullRaise),planned.to||0),raiseAmount=Math.max(0,target-contributions[index]),allInRequested=raiseAmount>=stacks[index],raisePaid=commitChips(index,raiseAmount,allInRequested?'all-in':'raise');contributions[index]+=raisePaid;
           if(contributions[index]>currentBet){var completedRaise=contributions[index]-oldCurrentBet;if(completedRaise>=lastFullRaise)lastFullRaise=completedRaise;currentBet=contributions[index];acted={}}
           acted[index]=true;var raiseAction=handAllIn[index]?'ALL-IN':(oldCurrentBet===0?'BET':'RAISE');postRoundBet(index,raisePaid,raiseAction,true);later(760,next);return
         }
         var amount=Math.max(0,currentBet-contributions[index]),paid=commitChips(index,amount,amount?'call':'check');contributions[index]+=paid;acted[index]=true;
-        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(index,'CHECK',false);later(420,next)}
+        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{if(index===0)playGesture(0,'checking',2500);setActionPlate(index,'CHECK',false);later(420,next)}
       },{currentBet:currentBet,contribution:contributions[index],bigBlind:bigBlindAmount,lastFullRaise:lastFullRaise})
     }
     next()
@@ -690,7 +746,7 @@
     var liveIndexes=ranked.map(function(entry){return entry.index});revealShowdownAtPortraits(liveIndexes);
     ranked.sort(function(a,b){return compareRanks(b.rank,a.rank)});var winnerInfo=ranked[0],winners=ranked.filter(function(entry){return compareRanks(entry.rank,winnerInfo.rank)===0}),share=Math.floor(pot/winners.length),awardedPot=pot;
     highlightWinningFive(winnerInfo,liveIndexes,share);logEvent('showdown',{pot:pot,hand:handName(winnerInfo.rank),winners:winners.map(function(entry){return{seat:entry.index,name:names[entry.index],share:share,rank:entry.rank,chosen:entry.chosen}})});
-    winners.forEach(function(entry,n){later(650+n*230,function(){flyChips(seats[entry.index],true,share);logEvent('pot-slid-to-winner',{seat:entry.index,name:names[entry.index],amount:share})})});later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
+    winners.forEach(function(entry,n){later(650+n*230,function(){flyChips(seats[entry.index],true,share);logEvent('pot-slid-to-winner',{seat:entry.index,name:names[entry.index],amount:share});if(entry.index===0){playGesture(0,'celebrate',4000);}})});var localWon=winners.some(function(entry){return entry.index===0;});if(!localWon&&!handFolded[0]){later(800,function(){playGesture(0,'tableslam',3500);});}later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
     later(4700,function(){var oldDealer=dealerIndex(),oldSmallBlind=smallBlindIndex(),oldBigBlind=bigBlindIndex();clearShowdownHighlight();pot=0;advanceBlindTrio();if(waitingForBigBlind&&bigBlindIndex()===localSeatAbsolute){delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('Big blind reached you — you’re in')}setBlinds();handRunning=false;addButton.disabled=false;logEvent('hand-complete',{awardedPot:awardedPot,oldDealer:oldDealer,newDealer:dealerIndex(),oldSmallBlind:oldSmallBlind,newSmallBlind:smallBlindIndex(),oldBigBlind:oldBigBlind,newBigBlind:bigBlindIndex()});later(900,shuffleAndDeal)})
   }
   window.__pokerTest.showShowdownProof=function(){
