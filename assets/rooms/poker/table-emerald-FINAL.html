@@ -49,7 +49,7 @@
     .pocket{position:absolute;z-index:13;left:50%;top:132px;transform:translateX(-50%);display:flex;gap:6px}.hole{width:46px;height:64px;padding:7px 5px;position:relative;border-radius:6px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 27px/.85 "Barlow Condensed";box-shadow:0 5px 9px #000c;opacity:0}.hole.red{color:#c20f25}.hole::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}.hole.back{background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 5px 9px #000c}.hole.back::after{content:""}.seat.you .hole{width:50px;height:70px;font-size:31px;padding:8px 6px}
     .seat-chips{position:absolute;z-index:10;left:var(--kx);top:var(--ky);width:44px;height:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 5px 4px #000e)}.seat-chips i{position:absolute;left:6px;width:31px;height:14px;border-radius:50%;border:2px dashed #fff8d3;background:radial-gradient(ellipse,#f5d9de 0 18%,#bd2038 19% 56%,#74101f 57%);box-shadow:0 3px 0 #3b0710,inset 0 0 0 2px #ffffff26}.seat-chips i:nth-child(1){bottom:0}.seat-chips i:nth-child(2){bottom:7px;background:radial-gradient(ellipse,#d9edff 0 18%,#1767b9 19% 56%,#0a3a78 57%)}.seat-chips i:nth-child(3){bottom:14px;background:radial-gradient(ellipse,#fff1bd 0 18%,#d69c19 19% 56%,#875a08 57%)}.seat-chips i:nth-child(4){bottom:21px}.seat-chips.empty{opacity:.22}
     .pot{position:absolute;z-index:12;left:50%;top:39%;transform:translate(-50%,-50%);text-align:center}.pot-chips{position:relative;width:92px;height:48px;margin:auto;opacity:0;filter:drop-shadow(0 5px 5px #000c)}.pot-chips i{position:absolute;width:32px;height:14px;border-radius:50%;border:2px dashed #fff8d3;background:#b91f37;box-shadow:0 3px 0 #3b0710}.pot-chips i:nth-child(1){left:4px;bottom:0}.pot-chips i:nth-child(2){left:30px;bottom:1px;background:#216dbd}.pot-chips i:nth-child(3){left:56px;bottom:0;background:#d5a01f}.pot-chips i:nth-child(4){left:18px;bottom:12px;background:#216dbd}.pot-chips i:nth-child(5){left:44px;bottom:13px;background:#d5a01f}.pot-chips i:nth-child(6){left:31px;bottom:26px}.pot-label{display:inline-block;padding:6px 12px;border-radius:999px;background:#070709f4;border:1px solid #ffffff5a;box-shadow:0 5px 12px #000b;font:700 12px/1 sans-serif}.pot-label b{color:var(--gold);margin-left:4px}
-    .board{position:absolute;z-index:10;left:58%;top:58%;transform:translate(-50%,-50%);display:flex;gap:2px}.board-card{width:46px;height:66px;padding:7px 4px;position:relative;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 25px/.85 "Barlow Condensed";box-shadow:0 6px 10px #000c;opacity:0}.board-card.red{color:#c20f25}.board-card::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}
+    .board{position:absolute;z-index:10;left:58%;top:58%;transform:translate(-50%,-50%);display:flex;gap:2px}.board-card{width:46px;height:66px;padding:7px 4px;position:relative;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 25px/.85 "Barlow Condensed";box-shadow:0 6px 10px #000c;opacity:0}.board-card.red{color:#c20f25}.board-card::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}.hole.imgcard,.board-card.imgcard{color:transparent!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}.hole.imgcard::after,.board-card.imgcard::after{content:none!important}
     .muck{position:absolute;z-index:8;left:37%;top:40%;width:36px;height:24px;opacity:0}.muck.show{opacity:1}.muck i{position:absolute;inset:0;border-radius:4px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:0 4px 8px #000c}.muck i:nth-child(2){transform:translate(4px,-2px) rotate(7deg)}
     .deck{position:absolute;z-index:20;left:62%;top:34%;width:38px;height:54px;transform:translate(-50%,-50%);opacity:0}.deck.show{opacity:1}.deck i{position:absolute;inset:0;border-radius:5px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 4px 8px #000b}.deck i:nth-child(2){transform:translate(3px,-3px)}.deck i:nth-child(3){transform:translate(6px,-6px)}.deck.shuffle i:nth-child(1){animation:shuffleL .38s ease-in-out 5}.deck.shuffle i:nth-child(2){animation:shuffleR .38s ease-in-out 5}.deck.shuffle i:nth-child(3){animation:shuffleT .38s ease-in-out 5}@keyframes shuffleL{50%{transform:translate(-34px,5px) rotate(-14deg)}}@keyframes shuffleR{50%{transform:translate(38px,-2px) rotate(15deg)}}@keyframes shuffleT{50%{transform:translate(6px,-22px) rotate(6deg)}}
     .motion{position:absolute;inset:0;z-index:25;pointer-events:none}.flying-card,.fold-card{--dx:0px;--dy:0px;position:absolute;width:32px;height:46px;border-radius:5px;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 5px 9px #000d}.flying-card{animation:deal .42s cubic-bezier(.2,.75,.25,1) forwards}.fold-card{animation:fold .72s cubic-bezier(.2,.75,.25,1) forwards}@keyframes deal{from{transform:translate(0,0) rotate(-7deg) scale(.86)}to{transform:translate(var(--dx),var(--dy)) rotate(0) scale(1)}}@keyframes fold{0%{transform:translate(0,0) rotate(0);opacity:1}75%{transform:translate(calc(var(--dx)*.8),calc(var(--dy)*.8 - 13px)) rotate(210deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(350deg) scale(.35);opacity:0}}
@@ -148,6 +148,14 @@
       .talk{left:8px;top:6%}
     }
     /* Hole cards stay prominent over each active portrait, then disappear when that player folds. */
+    .seat[data-view-slot="0"]{--x:50%!important;--y:92%!important;--kx:64%!important;--ky:92%!important}
+    .seat[data-view-slot="1"]{--x:9.5%!important;--y:83%!important;--kx:29%!important;--ky:82%!important}
+    .seat[data-view-slot="2"]{--x:8%!important;--y:59%!important;--kx:27.5%!important;--ky:59%!important}
+    .seat[data-view-slot="3"]{--x:9.5%!important;--y:33%!important;--kx:29%!important;--ky:33%!important}
+    .seat[data-view-slot="4"]{--x:46%!important;--y:9%!important;--kx:61%!important;--ky:21%!important}
+    .seat[data-view-slot="5"]{--x:90.5%!important;--y:33%!important;--kx:71%!important;--ky:33%!important}
+    .seat[data-view-slot="6"]{--x:92%!important;--y:59%!important;--kx:72.5%!important;--ky:59%!important}
+    .seat[data-view-slot="7"]{--x:90.5%!important;--y:83%!important;--kx:71%!important;--ky:82%!important}
     .seat[data-view-slot] .pocket{left:50%;right:auto;top:14px;z-index:6;transform:translateX(-50%);display:flex;flex-direction:row;gap:7px}
     .seat[data-view-slot] .pocket .hole+.hole{margin-left:0}
     .seat[data-view-slot="0"] .pocket,.seat[data-view-slot="4"] .pocket{left:50%;right:auto;top:12px;z-index:6;transform:translateX(-50%);gap:8px}
@@ -267,6 +275,62 @@
   var timers=[],pot=0,dealerButton=1,handRunning=false,pendingUser=null,pendingRaiseState=null,selectedRaiseTo=null,audio=null,alertsUnlocked=false,gameStarted=true,alertCount=0,micStream=null,toastTimer=null,bank=12600,minimumBuyin=200,handFolded={},handAllIn={},sittingOut={0:true},waitingForBigBlind=false,pendingJoinNextHand=false,turnToken=0,handNumber=0,gameSpeed=1,auditLog=[],localSeatAbsolute=0,roundBetTotals=[0,0,0,0,0,0,0,0],currentAggressor=null,winByFoldTriggered=false;
   function screenSlot(absoluteSeat){return(absoluteSeat-localSeatAbsolute+8)%8}
   function applyViewerPerspective(absoluteSeat){localSeatAbsolute=((Number(absoluteSeat)||0)%8+8)%8;seats.forEach(function(seat){var absolute=Number(seat.getAttribute('data-index'));seat.setAttribute('data-absolute-seat',absolute);seat.setAttribute('data-view-slot',screenSlot(absolute))});if(document.getElementById('dealerMarker'))setBlinds();if(document.getElementById('betLayer'))updateBetPositions();fitCamera();logEvent('viewer-perspective',{localAbsoluteSeat:localSeatAbsolute,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]});return seats.map(function(seat){return{absolute:Number(seat.getAttribute('data-index')),viewSlot:Number(seat.getAttribute('data-view-slot'))}})}
+
+    /* === 3D CARD FACES (POLLING — display-only) ===
+     Every 500ms, scans for .hole and .board-card elements and swaps in
+     3D card images. NO MutationObserver (that broke the game). Only sets
+     backgroundImage on existing elements; never touches game logic.
+     Silent fallback: if an image fails to load, the CSS text card stays.
+     Green table uses RED card backs (cross-match: visible on green felt). */
+  (function(){
+    try{
+      var CARD_BASE='assets/cards-green/';
+      var BACK_IMG=CARD_BASE+'card-back-red.webp';
+      var SUIT_MAP={'\u2665':'H','\u2666':'D','\u2663':'C','\u2660':'S'};
+      function cardFile(el){
+        try{
+          if(el.classList.contains('back'))return BACK_IMG;
+          var rank=(el.textContent||'').trim().toUpperCase();
+          var suit=SUIT_MAP[el.getAttribute('data-suit')];
+          if(!rank||!suit)return null;
+          return CARD_BASE+rank+suit+'.webp';
+        }catch(e){return null;}
+      }
+      function applyCard(el){
+        try{
+          var file=cardFile(el);
+          if(!file){
+            if(el.hasAttribute('data-imgcard-file')){
+              el.classList.remove('imgcard');
+              el.style.backgroundImage='';
+              el.removeAttribute('data-imgcard-file');
+            }
+            return;
+          }
+          if(el.getAttribute('data-imgcard-file')===file)return;
+          var test=new Image();
+          test.onload=function(){
+            try{
+              el.style.backgroundImage='url("'+file+'")';
+              el.classList.add('imgcard');
+              el.setAttribute('data-imgcard-file',file);
+            }catch(e){}
+          };
+          test.onerror=function(){/* silent: CSS card stays */};
+          test.src=file;
+        }catch(e){}
+      }
+      function scanCards(){
+        try{
+          var nodes=document.querySelectorAll('.hole,.board-card');
+          for(var i=0;i<nodes.length;i++)applyCard(nodes[i]);
+        }catch(e){}
+      }
+      setInterval(scanCards,500);
+      if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',scanCards);}else{scanCards();}
+    }catch(e){/* silent */}
+  })();
+
   window.__pokerTest={setSpeed:function(value){gameSpeed=Math.max(.02,Math.min(1,Number(value)||1))},setViewerSeat:applyViewerPerspective,getLog:function(){return auditLog.slice()},getState:function(){return{started:gameStarted,alertsUnlocked:alertsUnlocked,audioState:audio?audio.state:'not-created',handNumber:handNumber,dealer:dealerIndex(),smallBlind:smallBlindIndex(),bigBlind:bigBlindIndex(),localSeatAbsolute:localSeatAbsolute,pot:pot,running:handRunning,stacks:stacks.slice(),folded:Object.keys(handFolded),sittingOut:Object.keys(sittingOut)}}};
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
