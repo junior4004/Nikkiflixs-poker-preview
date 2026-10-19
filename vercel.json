@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/live/:path*",
+      "destination": "https://nikkiflixs-poker-server.onrender.com/:path*"
+    }
+  ]
+}
