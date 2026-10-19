@@ -1308,6 +1308,28 @@ return '<svg width="92" height="92" viewBox="0 0 92 92"><path d="M45 16 C61 14 7
   }
   later(120,function(){logEvent('game-start',{automatic:true,userSeated:false,bots:BOTS_ENABLED});if(BOTS_ENABLED||!sittingOut[localSeatAbsolute])shuffleAndDeal();});
 })();
+
+  /* Auto-start default table if user hasn't picked one from the lobby */
+  (function(){
+    setTimeout(function(){
+      try {
+        var lobby = document.getElementById('roomLobby');
+        if (lobby && !lobby.classList.contains('hidden') && !window.__tableStarted) {
+          window.__tableStarted = true;
+          var fakeBtn = document.createElement('button');
+          fakeBtn.setAttribute('data-game', 'holdem');
+          fakeBtn.setAttribute('data-seats', '8');
+          fakeBtn.setAttribute('data-sb', '25');
+          fakeBtn.setAttribute('data-bb', '50');
+          fakeBtn.setAttribute('data-free-table', 'false');
+          fakeBtn.setAttribute('data-min-buyin', '2000');
+          selectTable(fakeBtn);
+        }
+      } catch(e) {}
+    }, 2500);
+    var origSelect = selectTable;
+    selectTable = function(btn){ window.__tableStarted = true; return origSelect(btn); };
+  })();
 </script>
 
 

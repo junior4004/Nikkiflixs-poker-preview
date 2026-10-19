@@ -856,6 +856,31 @@
   /* Visual audit enters both rebuilt games without changing the real visitor's lobby start. */
   if(navigator.webdriver)setTimeout(function(){window.__casinoTest.openCraps()},120);
 })();
+
+  
+  /* Auto-start default table if user hasn't picked one from the lobby */
+  (function(){
+    setTimeout(function(){
+      try {
+        var lobby = document.getElementById('roomLobby');
+        /* If lobby is still visible (not hidden), user hasn't selected - auto-start 8-max Holdem */
+        if (lobby && !lobby.classList.contains('hidden') && !window.__tableStarted) {
+          window.__tableStarted = true;
+          var fakeBtn = document.createElement('button');
+          fakeBtn.setAttribute('data-game', 'holdem');
+          fakeBtn.setAttribute('data-seats', '8');
+          fakeBtn.setAttribute('data-sb', '25');
+          fakeBtn.setAttribute('data-bb', '50');
+          fakeBtn.setAttribute('data-free-table', 'false');
+          fakeBtn.setAttribute('data-min-buyin', '2000');
+          selectTable(fakeBtn);
+        }
+      } catch(e) {}
+    }, 2500);
+    /* Mark when user manually selects, to prevent double-start */
+    var origSelect = selectTable;
+    selectTable = function(btn){ window.__tableStarted = true; return origSelect(btn); };
+  })();
 </script>
 </body>
 </html>
