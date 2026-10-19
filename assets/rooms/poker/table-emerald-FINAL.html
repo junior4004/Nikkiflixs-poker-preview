@@ -460,7 +460,7 @@
   unlockAlerts=function(){var r=_unlockAlerts();try{loadSfx()}catch(e){}return r};
   function chooseSeatTiming(playImmediately){
     document.getElementById('seatChoiceModal').classList.remove('open');
-    if(playImmediately){if(handRunning){pendingJoinNextHand=true;waitingForBigBlind=false;say('You will play the next hand')}else{delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('You are in')}}
+    if(playImmediately){if(handRunning){pendingJoinNextHand=true;waitingForBigBlind=false;say('You will play the next hand')}else{delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('You are in');later(500,function(){if(!handRunning)shuffleAndDeal()})}}
     else{waitingForBigBlind=true;say('Waiting for your big blind')}
     logEvent('seat-timing',{choice:playImmediately?'play-now':'wait-for-big-blind',seat:localSeatAbsolute})
   }
