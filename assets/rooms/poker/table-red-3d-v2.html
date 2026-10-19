@@ -892,7 +892,7 @@
   }
   talk.addEventListener('pointerdown',startTalk);window.addEventListener('pointerup',stopTalk);window.addEventListener('pointercancel',stopTalk);
   talk.addEventListener('keydown',function(event){if((event.key==='Enter'||event.key===' ')&&!event.repeat)startTalk(event)});talk.addEventListener('keyup',function(event){if(event.key==='Enter'||event.key===' ')stopTalk()});
-  window.__pokerTest.getMicrophoneProof=function(){return{requestCount:micRequestCount,pending:micRequestPending,active:!!micStream,buttonText:talk.textContent,help:microphoneHelp({name:'NotAllowedError'}),events:auditLog.filter(function(item){return item.type.indexOf('microphone-')===0}).slice(-4)}};
+  window.__pokerTest=window.__pokerTest||{};window.__pokerTest.getMicrophoneProof=function(){return{requestCount:micRequestCount,pending:micRequestPending,active:!!micStream,buttonText:talk.textContent,help:microphoneHelp({name:'NotAllowedError'}),events:auditLog.filter(function(item){return item.type.indexOf('microphone-')===0}).slice(-4)}};
   var leaderboardModal=$('leaderboardModal');
   function openLeaderboard(){leaderboardModal.classList.add('open');var cb=$('closeLeaderboard');if(cb)cb.focus();}
   function closeLeaderboard(){leaderboardModal.classList.remove('open');}
