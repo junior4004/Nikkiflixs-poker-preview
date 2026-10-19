@@ -459,6 +459,10 @@
          auto-fold on the timer if facing a bet — server does this too).
      ===================================================================== */
   var TABLE_ID='red', TOKEN_KEY='nikkiflixs.red.token', BUY_IN=1000;
+  /* Game server: direct connection. (nikkiflixs.com/live/ proxies the API fine,
+     but Vercel's router 404s the socket.io polling endpoint's trailing slash,
+     so the table talks straight to the game server — same box, no proxy.) */
+  var SOCKET_URL='https://nikkiflixs-poker-server.onrender.com';
   var BOT_AVATAR_BASE='/assets/avatars/bots/', HUMAN_AVATAR='/assets/avatars/gallery/avatar-03.png';
 
   function $(id){return document.getElementById(id);}
@@ -589,7 +593,7 @@
 
   function loadIO(cb){
     if(window.io)return cb();
-    var s=document.createElement('script');s.src='/live/socket.io/socket.io.js';
+    var s=document.createElement('script');s.src=SOCKET_URL+'/socket.io/socket.io.js';
     s.onload=function(){cb();};
     s.onerror=function(){
       var c=document.createElement('script');c.src='https://cdn.socket.io/4.7.5/socket.io.min.js';
@@ -602,7 +606,7 @@
     if(socket)return;
     loadIO(function(){
       if(socket||!window.io){if(!window.io)showConnection('GAME SERVER UNREACHABLE',false);return;}
-      socket=io({path:'/live/socket.io/',reconnection:true,reconnectionDelay:1500,reconnectionAttempts:Infinity,timeout:12000});
+      socket=io(SOCKET_URL,{path:'/socket.io/',reconnection:true,reconnectionDelay:1500,reconnectionAttempts:Infinity,timeout:12000});
       socket.on('connect',function(){
         connected=true;hideConnection();
         var t=null;try{t=localStorage.getItem(TOKEN_KEY);}catch(e){}
