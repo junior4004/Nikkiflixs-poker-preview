@@ -181,7 +181,24 @@
       .modal{padding:9px}.modal-panel{max-height:calc(100dvh - 18px)}.modal-body{display:block}.modal-poster{display:block;width:100%;height:250px;min-height:0;object-position:center 25%}.modal-copy{padding:22px 18px 26px}
     }
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}.poster-button:hover img,.show-card:hover img{transform:none}}
-  </style>
+  
+/* BUILD 152: FULL STORY exclusive shelf */
+.fs-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:4px 10px;border-radius:4px;text-transform:uppercase}
+.fs-sub{border-left:5px solid var(--gold);background:var(--panel);padding:13px 16px;border-radius:0 6px 6px 0;margin:0 0 20px}
+.fs-sub h3{margin:0 0 4px;font-size:19px}
+.fs-sub p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+.fs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin:0 0 30px}
+.fs-card{display:flex;flex-direction:column;gap:7px;background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:6px;padding:17px 16px;text-decoration:none;color:var(--ink);min-height:170px}
+.fs-card:hover,.fs-card:focus-visible{background:var(--panel-2);border-color:#5a504b;border-top-color:var(--gold)}
+.fs-card .fs-fig{color:var(--gold);font-size:24px;font-weight:800;line-height:1.05}
+.fs-card h4{margin:0;font-size:16.5px;line-height:1.25}
+.fs-card .fs-where{color:var(--muted);font-size:12.5px}
+.fs-card p{margin:0;color:#ddd5cf;font-size:13.5px;line-height:1.45}
+.fs-card .fs-read{margin-top:auto;color:var(--gold);font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.fs-card .fs-bonus{align-self:flex-start;background:var(--gold);color:#14100a;border-radius:4px;padding:2px 8px;font-size:10.5px;font-weight:800;letter-spacing:.1em}
+.fs-note{color:var(--muted);font-size:13px;line-height:1.5;max-width:68ch}
+.fs-stamp{color:#6f6660;font-size:11px;letter-spacing:.14em;text-align:right;margin-top:6px}
+</style>
 
 
 
@@ -195,6 +212,7 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
   <main>
     <nav class="browse-nav" aria-label="Browse theater">
       <a href="#movies">Movies</a>
+      <a href="#full-story">Full Story</a>
       <a href="#youtube-free">YouTube Free Movies</a>
       <a href="#classic-tv">Classic TV</a>
       <a href="#news">Free News</a>
@@ -202,6 +220,33 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
       <a href="#your-library">Your video</a>
       <a class="library-link" href="#filmmakers">Submit a film</a>
     </nav>
+
+    <section class="content-section" id="full-story" aria-labelledby="full-story-title">
+    <div class="section-head"><div><span class="fs-badge">Theater Exclusive</span>
+    <h2 id="full-story-title" style="margin-top:10px">FULL STORY — Only at Nikkiflixs</h2>
+    <p>Real cases, told whole: what happened, the lawsuit, and how it ended — the court record, not the clip reel. You won’t find this shelf on YouTube.</p></div></div>
+    <div class="fs-sub"><h3>The Camera Cases</h3><p>Citizens filmed the police — and were arrested, seized, or silenced for it. Every one of them sued, and every case below ended in a documented outcome.</p></div>
+    <div class="fs-grid">
+    <a class="fs-card" href="full-story/glik.html"><span class="fs-fig">$170,000</span><h4>Simon Glik</h4><span class="fs-where">Boston, Massachusetts &middot; 2007 → settled 2012</span><p>A Boston attorney filmed officers arresting a stranger. They arrested him for it — and Boston paid $170,000.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/sharp.html"><span class="fs-fig">$250,000</span><h4>Christopher Sharp</h4><span class="fs-where">Baltimore, Maryland &middot; 2010 → settled 2014</span><p>Police seized his phone and deleted his video of an arrest. Baltimore paid $250,000 and rewrote its policy.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/gericke.html"><span class="fs-fig">$57,500</span><h4>Carla Gericke</h4><span class="fs-where">Weare, New Hampshire &middot; 2010 → settled 2014</span><p>She announced she was filming a traffic stop and was charged with felony wiretapping. Her camera had recorded nothing.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/picard.html"><span class="fs-fig">$50,000</span><h4>Michael Picard</h4><span class="fs-where">West Hartford, Connecticut &middot; 2015 → settled 2020</span><p>Troopers seized his camera; it kept rolling while they discussed fabricating charges. Connecticut paid $50,000.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/gray.html"><span class="fs-fig">$55,000</span><h4>Jeff Gray — &quot;Honor Your Oath&quot;</h4><span class="fs-where">Alpharetta, Georgia &middot; 2022 → settled 2024</span><p>An Army veteran held a &quot;God Bless the Homeless Vets&quot; sign outside City Hall. He left in handcuffs. Alpharetta paid $55,000.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/clayton.html"><span class="fs-fig">$41,000</span><h4>Terrell Clayton</h4><span class="fs-where">Colorado Springs, Colorado &middot; settled 2018</span><p>A cameraman auditing police was detained in a cruiser and his camera and phone taken. Colorado Springs paid $41,000.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/zatkalik.html"><span class="fs-bonus">BONUS</span><span class="fs-fig">$80,000</span><h4>The $80,000 Arrest That Never Became a Lawsuit</h4><span class="fs-where">Adams County, Colorado &middot; February 2024 · paid pre-suit</span><p>Arrested for filming a deputy. The county paid $80,000 before a lawsuit was ever filed.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    </div>
+    <div class="fs-sub"><h3>The Record Caught Up</h3><p>Misconduct cases where the video, the courts, and the paper trail all landed: convictions, prison time, settlements, and reform decrees — each one closed out in the record.</p></div>
+    <div class="fs-grid">
+    <a class="fs-card" href="full-story/scott.html"><span class="fs-fig">20 years</span><h4>Walter Scott</h4><span class="fs-where">North Charleston, South Carolina &middot; 2015 → sentenced 2017</span><p>Officer Michael Slager shot Walter Scott during a traffic stop; a bystander filmed it. Slager is serving 20 years.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/mcdonald.html"><span class="fs-fig">$5 million + consent decree</span><h4>Laquan McDonald</h4><span class="fs-where">Chicago, Illinois &middot; 2015 → consent decree 2019</span><p>Chicago paid $5 million before any suit was filed. The dashcam video, the conviction, and the consent decree followed.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/dent.html"><span class="fs-fig">$1.37 million</span><h4>Floyd Dent</h4><span class="fs-where">Inkster, Michigan &middot; 2015 → sentenced 2016</span><p>Dashcam recorded officer William Melendez punching Floyd Dent 16 times. Melendez went to prison; Inkster paid $1.37 million.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/garner.html"><span class="fs-fig">$3 million</span><h4>Karen Garner</h4><span class="fs-where">Loveland, Colorado &middot; 2020 → settled 2021, sentenced 2022</span><p>The arrest of Karen Garner, an older woman with dementia, was caught on video. Loveland paid $3 million; two officers were sentenced.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/jones.html"><span class="fs-fig">$285,000</span><h4>Levar Jones</h4><span class="fs-where">Columbia, South Carolina &middot; 2014</span><p>Trooper Sean Groubert shot Levar Jones during a gas-station stop; the video went viral. Jones survived — and collected $285,000.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    <a class="fs-card" href="full-story/hill.html"><span class="fs-fig">$10 million</span><h4>Andre Hill</h4><span class="fs-where">Columbus, Ohio &middot; 2020 → convicted 2024, sentenced 2025</span><p>Officer Adam Coy mistook Andre Hill’s keys and phone for a gun. Columbus paid $10 million; Coy was convicted of murder.</p><span class="fs-read">Read the full story &rsaquo;</span></a>
+    </div>
+    <p class="fs-note">Every figure on this shelf comes from court records, settlement agreements, and established news reporting, and each story page lists its sources. Where a famous case’s outcome is commonly misstated online, it was left off this shelf.</p>
+    <div class="fs-stamp">BUILD 152</div>
+    </section>
 
     <section class="content-section youtube-top" id="youtube-free" aria-labelledby="youtube-title">
       <div class="section-head">
