@@ -1,4 +1,4 @@
-var CACHE = 'nikkiflixs-v128';
+var CACHE = 'nikkiflixs-v129';
 var ASSETS = [
   '/',
   '/index.html',
@@ -29,6 +29,25 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
+  var url = new URL(e.request.url);
+  var isPage = e.request.mode === 'navigate' || /\.html$/.test(url.pathname) || ASSETS.indexOf(url.pathname) >= 0;
+  if (isPage) {
+    // HTML pages: NETWORK FIRST. A poker table served stale from cache is a
+    // broken table — always try the live page, cache only as offline fallback.
+    e.respondWith(
+      fetch(e.request).then(function(response) {
+        var clone = response.clone();
+        caches.open(CACHE).then(function(cache) {
+          cache.put(e.request, clone);
+        });
+        return response;
+      }).catch(function() {
+        return caches.match(e.request);
+      })
+    );
+    return;
+  }
+  // Static assets: cache-first (fast), refreshed on cache version bumps.
   e.respondWith(
     caches.match(e.request).then(function(resp) {
       return resp || fetch(e.request).then(function(response) {
