@@ -50,6 +50,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <p class="hint">Bigger bundles mean <b>more coins per dollar</b> — the Whale is the best deal in the house. Secure checkout via PayPal.</p>
   <div id="tiers"></div>
   <p class="note">Coins are for play only and have no cash value.</p>
+  <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">💥 Table Pops</h2>
+  <p class="hint">At the poker table, tap a player and POP them — their picture blows up with a funny line. Sold in packs because they are <b>way</b> too fun to give away. You have: <b id="popsOwned">😂 0 · 😤 0</b></p>
+  <div id="pops"></div>
+  <p class="note">Pops are used at the poker table under the POP button. They never expire.</p>
 </div>
 <div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="panel">
@@ -119,6 +123,45 @@ function money(n){return '$'+n.toFixed(2);}
     }).render('#paypal-buttons');
   };
   document.getElementById('backBtn').addEventListener('click',function(){window.history.back();});
+  var POPS=[
+    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:15,price:1.00,icon:'😂',per:'For popping a player who lost — head blows up, funny line included'},
+    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:15,price:1.00,icon:'😤',per:'You lost the hand and you are MAD — let them know it'}
+  ];
+  function popsOwned(key){try{return Math.max(0,parseInt(localStorage.getItem(key)||'0',10)||0)}catch(e){return 0}}
+  function paintPops(){var el=document.getElementById('popsOwned');if(el)el.textContent='😂 '+popsOwned('nikkiflixs_pops_taunt')+' · 😤 '+popsOwned('nikkiflixs_pops_mad');}
+  var popsWrap=document.getElementById('pops');
+  POPS.forEach(function(p){
+    var d=document.createElement('div');
+    d.className='tier';
+    d.innerHTML='<div class="coin">'+p.icon+'</div><div class="info"><div class="nm">'+p.name+'</div><div class="amt">'+p.count+' pops · '+money(p.price)+'</div><div class="per">'+p.per+'</div></div>';
+    var buy=document.createElement('button');
+    buy.className='buy';buy.type='button';buy.textContent='BUY';
+    buy.setAttribute('aria-label','Buy '+p.count+' '+p.name+' for '+money(p.price));
+    buy.addEventListener('click',function(){openPopPayPal(p);});
+    d.appendChild(buy);popsWrap.appendChild(d);
+  });
+  paintPops();
+  window.openPopPayPal=function(p){
+    document.getElementById('payTitle').textContent=p.name+' — '+money(p.price);
+    document.getElementById('payDesc').innerHTML='You get <b>'+p.count+' pops</b> for '+money(p.price)+'. They land in your POP button at the poker table. Pay with PayPal below.';
+    document.getElementById('payModal').classList.add('open');
+    document.getElementById('paypal-buttons').innerHTML='';
+    paypal.Buttons({
+      createOrder:function(data,actions){
+        return actions.order.create({purchase_units:[{amount:{value:p.price.toFixed(2)},description:p.name+' ('+p.count+' pops)'}]});
+      },
+      onApprove:function(data,actions){
+        return actions.order.capture().then(function(details){
+          var n=popsOwned(p.key)+p.count;
+          try{localStorage.setItem(p.key,String(n));}catch(e){}
+          paintPops();
+          document.getElementById('payModal').classList.remove('open');
+          alert('Payment complete! '+p.count+' '+p.name+' added — find them at the poker table under POP 💥.');
+        });
+      },
+      onError:function(err){alert('Payment failed. Please try again.');}
+    }).render('#paypal-buttons');
+  };
 })();
 })();
 </script>

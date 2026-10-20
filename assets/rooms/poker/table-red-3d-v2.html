@@ -264,6 +264,29 @@
     .seat[data-view-slot="6"]{--x:92%!important;--y:59%!important;--kx:72.5%!important;--ky:59%!important}
     .seat[data-view-slot="7"]{--x:90.5%!important;--y:83%!important;--kx:71%!important;--ky:82%!important}
 </style>
+.seat-flag{position:absolute;top:-4px;right:-12px;font-size:16px;z-index:6;filter:drop-shadow(0 1px 2px #000)}
+.gift-modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:90}
+.gift-modal.open{display:flex}
+.gift-panel{background:#17171d;border:1px solid #e5ba5366;border-radius:14px;max-width:92vw;width:430px;max-height:82vh;display:flex;flex-direction:column;padding:16px;color:#f3ead2}
+.gift-panel h3{margin:0 0 4px;font:800 19px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#ffe7ad}
+.gift-sub{font-size:12px;opacity:.75;margin-bottom:10px}
+.gift-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto;padding:2px}
+.gift-item{background:#22222b;border:1px solid #ffffff22;border-radius:10px;padding:9px 4px;color:#f3ead2;font-size:11px;cursor:pointer;text-align:center;font-family:inherit}
+.gift-item .g{display:block;font-size:24px;margin-bottom:3px}
+.gift-item:active{transform:scale(.96)}
+.gift-item:disabled{opacity:.45;cursor:default}
+.gift-close{margin-top:12px;background:#2a2a33;color:#ffe7ad;border:1px solid #e5ba5388;border-radius:9px;padding:9px;font-weight:800;cursor:pointer;font-family:inherit}
+body.targeting .seat .portrait-wrap{outline:2px dashed #e5ba53;outline-offset:2px;border-radius:12px}
+.thrown-item{position:fixed;z-index:95;font-size:30px;pointer-events:none;filter:drop-shadow(0 3px 4px #0008)}
+.splat-badge{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:30px;z-index:7;pointer-events:none}
+.pop-bubble{position:absolute;left:50%;bottom:102%;transform:translateX(-50%);background:#fff;color:#191919;border-radius:10px;padding:5px 9px;font:700 11px/1.25 sans-serif;white-space:nowrap;z-index:8;box-shadow:0 3px 8px #0007}
+.pop-bubble:after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#fff}
+@keyframes seatShake{0%,100%{transform:translateX(-50%)}20%{transform:translateX(calc(-50% - 4px)) rotate(-3deg)}40%{transform:translateX(calc(-50% + 4px)) rotate(3deg)}60%{transform:translateX(calc(-50% - 3px))}80%{transform:translateX(calc(-50% + 3px))}}
+.portrait-wrap.splat-shake{animation:seatShake .45s ease}
+.player-card{text-align:center}
+.player-card .p-actions{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.player-card .p-actions button{background:#22222b;border:1px solid #e5ba5377;color:#ffe7ad;border-radius:9px;padding:8px 10px;font-weight:800;cursor:pointer;font-family:inherit;font-size:12px}
+</style>
 </head>
 <body>
 
@@ -320,6 +343,9 @@
   <header class="toolbar">
     <button class="back-room" id="backRoom" type="button">‹ ROOM</button><div class="table-summary"><strong id="tableGame">Texas Hold’em · 8-max</strong><span id="tableStakes">BLINDS 25 / 50 · BUY-IN GC 2,000–5,000</span></div><div class="toolbar-spacer"></div>
     <span class="balance-pill">GOLD COINS <b id="tableBalance">GC 0</b></span>
+    <button class="tool" id="throwBtn" type="button" aria-label="Throw something at a player">🎁 THROW</button>
+    <button class="tool" id="flagBtn" type="button" aria-label="Pick your country flag">🏳 FLAG</button>
+    <button class="tool gold" id="popBtn" type="button" aria-label="Pop a player">💥 POP <span id="popCount">0</span></button>
     <button class="tool leaderboard-table-tool" id="tableLeaderboard" type="button" aria-label="Open poker leaderboard">LEADERBOARD</button>
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
@@ -737,6 +763,7 @@
     var liveIndexes=ranked.map(function(entry){return entry.index});revealShowdownAtPortraits(liveIndexes);
     ranked.sort(function(a,b){return compareRanks(b.rank,a.rank)});var winnerInfo=ranked[0],winners=ranked.filter(function(entry){return compareRanks(entry.rank,winnerInfo.rank)===0}),share=Math.floor(pot/winners.length),awardedPot=pot;
     highlightWinningFive(winnerInfo,liveIndexes,share);logEvent('showdown',{pot:pot,hand:handName(winnerInfo.rank),winners:winners.map(function(entry){return{seat:entry.index,name:names[entry.index],share:share,rank:entry.rank,chosen:entry.chosen}})});if(winners.some(function(e){return e.index===0})){prof.wins++;if(awardedPot>prof.biggest)prof.biggest=awardedPot;profSave()}
+    winners.forEach(function(entry){seatWins[entry.index]=(seatWins[entry.index]||0)+1;var amt=share+(entry===winners[0]?awardedPot-share*winners.length:0);if(amt>(seatBest[entry.index]||0))seatBest[entry.index]=amt});
     winners.forEach(function(entry,n){later(650+n*230,function(){flyChips(seats[entry.index],true,share+(n===0?awardedPot-share*winners.length:0));logEvent('pot-slid-to-winner',{seat:entry.index,name:names[entry.index],amount:share+(n===0?awardedPot-share*winners.length:0)})})});later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
     later(4700,function(){var oldDealer=dealerIndex(),oldSmallBlind=smallBlindIndex(),oldBigBlind=bigBlindIndex();clearShowdownHighlight();pot=0;advanceBlindTrio();if(waitingForBigBlind&&bigBlindIndex()===localSeatAbsolute){delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('Big blind reached you — you’re in')}setBlinds();handRunning=false;addButton.disabled=false;logEvent('hand-complete',{awardedPot:awardedPot,oldDealer:oldDealer,newDealer:dealerIndex(),oldSmallBlind:oldSmallBlind,newSmallBlind:smallBlindIndex(),oldBigBlind:oldBigBlind,newBigBlind:bigBlindIndex()});later(900,shuffleAndDeal)})
   }
@@ -912,6 +939,60 @@
   document.getElementById('profileModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});
   document.getElementById('profileStore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});
   document.getElementById('profileLobby').addEventListener('click',function(){document.getElementById('profileModal').classList.remove('open');if(!tableRoom.classList.contains('is-hidden'))document.getElementById('backRoom').click()});
+  /* ===== GIFTS, FLAGS & POPS — Jerry's specs 2026-10-20: throws FREE; flags GC 5 per sitting (gone when you leave); pops sold 15/$1, two flavors. ===== */
+  var seatWins={},seatBest={},seatFlags={},throwArm=null,popArm=null;
+  var THROWABLES=[['pie','Cream Pie','🥧'],['tomato','Tomato','🍅'],['shoe','Shoe','👞'],['fish','Fish','🐟'],['egg','Egg','🥚'],['dynamite','Dynamite','🧨'],['rose','Rose','🌹'],['champagne','Champagne','🍾']];
+  var TAUNT_LINES=['Ouch — that hand hurt just watching 😂','Big stack, tiny hand!','The cards said NOPE.','Somewhere a fold is crying right now.','Winner winner? Not YOU 😄','That bluff had a family!'];
+  var MAD_LINES=['I had NOTHING and almost won 😤','That river card owes me money!','I am not mad. (I am mad.)','You did not win — the deck GAVE it to you!','Rematch. RIGHT NOW.','My chips are just visiting your stack.'];
+  var COUNTRY_CODES=['AD','AE','AF','AG','AI','AL','AM','AO','AQ','AR','AS','AT','AU','AW','AX','AZ','BA','BB','BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BV','BW','BY','BZ','CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CU','CV','CW','CX','CY','CZ','DE','DJ','DK','DM','DO','DZ','EC','EE','EG','EH','ER','ES','ET','FI','FJ','FK','FM','FO','FR','GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP','GQ','GR','GS','GT','GU','GW','GY','HK','HM','HN','HR','HT','HU','ID','IE','IL','IM','IN','IO','IQ','IR','IS','IT','JE','JM','JO','JP','KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ','LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY','MA','MC','MD','ME','MF','MG','MH','MK','ML','MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ','NA','NC','NE','NF','NG','NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT','PW','PY','QA','RE','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK','SL','SM','SN','SO','SR','SS','ST','SV','SX','SY','SZ','TC','TD','TF','TG','TH','TJ','TK','TL','TM','TN','TO','TR','TT','TV','TW','TZ','UA','UG','UM','US','UY','UZ','VA','VC','VE','VG','VI','VN','VU','WF','WS','YE','YT','ZA','ZM','ZW'];
+  function flagGlyph(code){return code.replace(/./g,function(ch){return String.fromCodePoint(127397+ch.charCodeAt(0))})}
+  var COUNTRIES=COUNTRY_CODES.map(function(code){var nm=code;try{nm=new Intl.DisplayNames(['en'],{type:'region'}).of(code)||code}catch(e){}return{code:code,name:nm,glyph:flagGlyph(code)}}).sort(function(a,b){return a.name.localeCompare(b.name)});
+  function popsGet(k){try{return Math.max(0,parseInt(localStorage.getItem(k)||'0',10)||0)}catch(e){return 0}}
+  function popsSet(k,v){try{localStorage.setItem(k,String(Math.max(0,Math.floor(v))))}catch(e){}}
+  function popsTotal(){return popsGet('nikkiflixs_pops_taunt')+popsGet('nikkiflixs_pops_mad')}
+  function paintPopBtn(){var el=document.getElementById('popCount');if(el)el.textContent=popsTotal()}
+  function seatFlagBadge(index){var wrap=seats[index].querySelector('.portrait-wrap');if(!wrap)return null;var b=wrap.querySelector('.seat-flag');if(!b){b=document.createElement('span');b.className='seat-flag';wrap.appendChild(b)}return b}
+  function setSeatFlag(index,glyph){seatFlags[index]=glyph||null;var b=seatFlagBadge(index);if(b){b.textContent=glyph||'';b.style.display=glyph?'block':'none'}if(index===0){var fb=document.getElementById('flagBtn');if(fb)fb.textContent=glyph?glyph+' FLAG':'🏳 FLAG'}}
+  function randomFlag(){return COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)].glyph}
+  seats.forEach(function(seat,index){if(index!==0&&Math.random()<.75)setSeatFlag(index,randomFlag())});
+  var origSeatNewBot=seatNewBot;seatNewBot=function(index){origSeatNewBot(index);if(Math.random()<.75)setSeatFlag(index,randomFlag());else setSeatFlag(index,null)};
+  function disarmAll(){throwArm=null;popArm=null;document.body.classList.remove('targeting')}
+  document.getElementById('backRoom').addEventListener('click',function(){disarmAll();if(seatFlags[0])setSeatFlag(0,null)});
+  var giftModal=document.createElement('div');giftModal.className='gift-modal';giftModal.id='giftModal';
+  giftModal.innerHTML='<div class="gift-panel"><h3 id="giftTitle"></h3><div class="gift-sub" id="giftSub"></div><div class="gift-grid" id="giftGrid"></div><button class="gift-close" id="giftClose" type="button">CLOSE</button></div>';
+  document.body.appendChild(giftModal);
+  giftModal.addEventListener('click',function(e){if(e.target===giftModal)giftModal.classList.remove('open')});
+  giftModal.querySelector('#giftClose').addEventListener('click',function(){giftModal.classList.remove('open')});
+  function openGift(title,sub,items,onPick){document.getElementById('giftTitle').textContent=title;document.getElementById('giftSub').textContent=sub||'';var grid=document.getElementById('giftGrid');grid.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){giftModal.classList.remove('open');onPick(it)});grid.appendChild(b)});giftModal.classList.add('open')}
+  function seatCenter(index){var r=seats[index].querySelector('.portrait-wrap').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
+  function flyItem(glyph,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';el.textContent=glyph;el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px';document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate('+(dx*.5)+'px,'+(dy-90)+'px) rotate(240deg)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg)'}],{duration:620,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
+  function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
+  function doThrow(fromIndex,toIndex,item){flyItem(item[2],fromIndex,toIndex,function(){splat(toIndex,item[2]);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})})}
+  function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0){if(popsGet(key)<=0){say('Out of those pops — grab more in the Coin Store',2600);return}popsSet(key,popsGet(key)-1);paintPopBtn()}
+    var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap.querySelector('.portrait');
+    if(img&&img.animate)img.animate([{transform:'scale(1)'},{transform:'scale(2.15) rotate(-4deg)',offset:.35},{transform:'scale(1.85) rotate(3deg)',offset:.62},{transform:'scale(1)'}],{duration:1150,easing:'ease-out'});
+    var lines=flavor==='taunt'?TAUNT_LINES:MAD_LINES,bub=document.createElement('div');bub.className='pop-bubble';bub.textContent=lines[Math.floor(Math.random()*lines.length)];wrap.appendChild(bub);setTimeout(function(){bub.remove()},2700);
+    splat(toIndex,'💥');if(fromIndex===0)say('You POPPED '+names[toIndex]+'!',2000);logEvent('player-popped',{from:fromIndex,to:toIndex,flavor:flavor})}
+  document.getElementById('throwBtn').addEventListener('click',function(){openGift('Throw Something — FREE','Pick an item, then tap a player. Throwing is always free.',THROWABLES.map(function(t){return{id:t[0],label:t[1],glyph:t[2],raw:t}}),function(it){throwArm=it.raw;popArm=null;document.body.classList.add('targeting');say('Tap a player to throw the '+it.raw[1].toLowerCase()+' — tap your own picture to cancel',3200)})});
+  document.getElementById('popBtn').addEventListener('click',function(){openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 15 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0){location.href='/assets/rooms/casino/coin-store.html';return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');say('Tap a player to POP them!',2600)})});
+  document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0];if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
+  var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
+  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcThrow" type="button">🎁 THROW (FREE)</button><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
+  document.body.appendChild(playerModal);
+  var pcTarget=null;
+  function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';document.getElementById('pcStats').innerHTML='At the table <b>'+money(stacks[index])+'</b><br>Hands won this session <b>'+(seatWins[index]||0)+'</b> · Biggest pot <b>'+money(seatBest[index]||0)+'</b>';document.getElementById('pcPopT').textContent='😂 TAUNT POP ('+popsGet('nikkiflixs_pops_taunt')+')';document.getElementById('pcPopM').textContent='😤 MAD POP ('+popsGet('nikkiflixs_pops_mad')+')';playerModal.classList.add('open')}
+  playerModal.addEventListener('click',function(e){if(e.target===playerModal)playerModal.classList.remove('open')});
+  playerModal.querySelector('#pcClose').addEventListener('click',function(){playerModal.classList.remove('open')});
+  playerModal.querySelector('#pcThrow').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;openGift('Throw at '+names[t]+' — FREE','It lands right on them.',THROWABLES.map(function(x){return{id:x[0],label:x[1],glyph:x[2],raw:x}}),function(it){doThrow(0,t,it.raw)})});
+  playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'taunt')});
+  playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'mad')});
+  seats.forEach(function(seat,index){seat.querySelector('.portrait-wrap').addEventListener('click',function(e){
+    if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
+    if(index!==0)openPlayerCard(index);
+  },true)});
+  paintPopBtn();
+  setInterval(function(){if(tableRoom.classList.contains('is-hidden')||!handRunning)return;if(Math.random()<.45)return;var from=1+Math.floor(Math.random()*7),to=Math.floor(Math.random()*8);if(to===from||sittingOut[from]||emptyBotSeat[from])return;doThrow(from,to,THROWABLES[Math.floor(Math.random()*THROWABLES.length)])},26000);
+
   setInterval(function(){walletSave();var tb=document.getElementById('tableBalance');if(tb)tb.textContent=money(bank);if(accountBalanceNode)accountBalanceNode.textContent=money(bank)},1000);
   paintAccountState();
 document.querySelectorAll('#tableGrid .table-choice').forEach(function(card){
