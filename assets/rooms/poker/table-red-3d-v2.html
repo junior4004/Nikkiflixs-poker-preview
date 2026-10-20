@@ -538,6 +538,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     });
     if(pendingJoinNextHand&&stacks[0]>0){pendingJoinNextHand=false;delete sittingOut[0];delete handFolded[0];clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[0].classList.remove('empty-seat','folded','out-of-chips');seats[0].setAttribute('aria-label','You, seated bottom-center');say('The last hand is over — you’re in this hand',3600);logEvent('seat-activated-next-hand',{seat:0,hand:handNumber+1,stack:stacks[0]})}
     if(!sittingOut[0]){prof.hands++;profSave()}
+    if(sittingOut[0]&&stacks[0]>0&&!pendingJoinNextHand)seats[0].classList.add('empty-seat');
     if(stacks[0]<=0&&seats[0].classList.contains('out-of-chips'))openModal(true)
   }
   seats.forEach(function(seat){seat.querySelector('.pod').appendChild(seat.querySelector('.pocket'));var absolute=Number(seat.getAttribute('data-index'));seat.setAttribute('data-absolute-seat',absolute);seat.setAttribute('data-view-slot',screenSlot(absolute))});
@@ -650,7 +651,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     logEvent('turn-alert',{seat:index,userTurn:index===localSeatAbsolute,audioState:audio?audio.state:'not-created',beeped:turnAlert.beeped,buzzed:turnAlert.buzzed,suppressed:turnAlert.suppressed});
     if(index===localSeatAbsolute){enableActions(toCall);pendingUser=onChoice;pendingRaiseState=raiseState}else pendingUser=null;
     later(20000,function(){if(token===turnToken&&seat.classList.contains('active')){seat.classList.add('warning');var warningAlert=alertUserTurn(index,true);logEvent('turn-warning-alert',{seat:index,userTurn:index===localSeatAbsolute,beeped:warningAlert.beeped,buzzed:warningAlert.buzzed,suppressed:warningAlert.suppressed})}});
-    if(index===localSeatAbsolute){later(navigator.webdriver?180000:30000,function(){if(token===turnToken&&pendingUser){var cb=pendingUser;pendingUser=null;closeRaiseModal();disableActions();if(toCall>0){sittingOut[index]=true;logEvent('timeout',{seat:index,action:'fold',sittingOut:true});cb('fold')}else{logEvent('timeout',{seat:index,action:'check'});cb('check')}}})}else{later(1300+Math.floor(Math.random()*2400),function(){if(token===turnToken&&seat.classList.contains('active'))onChoice(null)})}
+    if(index===localSeatAbsolute){later(navigator.webdriver?180000:30000,function(){if(token===turnToken&&pendingUser){var cb=pendingUser;pendingUser=null;closeRaiseModal();disableActions();if(toCall>0){sittingOut[index]=true;seats[index].classList.add('empty-seat');logEvent('timeout',{seat:index,action:'fold',sittingOut:true});cb('fold')}else{logEvent('timeout',{seat:index,action:'check'});cb('check')}}})}else{later(1300+Math.floor(Math.random()*2400),function(){if(token===turnToken&&seat.classList.contains('active'))onChoice(null)})}
   }
   function money(value){return 'GC '+Math.max(0,Math.floor(value)).toLocaleString()}
   function openRaiseModal(){
@@ -1012,6 +1013,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   seats.forEach(function(seat,index){seat.addEventListener('click',function(e){
     if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
     if(index!==0&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.portrait-wrap'))openPlayerCard(index);
+    if(index===0&&sittingOut[0]&&stacks[0]>0&&!pendingJoinNextHand&&!(e.target.closest&&e.target.closest('#sitIn'))){e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are back in — cards on the next hand',2600)}
   },true)});
   paintPopBtn();
   setInterval(function(){if(tableRoom.classList.contains('is-hidden')||!handRunning)return;if(Math.random()<.45)return;var from=1+Math.floor(Math.random()*7),to=Math.floor(Math.random()*8);if(to===from||sittingOut[from]||emptyBotSeat[from])return;doThrow(from,to,THROWABLES[Math.floor(Math.random()*THROWABLES.length)])},26000);
