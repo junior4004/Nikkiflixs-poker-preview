@@ -475,20 +475,8 @@
   var potChips=$('potChips'), potValueNode=$('potValue');
   var toast=$('toast'), toastTimer=null;
   function say(msg,dur){toast.textContent=msg;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toast.classList.remove('show');},dur||2400);}
-
-  /* ---------- debug overlay (?debug=1) ---------- */
-  var DEBUG=/[?&]debug=1/.test(location.search);
-  var dbgNode=null;
-  if(DEBUG){
-    dbgNode=document.createElement('div');
-    dbgNode.style.cssText='position:fixed;left:4px;top:4px;z-index:9999;max-width:92vw;background:#000d;color:#0f0;font:10px/1.4 monospace;padding:6px 8px;border:1px solid #0f0;border-radius:6px;white-space:pre-wrap;word-break:break-all;pointer-events:none;';
-    document.body.appendChild(dbgNode);
-  }
-  function dbg(msg){
-    if(!dbgNode)return;
-    try{dbgNode.textContent=msg;}catch(e){}
-  }
-  window.addEventListener('error',function(e){dbg('JS ERROR: '+(e.message||e.error));});
+  var DEBUG=false;
+  function dbg(){}
 
   /* ---------- camera ---------- */
   function fitCamera(){var r=stage.getBoundingClientRect(),baseW=560,baseH=700,fit=Math.min((r.width-6)/baseW,(r.height-8)/baseH);camera.style.setProperty('--scale',Math.max(.52,Math.min(1.05,fit)));camera.style.top='50%';}
@@ -731,10 +719,11 @@
       seat.classList.toggle('active',!!ps.acting);
       /* cards */
       var holes=pocket.querySelectorAll('.hole'),i;
+      var activeHand=['preflop','flop','turn','river'].indexOf(String(st.state).toLowerCase())>=0;
       if(isMe&&ps.hole&&ps.hole.length){
         for(i=0;i<holes.length;i++)paintHole(holes[i],parseCard(ps.hole[i]),false);
         seat.setAttribute('aria-label',myName+' holds '+(ps.hole||[]).join(' and '));
-      }else if(!ps.folded&&!ps.sittingOut&&st.state!=='waiting'&&st.state!=='showdown'){
+      }else if(!ps.folded&&!ps.sittingOut&&activeHand){
         for(i=0;i<holes.length;i++)paintHole(holes[i],null,true);
       }else{
         for(i=0;i<holes.length;i++)holes[i].style.opacity='0';
@@ -757,8 +746,13 @@
     potValueNode.textContent=money(st.pot);potValueNode.removeAttribute('hidden');
     potChips.style.opacity=st.pot>0?'1':'0';
     /* my turn self-heal (in case the yourTurn event was missed) */
-    if(mySeat>=0&&st.legal&&st.legal.length)onMyTurn(st.legal);
-    else if(mySeat>=0)disableActions();
+    /* Safety: never light up buttons unless MY seat is actually in this hand */
+    (function(){
+      var me=(mySeat>=0&&st.seats)?st.seats[mySeat]:null;
+      var inHand=me&&!me.empty&&!me.sittingOut&&!me.folded&&!me.allIn;
+      if(inHand&&st.legal&&st.legal.length)onMyTurn(st.legal);
+      else if(mySeat>=0)disableActions();
+    })();
     placeSitInButton();
   }
 
