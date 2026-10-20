@@ -767,25 +767,18 @@
 
   function onRoom(st){
     if(!st||st.v!==1)return;
-    if(mySeat>=0){
-      var me=st.seats[mySeat];
-      if(!me||me.empty){ /* swept while away */
-        mySeat=-1;try{localStorage.removeItem(TOKEN_KEY);}catch(e){}
-        applyPerspective();say('Your seat was released — tap a chair to rejoin',3000);
-      }
+    /* Seat self-heal: the server's word on our seat is final. If we think
+       we're seated but the server doesn't have us (or has us elsewhere),
+       fix mySeat now so taps and the SIT button work again. */
+    var truth=(typeof st.yourSeat==='number')?st.yourSeat:-1;
+    if(truth!==mySeat){
+      mySeat=truth;
+      if(truth<0){try{localStorage.removeItem(TOKEN_KEY);}catch(e){}}
+      applyPerspective();
+      if(truth<0)say('Tap an empty chair to take a seat',2600);
     }
     if(st.hand!==lastHand){lastHand=st.hand;onNewHand(st);}
     render(st);
-    if(DEBUG){
-      var lines=['mySeat='+mySeat+' state='+st.state+' hand='+st.hand+' conn='+connected];
-      st.seats.forEach(function(ps){
-        if(ps.empty)return;
-        var holes=document.querySelector('.seat[data-index="'+ps.seat+'"] .pocket .hole');
-        var vis=holes?(window.getComputedStyle(holes).opacity):'no-el';
-        lines.push('s'+ps.seat+' '+ps.name+' f='+ps.folded+' so='+ps.sittingOut+' hole='+(ps.hole?ps.hole.length:ps.hole)+' op='+vis);
-      });
-      dbg(lines.join('\n'));
-    }
   }
 
   function onNewHand(st){
