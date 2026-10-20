@@ -156,11 +156,16 @@
       .pot{top:45%}.board{top:55%}.muck{top:46%}
       .talk{left:8px;top:max(2px,env(safe-area-inset-top));bottom:auto;width:52px;height:52px;min-width:52px;font-size:8px}
     }
-    /* Hole cards stay prominent over each active portrait, then disappear when that player folds. */
-    .seat[data-view-slot] .pocket{left:50%;right:auto;top:14px;z-index:6;width:max-content;transform:translateX(-50%);display:flex;flex-direction:row;gap:10px}
+    /* Hole cards ride with their seat: centered on the seat's screen
+       position (--x/--y), above the avatar; the top seat's cards sit just
+       below its avatar, toward the felt. (Previously top:14px pinned every
+       player's cards to the top of the stage — your hole cards painted over
+       the top seat where nobody looks.) */
+    .seat[data-view-slot] .pocket{left:var(--x);right:auto;top:var(--y);z-index:6;width:max-content;transform:translate(-50%,-168%);display:flex;flex-direction:row;gap:10px}
     .seat[data-view-slot] .pocket .hole{width:42px;height:59px;font-size:26px;flex:0 0 auto}
     .seat[data-view-slot] .pocket .hole+.hole{margin-left:0}
-    .seat[data-view-slot="0"] .pocket,.seat[data-view-slot="4"] .pocket{left:50%;right:auto;top:12px;z-index:6;transform:translateX(-50%);gap:10px}
+    .seat[data-view-slot="4"] .pocket{transform:translate(-50%,72%)}
+    .seat[data-view-slot="0"] .pocket{gap:10px}
     .seat[data-view-slot="0"] .pocket .hole{width:46px;height:64px;font-size:29px}
     .seat[data-view-slot="0"] .pocket .hole+.hole,.seat[data-view-slot="4"] .pocket .hole+.hole{margin-left:0}
     .seat.folded .pocket{display:none!important}
@@ -692,6 +697,14 @@
   }
   function render(st){
     lastState=st;
+    /* The page has 8 seat frames but this table plays 6 — hide the frames
+       the server never uses so static demo players/cards/stacks left in
+       those frames can't show through as phantom people. */
+    var maxS=(typeof st.maxSeats==='number')?st.maxSeats:seats.length;
+    seats.forEach(function(domSeat){
+      var idx=Number(domSeat.getAttribute('data-index'));
+      domSeat.style.display=(idx<maxS)?'':'none';
+    });
     var marks=markBlinds(st);
     st.seats.forEach(function(ps){
       var seat=seats[ps.seat];if(!seat)return;
