@@ -611,8 +611,8 @@
         connected=true;hideConnection();
         var t=null;try{t=localStorage.getItem(TOKEN_KEY);}catch(e){}
         if(pendingJoin!==null)attemptJoin();
-        else if(t)socket.emit('resume',{table:TABLE_ID,token:t});
-        else socket.emit('spectate',{table:TABLE_ID});
+        else if(t)socket.emit('resume',{v:1,table:TABLE_ID,token:t});
+        else socket.emit('spectate',{v:1,table:TABLE_ID});
       });
       socket.on('disconnect',function(){connected=false;disableActions();showConnection('CONNECTION LOST · HOLDING YOUR SEAT',false);});
       socket.on('room',onRoom);
@@ -624,7 +624,7 @@
       });
       socket.on('resumeFailed',function(){
         try{localStorage.removeItem(TOKEN_KEY);}catch(e){}
-        mySeat=-1;applyPerspective();socket.emit('spectate',{table:TABLE_ID});
+        mySeat=-1;applyPerspective();socket.emit('spectate',{v:1,table:TABLE_ID});
       });
       socket.on('yourTurn',function(m){onMyTurn(m&&m.legal?m.legal:[]);});
       socket.on('handEnd',onHandEnd);
