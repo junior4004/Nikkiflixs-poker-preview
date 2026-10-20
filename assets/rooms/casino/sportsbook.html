@@ -1222,7 +1222,7 @@ function setFantSub(s){
 }
 /* ============ FANTASY DEEP: START/SIT + SLEEPERS + PLAYER COMPARE (Jerry's order) ============ */
 /* Jerry: fantasy info is the draw — free, accurate, up-to-date. Freshness law applies everywhere. */
-var FANT_IDX_KEY='nikkiflixs_fant_idx';
+var FANT_IDX_KEY='nikkiflixs_fant_idx_v2';
 var FANT_IDX_MS=7*24*3600*1000; /* player index refetched weekly */
 var fantPlayerIdx=null, fantIdxLoading=false;
 var SS_RX=/start[\s-]?sit|start\s+(em|him|\w+)|sit\s+(em|him|\w+)|must[\s-]?start|bench\b/i;
@@ -1243,26 +1243,37 @@ function loadPlayerIndex(cb){
   fantIdxLoading=true;
   fantNflTeams(function(teams){
     if(!teams.length){fantIdxLoading=false;cb({});return;}
-    var idx={},done=0;
-    teams.forEach(function(tm){
-      espn('football/nfl/teams/'+encodeURIComponent(tm.id)+'/roster')
-        .then(function(d){
-          (d.athletes||[]).forEach(function(g){
-            (g.items||[]).forEach(function(pl){
-              var nm=(pl.displayName||'').trim();if(!nm)return;
-              var st=(pl.status&&pl.status.type)||'active';
-              var inj=(pl.injuries&&pl.injuries[0])||{};
-              idx[nm.toLowerCase()]={id:String(pl.id),name:nm,
-                pos:(pl.position&&pl.position.abbreviation)||'',
-                team:tm.abbr||tm.name,injured:st!=='active',
-                injDetail:inj.status||''};
-            });
+    var idx={},done=0,teamsOk=0;
+    function rosterFetch(tm){
+      var p=espn('football/nfl/teams/'+encodeURIComponent(tm.id)+'/roster');
+      var timed=Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej(new Error('roster timeout'));},12000);})]);
+      return timed.then(function(d){
+        var got=0;
+        (d.athletes||[]).forEach(function(g){
+          (g.items||[]).forEach(function(pl){
+            var nm=(pl.displayName||'').trim();if(!nm)return;
+            var st=(pl.status&&pl.status.type)||'active';
+            var inj=(pl.injuries&&pl.injuries[0])||{};
+            idx[nm.toLowerCase()]={id:String(pl.id),name:nm,
+              pos:(pl.position&&pl.position.abbreviation)||'',
+              team:tm.abbr||tm.name,injured:st!=='active',
+              injDetail:inj.status||''};
+            got++;
           });
-        }).catch(function(){})
+        });
+        if(got>0)teamsOk++;
+      });
+    }
+    teams.forEach(function(tm){
+      rosterFetch(tm)
+        .catch(function(){return rosterFetch(tm);})
+        .catch(function(){})
         .then(function(){
           if(++done>=teams.length){
             fantIdxLoading=false;fantPlayerIdx=idx;
-            try{localStorage.setItem(FANT_IDX_KEY,JSON.stringify({ts:Date.now(),idx:idx}));}catch(e){}
+            /* only cache a COMPLETE index — a partial one (dropped team rosters) must never stick for 7 days */
+            var complete=teamsOk>=teams.length-1&&Object.keys(idx).length>=1500;
+            if(complete){try{localStorage.setItem(FANT_IDX_KEY,JSON.stringify({ts:Date.now(),idx:idx}));}catch(e){}}
             cb(idx);
           }
         });
@@ -1549,9 +1560,16 @@ function runCompare(){
   out.appendChild(el('div','spin','Loading player database…'));
   loadPlayerIndex(function(idx){
     function find(q){
+      function norm(s){return s.replace(/[.'\-]/g,' ').replace(/\s+/g,' ').trim();}
+      var nq=norm(q),sq=nq.replace(/ /g,'');
       if(idx[q])return idx[q];
-      var keys=Object.keys(idx),i;
-      for(i=0;i<keys.length;i++){if(keys[i].indexOf(q)>=0)return idx[keys[i]];}
+      var keys=Object.keys(idx),i,k;
+      for(i=0;i<keys.length;i++){k=keys[i];if(norm(k)===nq||norm(k).replace(/ /g,'')===sq)return idx[k];}
+      for(i=0;i<keys.length;i++){k=keys[i];if(norm(k).indexOf(nq)>=0)return idx[k];}
+      var qt=nq.split(' ');
+      for(i=0;i<keys.length;i++){k=keys[i];var kt=norm(k).split(' '),all=true;
+        for(var j=0;j<qt.length;j++){if(kt.indexOf(qt[j])<0){all=false;break;}}
+        if(all)return idx[k];}
       for(i=0;i<keys.length;i++){var ps=keys[i].split(' ');if(ps[ps.length-1]===q)return idx[keys[i]];}
       return null;
     }
