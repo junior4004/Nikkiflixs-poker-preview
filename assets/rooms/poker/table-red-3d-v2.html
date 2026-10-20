@@ -628,7 +628,14 @@
         try{localStorage.removeItem(TOKEN_KEY);}catch(e){}
         mySeat=-1;applyPerspective();socket.emit('spectate',{v:1,table:TABLE_ID});
       });
-      socket.on('yourTurn',function(m){onMyTurn(m&&m.legal?m.legal:[]);});
+      socket.on('yourTurn',function(m){
+        /* Jim's guard: no cards (or not in the hand) = no buttons, ever */
+        var me=(mySeat>=0&&lastState&&lastState.seats)?lastState.seats[mySeat]:null;
+        var hasCards=me&&Array.isArray(me.hole)&&me.hole.length>0;
+        var inHand=me&&!me.empty&&!me.sittingOut&&!me.folded;
+        if(hasCards&&inHand)onMyTurn(m&&m.legal?m.legal:[]);
+        else disableActions();
+      });
       socket.on('handEnd',onHandEnd);
       socket.on('error',function(e){if(!e)return;if(e.code==='table-full'){say('Table is full — holding your chair for the next hand',3200);}else if(e.msg)say(e.msg,2600);});
       socket.on('notice',function(n){if(n&&n.msg)say(n.msg,3000);});
@@ -746,11 +753,13 @@
     potValueNode.textContent=money(st.pot);potValueNode.removeAttribute('hidden');
     potChips.style.opacity=st.pot>0?'1':'0';
     /* my turn self-heal (in case the yourTurn event was missed) */
-    /* Safety: never light up buttons unless MY seat is actually in this hand */
+    /* Safety: never light up buttons unless MY seat is actually in this hand
+       AND actually holding cards (Jim's guard) */
     (function(){
       var me=(mySeat>=0&&st.seats)?st.seats[mySeat]:null;
       var inHand=me&&!me.empty&&!me.sittingOut&&!me.folded&&!me.allIn;
-      if(inHand&&st.legal&&st.legal.length)onMyTurn(st.legal);
+      var hasCards=me&&Array.isArray(me.hole)&&me.hole.length>0;
+      if(inHand&&hasCards&&st.legal&&st.legal.length)onMyTurn(st.legal);
       else if(mySeat>=0)disableActions();
     })();
     placeSitInButton();
