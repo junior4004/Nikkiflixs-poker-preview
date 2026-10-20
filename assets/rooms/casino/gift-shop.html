@@ -70,7 +70,7 @@ h2:first-of-type{margin-top:4px}
 <script>
 (function(){
 "use strict";
-var BANK_KEY='nikkiflixs_bankroll',GIFT_KEY='nikkiflixs_gifts',UNLOCK_KEY='nikkiflixs_fun_unlocks';
+var BANK_KEY='nikkiflixs_bankroll',GIFT_KEY='nikkiflixs_gifts',UNLOCK_KEY='nikkiflixs_fun_unlocks'; var CREATOR=false; try{CREATOR=localStorage.getItem('nikkiflixs_creator')==='1'}catch(e){}
 var GIFTS=[
   {key:'rose',emoji:'🌹',name:'Rose',price:100},
   {key:'drink',emoji:'🍹',name:'Drink',price:150},
@@ -155,8 +155,8 @@ function render(){
     var b=document.createElement('button');b.className='buy';b.type='button';b.textContent='BUY';
     b.addEventListener('click',function(){
       var bal=getBank()||0;
-      if(bal<G.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
-      setBank(bal-G.price);
+      if(!CREATOR&&bal<G.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
+      if(!CREATOR)setBank(bal-G.price);
       var g2=getGifts();g2[G.key]=(g2[G.key]||0)+1;setGifts(g2);
       render();say(G.emoji+' '+G.name+' added! Send it from any table: 🎯 FUN → 🎁.');
     });
@@ -171,8 +171,8 @@ function render(){
     b.className='buy'+(owned?' owned':'');b.textContent=owned?'UNLOCKED':'BUY';
     if(!owned)b.addEventListener('click',function(){
       var bal=getBank()||0;
-      if(bal<T.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
-      setBank(bal-T.price);
+      if(!CREATOR&&bal<T.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
+      if(!CREATOR)setBank(bal-T.price);
       var u=getUnlocks();u.push(T.key);setUnlocks(u);
       render();say(T.emoji+' '+T.name+' unlocked! Find it in the 🎯 FUN tray at any table.');
     });
@@ -190,8 +190,8 @@ function render(){
       b.className='buy'+(owned?' owned':'');b.textContent=owned?'UNLOCKED':'BUY';
       if(!owned)b.addEventListener('click',function(){
         var bal=getBank()||0;
-        if(bal<T.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
-        setBank(bal-T.price);
+        if(!CREATOR&&bal<T.price){say('Not enough coins — hit 🪙 GET MORE COINS.');return;}
+        if(!CREATOR)setBank(bal-T.price);
         var u=getUnlocks();u.push(T.key);setUnlocks(u);
         render();say(T.emoji+' '+T.name+' unlocked! '+foundMsg);
       });

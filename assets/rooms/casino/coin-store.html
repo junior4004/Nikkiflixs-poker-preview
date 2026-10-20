@@ -55,6 +55,70 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <div id="pops"></div>
   <p class="note">Pops are used at the poker table under the POP button. They never expire.</p>
 </div>
+<div style="margin:26px 0 6px;background:#14100b;border:1px solid #7e5d28;border-radius:12px;padding:14px">
+  <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:0 0 6px">🎟️ Have a gift code?</h2>
+  <p class="hint" style="margin:0 0 10px">Type it exactly as given — coins, pops, dice sets and gifts land instantly.</p>
+  <div style="display:flex;gap:8px">
+    <input id="storeRedeemInput" type="text" placeholder="NF1-XXXXXX-XX" autocapitalize="characters" style="flex:1;padding:11px;border-radius:9px;border:1px solid #7a5b1e;background:#171310;color:#fff;font-size:16px;text-transform:uppercase">
+    <button id="storeRedeemBtn" type="button" style="padding:11px 16px;border-radius:9px;border:1px solid #a87f27;background:linear-gradient(180deg,#d9a83f,#8a5f14);color:#1d1200;font-weight:800;cursor:pointer">REDEEM</button>
+  </div>
+  <div id="storeRedeemMsg" style="min-height:22px;color:#ffd968;font-size:14px;margin-top:8px"></div>
+</div>
+<script>
+(function(){
+  "use strict";
+  function creatorOn(){try{return localStorage.getItem('nikkiflixs_creator')==='1'}catch(e){return false}}
+  function bankGet(){try{var v=parseInt(localStorage.getItem('nikkiflixs_bankroll')||'0',10);return isNaN(v)?0:v}catch(e){return 0}}
+  function bankSet(v){try{localStorage.setItem('nikkiflixs_bankroll',String(Math.max(0,Math.floor(v))))}catch(e){}}
+  function fmt(n){return Number(n).toLocaleString('en-US')}
+  function paintBal(){var el=document.getElementById('balance');if(el)el.textContent=fmt(bankGet())}
+  function paintPopsLine(){var el=document.getElementById('popsOwned');if(!el)return;var t=0,m=0;try{t=parseInt(localStorage.getItem('nikkiflixs_pops_taunt')||'0',10)||0;m=parseInt(localStorage.getItem('nikkiflixs_pops_mad')||'0',10)||0}catch(e){}el.textContent='😂 '+t+' · 😤 '+m}
+  /* ===== gift codes (same system as the poker table) ===== */
+  var CODE_SECRET='NF-CREATOR-2026';
+  var CATALOG=[
+   [1,'coins',15000,'15,000 Gold Coins'],[2,'coins',50000,'50,000 Gold Coins'],[3,'coins',100000,'100,000 Gold Coins'],[4,'coins',250000,'250,000 Gold Coins'],[5,'coins',600000,'600,000 Gold Coins'],[6,'coins',1800000,'1,800,000 Gold Coins'],[7,'coins',4000000,'4,000,000 Gold Coins'],
+   [8,'pops','nikkiflixs_pops_taunt','Taunt Pops x15'],[9,'pops','nikkiflixs_pops_mad','Mad Pops x15'],
+   [10,'dice','red','Dice Set: Solid Red'],[11,'dice','blue','Dice Set: Solid Blue'],[12,'dice','green','Dice Set: Solid Green'],[13,'dice','black','Dice Set: Solid Black'],[14,'dice','purple','Dice Set: Solid Purple'],[15,'dice','pink','Dice Set: Solid Pink'],[16,'dice','pipsred','Dice Set: White Red Pips'],[17,'dice','pipsblue','Dice Set: White Blue Pips'],[18,'dice','pipsgreen','Dice Set: White Green Pips'],[19,'dice','clearred','Dice Set: Clear Red'],[20,'dice','clearblue','Dice Set: Clear Blue'],[21,'dice','clearblack','Dice Set: Clear Black'],[22,'dice','blackgold','Dice Set: Black and Gold'],[23,'dice','leather','Dice Set: Brown Leather'],[24,'dice','skull','Dice Set: Blue Skull'],[25,'dice','ice','Dice Set: Ice Crystal'],
+   [26,'gift','rose','Gift: Rose'],[27,'gift','drink','Gift: Drink'],[28,'gift','teddy','Gift: Teddy Bear'],[29,'gift','deck','Gift: Card Deck']];
+  function codeCheck(no,rand){var s=no+'|'+rand+'|'+CODE_SECRET,h=7;for(var i=0;i<s.length;i++)h=((h*31)+s.charCodeAt(i))>>>0;var v=(h%1296).toString(36).toUpperCase();return ('00'+v).slice(-2)}
+  function parseCode(raw){var m=/^NF(\d{1,2})-([A-Z2-9]{6})-([A-Z0-9]{2})$/.exec((raw||'').trim().toUpperCase());if(!m)return null;var no=parseInt(m[1],10);if(codeCheck(no,m[2])!==m[3])return null;for(var i=0;i<CATALOG.length;i++)if(CATALOG[i][0]===no)return{no:no,item:CATALOG[i],code:'NF'+no+'-'+m[2]+'-'+m[3]};return null}
+  function grantCatalogItem(item){
+    if(item[1]==='coins'){bankSet(bankGet()+item[2]);paintBal();return item[3]}
+    if(item[1]==='pops'){try{localStorage.setItem(item[2],String((parseInt(localStorage.getItem(item[2])||'0',10)||0)+15))}catch(e){}paintPopsLine();return item[3]}
+    if(item[1]==='dice'){try{var a=JSON.parse(localStorage.getItem('nikkiflixs_dice_sets')||'[]');if(a.indexOf(item[2])<0){a.push(item[2]);localStorage.setItem('nikkiflixs_dice_sets',JSON.stringify(a))}}catch(e){}return item[3]}
+    if(item[1]==='gift'){try{var g=JSON.parse(localStorage.getItem('nikkiflixs_gifts')||'{}');if(Array.isArray(g)||!g)g={};g[item[2]]=(g[item[2]]||0)+1;localStorage.setItem('nikkiflixs_gifts',JSON.stringify(g))}catch(e){}return item[3]}
+    return item[3]}
+  function redeemCode(raw){
+    var p=parseCode(raw);if(!p)return{ok:false,msg:'That code does not check out — type it exactly as given.'};
+    var used=[];try{used=JSON.parse(localStorage.getItem('nikkiflixs_redeemed')||'[]')}catch(e){}
+    if(used.indexOf(p.code)>-1)return{ok:false,msg:'That code was already redeemed on this device.'};
+    var got=grantCatalogItem(p.item);used.push(p.code);try{localStorage.setItem('nikkiflixs_redeemed',JSON.stringify(used))}catch(e){}
+    return{ok:true,msg:'You got: '+got}}
+  window.__storeRedeem=redeemCode;
+  var rb=document.getElementById('storeRedeemBtn');
+  if(rb)rb.addEventListener('click',function(){var inp=document.getElementById('storeRedeemInput');var r=redeemCode(inp.value);document.getElementById('storeRedeemMsg').textContent=r.msg;if(r.ok)inp.value='';});
+  /* ===== creator mode: every pack is free, instantly ===== */
+  if(creatorOn()){
+    var banner=document.createElement('div');
+    banner.style.cssText='margin:14px 0;background:#241a08;border:1px solid #a87f27;border-radius:12px;padding:12px 14px;color:#ffe9a8;font-size:15px';
+    banner.innerHTML='👑 <strong>CREATOR MODE</strong> — every pack on this page is FREE for you. Tap BUY and it lands instantly, no PayPal.';
+    var main=document.querySelector('main')||document.body; main.insertBefore(banner, main.firstChild);
+    document.querySelectorAll('button.buy').forEach(function(b){b.textContent='👑 FREE'});
+    setTimeout(function(){document.querySelectorAll('button.buy').forEach(function(b){if(b.textContent==='BUY')b.textContent='👑 FREE'})},700);
+    document.addEventListener('click',function(e){
+      var buy=e.target.closest?e.target.closest('button.buy'):null; if(!buy)return;
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+      var card=buy.closest('.tier'); if(!card)return;
+      var amt=card.querySelector('.amt')?card.querySelector('.amt').textContent:'';
+      var nm=card.querySelector('.nm')?card.querySelector('.nm').textContent:'';
+      var cm=amt.match(/([\d,]+)\s*coins/);
+      if(cm){var n=parseInt(cm[1].replace(/,/g,''),10);bankSet(bankGet()+n);paintBal();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+      if(/pops/.test(amt)){var key=/Mad/.test(nm)?'nikkiflixs_pops_mad':'nikkiflixs_pops_taunt';try{localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10)||0)+15))}catch(err){}paintPopsLine();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+    },true);
+  }
+})();
+</script>
+
 <div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
   <div class="panel">
     <h2 id="payTitle">Checkout</h2>
