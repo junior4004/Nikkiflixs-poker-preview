@@ -544,7 +544,7 @@
   function bigBlindIndex(){return nextEligible(smallBlindIndex())}
   function advanceBlindTrio(){dealerButton=nextEligible(dealerButton)}
   function placeMarker(id,absoluteIndex){var marker=document.getElementById(id),position=markerPositions[screenSlot(absoluteIndex)];marker.style.setProperty('--mx',position[0]);marker.style.setProperty('--my',position[1]);marker.setAttribute('data-seat',absoluteIndex);marker.setAttribute('data-view-slot',screenSlot(absoluteIndex))}
-  function setBlinds(){seats.forEach(function(s){var m=s.querySelector('.blind');m.classList.remove('show');m.textContent='' });var dealer=dealerIndex(),sb=smallBlindIndex(),bb=bigBlindIndex(),first=sb,dealerMarker=document.getElementById('dealerMarker'),sbMarker=document.getElementById('sbMarker'),bbMarker=document.getElementById('bbMarker');placeMarker('dealerMarker',dealer);placeMarker('sbMarker',sb);placeMarker('bbMarker',bb);dealerMarker.setAttribute('aria-label','Dealer button: '+names[dealer]);sbMarker.setAttribute('aria-label','Small blind: '+names[sb]);bbMarker.setAttribute('aria-label','Big blind: '+names[bb]);logEvent('markers-positioned',{dealer:dealer,smallBlind:sb,bigBlind:bb,firstCard:first,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]})}
+  function setBlinds(){seats.forEach(function(s){var m=s.querySelector('.blind');m.classList.remove('show');m.textContent='' });var dealer=dealerIndex(),sb=smallBlindIndex(),bb=bigBlindIndex(),first=sb,dealerMarker=document.getElementById('dealerMarker'),sbMarker=document.getElementById('sbMarker'),bbMarker=document.getElementById('bbMarker');if(dealerMarker&&sbMarker&&bbMarker){placeMarker('dealerMarker',dealer);placeMarker('sbMarker',sb);placeMarker('bbMarker',bb);dealerMarker.setAttribute('aria-label','Dealer button: '+names[dealer]);sbMarker.setAttribute('aria-label','Small blind: '+names[sb]);bbMarker.setAttribute('aria-label','Big blind: '+names[bb])};logEvent('markers-positioned',{dealer:dealer,smallBlind:sb,bigBlind:bb,firstCard:first,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]})}
   function disableActions(){buttons.forEach(function(b){b.disabled=true})}
   function enableActions(toCall){var fold=document.querySelector('[data-action="fold"]'),check=document.querySelector('[data-action="check"]'),call=document.querySelector('[data-action="call"]'),raise=document.querySelector('[data-action="raise"]');if(stacks[localSeatAbsolute]<=0){disableActions();call.textContent='CALL';return}fold.disabled=false;raise.disabled=false;check.disabled=!!toCall;call.disabled=!toCall;call.textContent=toCall?'CALL '+money(Math.min(toCall,stacks[localSeatAbsolute])):'CALL'}
   function closeRaiseModal(){document.getElementById('raiseModal').classList.remove('open');selectedRaiseTo=null;document.getElementById('confirmRaise').disabled=true}
@@ -858,28 +858,22 @@
 })();
 
   
-  /* Auto-start default table if user hasn't picked one from the lobby */
+  /* Auto-start default table if user hasn't picked one from the lobby.
+     Uses the lobby's own VIEW TABLE button (wired inside the game scope);
+     the previous version called a selectTable that isn't reachable from
+     here, threw on load, and no hand ever started. */
   (function(){
     setTimeout(function(){
       try {
         var lobby = document.getElementById('roomLobby');
-        /* If lobby is still visible (not hidden), user hasn't selected - auto-start 8-max Holdem */
+        /* If lobby is still visible (not hidden), user hasn't selected - auto-start the Starter table */
         if (lobby && !lobby.classList.contains('hidden') && !window.__tableStarted) {
           window.__tableStarted = true;
-          var fakeBtn = document.createElement('button');
-          fakeBtn.setAttribute('data-game', 'holdem');
-          fakeBtn.setAttribute('data-seats', '8');
-          fakeBtn.setAttribute('data-sb', '25');
-          fakeBtn.setAttribute('data-bb', '50');
-          fakeBtn.setAttribute('data-free-table', 'false');
-          fakeBtn.setAttribute('data-min-buyin', '2000');
-          selectTable(fakeBtn);
+          var btn = document.querySelector('#tableGrid .join-table[data-free-table="true"]') || document.querySelector('#tableGrid .join-table');
+          if (btn) btn.click();
         }
       } catch(e) {}
     }, 2500);
-    /* Mark when user manually selects, to prevent double-start */
-    var origSelect = selectTable;
-    selectTable = function(btn){ window.__tableStarted = true; return origSelect(btn); };
   })();
 </script>
 </body>
