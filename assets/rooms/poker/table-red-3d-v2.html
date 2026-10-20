@@ -449,6 +449,7 @@
 (function(){
   var stage=document.getElementById('stage'),camera=document.getElementById('camera'),seats=Array.prototype.slice.call(document.querySelectorAll('.seat')),motion=document.getElementById('motion'),deck=document.getElementById('deck'),muck=document.getElementById('muck'),potChips=document.getElementById('potChips'),potValueNode=document.getElementById('potValue'),statusMain={textContent:''},statusTrail={textContent:''},turnCopy={textContent:''},toast=document.getElementById('toast'),buttons=Array.prototype.slice.call(document.querySelectorAll('.action')),addButton=document.getElementById('addChips');
   var activeConfig={game:'holdem',maxSeats:8,sb:25,bb:50,holeCards:2,freeTable:false},timers=[],pot=0,dealerButton=1,handRunning=false,pendingUser=null,pendingRaiseState=null,selectedRaiseTo=null,audio=null,alertsUnlocked=false,gameStarted=true,alertCount=0,micStream=null,toastTimer=null,bank=500,minimumBuyin=2000,handFolded={},handAllIn={},sittingOut={},waitingForBigBlind=false,pendingJoinNextHand=false,seatHoldTimer=null,seatHoldUntil=0,turnToken=0,handNumber=0,gameSpeed=1,auditLog=[],localSeatAbsolute=0,roundBetTotals=[0,0,0,0,0,0,0,0],currentAggressor=null,liveTransport=null,reconnecting=false,lastServerRevision=0,reconnectBannerTimer=null,leaderboardRevision=0,accountRevision=0,accountConnected=false,dailyBonusAvailable=false,dailyBonusPending=false;
+  var emptyBotSeat={},pendingBotSeat={},botSeatIn={},BOT_POOL=['Big Sal','Dee R.','Hank P.','Rosa M.','Chad W.','Pearl J.','Omar S.','Gus T.','Ivy L.','Frank D.','Lena K.','Moe B.','Tara S.','Vince R.','Opal G.','Duke H.','Nina P.','Cleo B.','Rudy F.','Sadie W.'];
   /* ONE WALLET — the coin store, this table and the casino games share ONE balance: localStorage 'nikkiflixs_bankroll'. Coins bought in the store land here; every page reads and writes the same key. */
   var WALLET_KEY='nikkiflixs_bankroll';
   function walletLoad(){try{var v=parseInt(localStorage.getItem(WALLET_KEY)||'',10);if(isNaN(v)){var legacy=parseInt(localStorage.getItem('nikkiflixs_gold_coins')||'',10);v=isNaN(legacy)?500:legacy;localStorage.setItem(WALLET_KEY,String(v))}try{localStorage.removeItem('nikkiflixs_gold_coins')}catch(e){}return Math.max(0,v)}catch(e){return 500}}
@@ -469,8 +470,41 @@
     seatHoldTimer=setTimeout(function(){if(stacks[0]===0){seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');say('Your three-minute seat hold ended')}},180000);
     logEvent('seat-held-for-reload',{seat:index,holdSeconds:180,until:seatHoldUntil})
   }
+  function freshBotStack(){var base=Math.max(activeConfig.bb*60,stacks[0]||0);return Math.max(activeConfig.bb*20,Math.round(base*(.5+Math.random()*1.3)/5)*5)}
+  function botLeaves(index,reason){
+    emptyBotSeat[index]=true;sittingOut[index]=true;handFolded[index]=true;setStack(index,0);
+    var seat=seats[index];seat.classList.add('folded','seat-open');seat.querySelector('.nameplate strong').textContent='OPEN SEAT';var wrap=seat.querySelector('.portrait-wrap');if(wrap){wrap.style.opacity='.16';wrap.style.filter='grayscale(1)'}
+    logEvent('bot-left',{seat:index,name:names[index],reason:reason,hand:handNumber});
+    later(2000+Math.random()*1500,function(){seatNewBot(index)})
+  }
+  function seatNewBot(index){
+    if(!emptyBotSeat[index])return;
+    var usedAv={};seats.forEach(function(s){var img=s.querySelector('.portrait');if(img)usedAv[img.getAttribute('src')]=true});
+    var pool=BOT_POOL.filter(function(n){return names.indexOf(n)===-1});
+    var name=pool.length?pool[Math.floor(Math.random()*pool.length)]:BOT_POOL[Math.floor(Math.random()*BOT_POOL.length)];
+    var free=[];for(var a=1;a<=24;a++){var p='/assets/avatars/gallery/avatar-'+(a<10?'0':'')+a+'.png';if(!usedAv[p])free.push(p)}
+    var av=free.length?free[Math.floor(Math.random()*free.length)]:'/assets/avatars/gallery/avatar-05.png';
+    var stack=freshBotStack(),seat=seats[index],img=seat.querySelector('.portrait');
+    names[index]=name;botSeatIn[index]=stack;if(img){img.src=av;img.alt=name}
+    var wrap2=seat.querySelector('.portrait-wrap');if(wrap2){wrap2.style.opacity='';wrap2.style.filter=''}
+    seat.classList.remove('seat-open','out-of-chips');seat.classList.add('folded');
+    setStack(index,stack);sittingOut[index]=true;pendingBotSeat[index]=true;delete emptyBotSeat[index];restoreName(index);
+    logEvent('bot-joined',{seat:index,name:name,stack:stack,arrivalForHand:handNumber+1});
+    say(name+' takes a seat',2600)
+  }
   function prepareNextHand(){
-    seats.forEach(function(seat,index){if(stacks[index]<=0&&!sittingOut[index]){if(index===0){holdSeatForReload(index)}else{var refill=Math.max(activeConfig.bb*20,Math.round(Math.max(activeConfig.bb*60,stacks[0])*(.72+index*.055)));setStack(index,refill);seat.classList.remove('out-of-chips','folded');logEvent('bot-reloaded',{seat:index,name:names[index],hand:handNumber,stack:refill})}logEvent('out-of-chips',{seat:index,name:names[index],hand:handNumber})}});
+    var rotatedOut=false;
+    seats.forEach(function(seat,index){
+      if(index===0){if(stacks[0]<=0&&!sittingOut[0])holdSeatForReload(0);return}
+      if(pendingBotSeat[index]){delete pendingBotSeat[index];delete sittingOut[index];seat.classList.remove('folded');return}
+      if(emptyBotSeat[index]||sittingOut[index])return;
+      var stack=stacks[index],seatIn=botSeatIn[index]||stack,reason=null;
+      if(stack<=0)reason='busted';
+      else if(stack<activeConfig.bb*10&&Math.random()<.65)reason='short-stacked';
+      else if(seatIn>0&&stack>seatIn*2.6&&Math.random()<.12)reason='quit-while-ahead';
+      else if(!rotatedOut&&Math.random()<.03)reason='rotated-out';
+      if(reason){if(reason==='rotated-out')rotatedOut=true;botLeaves(index,reason)}
+    });
     if(pendingJoinNextHand&&stacks[0]>0){pendingJoinNextHand=false;delete sittingOut[0];delete handFolded[0];clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[0].classList.remove('empty-seat','folded','out-of-chips');seats[0].setAttribute('aria-label','You, seated bottom-center');say('The last hand is over — you’re in this hand',3600);logEvent('seat-activated-next-hand',{seat:0,hand:handNumber+1,stack:stacks[0]})}
     if(!sittingOut[0]){prof.hands++;profSave()}
     if(stacks[0]<=0&&seats[0].classList.contains('out-of-chips'))openModal(true)
@@ -811,7 +845,7 @@
     if(window.__liveTableKey===tableKey&&(handRunning||handNumber>0)){document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();logEvent('table-reentered',{hand:handNumber,running:handRunning});return}
     window.__liveTableKey=tableKey;
     clearTimers();clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;pendingJoinNextHand=false;var game=button.getAttribute('data-game'),maxSeats=Number(button.getAttribute('data-seats')),sb=Number(button.getAttribute('data-sb')),bb=Number(button.getAttribute('data-bb')),freeTable=button.getAttribute('data-free-table')==='true',listedMinimum=Number(button.getAttribute('data-min-buyin'));activeConfig={game:game,maxSeats:maxSeats,sb:sb,bb:bb,holeCards:game==='omaha'?4:2,freeTable:freeTable};minimumBuyin=freeTable?0:(Number.isFinite(listedMinimum)?listedMinimum:bb*40);configureHoleCards(activeConfig.holeCards);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');sittingOut=maxSeats===6?{0:true,3:true,5:true}:{0:true};waitingForBigBlind=false;dealerButton=1;handNumber=0;handRunning=false;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');
-    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.72+index*.055))))});
+    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});
     document.getElementById('tableGame').textContent=(freeTable?'Starter Texas Hold’em':game==='omaha'?'Pot-Limit Omaha':'Texas Hold’em')+' · '+maxSeats+'-max';document.getElementById('tableStakes').textContent='BLINDS '+sb+' / '+bb+' · '+(freeTable?'NO MINIMUM BUY-IN':'BUY-IN GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString());document.getElementById('modalReason').textContent=freeTable?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount to your stack.':'Move Gold Coins from your account to your table stack. Buy-in: GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString()+'.';
     var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):bb*100));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
     document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();randomizeHands();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(!freeTable&&bank<minimumBuyin)say('You need '+money(minimumBuyin)+' to sit at this table',4200);later(700,function(){shuffleAndDeal()})
