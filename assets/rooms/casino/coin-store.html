@@ -72,7 +72,7 @@ var TIERS=[
   {name:'Diamond',  coins:1800000, price:49.99, coin:'💎'},
   {name:'Whale',    coins:4000000, price:99.99, coin:'🐋', best:true}
 ];
-function getBank(){try{var v=parseInt(localStorage.getItem(BANK_KEY)||'~',10);return isNaN(v)?null:v;}catch(e){return null;}}
+function getBank(){try{var v=parseInt(localStorage.getItem(BANK_KEY)||'~',10);if(isNaN(v))v=0;var legacy=parseInt(localStorage.getItem('nikkiflixs_gold_coins')||'~',10);if(!isNaN(legacy)&&legacy>0){v+=legacy;try{localStorage.setItem(BANK_KEY,String(v));localStorage.removeItem('nikkiflixs_gold_coins');}catch(e){}}return v;}catch(e){return null;}}
 function fmt(n){return n.toLocaleString('en-US');}
 function money(n){return '$'+n.toFixed(2);}
 (function(){
@@ -178,17 +178,18 @@ function money(n){return '$'+n.toFixed(2);}
   });
   
   closeBtn.addEventListener('click', function(){
-    // Grant 500 gold coins
-    var coins = parseInt(localStorage.getItem('nikkiflixs_gold_coins') || '0');
+    // Grant 500 gold coins — into the ONE shared wallet every page uses
+    var coins = parseInt(localStorage.getItem('nikkiflixs_bankroll') || '0');
+    if(isNaN(coins)) coins = 0;
     coins += 500;
-    localStorage.setItem('nikkiflixs_gold_coins', coins.toString());
+    localStorage.setItem('nikkiflixs_bankroll', coins.toString());
     modal.style.display = 'none';
     video.pause();
     video.currentTime = 0;
-    alert('500 FREE Gold Coins added! You now have ' + coins + ' coins.');
+    alert('500 FREE Gold Coins added! You now have ' + coins.toLocaleString('en-US') + ' coins.');
     // Refresh displayed balance if element exists
-    var balEl = document.querySelector('.coin-balance, #coinBalance');
-    if(balEl) balEl.textContent = coins;
+    var balEl = document.querySelector('#balance, .coin-balance, #coinBalance');
+    if(balEl) balEl.textContent = coins.toLocaleString('en-US');
   });
 })();
 </script>
