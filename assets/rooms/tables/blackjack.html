@@ -152,6 +152,37 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .fun-minicard{position:absolute;z-index:28;pointer-events:none;background:#fffdf4;border:1px solid #b8a888;border-radius:4px;font:700 13px/1.2 sans-serif;color:#1a1a1a;padding:3px 5px;transform:translate(-50%,-50%);box-shadow:0 3px 6px #0008;white-space:nowrap}
 
 
+
+/* ===== BUILD 170: DONOR #2 — WIDE LOW BLACKJACK TABLE =====
+   Donor: Jerry's verdant-tartufo screenshot (batch 1925, re-sent 1792545399629_22):
+   wide low squarish table, dealer top-center in a notch, gold-rimmed avatar
+   medallions sitting on the rail, player seats fanned around the front arc,
+   gold script wordmark on the felt. Presentation only — no JS, ids, hooks,
+   card or control markup changed; the deco layer is pointer-events:none. */
+@font-face{font-family:"Great Vibes Local";src:url("../poker/assets/great-vibes.ttf") format("truetype");font-weight:400;font-display:swap}
+.table{border-radius:30%/17%;min-height:450px;box-shadow:0 24px 60px #000d,0 0 0 3px #080504,0 0 0 8px #6d3c20,0 0 0 10px #d9a45c7a,0 0 0 13px #331a09}
+.felt{border-radius:27%/15%;inset:15px 18px}
+.dealer-zone{top:8%;z-index:2}
+.dealer-zone .zone-label{display:none}
+.player-zone{z-index:2}
+.felt-text{top:33.5%;z-index:1}
+.felt-text .big{font-size:18px;letter-spacing:.1em}
+.felt-text .wm{font-family:"Great Vibes Local","Great Vibes",cursive;font-size:34px;font-weight:400;letter-spacing:0;text-transform:none;color:#f6d36f;text-shadow:0 2px 4px #41000b,0 0 14px rgba(255,211,97,.45)}
+.bj-deco{position:absolute;inset:0;z-index:1;pointer-events:none}
+.bj-notch{position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:178px;height:22px;background:linear-gradient(180deg,#241305,#170b04);border-radius:0 0 90px 90px;box-shadow:inset 0 -6px 10px #00000090,0 2px 3px #d9a45c55}
+.bj-dealer{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;overflow:hidden;background:#1a0d12;border:2px solid #e8c883;box-shadow:0 0 0 2px #00000070,0 0 18px #f5c65a66,0 6px 14px #000c}
+.bj-dealer img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transform:scale(1.15);display:block}
+.bj-dealer .bj-dname{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);background:#000a;padding:1px 5px;border-radius:6px;font:800 7.5px/1.3 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.08em;white-space:nowrap}
+.bj-seat{position:absolute;width:50px;height:50px;border-radius:50%;background:#1a0d12;border:2px solid #e8c883;box-shadow:0 0 0 2px #00000060,0 5px 12px #000b}
+.bj-seat img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 18%;transform:scale(1.15);display:block}
+.bj-seat .bj-sname{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);background:#000a;padding:0 5px;border-radius:6px;font:800 7.5px/1.3 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.07em;white-space:nowrap;z-index:1}
+.bj-seat .bj-ring{position:absolute;width:30px;height:30px;border-radius:50%;border:2px solid #f2ca72aa;background:#00000030;box-shadow:inset 0 0 8px #00000070}
+.bj-seat.seat-l .bj-ring{right:-15px;bottom:-11px}
+.bj-seat.seat-r .bj-ring{left:-15px;bottom:-11px}
+.bj-seat.seat-l1{left:2.5%;top:27%}
+.bj-seat.seat-l2{left:.5%;top:47%}
+.bj-seat.seat-r1{right:2.5%;top:27%}
+.bj-seat.seat-r2{right:.5%;top:47%}
 </style>
 </head>
 <body>
@@ -163,8 +194,8 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <button class="funbtn" id="funBtn" type="button">🎯 FUN</button>
 </div>
 <div class="table-wrap">
-  <div class="table" id="bjTable"><div class="felt"></div><div class="motion" id="motion"></div>
-    <div class="felt-text"><span class="big">Blackjack</span><br>pays 3 to 2<br><br>dealer stands on 17</div>
+  <div class="table" id="bjTable"><div class="felt"></div><div class="bj-deco" aria-hidden="true"><div class="bj-notch"></div><div class="bj-dealer"><img src="../../nikki-avatar.webp" alt="" draggable="false"><span class="bj-dname">NIKKI</span></div><div class="bj-seat seat-l seat-l1"><img src="../../avatars/bots/player-14.webp" alt="" draggable="false"><span class="bj-sname">POPS</span><i class="bj-ring"></i></div><div class="bj-seat seat-l seat-l2"><img src="../../avatars/bots/player-07.webp" alt="" draggable="false"><span class="bj-sname">GRANDMA</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r1"><img src="../../avatars/bots/player-05.webp" alt="" draggable="false"><span class="bj-sname">SCARLET</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r2"><img src="../../avatars/bots/player-16.webp" alt="" draggable="false"><span class="bj-sname">EL JEFE</span><i class="bj-ring"></i></div></div><div class="motion" id="motion"></div>
+    <div class="felt-text"><span class="wm">Nikkiflixs</span><br><span class="big">Blackjack pays 3 to 2</span><br>dealer stands on 17</div>
     <div class="dealer-zone">
       <div class="zone-label">Dealer</div>
       <div class="hand" id="dealerHand"></div>
