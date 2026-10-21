@@ -303,9 +303,9 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
 .splat-badge.fade{opacity:0;transition:opacity .8s}
 .bullet-hole{position:absolute;width:13px;height:13px;border-radius:50%;background:radial-gradient(circle,#0a0a0a 0 34%,#2c2c2c 40%,rgba(20,20,20,.55) 52%,rgba(0,0,0,0) 72%);box-shadow:0 0 0 2px rgba(255,255,255,.14),0 1px 2px rgba(0,0,0,.6);z-index:8;pointer-events:none;transform:translate(-50%,-50%)}
 .bullet-hole.fade{opacity:0;transition:opacity .9s}
-.pop-tile{transition:transform .68s cubic-bezier(.17,.67,.35,1),opacity .68s}
-.pop-boom.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(1.06);opacity:.55}
-.pop-boom.back .pop-tile{transition:transform .5s ease-in,opacity .5s}
+.pop-tile{transition:transform .85s cubic-bezier(.16,.68,.35,1),opacity .85s}
+.pop-boom.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(1.15);opacity:.94}
+.pop-boom.back .pop-tile{transition:transform .55s ease-in,opacity .55s}
 /* BUILD 151: richer table-picker cards + occupancy pills */
 .table-choice{gap:18px;padding:20px;border-radius:14px;background:linear-gradient(150deg,#2e1424,#170a10 72%);border:1px solid #6d4a26;box-shadow:0 16px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,220,150,.14)}
 .table-choice:hover{border-color:#c9a24d}
@@ -357,9 +357,11 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
 body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
 .thrown-item{position:fixed;z-index:95;font-size:30px;pointer-events:none;filter:drop-shadow(0 3px 4px #0008)}
 .splat-badge{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:30px;z-index:7;pointer-events:none}
-.pop-boom{position:absolute;inset:0;z-index:9;pointer-events:none}.pop-tile{position:absolute;background-repeat:no-repeat;border-radius:4px;transition:transform .52s cubic-bezier(.17,.67,.35,1),opacity .52s}.pop-boom.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(.94);opacity:.2}.pop-boom.back .pop-tile{transition:transform .36s ease-in,opacity .36s;transform:translate(0,0) rotate(0deg) scale(1);opacity:1}.pop-reassemble{animation:popBack .48s ease-out}@keyframes popBack{0%{transform:scale(1.24)}55%{transform:scale(.93)}100%{transform:scale(1)}}
-.pop-bubble{position:absolute;left:50%;bottom:102%;transform:translateX(-50%);background:#fff;color:#191919;border-radius:10px;padding:5px 9px;font:700 11px/1.25 sans-serif;white-space:nowrap;z-index:8;box-shadow:0 3px 8px #0007}
-.pop-bubble:after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#fff}
+.pop-boom{position:absolute;inset:0;z-index:9;pointer-events:none}.pop-tile{position:absolute;background-repeat:no-repeat;border-radius:6px;box-shadow:0 5px 12px rgba(0,0,0,.55);transition:transform .85s cubic-bezier(.16,.68,.35,1),opacity .85s}.pop-boom.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(1.15);opacity:.94}.pop-boom.back .pop-tile{transition:transform .55s ease-in,opacity .55s;transform:translate(0,0) rotate(0deg) scale(1);opacity:1}.pop-reassemble{animation:popBack .48s ease-out}@keyframes popBack{0%{transform:scale(1.24)}55%{transform:scale(.93)}100%{transform:scale(1)}}.pop-flash{position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px 0 0 -115px;border-radius:50%;background:radial-gradient(circle,#fff 0%,#ffec9a 32%,rgba(255,196,48,.8) 54%,rgba(255,140,0,0) 72%);box-shadow:0 0 70px 34px rgba(255,200,60,.5);z-index:26;pointer-events:none;opacity:0}.pop-flash.on{animation:popFlashGo .5s ease-out forwards}@keyframes popFlashGo{0%{opacity:0;transform:scale(.25)}16%{opacity:1}100%{opacity:0;transform:scale(1.28)}}
+.pop-bubble{position:absolute;left:50%;bottom:104%;transform:translateX(-50%) scale(.55);width:max-content;max-width:min(250px,80vw);background:#fff;color:#191919;border-radius:16px;padding:12px 16px;font:800 21px/1.3 sans-serif;text-align:center;white-space:normal;z-index:30;box-shadow:0 8px 22px rgba(0,0,0,.6);opacity:0;transition:opacity .22s ease,transform .22s cubic-bezier(.34,1.56,.64,1)}
+.pop-bubble.show{opacity:1;transform:translateX(-50%) scale(1)}
+.pop-bubble.bye{opacity:0;transform:translateX(-50%) scale(.85)}
+.pop-bubble:after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:8px solid transparent;border-top-color:#fff}
 @keyframes seatShake{0%,100%{transform:translateX(-50%)}20%{transform:translateX(calc(-50% - 4px)) rotate(-3deg)}40%{transform:translateX(calc(-50% + 4px)) rotate(3deg)}60%{transform:translateX(calc(-50% - 3px))}80%{transform:translateX(calc(-50% + 3px))}}
 .portrait-wrap.splat-shake{animation:seatShake .45s ease}
 .player-card{text-align:center}
@@ -431,7 +433,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 151</div>
+  <div class="build-stamp" id="buildStamp">BUILD 155</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -1107,7 +1109,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   document.getElementById('profileModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});
   document.getElementById('profileStore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});
   document.getElementById('profileLobby').addEventListener('click',function(){document.getElementById('profileModal').classList.remove('open');if(!tableRoom.classList.contains('is-hidden'))document.getElementById('backRoom').click()});
-  /* ===== GIFTS, FLAGS & POPS — Jerry's specs 2026-10-20: throws FREE; flags GC 5 per sitting (gone when you leave); pops sold 15/$1, two flavors. ===== */
+  /* ===== GIFTS, FLAGS & POPS — Jerry's specs 2026-10-20: throws FREE; flags GC 5 per sitting (gone when you leave); pops sold 3/$1, two flavors. ===== */
   var seatWins={},seatBest={},seatFlags={},throwArm=null,popArm=null,gunArm=null;
   var pstats={},handParts=[];function ps(i){if(!pstats[i])pstats[i]={hands:0,wins:0,losses:0,actions:0,folds:0,fs:{PREFLOP:0,FLOP:0,TURN:0,RIVER:0},bestName:'',bestRank:null,bestPot:0};return pstats[i]}
   var THROWABLES=[['pie','Cream Pie','🥧','splat'],['tomato','Tomato','🍅','splat'],['shoe','Shoe','👞','stick'],['fish','Fish','🐟','stick'],['egg','Egg','🥚','splat'],['dynamite','Dynamite','🧨','boom'],['rose','Rose','🌹','stick'],['champagne','Champagne','🍾','splat'],['banana','Banana','🍌','splat'],['cake','Cake','🎂','splat'],['donut','Donut','🍩','splat'],['burger','Burger','🍔','splat'],['sock','Sock','🧦','stick'],['duck','Rubber Duck','🦆','stick'],['snowball','Snowball','🌨️','splat'],['balloon','Water Balloon','🎈','splat'],['glove','Boxing Glove','🥊','stick'],['coconut','Coconut','🥥','splat'],['paint','Paint Splat','🎨','splat'],['tp','Toilet Paper','🧻','stick'],['boot','Boot','🥾','stick'],['lemon','Lemon','🍋','splat'],['melon','Watermelon','🍉','splat'],['spray','Spray Can','💦','splat'],['poop','Poop','💩','bigsplat'],['grenade','Grenade','💣','boom'],['missile','Missile','🚀','boom']];
@@ -1177,36 +1179,47 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     say('Tap a player to shoot them with the '+gun.label.toLowerCase()+' — tap your own picture to cancel',3200);
   }
   function doThrow(fromIndex,toIndex,item){flyItem(item[2],fromIndex,toIndex,function(){impactFx(toIndex,item);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})})}
-  function explodePortrait(toIndex){
+  function explodePortrait(toIndex,holdUntil){
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap?wrap.querySelector('.portrait'):null;
     if(!wrap||!img||!img.getAttribute('src'))return;
-    var W=74,H=84,N=4,boom=document.createElement('div');boom.className='pop-boom';
+    var W=74,H=84,N=3,boom=document.createElement('div');boom.className='pop-boom';
+    var flash=document.createElement('div');flash.className='pop-flash';wrap.appendChild(flash);
+    setTimeout(function(){flash.classList.add('on')},10);setTimeout(function(){flash.remove()},580);
     for(var r=0;r<N;r++)for(var c=0;c<N;c++){
       var t=document.createElement('div');t.className='pop-tile';
       t.style.backgroundImage='url("'+img.getAttribute('src')+'")';
       t.style.backgroundSize=W+'px '+H+'px';
       t.style.backgroundPosition=(-c*(W/N))+'px '+(-r*(H/N))+'px';
       t.style.width=(100/N)+'%';t.style.height=(100/N)+'%';t.style.left=(c*100/N)+'%';t.style.top=(r*100/N)+'%';
-      t.style.setProperty('--tx',((c-1.5)*74+(Math.random()*36-18))+'px');
-      t.style.setProperty('--ty',((r-1.5)*74+(Math.random()*36-18)-26)+'px');
-      t.style.setProperty('--rot',(Math.random()*200-100)+'deg');
+      var txv=(c-1)*(185+Math.random()*115)+(Math.random()*90-45);
+      if(c===1)txv=Math.random()*130-65;
+      if(c!==1&&Math.abs(txv)<305)txv=(c===0?-1:1)*(305+Math.random()*55);
+      var tyv=(r-1)*(125+Math.random()*85)+(Math.random()*70-35)-30;
+      t.style.setProperty('--tx',txv+'px');
+      t.style.setProperty('--ty',tyv+'px');
+      t.style.setProperty('--rot',((Math.random()<.5?-1:1)*(260+Math.random()*460))+'deg');
+      t.style.transitionDelay=((r*N+c)*22)+'ms';
       boom.appendChild(t);
     }
     wrap.appendChild(boom);img.style.visibility='hidden';
     setTimeout(function(){boom.classList.add('go')},30);
-    setTimeout(function(){boom.classList.add('back')},1320);
-    setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},1980);
+    var backAt=holdUntil||1750;
+    setTimeout(function(){boom.classList.add('back')},backAt);
+    setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},backAt+800);
   }
   function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0&&!creatorOn()){if(popsGet(key)<=0){say('Out of those pops — grab more in the Coin Store',2600);return}popsSet(key,popsGet(key)-1);paintPopBtn()}
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap.querySelector('.portrait');
-    explodePortrait(toIndex);
-    var lines=flavor==='taunt'?TAUNT_LINES:MAD_LINES,bub=document.createElement('div');bub.className='pop-bubble';bub.textContent=lines[Math.floor(Math.random()*lines.length)];wrap.appendChild(bub);setTimeout(function(){bub.remove()},2700);
+    explodePortrait(toIndex,2900);
+    var lines=flavor==='taunt'?TAUNT_LINES:MAD_LINES,bub=document.createElement('div');bub.className='pop-bubble';bub.textContent=lines[Math.floor(Math.random()*lines.length)];wrap.appendChild(bub);
+    setTimeout(function(){bub.classList.add('show')},200);
+    setTimeout(function(){bub.classList.remove('show');bub.classList.add('bye')},2350);
+    setTimeout(function(){bub.remove()},2750);
     splat(toIndex,'💥');if(fromIndex===0)say('You POPPED '+names[toIndex]+'!',2000);logEvent('player-popped',{from:fromIndex,to:toIndex,flavor:flavor})}
-  function openStoreChooser(){openGift('🛒 Nikkiflixs Stores','Gold coins and POPS live in the Coin Store — gifts, flags and dice sets live in the Gift Shop.',[{id:'coins',label:'Coin Store',glyph:'🪙',sub:'Gold coin packs + POPS — 15 for $1'},{id:'gifts',label:'Gift Shop',glyph:'🎁',sub:'Gifts, country flags, dice sets & more'}],function(it){location.href=it.id==='coins'?'/assets/rooms/casino/coin-store.html':'/assets/rooms/casino/gift-shop.html'})}
+  function openStoreChooser(){openGift('🛒 Nikkiflixs Stores','Gold coins and POPS live in the Coin Store — gifts, flags and dice sets live in the Gift Shop.',[{id:'coins',label:'Coin Store',glyph:'🪙',sub:'Gold coin packs + POPS — 3 for $1'},{id:'gifts',label:'Gift Shop',glyph:'🎁',sub:'Gifts, country flags, dice sets & more'}],function(it){location.href=it.id==='coins'?'/assets/rooms/casino/coin-store.html':'/assets/rooms/casino/gift-shop.html'})}
   document.getElementById('adminBtn').addEventListener('click',function(){openAdmin()});
   document.getElementById('storeBtn').addEventListener('click',function(){openStoreChooser()});
   document.getElementById('throwBtn').addEventListener('click',function(){if(throwArm){disarmAll();say('Throw cancelled',1000);return}openGift('Throw Something — FREE','Pick an item, then tap a player. Throwing is always free.',THROWABLES.map(function(t){return{id:t[0],label:t[1],glyph:t[2],raw:t}}).concat(GUNS.map(function(g){return{id:'gun_'+g.id,label:g.label,glyph:g.glyph,sub:ammoSub(g),raw:{gun:g}}})),function(it){if(it.raw&&it.raw.gun){pickGun(it.raw.gun);return}throwArm=it.raw;popArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to throw the '+it.raw[1].toLowerCase()+' — tap your own picture to cancel',3200)})});
-  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 15 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){say('You are out of those pops — they are in the Coin Store, 15 for $1. Tap STORE up top.',3400);return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
+  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 3 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){say('You are out of those pops — they are in the Coin Store, 3 for $1. Tap STORE up top.',3400);return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
   document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0]&&!creatorOn();if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
   var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
   playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcThrow" type="button">🎁 THROW (FREE)</button><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
@@ -1251,7 +1264,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   var CODE_SECRET='NF-CREATOR-2026';
   var CATALOG=[
    [1,'coins',15000,'15,000 Gold Coins'],[2,'coins',50000,'50,000 Gold Coins'],[3,'coins',100000,'100,000 Gold Coins'],[4,'coins',250000,'250,000 Gold Coins'],[5,'coins',600000,'600,000 Gold Coins'],[6,'coins',1800000,'1,800,000 Gold Coins'],[7,'coins',4000000,'4,000,000 Gold Coins'],
-   [8,'pops','nikkiflixs_pops_taunt','Taunt Pops x15'],[9,'pops','nikkiflixs_pops_mad','Mad Pops x15'],
+   [8,'pops','nikkiflixs_pops_taunt','Taunt Pops x3'],[9,'pops','nikkiflixs_pops_mad','Mad Pops x3'],
    [10,'dice','red','Dice Set: Solid Red'],[11,'dice','blue','Dice Set: Solid Blue'],[12,'dice','green','Dice Set: Solid Green'],[13,'dice','black','Dice Set: Solid Black'],[14,'dice','purple','Dice Set: Solid Purple'],[15,'dice','pink','Dice Set: Solid Pink'],[16,'dice','pipsred','Dice Set: White Red Pips'],[17,'dice','pipsblue','Dice Set: White Blue Pips'],[18,'dice','pipsgreen','Dice Set: White Green Pips'],[19,'dice','clearred','Dice Set: Clear Red'],[20,'dice','clearblue','Dice Set: Clear Blue'],[21,'dice','clearblack','Dice Set: Clear Black'],[22,'dice','blackgold','Dice Set: Black and Gold'],[23,'dice','leather','Dice Set: Brown Leather'],[24,'dice','skull','Dice Set: Blue Skull'],[25,'dice','ice','Dice Set: Ice Crystal'],
    [26,'gift','rose','Gift: Rose'],[27,'gift','drink','Gift: Drink'],[28,'gift','teddy','Gift: Teddy Bear'],[29,'gift','deck','Gift: Card Deck']];
   function codeCheck(no,rand){var s=no+'|'+rand+'|'+CODE_SECRET,hh=7;for(var i=0;i<s.length;i++)hh=((hh*31)+s.charCodeAt(i))>>>0;var v=(hh%1296).toString(36).toUpperCase();return ('00'+v).slice(-2)}
@@ -1259,7 +1272,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function parseCode(raw){var m=/^NF(\d{1,2})-([A-Z2-9]{6})-([A-Z0-9]{2})$/.exec((raw||'').trim().toUpperCase());if(!m)return null;var no=parseInt(m[1],10);if(codeCheck(no,m[2])!==m[3])return null;for(var i=0;i<CATALOG.length;i++)if(CATALOG[i][0]===no)return{no:no,item:CATALOG[i],code:'NF'+no+'-'+m[2]+'-'+m[3]};return null}
   function grantCatalogItem(item){
     if(item[1]==='coins'){bank+=item[2];walletSave();paintAccountState();return item[3]}
-    if(item[1]==='pops'){popsSet(item[2],popsGet(item[2])+15);paintPopBtn();return item[3]}
+    if(item[1]==='pops'){popsSet(item[2],popsGet(item[2])+3);paintPopBtn();return item[3]}
     if(item[1]==='dice'){try{var a=JSON.parse(localStorage.getItem('nikkiflixs_dice_sets')||'[]');if(a.indexOf(item[2])<0){a.push(item[2]);localStorage.setItem('nikkiflixs_dice_sets',JSON.stringify(a))}}catch(e){}return item[3]}
     if(item[1]==='gift'){try{var g=JSON.parse(localStorage.getItem('nikkiflixs_gifts')||'{}');if(Array.isArray(g)||!g)g={};g[item[2]]=(g[item[2]]||0)+1;localStorage.setItem('nikkiflixs_gifts',JSON.stringify(g))}catch(e){}return item[3]}
     return item[3]}

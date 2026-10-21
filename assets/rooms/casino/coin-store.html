@@ -77,14 +77,14 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   var CODE_SECRET='NF-CREATOR-2026';
   var CATALOG=[
    [1,'coins',15000,'15,000 Gold Coins'],[2,'coins',50000,'50,000 Gold Coins'],[3,'coins',100000,'100,000 Gold Coins'],[4,'coins',250000,'250,000 Gold Coins'],[5,'coins',600000,'600,000 Gold Coins'],[6,'coins',1800000,'1,800,000 Gold Coins'],[7,'coins',4000000,'4,000,000 Gold Coins'],
-   [8,'pops','nikkiflixs_pops_taunt','Taunt Pops x15'],[9,'pops','nikkiflixs_pops_mad','Mad Pops x15'],
+   [8,'pops','nikkiflixs_pops_taunt','Taunt Pops x3'],[9,'pops','nikkiflixs_pops_mad','Mad Pops x3'],
    [10,'dice','red','Dice Set: Solid Red'],[11,'dice','blue','Dice Set: Solid Blue'],[12,'dice','green','Dice Set: Solid Green'],[13,'dice','black','Dice Set: Solid Black'],[14,'dice','purple','Dice Set: Solid Purple'],[15,'dice','pink','Dice Set: Solid Pink'],[16,'dice','pipsred','Dice Set: White Red Pips'],[17,'dice','pipsblue','Dice Set: White Blue Pips'],[18,'dice','pipsgreen','Dice Set: White Green Pips'],[19,'dice','clearred','Dice Set: Clear Red'],[20,'dice','clearblue','Dice Set: Clear Blue'],[21,'dice','clearblack','Dice Set: Clear Black'],[22,'dice','blackgold','Dice Set: Black and Gold'],[23,'dice','leather','Dice Set: Brown Leather'],[24,'dice','skull','Dice Set: Blue Skull'],[25,'dice','ice','Dice Set: Ice Crystal'],
    [26,'gift','rose','Gift: Rose'],[27,'gift','drink','Gift: Drink'],[28,'gift','teddy','Gift: Teddy Bear'],[29,'gift','deck','Gift: Card Deck']];
   function codeCheck(no,rand){var s=no+'|'+rand+'|'+CODE_SECRET,h=7;for(var i=0;i<s.length;i++)h=((h*31)+s.charCodeAt(i))>>>0;var v=(h%1296).toString(36).toUpperCase();return ('00'+v).slice(-2)}
   function parseCode(raw){var m=/^NF(\d{1,2})-([A-Z2-9]{6})-([A-Z0-9]{2})$/.exec((raw||'').trim().toUpperCase());if(!m)return null;var no=parseInt(m[1],10);if(codeCheck(no,m[2])!==m[3])return null;for(var i=0;i<CATALOG.length;i++)if(CATALOG[i][0]===no)return{no:no,item:CATALOG[i],code:'NF'+no+'-'+m[2]+'-'+m[3]};return null}
   function grantCatalogItem(item){
     if(item[1]==='coins'){bankSet(bankGet()+item[2]);paintBal();return item[3]}
-    if(item[1]==='pops'){try{localStorage.setItem(item[2],String((parseInt(localStorage.getItem(item[2])||'0',10)||0)+15))}catch(e){}paintPopsLine();return item[3]}
+    if(item[1]==='pops'){try{localStorage.setItem(item[2],String((parseInt(localStorage.getItem(item[2])||'0',10)||0)+3))}catch(e){}paintPopsLine();return item[3]}
     if(item[1]==='dice'){try{var a=JSON.parse(localStorage.getItem('nikkiflixs_dice_sets')||'[]');if(a.indexOf(item[2])<0){a.push(item[2]);localStorage.setItem('nikkiflixs_dice_sets',JSON.stringify(a))}}catch(e){}return item[3]}
     if(item[1]==='gift'){try{var g=JSON.parse(localStorage.getItem('nikkiflixs_gifts')||'{}');if(Array.isArray(g)||!g)g={};g[item[2]]=(g[item[2]]||0)+1;localStorage.setItem('nikkiflixs_gifts',JSON.stringify(g))}catch(e){}return item[3]}
     return item[3]}
@@ -113,7 +113,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       var nm=card.querySelector('.nm')?card.querySelector('.nm').textContent:'';
       var cm=amt.match(/([\d,]+)\s*coins/);
       if(cm){var n=parseInt(cm[1].replace(/,/g,''),10);bankSet(bankGet()+n);paintBal();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
-      if(/pops/.test(amt)){var key=/Mad/.test(nm)?'nikkiflixs_pops_mad':'nikkiflixs_pops_taunt';try{localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10)||0)+15))}catch(err){}paintPopsLine();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+      if(/pops/.test(amt)){var key=/Mad/.test(nm)?'nikkiflixs_pops_mad':'nikkiflixs_pops_taunt';try{localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10)||0)+3))}catch(err){}paintPopsLine();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
     },true);
   }
 })();
@@ -188,8 +188,8 @@ function money(n){return '$'+n.toFixed(2);}
   };
   document.getElementById('backBtn').addEventListener('click',function(){window.history.back();});
   var POPS=[
-    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:15,price:1.00,icon:'😂',per:'For popping a player who lost — head blows up, funny line included'},
-    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:15,price:1.00,icon:'😤',per:'You lost the hand and you are MAD — let them know it'}
+    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:3,price:1.00,icon:'😂',per:'For popping a player who lost — head blows up, funny line included'},
+    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:3,price:1.00,icon:'😤',per:'You lost the hand and you are MAD — let them know it'}
   ];
   function popsOwned(key){try{return Math.max(0,parseInt(localStorage.getItem(key)||'0',10)||0)}catch(e){return 0}}
   function paintPops(){var el=document.getElementById('popsOwned');if(el)el.textContent='😂 '+popsOwned('nikkiflixs_pops_taunt')+' · 😤 '+popsOwned('nikkiflixs_pops_mad');}
