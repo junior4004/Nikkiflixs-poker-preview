@@ -37,6 +37,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .modal p b{color:#f5c65a}
 .modal .close{min-height:48px;padding:10px 34px;border-radius:9px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
 .note{margin-top:16px;font-size:12px;color:#8a8272;line-height:1.5;text-align:center}
+.safestrip{margin:0 0 14px;padding:11px 13px;border:1px solid #7e5d28;border-radius:10px;background:#141009;color:#e8dfc6;font-size:13px;line-height:1.5;text-align:center}
+.safestrip a{color:#f5c65a;font-weight:700}
+.paytrust{margin:14px 0 0;font-size:12px;color:#8a8272;line-height:1.5}
+.paytrust a{color:#f5c65a;font-weight:700}
 </style>
 <script src="https://www.paypal.com/sdk/js?components=buttons&client-id=BAAlBvODP53lfDAPD3w4U6fiz-mxpEzS7bp4pldMP64JErcBcyzpggnOn6C2kQnKMjnbh8YVFyobvgUPfs&currency=USD"></script>
 </head>
@@ -48,6 +52,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 </div>
 <div class="wrap">
   <p class="hint">Bigger bundles mean <b>more coins per dollar</b> — the Whale is the best deal in the house. Secure checkout via PayPal.</p>
+  <p class="safestrip">Payments are processed by PayPal — your card details never touch our site. <a href="/trust.html">Trust &amp; Safety</a></p>
   <div id="tiers"></div>
   <p class="note">Coins are for play only and have no cash value.</p>
   <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">💥 Table Pops</h2>
@@ -124,6 +129,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
     <h2 id="payTitle">Checkout</h2>
     <p id="payDesc">Complete your purchase with PayPal.</p>
     <div id="paypal-buttons"></div>
+    <p class="paytrust">Payments are processed by PayPal — your card details never touch our site. <a href="/trust.html">Trust &amp; Safety</a></p>
     <button class="close" id="payClose" type="button" style="margin-top:12px">CANCEL</button>
   </div>
 </div>
