@@ -457,6 +457,44 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
   .point-puck{font-size:9px;padding:5px 7px}
   .casino-message.craps-message{font-size:9.5px}
 }
+
+/* BUILD 160: table polish — even craps spacing, shiny full dice, photo chip faces.
+   Presentation only: no chip/zone geometry (width/height/position/transform) changes. */
+/* craps: ONE gap rhythm for every zone family (BUILD 158 shipped a 4/5/6px mix) */
+.craps-perspective{gap:5px}
+.craps-perspective .craps-lower-layout{gap:5px}
+.craps-perspective .craps-number-bank{gap:5px}
+.craps-perspective .hardway-grid,.craps-perspective .horn-grid,.craps-perspective .craps-big-pair,.craps-perspective .craps-mode-panel{gap:5px}
+.craps-perspective .craps-wing{flex:1 1 auto}
+.craps-perspective .craps-wing .craps-come{flex:1.25 1 0}
+@media(max-width:720px){
+.craps-perspective{gap:4px}
+.craps-perspective .craps-lower-layout,.craps-perspective .craps-wing,.craps-perspective .craps-center-props,.craps-perspective .craps-number-bank,.craps-perspective .hardway-grid,.craps-perspective .horn-grid,.craps-perspective .craps-big-pair,.craps-perspective .craps-mode-panel{gap:4px}
+}
+/* dice: translucent-red precision-dice material on every face + drilled-pip shading.
+   Cube, face transforms, tumble and stick-drag are untouched — whole dice, fully visible. */
+.die-face::before{content:"";position:absolute;inset:0;border-radius:inherit;background:url("assets/dice-face-texture.webp") center/cover no-repeat;opacity:.38;mix-blend-mode:soft-light;pointer-events:none;backface-visibility:hidden}
+.die-face[data-value="1"]{--pips:radial-gradient(circle at 50% 50%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+.die-face[data-value="2"]{--pips:radial-gradient(circle at 26% 26%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 74% 74%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+.die-face[data-value="3"]{--pips:radial-gradient(circle at 24% 24%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 50% 50%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 76% 76%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+.die-face[data-value="4"]{--pips:radial-gradient(circle at 25% 25%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 75% 25%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 25% 75%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 75% 75%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+.die-face[data-value="5"]{--pips:radial-gradient(circle at 24% 24%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 76% 24%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 50% 50%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 24% 76%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 76% 76%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+.die-face[data-value="6"]{--pips:radial-gradient(circle at 25% 22%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 75% 22%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 25% 50%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 75% 50%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 25% 78%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22)),radial-gradient(circle at 75% 78%,#fff 0 calc(var(--pip-size)*.7),#eef1ff calc(var(--pip-size)*.85),rgba(96,0,10,.38) calc(var(--pip-size)*1.04),transparent calc(var(--pip-size)*1.22))}
+/* poker chips: photographic faces (white edge spots, engraved ring, NF medallion) on the SAME anchors */
+.seat-chips i,.pot-chips i,.bet-stack i{background-image:url("assets/chip-face-red.webp");background-size:100% 100%;background-repeat:no-repeat;background-color:#8e1626}
+.seat-chips i:nth-child(2),.pot-chips i:nth-child(2),.pot-chips i:nth-child(4),.bet-stack i:nth-child(2),.pot-flight i:nth-child(4){background-image:url("assets/chip-face-blue.webp");background-color:#144a80}
+.seat-chips i:nth-child(3),.pot-chips i:nth-child(3),.pot-chips i:nth-child(5),.bet-stack i:nth-child(3){background-image:url("assets/chip-face-gold.webp");background-color:#9a7414}
+.flying-chip{background-image:url("assets/chip-face-red.webp");background-size:100% 100%;background-repeat:no-repeat}
+.flying-chip.blue{background-image:url("assets/chip-face-blue.webp")}
+.flying-chip.gold{background-image:url("assets/chip-face-gold.webp")}
+.seat-chips i:last-child::after,.pot-chips i:last-child::after{content:""}
+/* wordmark (his Pinochle reference): one clean print, three lines, grand gold swash
+   script on the felt diagonal — bottom-left rising to top-right, near corner to corner.
+   Replaces the BUILD 151 stamp (132px at -32deg, combined sub-line). */
+.brand{transform:translate(-50%,-50%) rotate(-26deg);top:50%;gap:10px}
+.brand-name{font-size:148px}
+.brand-sub{font:700 19px/1 "Barlow Condensed",sans-serif;letter-spacing:.42em}
+.brand-est{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.5em;color:#e8c987;text-transform:uppercase;text-shadow:0 2px 5px rgba(0,0,0,.65);white-space:nowrap}
 </style>
 <style>
 .seat-flag{position:absolute;top:-9px;right:-17px;font-size:25px;z-index:6;filter:drop-shadow(0 1px 3px #000)}
@@ -550,11 +588,11 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 158</div>
+  <div class="build-stamp" id="buildStamp">BUILD 160</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
-      <div class="table"><div class="brand"><span class="brand-name">Nikkiflixs</span><span class="brand-sub">Theater and Poker Room · Est. 2026</span></div></div>
+      <div class="table"><div class="brand"><span class="brand-name">Nikkiflixs</span><span class="brand-sub">Theater and Poker Room</span><span class="brand-est">Established 2026</span></div></div>
       <div class="table-markers" aria-label="Rotating dealer and blind positions"></span></span></span></div>
       <div class="dealer" aria-label="Nikki, permanent dealer"><img src="assets/nikki.png" alt="Nikki, the dealer, in a black uniform with gold trim"><span class="dealer-name">Nikki · Dealer</span></div>
       <div class="deck" id="deck" aria-label="Deck being shuffled"><i></i><i></i><i></i></div>
@@ -762,8 +800,13 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function clearTimers(){timers.forEach(clearTimeout);timers=[]}
   function say(message,duration){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toast.classList.remove('show')},duration||1500)}
   function beep(freq,duration,vol){try{if(!alertsUnlocked||!audio)return false;if(audio.state==='suspended')audio.resume();var o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;g.gain.value=vol||.055;o.connect(g);g.connect(audio.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.stop(audio.currentTime+duration);return true}catch(e){return false}}
-  function buzz(pattern){if(alertsUnlocked&&navigator.vibrate){navigator.vibrate(pattern);return true}return false}
+  function buzz(pattern){try{if(!alertsUnlocked||!navigator.vibrate)return false;navigator.vibrate(pattern);return true}catch(e){return false}}
   var sfxLast={},sfxNoiseBuf=null;
+  /* BUILD 160: real audio files for chips + check knock. Both sounds were synthesized
+     in-house for this build (no third-party audio; see handoff SOURCES) — license-clean.
+     Playback routes through the same alertsUnlocked gate as every other table sound. */
+  var sfxFileCache={};
+  function sfxFile(name,vol){try{if(!alertsUnlocked)return false;var a=sfxFileCache[name];if(!a){a=new Audio('assets/sfx/'+name+'.mp3');a.preload='auto';sfxFileCache[name]=a}try{a.currentTime=0}catch(e){}a.volume=vol==null?.85:vol;var p=a.play();if(p&&p.catch)p.catch(function(){});return true}catch(e){return false}}
   function sfx(kind){
     if(!alertsUnlocked||!audio)return;
     try{
@@ -774,7 +817,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var d0=sfxNoiseBuf.getChannelData(0);for(var i=0;i<d0.length;i++)d0[i]=(Math.random()*2-1)*(1-i/d0.length)}
         var src=audio.createBufferSource();src.buffer=sfxNoiseBuf;var f=audio.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=.7;var g=audio.createGain();g.gain.value=.10;src.connect(f);f.connect(g);g.connect(audio.destination);src.start();
       }else if(kind==='chips'){
-        if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;
+        if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;if(sfxFile('chip-clack',.85))return;
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dc=sfxNoiseBuf.getChannelData(0);for(var j=0;j<dc.length;j++)dc[j]=(Math.random()*2-1)*(1-j/dc.length)}
         [0,.05,.11].forEach(function(off){
           /* deep body knock — a real chip's low thock, not a ping */
@@ -784,6 +827,9 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
         });
       }else if(kind==='win'){
         [0,.06,.12,.19].forEach(function(off){var o=audio.createOscillator(),g3=audio.createGain();o.type='triangle';o.frequency.value=1250+off*4200;g3.gain.setValueAtTime(.08,now+off);g3.gain.exponentialRampToValueAtTime(.001,now+off+.055);o.connect(g3);g3.connect(audio.destination);o.start(now+off);o.stop(now+off+.065)});
+      }else if(kind==='knock'){
+        if(sfxLast.knock&&now-sfxLast.knock<.15)return;sfxLast.knock=now;
+        if(!sfxFile('wood-knock',.95)){[0,.165].forEach(function(off2){var o2=audio.createOscillator(),gk=audio.createGain();o2.type='sine';o2.frequency.setValueAtTime(172,now+off2);o2.frequency.exponentialRampToValueAtTime(88,now+off2+.12);gk.gain.setValueAtTime(.38,now+off2);gk.gain.exponentialRampToValueAtTime(.001,now+off2+.16);o2.connect(gk);gk.connect(audio.destination);o2.start(now+off2);o2.stop(now+off2+.17)})}
       }
     }catch(e){}
   }
@@ -791,7 +837,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   document.addEventListener('click',function(){unlockAlerts()},{once:true});
   function alertUserTurn(index,isWarning){
     if(index!==localSeatAbsolute)return{beeped:false,buzzed:false,suppressed:true};
-    var b1=beep(isWarning?430:730,.22,isWarning?.09:.17);if(!isWarning)setTimeout(function(){beep(920,.3,.17)},175);return{beeped:b1,buzzed:buzz(isWarning?[170,80,170]:[230,80,230,80,230]),suppressed:false}
+    var buzzed=buzz(isWarning?[300,90,300,90,420]:[280,70,280,70,380]);var b1=beep(isWarning?392:784,.18,isWarning?.13:.21);if(!isWarning)setTimeout(function(){beep(1046,.26,.21)},170);return{beeped:b1,buzzed:buzzed,suppressed:false}
   }
   function unlockAlerts(){
     alertsUnlocked=true;
@@ -944,7 +990,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
           acted[index]=true;var raiseAction=handAllIn[index]?'ALL-IN':(oldCurrentBet===0?'BET':'RAISE');postRoundBet(index,raisePaid,raiseAction,true);later(760,next);return
         }
         var amount=Math.max(0,currentBet-contributions[index]),paid=commitChips(index,amount,amount?'call':'check');contributions[index]+=paid;acted[index]=true;
-        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(index,'CHECK',false);later(420,next)}
+        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(index,'CHECK',false);sfx('knock');later(420,next)}
       },{currentBet:currentBet,contribution:contributions[index],bigBlind:bigBlindAmount,lastFullRaise:lastFullRaise})
     }
     next()
@@ -1136,7 +1182,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     if(window.__liveTableKey===tableKey&&(handRunning||handNumber>0)){document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();logEvent('table-reentered',{hand:handNumber,running:handRunning});return}
     window.__liveTableKey=tableKey;
     clearTimers();clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;pendingJoinNextHand=false;var game=button.getAttribute('data-game'),maxSeats=Number(button.getAttribute('data-seats')),sb=Number(button.getAttribute('data-sb')),bb=Number(button.getAttribute('data-bb')),freeTable=button.getAttribute('data-free-table')==='true',listedMinimum=Number(button.getAttribute('data-min-buyin'));activeConfig={game:game,maxSeats:maxSeats,sb:sb,bb:bb,holeCards:game==='omaha'?4:2,freeTable:freeTable};minimumBuyin=freeTable?0:(Number.isFinite(listedMinimum)?listedMinimum:bb*40);configureHoleCards(activeConfig.holeCards);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');sittingOut=maxSeats===6?{0:true,3:true,5:true}:{0:true};waitingForBigBlind=false;dealerButton=1;handNumber=0;handRunning=false;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');
-    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');if(stacks[0]>0){pendingJoinNextHand=true;spectateFirstHand=true;gameSpeed=0.45;say('A hand is already going at this table — you are dealt in on the next one',4200)}if(creatorOn()){names[0]='The Creator';restoreName(0)}
+    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');if(stacks[0]>0){spectateFirstHand=false;gameSpeed=0.45;say('You are watching this table — tap SIT IN when you are ready to play',4200)}if(creatorOn()){names[0]='The Creator';restoreName(0)}
     document.getElementById('tableGame').textContent=(freeTable?'Starter Texas Hold’em':game==='omaha'?'Pot-Limit Omaha':'Texas Hold’em')+' · '+maxSeats+'-max';document.getElementById('tableStakes').textContent='BLINDS '+sb+' / '+bb+' · '+(freeTable?'NO MINIMUM BUY-IN':'BUY-IN GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString());document.getElementById('modalReason').textContent=freeTable?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount to your stack.':'Move Gold Coins from your account to your table stack. Buy-in: GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString()+'.';
     var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):bb*100));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
     document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();randomizeHands();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(creatorOn()&&bank<minimumBuyin){bank=minimumBuyin*5;walletSave();say('👑 Creator wallet topped up — '+money(bank),3000)}else if(!freeTable&&bank<minimumBuyin)say('You need '+money(minimumBuyin)+' to sit at this table',4200);later(700,function(){shuffleAndDeal()})
@@ -1574,23 +1620,9 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
 })();
 
   
-  /* Auto-start default table if user hasn't picked one from the lobby.
-     Uses the lobby's own VIEW TABLE button (wired inside the game scope);
-     the previous version called a selectTable that isn't reachable from
-     here, threw on load, and no hand ever started. */
-  (function(){
-    setTimeout(function(){
-      try {
-        var lobby = document.getElementById('roomLobby');
-        /* If lobby is still visible (not hidden), user hasn't selected - auto-start the Starter table */
-        if (lobby && !lobby.classList.contains('hidden') && !window.__tableStarted) {
-          window.__tableStarted = true;
-          var btn = document.querySelector('#tableGrid .join-table[data-free-table="true"]') || document.querySelector('#tableGrid .join-table');
-          if (btn) btn.click();
-        }
-      } catch(e) {}
-    }, 2500);
-  })();
+  /* BUILD 160: NO AUTO-START. A player enters a table ONLY by tapping it —
+     the old 2.5s lobby timer that auto-clicked the Starter table is gone.
+     Viewing a table spectates; SIT IN is the only way into a hand. */
 </script>
 </body>
 </html>
