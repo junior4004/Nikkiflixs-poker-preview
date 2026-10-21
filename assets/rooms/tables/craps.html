@@ -169,6 +169,27 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .you-badge{width:52px;height:52px;border-radius:50%;border:2px solid #ffe9a8;background:#141c26;cursor:pointer;touch-action:manipulation;position:relative;flex:none;padding:0;overflow:hidden}
 .you-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
 .you-badge span{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);background:#000a;padding:1px 5px;border-radius:6px;font:800 8px/1 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.08em;z-index:1}
+/* ===== BUILD 169: STANDING CROWD AT THE RAIL =====
+   Craps players STAND. A crowd of the club's avatars stands around the far end
+   and both sides of the boat, shoulder-to-shoulder with natural, uneven gaps —
+   never a uniform grid. Every figure leans on the rim (bottoms tuck over the
+   wooden rail + felt padding only; no bet zone, die or control is ever covered).
+   Front-center stays CLEAR: that is the shooter's own spot, marked by the hero
+   figure on the near rail. Pure decoration layer — pointer-events:none, and no
+   script changes at all. */
+html,body{overflow-x:clip}
+.craps-stage{position:relative;padding:62px 0 56px}
+.craps-table{margin-top:0;margin-bottom:0}
+.craps-crowd{position:absolute;inset:0;z-index:2;pointer-events:none}
+.crowd-p{position:absolute;width:66px;height:84px;border-radius:48% 48% 44% 44%/56% 56% 44% 44%;overflow:hidden;transform:rotate(var(--r,0deg)) scale(var(--s,1));box-shadow:0 5px 12px #000b,0 0 0 2px #00000060,inset 0 -14px 18px #00000055;pointer-events:none;background:#1a0d12}
+.crowd-p img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;transform:scale(1.28);display:block;pointer-events:none}
+.crowd-p .cname{position:absolute;left:50%;bottom:3px;transform:translateX(-50%);background:#000a;padding:1px 6px;border-radius:6px;font:800 8.5px/1.3 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.07em;white-space:nowrap;z-index:1}
+.crowd-p.crowd-side{width:60px;height:78px}
+.crowd-hero{position:absolute;z-index:3;left:50%;bottom:6px;width:74px;height:92px;margin-left:-37px;border-radius:48% 48% 44% 44%/56% 56% 44% 44%;overflow:hidden;pointer-events:none;background:#1a0d12;box-shadow:0 6px 16px #000c,0 0 0 3px #f5c65a,0 0 22px #f5c65a55,inset 0 -14px 18px #00000055}
+.crowd-hero img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;transform:scale(1.28);display:block;pointer-events:none}
+.crowd-hero span{position:absolute;left:50%;bottom:3px;transform:translateX(-50%);background:#000a;padding:1px 7px;border-radius:6px;font:800 10px/1.3 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.1em;z-index:1}
+.dice-area{z-index:3}
+.msg{position:relative;z-index:3}
 
 </style>
 <style>.hw-die-img{width:22px;height:22px;object-fit:contain;vertical-align:middle;margin:0 1px;pointer-events:none}</style></head>
@@ -181,6 +202,21 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <button class="funbtn" id="funBtn" type="button">🎯 FUN</button>
 </div>
 <div class="wrap"><div class="motion" id="motion"></div>
+  <div class="craps-stage">
+  <div class="craps-crowd" aria-hidden="true">
+    <div class="crowd-p" style="left:5.5%;top:14px;--r:-3deg;--s:.97"><img src="../../avatars/bots/player-14.webp" alt="" draggable="false"><span class="cname">POPS</span></div>
+    <div class="crowd-p" style="left:24.5%;top:5px;--r:2deg;--s:1.03"><img src="../../avatars/bots/player-09.webp" alt="" draggable="false"></div>
+    <div class="crowd-p" style="left:42%;top:2px;--r:-1deg;--s:1.08"><img src="../../avatars/bots/player-22.webp" alt="" draggable="false"></div>
+    <div class="crowd-p" style="left:59%;top:7px;--r:2.5deg;--s:.95"><img src="../../avatars/bots/player-07.webp" alt="" draggable="false"><span class="cname">GRANDMA</span></div>
+    <div class="crowd-p" style="left:76.5%;top:12px;--r:-2deg;--s:1"><img src="../../avatars/bots/player-18.webp" alt="" draggable="false"></div>
+    <div class="crowd-p crowd-side" style="left:-24px;top:150px;--r:2deg;--s:1"><img src="../../avatars/bots/player-11.webp" alt="" draggable="false"></div>
+    <div class="crowd-p crowd-side" style="left:-24px;top:290px;--r:-2.5deg;--s:.93"><img src="../../avatars/bots/player-03.webp" alt="" draggable="false"></div>
+    <div class="crowd-p crowd-side" style="left:-24px;top:440px;--r:1.5deg;--s:1.02"><img src="../../avatars/bots/player-20.webp" alt="" draggable="false"></div>
+    <div class="crowd-p crowd-side" style="right:-24px;top:170px;--r:-2deg;--s:.98"><img src="../../avatars/bots/player-13.webp" alt="" draggable="false"></div>
+    <div class="crowd-p crowd-side" style="right:-24px;top:330px;--r:1deg;--s:1.05"><img src="../../avatars/bots/player-16.webp" alt="" draggable="false"><span class="cname">EL JEFE</span></div>
+    <div class="crowd-p crowd-side" style="right:-24px;top:470px;--r:-2.5deg;--s:.94"><img src="../../avatars/bots/player-04.webp" alt="" draggable="false"></div>
+  </div>
+  <div class="crowd-hero" aria-hidden="true"><img src="../../avatars/gallery/avatar-03.png" alt="" draggable="false"><span>YOU</span></div>
   <div class="craps-table"><div class="craps-felt">
     <div class="craps-wordmark">Nikkiflixs</div>
     <div class="craps-wordmark-sub">★ CRAPS ★</div>
@@ -204,6 +240,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <button class="bet-box" id="spot-pass" type="button" style="width:100%">★ Pass Line ★<small class="amt" data-amt></small></button>
     </div>
   </div></div>
+  </div>
   <div class="msg" id="msg">Place your bets, then roll.</div>
   <div class="dice-area">
     <div class="die" id="die1"></div>
