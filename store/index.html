@@ -5,46 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikkiflixs Game Supply Company — Poker Club Assets for Builders</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
   :root {
-    --gold: #d4af37;
-    --gold-light: #f4d47c;
-    --bg: #0a0a0f;
-    --bg-card: #14141c;
+    --gold: #e8b74a;
+    --gold-bright: #f2c76f;
+    --gold-light: #ffe9b0;
+    --bg: #070304;
+    --bg-card: #17100a;
     --bg-card-hover: #1c1c28;
-    --text: #f0ead8;
-    --text-dim: #a09a88;
+    --text: #f5e6c8;
+    --text-dim: #cdb088;
     --green: #1a6b3c;
     --red: #a02020;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: "Source Sans 3", system-ui, -apple-system, sans-serif;
     background: var(--bg);
+    background-image: radial-gradient(ellipse 130% 55% at 50% -8%, #4a1016 0%, #1c0709 46%, #070304 78%), radial-gradient(ellipse 90% 40% at 50% 112%, #2a0d10 0%, transparent 70%);
+    background-attachment: fixed;
     color: var(--text);
     line-height: 1.6;
   }
   header {
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-    border-bottom: 2px solid var(--gold);
-    padding: 2rem 1rem;
+    background: radial-gradient(ellipse 90% 120% at 50% -20%, #57161b66 0%, transparent 65%);
+    border-bottom: 1px solid #f2c76f44;
+    box-shadow: 0 1px 0 #00000080, 0 10px 30px #00000060;
+    padding: 2.4rem 1rem 2rem;
     text-align: center;
   }
   header h1 {
-    font-size: 2.5rem;
-    color: var(--gold);
-    letter-spacing: 2px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: 2.6rem;
+    color: var(--gold-bright);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     margin-bottom: 0.5rem;
+    text-shadow: 0 3px 16px #000, 0 0 34px #f2c76f30;
   }
   header p {
     color: var(--text-dim);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     max-width: 700px;
     margin: 0 auto;
   }
   .license-banner {
-    background: linear-gradient(90deg, #1a2a1a, #0f1f0f);
-    border: 1px solid var(--green);
-    border-radius: 8px;
+    background: linear-gradient(165deg, #1d1108, #110905 72%);
+    border: 1px solid #8a6a34;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px #000b, inset 0 1px 0 #f2c76f30;
     padding: 1rem 1.5rem;
     margin: 1.5rem auto;
     max-width: 900px;
@@ -53,9 +63,10 @@
   }
   .license-banner strong { color: var(--gold-light); }
   .safety-banner {
-    background: #171208;
-    border: 1px solid var(--gold);
-    border-radius: 8px;
+    background: linear-gradient(165deg, #1d1108, #110905 72%);
+    border: 1px solid #8a6a34;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px #000b, inset 0 1px 0 #f2c76f30;
     padding: 1rem 1.5rem;
     margin: 1.5rem auto;
     max-width: 900px;
@@ -66,34 +77,46 @@
   nav {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
     flex-wrap: wrap;
     position: sticky;
     top: 0;
-    background: rgba(10,10,15,0.95);
+    background: rgba(10, 4, 5, 0.96);
     z-index: 100;
-    border-bottom: 1px solid #2a2a3a;
+    border-bottom: 1px solid #f2c76f2e;
+    box-shadow: 0 6px 18px #0009;
   }
   nav a {
-    color: var(--gold);
+    color: #ecd39c;
+    background: linear-gradient(180deg, #221407, #180e05);
     text-decoration: none;
     padding: 0.5rem 1.2rem;
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    font-size: 0.9rem;
+    border: 1px solid #77592c;
+    border-radius: 999px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: inset 0 1px 0 #f2c76f24, 0 1px 3px #0007;
     transition: all 0.2s;
   }
-  nav a:hover { background: var(--gold); color: #000; }
+  nav a:hover { background: linear-gradient(180deg, #ffedb0 0%, #eec25e 48%, #d29a2e 52%, #b97c1c 100%); color: #221100; border-color: #a37c33; }
   section { max-width: 1200px; margin: 0 auto; padding: 3rem 1rem 1rem; }
   section h2 {
-    color: var(--gold);
-    font-size: 1.8rem;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    color: var(--gold-bright);
+    font-size: 1.9rem;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
     margin-bottom: 0.3rem;
-    border-bottom: 2px solid var(--gold);
+    border-bottom: 1px solid #f2c76f44;
     padding-bottom: 0.5rem;
-    display: inline-block;
+    text-shadow: 0 2px 8px #000;
   }
+  section h2::before { content: "♠"; color: #e8b74a; margin-right: 9px; text-shadow: 0 0 12px #f2c76f4d; }
   section .sub { color: var(--text-dim); margin-bottom: 1.5rem; }
   .grid {
     display: grid;
@@ -101,72 +124,97 @@
     gap: 1.5rem;
   }
   .card {
-    background: var(--bg-card);
-    border: 1px solid #2a2a3a;
-    border-radius: 12px;
+    background: linear-gradient(165deg, #1d1108, #110905 72%);
+    border: 1px solid #8a6a34;
+    border-radius: 16px;
     overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
+    box-shadow: 0 16px 36px #000d, 0 3px 10px #0009, inset 0 1px 0 #f2c76f38, inset 0 -1px 0 #00000090;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
-  .card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .card:hover { transform: translateY(-4px); border-color: var(--gold-bright); box-shadow: 0 22px 46px #000e, 0 4px 12px #0009, inset 0 1px 0 #f2c76f4d, inset 0 -1px 0 #00000090; }
   .card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
-    background: #0a0a0f;
+    background: #0d0803;
+    border-bottom: 2px solid #c9a24d;
+    box-shadow: 0 1px 0 #f2c76f2e;
   }
-  .card img.tall { height: 280px; object-fit: contain; background: #000; }
-  .card-body { padding: 1.2rem; }
-  .card-body h3 { color: var(--gold-light); margin-bottom: 0.4rem; font-size: 1.15rem; }
+  .card img.tall { height: 280px; object-fit: contain; background: radial-gradient(ellipse at 50% 40%, #241708, #0a0503 75%); }
+  .card-body { padding: 1.15rem 1.2rem 1.25rem; display: flex; flex-direction: column; flex: 1; }
+  .card-body h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.4rem; font-size: 1.3rem; text-shadow: 0 2px 7px #000; }
   .card-body p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 0.8rem; }
   .price {
-    font-size: 1.6rem;
-    color: var(--gold);
-    font-weight: bold;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.9rem;
+    color: var(--gold-bright);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 8px #000;
     margin-bottom: 0.8rem;
   }
-  .price small { font-size: 0.8rem; color: var(--text-dim); font-weight: normal; }
+  .price small { font-family: "Source Sans 3", sans-serif; font-size: 0.8rem; color: var(--text-dim); font-weight: normal; }
   /* ===== LICENSE TIER TOGGLE ===== */
   .license-toggle {
     display: flex;
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    overflow: hidden;
+    gap: 3px;
+    padding: 3px;
+    background: #00000059;
+    border: 1px solid #77592c;
+    border-radius: 999px;
+    box-shadow: inset 0 1px 3px #000c, inset 0 0 0 1px #f2c76f1f;
+    margin-top: auto;
     margin-bottom: 0.8rem;
   }
   .license-toggle button {
     flex: 1;
-    padding: 0.45rem 0.5rem;
+    padding: 0.5rem 0.5rem;
     background: transparent;
     color: var(--text-dim);
     border: none;
-    font-size: 0.78rem;
-    letter-spacing: 0.5px;
+    border-radius: 999px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
   }
   .license-toggle button.active {
-    background: var(--gold);
-    color: #000;
-    font-weight: bold;
+    background: linear-gradient(180deg, #ffedb0 0%, #eec25e 48%, #d29a2e 52%, #b97c1c 100%);
+    color: #221100;
+    box-shadow: inset 0 1px 0 #fffbe8, inset 0 -2px 4px #7a4d0d66, 0 2px 6px #0008;
+    text-shadow: 0 1px 0 #ffeec280;
   }
   .btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    padding: 0.8rem;
-    background: linear-gradient(135deg, var(--gold), #b8962e);
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
+    min-height: 50px;
+    padding: 0.7rem 1rem;
+    background: linear-gradient(180deg, #ffedb0 0%, #eec25e 48%, #d29a2e 52%, #b97c1c 100%);
+    color: #221100;
+    border: 1px solid #a37c33;
+    border-radius: 9px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    transition: opacity 0.2s;
+    box-shadow: 0 7px 18px #000b, 0 2px 5px #0008, inset 0 1px 0 #fffbe8, inset 0 -2px 4px #7a4d0d66;
+    text-shadow: 0 1px 0 #ffeec280;
+    transition: filter 0.15s;
   }
-  .btn:hover { opacity: 0.85; }
-  .btn.disabled { background: #3a3a4a; color: #888; cursor: not-allowed; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn.disabled { background: #3a3a4a; color: #888; cursor: not-allowed; box-shadow: none; text-shadow: none; }
   .avatar-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -177,39 +225,47 @@
     width: 100%;
     aspect-ratio: 3/4;
     object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid #2a2a3a;
+    border-radius: 10px;
+    border: 2px solid #77592c;
+    box-shadow: 0 6px 14px #0009, inset 0 1px 0 #f2c76f24;
     transition: border-color 0.2s;
   }
-  .avatar-grid img:hover { border-color: var(--gold); }
+  .avatar-grid img:hover { border-color: var(--gold-bright); }
   .badge {
     display: inline-block;
-    background: var(--red);
+    background: linear-gradient(180deg, #c02733, #8c1822);
     color: #fff;
-    font-size: 0.7rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 10px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    padding: 0.18rem 0.6rem;
+    border-radius: 999px;
     margin-left: 0.5rem;
     vertical-align: middle;
+    box-shadow: 0 2px 6px #0008, inset 0 1px 0 #ffffff30;
+    text-shadow: 0 1px 2px #000;
   }
-  .badge.premium { background: var(--gold); color: #000; }
+  .badge.premium { background: linear-gradient(180deg, #ffedb0 0%, #eec25e 48%, #d29a2e 52%, #b97c1c 100%); color: #221100; text-shadow: 0 1px 0 #ffeec280; box-shadow: 0 2px 6px #0008, inset 0 1px 0 #fffbe8; }
   footer {
     text-align: center;
     padding: 3rem 1rem;
-    color: var(--text-dim);
-    border-top: 1px solid #2a2a3a;
+    color: #937c50;
+    border-top: 1px solid #f2c76f24;
+    box-shadow: 0 -1px 0 #00000080;
     margin-top: 3rem;
   }
-  footer a { color: var(--gold); }
+  footer a { color: var(--gold-bright); }
   .terms {
     max-width: 900px;
     margin: 2rem auto;
     padding: 1.5rem;
-    background: var(--bg-card);
-    border-radius: 12px;
-    border: 1px solid #2a2a3a;
+    background: linear-gradient(165deg, #1d1108, #110905 72%);
+    border-radius: 16px;
+    border: 1px solid #8a6a34;
+    box-shadow: 0 16px 36px #000d, inset 0 1px 0 #f2c76f38;
   }
-  .terms h3 { color: var(--gold); margin-bottom: 0.8rem; }
+  .terms h3 { font-family: "Barlow Condensed", sans-serif; font-weight: 700; letter-spacing: 0.045em; text-transform: uppercase; color: var(--gold-bright); margin-bottom: 0.8rem; text-shadow: 0 2px 8px #000; }
   .terms ul { padding-left: 1.5rem; color: var(--text-dim); }
   .terms li { margin-bottom: 0.4rem; }
   @media (max-width: 600px) {
@@ -287,15 +343,16 @@
   }
   .avatar-tile {
     position: relative;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
-    border: 2px solid #2a2a3a;
+    border: 2px solid #77592c;
     cursor: pointer;
-    background: #0a0a0f;
+    background: radial-gradient(ellipse at 50% 40%, #241708, #0a0503 75%);
+    box-shadow: 0 8px 18px #000a, inset 0 1px 0 #f2c76f24;
     aspect-ratio: 3/4;
     transition: border-color 0.2s, transform 0.2s;
   }
-  .avatar-tile:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .avatar-tile:hover { border-color: var(--gold-bright); transform: translateY(-3px); }
   .avatar-tile .gesture-img {
     width: 100%;
     height: 100%;
@@ -325,7 +382,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0,0,0,0.72);
+    background: rgba(7,3,4,0.78);
     color: var(--gold-light);
     font-size: 0.68rem;
     text-align: center;
@@ -337,8 +394,8 @@
     position: absolute;
     top: 4px;
     right: 4px;
-    background: rgba(0,0,0,0.6);
-    color: var(--gold);
+    background: rgba(7,3,4,0.65);
+    color: var(--gold-bright);
     font-size: 0.62rem;
     padding: 0.15rem 0.45rem;
     border-radius: 8px;
@@ -364,9 +421,10 @@
   }
   .modal-backdrop.open { display: flex; }
   .modal-box {
-    background: var(--bg-card);
-    border: 2px solid var(--gold);
-    border-radius: 14px;
+    background: linear-gradient(165deg, #1d1108, #110905 74%);
+    border: 1px solid #a37c33;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px #000e, 0 4px 14px #0009, inset 0 1px 0 #f2c76f38;
     max-width: 520px;
     width: 100%;
     max-height: 92vh;
@@ -390,7 +448,7 @@
     border-radius: 12px;
     overflow: hidden;
     background:
-      radial-gradient(ellipse at 50% 38%, #2a5c8a 0%, #17456e 45%, #0d2c49 100%);
+      radial-gradient(ellipse at 50% 38%, #57161b 0%, #3d0f13 48%, #1c0709 100%);
     border: 10px solid transparent;
     border-image: linear-gradient(135deg, #8a8a8a, #e8e8e8, #8a8a8a, #d0d0d0, #8a8a8a) 1;
     min-height: 340px;
@@ -406,7 +464,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    color: rgba(212,175,55,0.5);
+    color: rgba(242,199,111,0.5);
     font-size: 1.1rem;
     letter-spacing: 3px;
   }
@@ -420,8 +478,8 @@
   .seat-nameplate {
     position: absolute;
     bottom: 10px;
-    background: rgba(0,0,0,0.7);
-    border: 1px solid var(--gold);
+    background: rgba(10,4,5,0.78);
+    border: 1px solid #a37c33;
     color: var(--gold-light);
     padding: 0.3rem 1.2rem;
     border-radius: 16px;
