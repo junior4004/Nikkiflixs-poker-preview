@@ -459,7 +459,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 156</div>
+  <div class="build-stamp" id="buildStamp">BUILD 157</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -1166,7 +1166,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function openGift(title,sub,items,onPick){document.getElementById('giftTitle').textContent=title;document.getElementById('giftSub').textContent=sub||'';var grid=document.getElementById('giftGrid');grid.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){giftModal.classList.remove('open');onPick(it)});grid.appendChild(b)});giftModal.classList.add('open')}
   function seatCenter(index){var r=seats[index].querySelector('.portrait-wrap').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
   var ITEM_ART='assets/item-art/';
-  function artFile(id){if(id==='poop'||id==='pistol')return null;return 'item-'+id+'.webp'}
+  function artFile(id){if(id==='poop')return null;return 'item-'+id+'.webp'}
   function itemGlyphHTML(id,glyph){var f=artFile(id);return f?'<img class="item-art" src="'+ITEM_ART+f+'" alt="">':glyph}
   function fxContent(id,glyph){var f=artFile(id);return f?'<img class="fx-art" src="'+ITEM_ART+f+'" alt="">':glyph}
   function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate('+(dx*.5)+'px,'+(dy-90)+'px) rotate(240deg)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg)'}],{duration:620,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
