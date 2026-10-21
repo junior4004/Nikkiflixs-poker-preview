@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a;--shadow:0 18px 55px #000a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:var(--bg);color:var(--ink)}
+body{background:
+  radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),
+  radial-gradient(ellipse at 50% 118%,#2a0d16 0%,transparent 60%),
+  linear-gradient(#1a070d,#0d0407)}
+button{cursor:pointer;font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:20px clamp(14px,4vw,44px) 60px}
+.head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.back{min-height:44px;padding:9px 16px;border:1px solid var(--line);background:#1d1013;color:var(--ink);border-radius:8px;font-weight:700}
+.sign{flex:1;text-align:center}
+.sign h1{margin:0;font:800 clamp(38px,8vw,68px)/0.95 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#f6dc96;
+  text-shadow:0 0 18px #ff5a3c66,0 0 42px #ddb86644,0 3px 0 #5e1220,0 6px 22px #000}
+.sign .est{display:block;font:700 10px/1 "Source Sans 3",sans-serif;letter-spacing:.42em;color:#e8a0a8;margin-top:6px}
+.host{display:flex;align-items:center;gap:14px;margin:16px auto 22px;max-width:560px;padding:12px 16px;
+  border:1px solid #75562f;border-radius:14px;background:linear-gradient(145deg,#2a0e16ee,#140609f5);box-shadow:var(--shadow)}
+.host img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:center 18%;
+  border:3px solid var(--gold);box-shadow:0 0 0 3px #0009,0 0 18px #ddb86677,0 5px 12px #000c}
+.host .who b{display:block;font:800 19px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#ffe9bd;text-transform:uppercase}
+.host .who span{color:var(--muted);font-size:13px;line-height:1.35}
+.stations{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.station{position:relative;display:block;text-align:left;border:1px solid #75562f;border-radius:14px;overflow:hidden;
+  background:linear-gradient(145deg,#22101aeb,#0d0508f2);box-shadow:var(--shadow);color:var(--ink);padding:0;
+  transition:transform .15s ease,border-color .15s ease}
+.station:hover{transform:translateY(-3px);border-color:var(--gold)}
+.station .art{height:170px;position:relative;overflow:hidden}
+.station .art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,#0d0508e8 100%);pointer-events:none}
+.station .body{padding:14px 16px 16px}
+.station h2{margin:0 0 4px;font:800 26px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#ffe9bd}
+.station p{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.4}
+.station .meta{display:flex;justify-content:space-between;align-items:center}
+.station .free{font:800 15px/1 "Barlow Condensed",sans-serif;color:var(--gold);letter-spacing:.05em}
+.station .go{font:800 13px/1 "Barlow Condensed",sans-serif;color:#1e1003;background:linear-gradient(135deg,#fff0a8,#c67b1c);border-radius:6px;padding:8px 14px;letter-spacing:.06em}
+/* ---- pool art: felt, pockets, balls ---- */
+.pool-art{background:radial-gradient(ellipse at 50% 120%,#123b2a 0%,transparent 60%),linear-gradient(#3a2312,#241204)}
+.pool-table{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-2deg);width:78%;height:56%;
+  border-radius:18px;background:linear-gradient(145deg,#7a4a26,#3c2412);
+  box-shadow:0 14px 30px #000c,inset 0 2px 6px #ffdf9e44}
+.pool-felt{position:absolute;inset:11px;border-radius:10px;background:radial-gradient(ellipse at 40% 35%,#12855f,#0b5a40 60%,#063d2a);
+  box-shadow:inset 0 0 26px #000a}
+.pocket{position:absolute;width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#222,#000 70%);box-shadow:inset 0 2px 5px #000,0 0 0 2px #c9a22766}
+.ball{position:absolute;width:19px;height:19px;border-radius:50%;box-shadow:inset -3px -4px 6px #0007,2px 3px 5px #0009}
+.ball::after{content:"";position:absolute;left:4px;top:3px;width:6px;height:5px;border-radius:50%;background:#ffffffcc;filter:blur(.5px)}
+/* ---- shuffleboard art ---- */
+.shuf-art{background:radial-gradient(ellipse at 50% -20%,#3a2312 0%,transparent 55%),linear-gradient(#1c0d06,#120703)}
+.shuf-table{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34%;height:88%;
+  border-radius:8px;background:linear-gradient(90deg,#5d3a1e,#8a5a30 18%,#a9743f 50%,#8a5a30 82%,#5d3a1e);
+  box-shadow:0 14px 30px #000c,inset 0 0 0 3px #2a1709}
+.shuf-table i{position:absolute;left:6%;right:6%;height:2px;background:#f8f2dfcc}
+.shuf-table .z{position:absolute;left:0;right:0;text-align:center;font:800 12px/1 "Barlow Condensed",sans-serif;color:#3a2312;letter-spacing:.1em}
+.puck{position:absolute;width:16px;height:16px;border-radius:50%;box-shadow:inset -2px -3px 5px #0008,1px 2px 4px #000a}
+/* ---- darts art ---- */
+.dart-art{background:radial-gradient(ellipse at 50% 0%,#40260f 0%,transparent 55%),linear-gradient(#170c05,#0d0502)}
+.board{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:128px;height:128px;border-radius:50%;
+  box-shadow:0 12px 26px #000d,0 0 0 6px #241204,0 0 0 8px #c9a22755;
+  background:
+    radial-gradient(circle,#c0272d 0 9%,#1d7a3a 9% 20%,transparent 20%),
+    repeating-conic-gradient(#191919 0deg 9deg,#e8dcc0 9deg 18deg,#191919 18deg 27deg,#e8dcc0 27deg 36deg)}
+.board::after{content:"20";position:absolute;left:50%;top:-19px;transform:translateX(-50%);font:800 13px/1 "Barlow Condensed",sans-serif;color:#f6dc96}
+.note{margin-top:26px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#170a0ecc;color:var(--muted);font-size:13px;line-height:1.5}
+.note b{color:var(--gold)}
+@media(max-width:560px){.stations{grid-template-columns:1fr}.station .art{height:150px}.host img{width:54px;height:54px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <button class="back" id="backBtn" type="button">← Lobby</button>
+    <div class="sign"><h1>Nikki's Bar</h1><span class="est">EST. 2026 · NIKKIFLIXS</span></div>
+    <span style="width:86px" aria-hidden="true"></span>
+  </div>
+
+  <div class="host">
+    <img src="../poker/assets/nikki-avatar.webp" alt="Nikki, your host">
+    <div class="who"><b>Your host — Nikki</b>
+    <span>Welcome to my bar. The pool table's racked, the shuffleboard's waxed and the darts are sharp. Everything in here is free play — pick your game and stay awhile.</span></div>
+  </div>
+
+  <div class="stations">
+    <button class="station" data-href="pool.html" type="button">
+      <div class="art pool-art" aria-hidden="true"><div class="pool-table"><div class="pool-felt">
+        <span class="pocket" style="left:-6px;top:-6px"></span><span class="pocket" style="right:-6px;top:-6px"></span>
+        <span class="pocket" style="left:-6px;bottom:-6px"></span><span class="pocket" style="right:-6px;bottom:-6px"></span>
+        <span class="pocket" style="left:calc(50% - 8px);top:-7px"></span><span class="pocket" style="left:calc(50% - 8px);bottom:-7px"></span>
+        <span class="ball" style="left:16%;top:42%;background:radial-gradient(circle at 35% 30%,#fff,#d9d4c8)"></span>
+        <span class="ball" style="left:62%;top:44%;background:radial-gradient(circle at 35% 30%,#ffe066,#e0a800)"></span>
+        <span class="ball" style="left:70%;top:30%;background:radial-gradient(circle at 35% 30%,#5b8def,#1c4fb0)"></span>
+        <span class="ball" style="left:70%;top:58%;background:radial-gradient(circle at 35% 30%,#f26d6d,#b01c1c)"></span>
+        <span class="ball" style="left:79%;top:44%;background:radial-gradient(circle at 35% 30%,#444,#000)"></span>
+      </div></div></div>
+      <div class="body"><h2>Pool</h2><p>Full table, real physics. Pull back, aim, and clear all 8 balls in as few shots as you can.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="shuffleboard.html" type="button">
+      <div class="art shuf-art" aria-hidden="true"><div class="shuf-table">
+        <span class="z" style="top:7%">10</span><span class="z" style="top:23%">8</span><span class="z" style="top:41%">7</span>
+        <i style="top:56%"></i>
+        <span class="puck" style="left:52%;top:16%;background:radial-gradient(circle at 35% 30%,#f26d6d,#8f1414)"></span>
+        <span class="puck" style="left:30%;top:33%;background:radial-gradient(circle at 35% 30%,#5b8def,#173f86)"></span>
+        <span class="puck" style="left:44%;top:47%;background:radial-gradient(circle at 35% 30%,#f26d6d,#8f1414)"></span>
+      </div></div>
+      <div class="body"><h2>Shuffleboard</h2><p>Slide your pucks into the 10 · 8 · 7 zones and knock the house off the board. Four rounds, highest total wins.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="darts.html" type="button">
+      <div class="art dart-art" aria-hidden="true"><div class="board"></div></div>
+      <div class="body"><h2>Darts</h2><p>301 against the house. Three darts a turn, doubles and trebles count — first to exactly zero wins.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+  </div>
+
+  <div class="note"><b>House rules:</b> every game in Nikki's Bar is <b>free play</b> — no coins, no wallet, just bragging rights. Loser racks 'em for the next game.</div>
+</div>
+<script>
+document.getElementById('backBtn').addEventListener('click',function(){
+  try{if(window.parent&&window.parent!==window&&window.parent.postMessage){window.parent.postMessage({type:'nikkiflixs-leave-room'},'*');}}catch(e){}
+  try{window.history.back();}catch(e){}
+});
+document.querySelectorAll('.station').forEach(function(c){
+  c.addEventListener('click',function(){window.location.href=c.getAttribute('data-href');});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Shuffleboard · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
+.score{max-width:300px;margin:12px auto 0;text-align:center;background:#070b0c;border:1px solid var(--gold2);border-radius:999px;padding:7px 14px;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:12px 10px 34px}
+.stage{position:relative;width:min(94vw,420px);margin:0 auto}
+canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px 60px #000d;touch-action:none;background:#2a1709}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:12px 4px 6px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px}
+.rounds{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:4px 0 2px}
+.rounds .rd{border:1px solid var(--gold2);border-radius:8px;padding:5px 10px;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;background:#0007;color:var(--muted)}
+.rounds .rd b{color:#fff}
+.rounds .rd.now{border-color:var(--gold);color:var(--gold)}
+.controls{display:flex;gap:10px;justify-content:center;margin-top:8px}
+.btn{min-height:48px;padding:11px 22px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.04em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#06020399;border-radius:14px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Shuffleboard<small>NIKKI'S BAR · FREE PLAY</small></h1>
+</div>
+<div class="wrap">
+  <div class="stage">
+    <canvas id="cv" width="440" height="800" aria-label="Shuffleboard table"></canvas>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">You Win!</h2>
+      <p id="ovText"></p>
+      <button class="btn primary" id="againBtn" type="button">PLAY AGAIN</button>
+    </div></div>
+  </div>
+  <div class="score" id="scoreBox">YOU <b>0</b> · HOUSE <b>0</b></div>
+  <p class="status" id="status">Round 1 — your pucks. Pull down and release to slide.</p>
+  <div class="rounds" id="rounds"></div>
+  <p class="hint">Pull down on the table and let go — longer pull, faster puck. A puck only scores if it stops <b>fully past the foul line</b>, in the 7, 8 or 10. Knock the blue house pucks out while you're at it.</p>
+  <div class="controls"><button class="btn" id="newBtn" type="button">NEW MATCH</button></div>
+</div>
+<script>
+'use strict';
+/* ============ SHUFFLEBOARD — Nikki's Bar (free play) ============
+   Table deck shuffleboard, top-down. You (red) vs the House (blue),
+   4 pucks each per round, 4 rounds. A puck scores only when it stops
+   fully across the foul line: 10 / 8 / 7 by zone. Pucks collide, so
+   you can knock the House off the board. Pull-back flick to shoot. */
+var FAST = /[?&](fast|demo)=1/.test(location.search);
+var DEMO = /[?&]demo=1/.test(location.search);
+var cv = document.getElementById('cv'), ctx = cv.getContext ? cv.getContext('2d') : null;
+var W = 440, H = 800, PR = 16;
+var WALL = { x0: 30, x1: 410, top: 34 };
+var FOUL = 300;                    // puck center must be < FOUL - PR to score
+var ZONES = [                      // by puck center y
+  { max: 96, pts: 10 }, { max: 182, pts: 8 }, { max: 276, pts: 7 }
+];
+var START = { x: 220, y: 712 };
+var ROUNDS = 4, PER = 4;
+
+var pucks = [], round = 1, turn = 'you', shotIdx = 0;
+var totals = { you: 0, house: 0 }, roundScores = [];
+var state = 'aim';                 // aim | sliding | botwait | over
+var drag = null, lastTime = 0, botTimer = 0;
+
+function scoreAt(y) {
+  if (y + PR > FOUL) return 0;     // not fully across the foul line
+  for (var i = 0; i < ZONES.length; i++) if (y < ZONES[i].max) return ZONES[i].pts;
+  return 0;
+}
+function newMatch() {
+  pucks = []; round = 1; totals = { you: 0, house: 0 }; roundScores = [];
+  document.getElementById('overlay').classList.remove('show');
+  startRound();
+}
+function startRound() {
+  pucks = []; turn = 'you'; shotIdx = 0; state = 'aim';
+  spawnPuck();
+  updateHUD(); draw();
+  setStatus('Round ' + round + ' of ' + ROUNDS + ' — your pucks. Pull down and release to slide.');
+}
+function spawnPuck() {
+  pucks.push({ x: START.x, y: START.y, vx: 0, vy: 0, owner: turn, live: true, fresh: true });
+}
+function curPuck() {
+  for (var i = pucks.length - 1; i >= 0; i--) if (pucks[i].fresh) return pucks[i];
+  return null;
+}
+function setStatus(t) { document.getElementById('status').textContent = t; }
+function updateHUD() {
+  document.getElementById('scoreBox').innerHTML =
+    'YOU <b>' + totals.you + '</b> · HOUSE <b>' + totals.house + '</b>';
+  var rd = document.getElementById('rounds'); rd.innerHTML = '';
+  for (var i = 1; i <= ROUNDS; i++) {
+    var d = document.createElement('span'); d.className = 'rd' + (i === round && state !== 'over' ? ' now' : '');
+    var rs = roundScores[i - 1];
+    d.innerHTML = 'R' + i + (rs ? ' · <b>' + rs.you + '–' + rs.house + '</b>' : '');
+    rd.appendChild(d);
+  }
+}
+function allStopped() {
+  return pucks.every(function (p) { return !p.live || (p.vx === 0 && p.vy === 0); });
+}
+function shoot(vx, vy) {
+  var p = curPuck();
+  if (!p || state !== 'aim') return false;
+  p.vx = vx; p.vy = vy; p.fresh = false;
+  state = 'sliding'; drag = null;
+  return true;
+}
+function integrate(h) {
+  var i, j;
+  for (i = 0; i < pucks.length; i++) {
+    var p = pucks[i]; if (!p.live) continue;
+    var sp = Math.hypot(p.vx, p.vy);
+    if (sp > 0) {
+      var nsp = sp - (150 + 0.35 * sp) * h;
+      if (nsp < 6) nsp = 0;
+      p.vx *= nsp / sp; p.vy *= nsp / sp;
+      p.x += p.vx * h; p.y += p.vy * h;
+    }
+    if (p.x < WALL.x0 + PR) { p.x = WALL.x0 + PR; p.vx = Math.abs(p.vx) * 0.6; }
+    if (p.x > WALL.x1 - PR) { p.x = WALL.x1 - PR; p.vx = -Math.abs(p.vx) * 0.6; }
+    if (p.y < WALL.top + PR) { p.y = WALL.top + PR; p.vy = Math.abs(p.vy) * 0.45; }
+    if (p.y > H - 20) { p.y = H - 20; p.vy = 0; p.vx = 0; }  // safety floor
+  }
+  for (i = 0; i < pucks.length; i++) for (j = i + 1; j < pucks.length; j++) {
+    var a = pucks[i], c = pucks[j];
+    if (!a.live || !c.live) continue;
+    var dx = c.x - a.x, dy = c.y - a.y, d2 = dx * dx + dy * dy, min = 2 * PR;
+    if (d2 > 0 && d2 < min * min) {
+      var dist = Math.sqrt(d2), nx = dx / dist, ny = dy / dist, ov = (min - dist) / 2;
+      a.x -= nx * ov; a.y -= ny * ov; c.x += nx * ov; c.y += ny * ov;
+      var rvn = (c.vx - a.vx) * nx + (c.vy - a.vy) * ny;
+      if (rvn < 0) {
+        var imp = -rvn * 0.92;
+        a.vx -= imp * nx; a.vy -= imp * ny; c.vx += imp * nx; c.vy += imp * ny;
+      }
+    }
+  }
+}
+function step(dt) {
+  if (state !== 'sliding') return;
+  var h = 1 / 480;
+  while (dt > 0) { integrate(Math.min(h, dt)); dt -= h; }
+  if (allStopped()) afterSlide();
+}
+function afterSlide() {
+  shotIdx++;
+  if (shotIdx < PER) {
+    if (turn === 'you') { spawnPuck(); state = 'aim'; }
+    else { state = 'botwait'; botTimer = 0; }
+    setStatus((turn === 'you' ? 'Your' : 'House') + ' puck ' + (shotIdx + 1) + ' of ' + PER + '.');
+  } else if (turn === 'you') {
+    turn = 'house'; shotIdx = 0; state = 'botwait'; botTimer = 0;
+    setStatus('House shoots…');
+  } else {
+    endRound(); return;
+  }
+  updateHUD(); draw();
+}
+function endRound() {
+  var ry = 0, rh = 0;
+  pucks.forEach(function (p) {
+    var s = scoreAt(p.y);
+    if (p.owner === 'you') ry += s; else rh += s;
+  });
+  roundScores[round - 1] = { you: ry, house: rh };
+  totals.you += ry; totals.house += rh;
+  if (round >= ROUNDS) {
+    state = 'over'; updateHUD(); draw();
+    var t = document.getElementById('ovTitle'), x = document.getElementById('ovText');
+    if (totals.you > totals.house) { t.textContent = 'You Win!'; }
+    else if (totals.house > totals.you) { t.textContent = 'House Wins'; }
+    else { t.textContent = 'Dead Even'; }
+    x.textContent = 'Final: You ' + totals.you + ' — House ' + totals.house +
+      '. Last round: ' + ry + '–' + rh + '.';
+    document.getElementById('overlay').classList.add('show');
+    setStatus('Match over. Final: You ' + totals.you + ' — House ' + totals.house + '.');
+  } else {
+    updateHUD();
+    setStatus('Round ' + round + ' scores: You ' + ry + ' — House ' + rh + '. Next round coming up…');
+    state = 'roundpause'; botTimer = 0;
+  }
+  draw();
+}
+/* House bot: pick a target spot in the 8/10, solve the speed for the
+   distance with the same friction the player feels, add honest error. */
+function botShoot() {
+  var targetY = 70 + Math.random() * 130;            // 10 or 8 zone
+  var targetX = 90 + Math.random() * 260;
+  var dist = START.y - targetY;
+  var spd = Math.sqrt(2 * 205 * dist) * (0.94 + Math.random() * 0.12);
+  var vx = (targetX - START.x) * (spd / Math.max(1, dist)) * (0.7 + Math.random() * 0.6);
+  return shoot(vx, -spd);
+}
+function loop(ts) {
+  if (!lastTime) lastTime = ts;
+  var dt = Math.min(0.05, (ts - lastTime) / 1000); lastTime = ts;
+  if (state === 'sliding') { step(dt); draw(); }
+  else if (state === 'botwait') {
+    botTimer += dt;
+    if (botTimer >= (FAST ? 0.05 : 0.75)) {
+      botTimer = 0;
+      if (turn === 'house') { spawnPuck(); state = 'aim'; botShoot(); }
+    }
+  }
+  else if (state === 'roundpause') {
+    botTimer += dt;
+    if (botTimer >= (FAST ? 0.05 : 1.15)) { botTimer = 0; round++; startRound(); }
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- drawing ---------- */
+function draw() {
+  if (!ctx) return;
+  // wooden surround
+  var g = ctx.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, '#4a2c14'); g.addColorStop(0.5, '#6b4423'); g.addColorStop(1, '#4a2c14');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // deck
+  var dg = ctx.createLinearGradient(0, 0, W, 0);
+  dg.addColorStop(0, '#8a5a30'); dg.addColorStop(0.5, '#c99a5b'); dg.addColorStop(1, '#8a5a30');
+  ctx.fillStyle = dg; ctx.fillRect(WALL.x0 - 6, 20, (WALL.x1 - WALL.x0) + 12, H - 40);
+  ctx.strokeStyle = '#2a1709'; ctx.lineWidth = 3;
+  ctx.strokeRect(WALL.x0 - 6, 20, (WALL.x1 - WALL.x0) + 12, H - 40);
+  // scoring zones
+  var zg;
+  zg = ctx.createLinearGradient(0, WALL.top, 0, ZONES[0].max);
+  zg.addColorStop(0, '#9c2434'); zg.addColorStop(1, '#701625');
+  ctx.fillStyle = zg; ctx.fillRect(WALL.x0, WALL.top - 8, WALL.x1 - WALL.x0, ZONES[0].max - WALL.top + 8);
+  zg = ctx.createLinearGradient(0, ZONES[0].max, 0, ZONES[1].max);
+  zg.addColorStop(0, '#274b8f'); zg.addColorStop(1, '#16294f');
+  ctx.fillStyle = zg; ctx.fillRect(WALL.x0, ZONES[0].max, WALL.x1 - WALL.x0, ZONES[1].max - ZONES[0].max);
+  zg = ctx.createLinearGradient(0, ZONES[1].max, 0, ZONES[2].max);
+  zg.addColorStop(0, '#127a49'); zg.addColorStop(1, '#0a4a2c');
+  ctx.fillStyle = zg; ctx.fillRect(WALL.x0, ZONES[1].max, WALL.x1 - WALL.x0, ZONES[2].max - ZONES[1].max);
+  ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2;
+  [ZONES[0].max, ZONES[1].max, ZONES[2].max].forEach(function (y) {
+    ctx.beginPath(); ctx.moveTo(WALL.x0, y); ctx.lineTo(WALL.x1, y); ctx.stroke();
+  });
+  // plank seams down the deck
+  ctx.strokeStyle = '#00000026'; ctx.lineWidth = 2;
+  for (var px = WALL.x0 + 62; px < WALL.x1 - 10; px += 62) {
+    ctx.beginPath(); ctx.moveTo(px, ZONES[2].max); ctx.lineTo(px, H - 24); ctx.stroke();
+  }
+  ctx.fillStyle = '#f8f2df'; ctx.font = '800 30px "Barlow Condensed",sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('10', W / 2, (WALL.top + ZONES[0].max) / 2);
+  ctx.fillText('8', W / 2, (ZONES[0].max + ZONES[1].max) / 2);
+  ctx.fillText('7', W / 2, (ZONES[1].max + ZONES[2].max) / 2);
+  // foul line
+  ctx.strokeStyle = '#f8f2df'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(WALL.x0, FOUL); ctx.lineTo(WALL.x1, FOUL); ctx.stroke();
+  ctx.fillStyle = '#3a2312'; ctx.font = '800 13px "Barlow Condensed",sans-serif';
+  ctx.fillText('FOUL LINE', W / 2, FOUL + 16);
+  // launch line + spot
+  ctx.strokeStyle = '#3a231277'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(WALL.x0, START.y + 30); ctx.lineTo(WALL.x1, START.y + 30); ctx.stroke();
+  // drag guide
+  var p = curPuck();
+  if (state === 'aim' && turn === 'you' && drag && p) {
+    ctx.save();
+    ctx.strokeStyle = '#f3d999'; ctx.lineWidth = 3; ctx.setLineDash([8, 7]);
+    ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    ctx.lineTo(p.x + drag.dx * 1.4, p.y - Math.min(360, drag.len * 1.15)); ctx.stroke();
+    ctx.restore();
+  }
+  // pucks
+  pucks.forEach(function (pk) {
+    var col = pk.owner === 'you' ? '#d42b2b' : '#2456c8';
+    var bg = ctx.createRadialGradient(pk.x - 5, pk.y - 6, 2, pk.x, pk.y, PR + 1);
+    bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.3, col); bg.addColorStop(1, col);
+    ctx.beginPath(); ctx.arc(pk.x, pk.y, PR, 0, 7); ctx.fillStyle = bg; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = pk.fresh ? '#f3d999' : '#00000055'; ctx.stroke();
+    var pts = scoreAt(pk.y);
+    if (!pk.fresh && pk.vx === 0 && pk.vy === 0 && pts > 0) {
+      ctx.fillStyle = '#fff'; ctx.font = '800 11px "Barlow Condensed",sans-serif';
+      ctx.fillText(String(pts), pk.x, pk.y + 0.5);
+    }
+  });
+}
+
+/* ---------- input ---------- */
+function toCanvas(e) {
+  var r = cv.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) };
+}
+cv.addEventListener('pointerdown', function (e) {
+  if (state !== 'aim' || turn !== 'you') return;
+  var p = toCanvas(e); drag = { sx: p.x, sy: p.y, dx: 0, len: 0 };
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+});
+cv.addEventListener('pointermove', function (e) {
+  if (!drag) return;
+  var p = toCanvas(e);
+  drag.dx = p.x - drag.sx;
+  drag.len = Math.max(0, p.y - drag.sy);   // pull DOWN to charge
+  draw();
+});
+cv.addEventListener('pointerup', function () {
+  if (!drag) return;
+  var d = drag; drag = null;
+  if (state === 'aim' && turn === 'you' && d.len > 18) {
+    var spd = 330 + Math.min(1, d.len / 250) * 760;
+    shoot(d.dx * 1.6, -spd);
+  }
+  draw();
+});
+cv.addEventListener('pointercancel', function () { drag = null; draw(); });
+
+document.getElementById('againBtn').addEventListener('click', newMatch);
+document.getElementById('newBtn').addEventListener('click', newMatch);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (used by tools/sims/bar_shuffle_sim.js) ---------- */
+window.__SHUF = {
+  get pucks() { return pucks; },
+  scoreAt: scoreAt, shoot: shoot, botShoot: botShoot, step: step,
+  newMatch: newMatch, startRound: startRound,
+  get state() { return state; }, get turn() { return turn; },
+  get round() { return round; }, get totals() { return totals; },
+  get roundScores() { return roundScores; },
+  forcePhase: function (t, s) { turn = t; state = s; }
+};
+
+newMatch();
+requestAnimationFrame(loop);
+if (DEMO) { setTimeout(function () { shoot(14, -880); }, 600); }
+</script>
+</body>
+</html>

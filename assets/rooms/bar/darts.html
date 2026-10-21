@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Darts · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:12px 10px 34px}
+.stage{position:relative;width:min(94vw,440px);margin:0 auto}
+canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px 60px #000d;touch-action:manipulation;background:#241204}
+.duel{display:flex;gap:8px;max-width:440px;margin:12px auto 0}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:8px 12px;background:#0007;text-align:center}
+.duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
+.duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.duel .rem{font:800 34px/1.05 "Barlow Condensed",sans-serif;color:#fff}
+.duel .side.on .nm{color:var(--gold)}
+.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:10px 4px 2px;color:#ffe9bd}
+.dartsline{text-align:center;color:var(--muted);font-size:13px;min-height:19px;margin:0 4px 8px}
+.dartsline b{color:#fff}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:8px 4px 6px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
+.btn:disabled{opacity:.45;cursor:default}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#06020399;border-radius:14px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Darts<small>301 · NIKKI'S BAR · FREE PLAY</small></h1>
+  <div class="score" id="scoreBox">LEG <b>301</b></div>
+</div>
+<div class="wrap">
+  <div class="stage">
+    <canvas id="cv" width="560" height="560" aria-label="Dartboard"></canvas>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">You Win the Leg!</h2>
+      <p id="ovText"></p>
+      <button class="btn primary" id="againBtn" type="button">THROW AGAIN</button>
+    </div></div>
+  </div>
+  <div class="duel">
+    <div class="side on" id="sideYou"><div class="nm">YOU</div><div class="rem" id="remYou">301</div></div>
+    <div class="side" id="sideHouse"><div class="nm">HOUSE</div><div class="rem" id="remHouse">301</div></div>
+  </div>
+  <p class="turnline" id="turnline">Your throw — 3 darts</p>
+  <p class="dartsline" id="dartsline">The gold ring is your aim — it drifts. Tap THROW when it crosses your number.</p>
+  <p class="status" id="status"></p>
+  <div class="controls">
+    <button class="btn primary" id="throwBtn" type="button">🎯 THROW DART</button>
+    <button class="btn" id="newBtn" type="button">NEW LEG</button>
+  </div>
+  <p class="hint">Straight 301: every dart counts, doubles and trebles multiply. Land on <b>exactly zero</b> to win — go under, or leave 1, and the whole turn is a bust and scores nothing.</p>
+</div>
+<script>
+'use strict';
+/* ============ DARTS 301 — Nikki's Bar (free play) ============
+   Proper board: 20 segments in standard order, double + treble
+   rings, outer bull 25, bull 50. Your aim point drifts in a smooth
+   wobble — tap THROW (or the board) to loose the dart where the
+   ring sits. Three darts a turn vs the House. Straight in, exact
+   finish; bust (under zero, or exactly 1 left) voids the turn. */
+var FAST = /[?&](fast|demo)=1/.test(location.search);
+var DEMO = /[?&]demo=1/.test(location.search);
+var cv = document.getElementById('cv'), ctx = cv.getContext ? cv.getContext('2d') : null;
+var CX = 280, CY = 272;
+var R_OUT = 202, R_DBL_IN = 190, R_TRB_OUT = 128, R_TRB_IN = 116, R_BULL = 17, R_OUTER = 40;
+var ORDER = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
+
+var scores = { you: 301, house: 301 };
+var turn = 'you', turnStart = 301, dartsThrown = [], turnDarts = [], allDarts = [];
+var state = 'aim';               // aim | botwait | over
+var t0 = performance.now(), botTimer = 0, lastTime = 0;
+
+function scoreFor(x, y) {
+  var dx = x - CX, dy = y - CY, r = Math.hypot(dx, dy);
+  if (r <= R_BULL) return { pts: 50, label: 'BULL · 50' };
+  if (r <= R_OUTER) return { pts: 25, label: 'OUTER BULL · 25' };
+  if (r > R_OUT) return { pts: 0, label: 'MISS · 0' };
+  var ang = (Math.atan2(dy, dx) * 180 / Math.PI + 90 + 360) % 360;
+  var idx = Math.floor(((ang + 9) % 360) / 18);
+  var seg = ORDER[idx];
+  if (r >= R_DBL_IN) return { pts: seg * 2, label: 'DOUBLE ' + seg + ' · ' + seg * 2 };
+  if (r >= R_TRB_IN && r <= R_TRB_OUT) return { pts: seg * 3, label: 'TREBLE ' + seg + ' · ' + seg * 3 };
+  return { pts: seg, label: String(seg) };
+}
+function aimAt(t) {
+  var s = (t - t0) / 1000;
+  return {
+    x: CX + 92 * Math.sin(s * 0.9) + 42 * Math.sin(s * 2.27 + 1.7),
+    y: CY + 84 * Math.sin(s * 1.13 + 0.6) + 38 * Math.cos(s * 1.93 + 0.4)
+  };
+}
+function gauss() {
+  return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+}
+function throwDart(x, y, who) {
+  var hit = scoreFor(x, y);
+  allDarts.push({ x: x, y: y, who: who });
+  dartsThrown.push(hit);
+  var rem = scores[who] - hit.pts;
+  var line = document.getElementById('dartsline');
+  line.innerHTML = dartsThrown.map(function (d) { return '<b>' + d.label + '</b>'; }).join('  ·  ') +
+    ' &nbsp;— turn: <b>' + dartsThrown.reduce(function (a, d) { return a + d.pts; }, 0) + '</b>';
+  if (rem === 0) { winLeg(who); return 'win'; }
+  if (rem < 0 || rem === 1) { bustTurn(who); return 'bust'; }
+  scores[who] = rem;
+  if (dartsThrown.length >= 3) { endTurn(who); return 'turn'; }
+  updateHUD(); draw();
+  return 'ok';
+}
+function bustTurn(who) {
+  scores[who] = turnStart;
+  setStatus((who === 'you' ? 'BUST! ' : 'House busts! ') + 'That turn scores nothing.');
+  endTurn(who, true);
+}
+function endTurn(who, busted) {
+  updateHUD(); draw();
+  if (state === 'over') return;
+  turnDarts = [];
+  if (who === 'you') {
+    turn = 'house'; turnStart = scores.house; dartsThrown = [];
+    state = 'botwait'; botTimer = 0;
+    document.getElementById('turnline').textContent = 'House is throwing…';
+    document.getElementById('throwBtn').disabled = true;
+    if (!busted) setStatus('Your turn’s in. House to throw.');
+  } else {
+    turn = 'you'; turnStart = scores.you; dartsThrown = [];
+    state = 'aim';
+    document.getElementById('turnline').textContent = 'Your throw — 3 darts';
+    document.getElementById('dartsline').textContent = 'Your aim ring is drifting — tap THROW on your number.';
+    document.getElementById('throwBtn').disabled = false;
+    setStatus('Your throw.');
+  }
+  updateSides();
+}
+function winLeg(who) {
+  scores[who] = 0; state = 'over';
+  updateHUD(); draw();
+  var t = document.getElementById('ovTitle'), x = document.getElementById('ovText');
+  if (who === 'you') { t.textContent = 'You Win the Leg!'; x.textContent = 'Checked out on exactly zero. The bar buys the next round (it’s free anyway).'; }
+  else { t.textContent = 'House Takes It'; x.textContent = 'The house checked out first. Rack your darts and take the leg back.'; }
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('throwBtn').disabled = true;
+  setStatus(who === 'you' ? 'LEG WON — exact finish!' : 'House wins the leg.');
+}
+function playerThrow() {
+  if (state !== 'aim' || turn !== 'you') return null;
+  var a = aimAt(performance.now());
+  return throwDart(a.x + gauss() * 5, a.y + gauss() * 5, 'you');
+}
+function segPoint(seg, ring) {
+  var idx = ORDER.indexOf(seg);
+  var ang = (idx * 18 - 90) * Math.PI / 180;
+  var r = ring === 'T' ? (R_TRB_IN + R_TRB_OUT) / 2 : ring === 'D' ? (R_DBL_IN + R_OUT) / 2 : 160;
+  return { x: CX + r * Math.cos(ang), y: CY + r * Math.sin(ang) };
+}
+function botDart() {
+  var rem = scores.house, p;
+  if (rem <= 170) {  // try to set up / take out with honest darts
+    var outs = [50, 40, 36, 32, 25, 20, 16, 10, 5, 4, 3, 2, 1];
+    for (var i = 0; i < outs.length; i++) {
+      if (outs[i] === rem) {
+        if (rem === 50) p = { x: CX, y: CY };
+        else if (rem === 25) p = { x: CX + 28, y: CY };
+        else if (rem <= 20) p = segPoint(rem, 'S');
+        else p = segPoint(rem / 2, 'D');
+        break;
+      }
+    }
+  }
+  if (!p) p = segPoint(Math.random() < 0.75 ? 20 : 19, 'T');
+  var spread = 30;
+  return throwDart(p.x + gauss() * spread * 2, p.y + gauss() * spread * 2, 'house');
+}
+function updateHUD() {
+  document.getElementById('remYou').textContent = scores.you;
+  document.getElementById('remHouse').textContent = scores.house;
+  document.getElementById('scoreBox').innerHTML =
+    'YOU <b>' + scores.you + '</b> · HOUSE <b>' + scores.house + '</b>';
+}
+function updateSides() {
+  document.getElementById('sideYou').classList.toggle('on', turn === 'you');
+  document.getElementById('sideHouse').classList.toggle('on', turn === 'house');
+}
+function setStatus(t) { document.getElementById('status').textContent = t; }
+function newLeg() {
+  scores = { you: 301, house: 301 };
+  turn = 'you'; turnStart = 301; dartsThrown = []; allDarts = [];
+  state = 'aim'; t0 = performance.now();
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('throwBtn').disabled = false;
+  document.getElementById('turnline').textContent = 'Your throw — 3 darts';
+  document.getElementById('dartsline').textContent = 'The gold ring is your aim — it drifts. Tap THROW when it crosses your number.';
+  setStatus('');
+  updateHUD(); updateSides(); draw();
+}
+
+/* ---------- drawing ---------- */
+function wedge(r0, r1, a0, a1, fill) {
+  ctx.beginPath();
+  ctx.arc(CX, CY, r1, a0, a1); ctx.arc(CX, CY, r0, a1, a0, true);
+  ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
+}
+function draw() {
+  if (!ctx) return;
+  // cabinet board surround
+  ctx.fillStyle = '#241204'; ctx.fillRect(0, 0, 560, 560);
+  var wg = ctx.createRadialGradient(CX, CY, 60, CX, CY, 300);
+  wg.addColorStop(0, '#5d3a1e'); wg.addColorStop(1, '#2a1709');
+  ctx.beginPath(); ctx.arc(CX, CY, 252, 0, 7); ctx.fillStyle = wg; ctx.fill();
+  ctx.lineWidth = 3; ctx.strokeStyle = '#c9a227'; ctx.stroke();
+  // wire / number ring base
+  ctx.beginPath(); ctx.arc(CX, CY, R_OUT + 14, 0, 7); ctx.fillStyle = '#101010'; ctx.fill();
+  for (var i = 0; i < 20; i++) {
+    var a0 = (i * 18 - 99) * Math.PI / 180, a1 = (i * 18 - 81) * Math.PI / 180;
+    var single = i % 2 === 0 ? '#191919' : '#e8dcc0';
+    var multi = i % 2 === 0 ? '#c0272d' : '#1d7a3a';
+    wedge(R_TRB_OUT, R_DBL_IN, a0, a1, single);          // outer single
+    wedge(R_DBL_IN, R_OUT, a0, a1, multi);              // double ring
+    wedge(R_OUTER, R_TRB_IN, a0, a1, single);           // inner single
+    wedge(R_TRB_IN, R_TRB_OUT, a0, a1, multi);          // treble ring
+  }
+  ctx.beginPath(); ctx.arc(CX, CY, R_OUTER, 0, 7); ctx.fillStyle = '#1d7a3a'; ctx.fill();
+  ctx.beginPath(); ctx.arc(CX, CY, R_BULL, 0, 7); ctx.fillStyle = '#c0272d'; ctx.fill();
+  // spider (wire) strokes
+  ctx.strokeStyle = '#cfcfcf'; ctx.lineWidth = 1;
+  [R_OUT, R_DBL_IN, R_TRB_OUT, R_TRB_IN, R_OUTER, R_BULL].forEach(function (r) {
+    ctx.beginPath(); ctx.arc(CX, CY, r, 0, 7); ctx.stroke();
+  });
+  // numbers
+  ctx.fillStyle = '#f8f2df'; ctx.font = '800 21px "Barlow Condensed",sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (var n = 0; n < 20; n++) {
+    var ang = (n * 18 - 90) * Math.PI / 180, nr = R_OUT + 32;
+    ctx.fillText(String(ORDER[n]), CX + nr * Math.cos(ang), CY + nr * Math.sin(ang));
+  }
+  // thrown darts
+  allDarts.forEach(function (d) {
+    ctx.beginPath(); ctx.arc(d.x, d.y, 5, 0, 7);
+    ctx.fillStyle = d.who === 'you' ? '#f3d999' : '#7db4ff'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = '#000'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x + 9, d.y - 11);
+    ctx.strokeStyle = d.who === 'you' ? '#c0272d' : '#2456c8'; ctx.lineWidth = 3; ctx.stroke();
+  });
+  // drifting aim ring (your turn only, leg live, no dart mid-flight)
+  if (state === 'aim' && turn === 'you') {
+    var a = aimAt(performance.now());
+    ctx.beginPath(); ctx.arc(a.x, a.y, 13, 0, 7);
+    ctx.strokeStyle = '#f3d999'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.beginPath(); ctx.arc(a.x, a.y, 2.5, 0, 7); ctx.fillStyle = '#f3d999'; ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(a.x - 20, a.y); ctx.lineTo(a.x - 7, a.y);
+    ctx.moveTo(a.x + 7, a.y); ctx.lineTo(a.x + 20, a.y);
+    ctx.moveTo(a.x, a.y - 20); ctx.lineTo(a.x, a.y - 7);
+    ctx.moveTo(a.x, a.y + 7); ctx.lineTo(a.x, a.y + 20);
+    ctx.strokeStyle = '#f3d999'; ctx.lineWidth = 2; ctx.stroke();
+  }
+}
+function loop(ts) {
+  if (!lastTime) lastTime = ts;
+  var dt = Math.min(0.05, (ts - lastTime) / 1000); lastTime = ts;
+  if (state === 'aim') draw();
+  else if (state === 'botwait') {
+    botTimer += dt;
+    if (botTimer >= (FAST ? 0.03 : 0.8)) {
+      botTimer = 0;
+      if (state === 'botwait') { var r = botDart(); if (r === 'ok') draw(); }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+document.getElementById('throwBtn').addEventListener('click', playerThrow);
+cv.addEventListener('pointerdown', function () { playerThrow(); });
+document.getElementById('newBtn').addEventListener('click', newLeg);
+document.getElementById('againBtn').addEventListener('click', newLeg);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (used by tools/sims/bar_darts_sim.js) ---------- */
+window.__DARTS = {
+  scoreFor: scoreFor, throwAt: function (x, y) { return throwDart(x, y, turn); },
+  segPoint: segPoint, newLeg: newLeg, botDart: botDart, aimAt: aimAt,
+  get scores() { return scores; }, get state() { return state; },
+  get turn() { return turn; }, get dartsThrown() { return dartsThrown; },
+  setScores: function (y, h) { scores.you = y; scores.house = h; turnStart = (turn === 'you' ? y : h); }
+};
+
+newLeg();
+requestAnimationFrame(loop);
+if (DEMO) { setTimeout(function () { var p = segPoint(20, 'T'); throwDart(p.x, p.y, 'you'); }, 500); }
+</script>
+</body>
+</html>

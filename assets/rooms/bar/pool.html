@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Pool · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:900px;margin:0 auto;padding:12px 10px 34px}
+.stage{position:relative;width:min(96vw,860px);margin:0 auto}
+canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px 60px #000d;touch-action:none;background:#3c2412}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:12px 4px 6px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px}
+.powerwrap{display:flex;align-items:center;gap:10px;max-width:420px;margin:0 auto 6px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--muted)}
+.powerbar{flex:1;height:12px;border:1px solid var(--gold2);border-radius:999px;background:#0008;overflow:hidden}
+.powerfill{height:100%;width:0%;background:linear-gradient(90deg,#7dff8a,#f3d999 55%,#e5484d);transition:width .05s linear}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.btn{min-height:48px;padding:11px 22px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.04em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#06020399;border-radius:18px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 34px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+.tray{display:flex;gap:6px;justify-content:center;margin-top:10px;min-height:22px}
+.tray .tb{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:800 10px/1 "Barlow Condensed",sans-serif;color:#fff;box-shadow:inset -2px -3px 5px #0007,1px 2px 4px #000a}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Pool<small>NIKKI'S BAR · FREE PLAY</small></h1>
+  <div class="score" id="scoreBox">BALLS <b>0/8</b> · SHOTS <b>0</b></div>
+</div>
+<div class="wrap">
+  <div class="stage">
+    <canvas id="cv" width="1000" height="560" aria-label="Pool table"></canvas>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">Table Cleared!</h2>
+      <p id="ovText">You sank all 8 balls.</p>
+      <button class="btn primary" id="againBtn" type="button">RACK 'EM AGAIN</button>
+    </div></div>
+  </div>
+  <div class="tray" id="tray" aria-hidden="true"></div>
+  <p class="status" id="status">Pull back anywhere on the table to aim — release to shoot.</p>
+  <div class="powerwrap"><span>POWER</span><div class="powerbar"><div class="powerfill" id="powerFill"></div></div></div>
+  <p class="hint">Drag away from the cue ball like pulling back a cue stick. The gold line is your shot. Sink the cue ball and it spots back up — no charge, it's Nikki's house.</p>
+  <div class="controls"><button class="btn" id="rerackBtn" type="button">RE-RACK</button></div>
+</div>
+<script>
+'use strict';
+/* ============ POOL — Nikki's Bar (free play) ============
+   Top-down table. Slingshot aim: drag back, release to shoot.
+   Physics: fixed-substep integration, equal-mass elastic ball
+   collisions, cushion bounce, pocket capture. No tunneling:
+   top speed is capped so a ball moves < 1 radius per substep. */
+var FAST = /[?&](fast|demo)=1/.test(location.search);
+var DEMO = /[?&]demo=1/.test(location.search);
+var cv = document.getElementById('cv'), ctx = cv.getContext ? cv.getContext('2d') : null;
+var W = 1000, H = 560;
+var FELT = { x0: 56, y0: 56, x1: 944, y1: 504 };       // cushion nose rectangle
+var R = 13, PR = 25;                                     // ball radius, pocket radius
+var POCKETS = [
+  { x: 52, y: 52 }, { x: 500, y: 44 }, { x: 948, y: 52 },
+  { x: 52, y: 508 }, { x: 500, y: 516 }, { x: 948, y: 508 }
+];
+var COLORS = ['#f7c948', '#2456c8', '#d42b2b', '#6d28a8', '#ef7d1a', '#1d8a4e', '#8a2432', '#191919'];
+var MAXSPEED = 1500;
+
+var balls = [], shots = 0, pocketed = 0, state = 'aim';  // aim | rolling | over
+var aim = null;        // {sx,sy,cx,cy} pointer drag in canvas coords
+var lastTime = 0;
+
+function mkBall(x, y, color, num, cue) {
+  return { x: x, y: y, vx: 0, vy: 0, color: color, num: num, cue: !!cue, active: true };
+}
+function rack() {
+  balls = [mkBall(250, 280, '#f5f1e6', 0, true)];
+  var order = [1, 2, 3, 8, 4, 5, 6, 7];
+  var rows = [1, 2, 3, 2], idx = 0, ax = 668, gap = R * 2 + 1.5;
+  for (var r = 0; r < rows.length; r++) {
+    for (var k = 0; k < rows[r]; k++) {
+      var n = order[idx++];
+      var x = ax + r * gap * 0.88;
+      var y = 280 + (k - (rows[r] - 1) / 2) * gap;
+      balls.push(mkBall(x, y, COLORS[n - 1], n, false));
+    }
+  }
+  shots = 0; pocketed = 0; state = 'aim'; aim = null;
+  updateHUD(); draw();
+  setStatus('Pull back anywhere on the table to aim — release to shoot.');
+  document.getElementById('overlay').classList.remove('show');
+}
+function setStatus(t) { document.getElementById('status').textContent = t; }
+function updateHUD() {
+  document.getElementById('scoreBox').innerHTML =
+    'BALLS <b>' + pocketed + '/8</b> · SHOTS <b>' + shots + '</b>';
+  var tray = document.getElementById('tray'); tray.innerHTML = '';
+  balls.forEach(function (b) {
+    if (!b.cue && !b.active) {
+      var d = document.createElement('span'); d.className = 'tb';
+      d.style.background = b.color; d.textContent = b.num; tray.appendChild(d);
+    }
+  });
+}
+function cueBall() { return balls[0]; }
+function allStopped() {
+  return balls.every(function (b) { return !b.active || (b.vx === 0 && b.vy === 0); });
+}
+
+/* ---------- physics ---------- */
+function integrate(h) {
+  var i, j, b;
+  for (i = 0; i < balls.length; i++) {
+    b = balls[i]; if (!b.active) continue;
+    var sp = Math.hypot(b.vx, b.vy);
+    if (sp > 0) {
+      var nsp = sp - (120 + 0.45 * sp) * h;               // rolling friction + drag
+      if (nsp < 7) nsp = 0;
+      b.vx *= nsp / sp; b.vy *= nsp / sp;
+      b.x += b.vx * h; b.y += b.vy * h;
+    }
+    // pockets
+    for (j = 0; j < POCKETS.length; j++) {
+      var p = POCKETS[j], d = Math.hypot(b.x - p.x, b.y - p.y);
+      if (d < PR - 3) {
+        b.active = false; b.vx = 0; b.vy = 0;
+        if (!b.cue) { pocketed++; }
+        break;
+      }
+    }
+    if (!b.active) continue;
+    // cushions
+    if (b.x < FELT.x0 + R) { b.x = FELT.x0 + R; b.vx = Math.abs(b.vx) * 0.92; }
+    if (b.x > FELT.x1 - R) { b.x = FELT.x1 - R; b.vx = -Math.abs(b.vx) * 0.92; }
+    if (b.y < FELT.y0 + R) { b.y = FELT.y0 + R; b.vy = Math.abs(b.vy) * 0.92; }
+    if (b.y > FELT.y1 - R) { b.y = FELT.y1 - R; b.vy = -Math.abs(b.vy) * 0.92; }
+  }
+  // ball-ball collisions (equal mass, elastic)
+  for (i = 0; i < balls.length; i++) for (j = i + 1; j < balls.length; j++) {
+    var a = balls[i], c = balls[j];
+    if (!a.active || !c.active) continue;
+    var dx = c.x - a.x, dy = c.y - a.y, d2 = dx * dx + dy * dy, min = 2 * R;
+    if (d2 > 0 && d2 < min * min) {
+      var dist = Math.sqrt(d2), nx = dx / dist, ny = dy / dist, overlap = (min - dist) / 2;
+      a.x -= nx * overlap; a.y -= ny * overlap;
+      c.x += nx * overlap; c.y += ny * overlap;
+      var rvn = (c.vx - a.vx) * nx + (c.vy - a.vy) * ny;
+      if (rvn < 0) {
+        var imp = -rvn * 0.98;
+        a.vx -= imp * nx; a.vy -= imp * ny;
+        c.vx += imp * nx; c.vy += imp * ny;
+      }
+    }
+  }
+}
+function afterStop() {
+  var cue = cueBall(), scratched = false;
+  if (!cue.active) {  // scratch — spot the cue ball back at the head spot
+    scratched = true;
+    cue.active = true; cue.x = 250; cue.y = 280; cue.vx = 0; cue.vy = 0;
+    // nudge off any ball sitting on the spot
+    for (var i = 1; i < balls.length; i++) {
+      var b = balls[i];
+      if (b.active && Math.hypot(b.x - cue.x, b.y - cue.y) < 2 * R + 2) cue.y += 2 * R + 6;
+    }
+    setStatus('Scratch! Cue ball spotted back up. Shoot again.');
+  }
+  updateHUD();
+  if (pocketed >= 8) {
+    state = 'over';
+    document.getElementById('ovText').textContent =
+      'You sank all 8 balls in ' + shots + (shots === 1 ? ' shot.' : ' shots.');
+    document.getElementById('overlay').classList.add('show');
+    setStatus('Table cleared. Nice shooting!');
+  } else {
+    state = 'aim';
+    if (scratched) setStatus('Scratch! Cue ball spotted back up — ' + (8 - pocketed) + ' to go.');
+    else setStatus('Your shot. ' + (8 - pocketed) + ' to go.');
+  }
+  draw();
+}
+function step(dt) {
+  if (state !== 'rolling') return;
+  var h = 1 / 480;
+  while (dt > 0) { integrate(Math.min(h, dt)); dt -= h; }
+  if (allStopped() && state === 'rolling') afterStop();
+}
+function shoot(dx, dy, power) {
+  if (state !== 'aim') return false;
+  var len = Math.hypot(dx, dy); if (len < 0.001) return false;
+  var cue = cueBall(); if (!cue.active) return false;
+  var sp = 240 + Math.max(0, Math.min(1, power)) * (MAXSPEED - 240);
+  cue.vx = dx / len * sp; cue.vy = dy / len * sp;
+  shots++; state = 'rolling'; aim = null;
+  document.getElementById('powerFill').style.width = '0%';
+  updateHUD(); setStatus('Rolling…');
+  return true;
+}
+
+/* ---------- drawing ---------- */
+function rr(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+function draw() {
+  if (!ctx) return;
+  // wood rail
+  var g = ctx.createLinearGradient(0, 0, W, H);
+  g.addColorStop(0, '#7a4a26'); g.addColorStop(0.5, '#54331a'); g.addColorStop(1, '#33200f');
+  ctx.fillStyle = g; rr(0, 0, W, H, 26); ctx.fill();
+  ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2; rr(8, 8, W - 16, H - 16, 22); ctx.stroke();
+  // felt
+  var fg = ctx.createRadialGradient(420, 240, 80, 500, 280, 640);
+  fg.addColorStop(0, '#12855f'); fg.addColorStop(0.6, '#0b5a40'); fg.addColorStop(1, '#063d2a');
+  ctx.fillStyle = fg; rr(FELT.x0 - 26, FELT.y0 - 26, (FELT.x1 - FELT.x0) + 52, (FELT.y1 - FELT.y0) + 52, 18); ctx.fill();
+  // cushion inner shadow line
+  ctx.strokeStyle = '#00000055'; ctx.lineWidth = 3;
+  rr(FELT.x0 - 4, FELT.y0 - 4, (FELT.x1 - FELT.x0) + 8, (FELT.y1 - FELT.y0) + 8, 12); ctx.stroke();
+  // head string + spot
+  ctx.strokeStyle = '#ffffff22'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(250, FELT.y0 - 20); ctx.lineTo(250, FELT.y1 + 20); ctx.stroke();
+  // pockets
+  POCKETS.forEach(function (p) {
+    ctx.beginPath(); ctx.arc(p.x, p.y, PR, 0, 7); ctx.fillStyle = '#050505'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#c9a227'; ctx.stroke();
+  });
+  // aim guide
+  var cue = cueBall();
+  if (state === 'aim' && aim && cue.active) {
+    var dx = aim.sx - aim.cx, dy = aim.sy - aim.cy, len = Math.hypot(dx, dy);
+    if (len > 8) {
+      var ux = dx / len, uy = dy / len, power = Math.min(1, len / 300);
+      ctx.save();
+      ctx.strokeStyle = '#f3d999'; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
+      ctx.beginPath(); ctx.moveTo(cue.x + ux * (R + 4), cue.y + uy * (R + 4));
+      ctx.lineTo(cue.x + ux * (90 + power * 220), cue.y + uy * (90 + power * 220)); ctx.stroke();
+      ctx.setLineDash([]);
+      // cue stick pulled back
+      ctx.strokeStyle = '#a9743f'; ctx.lineWidth = 7; ctx.lineCap = 'round';
+      var back = R + 16 + power * 90;
+      ctx.beginPath(); ctx.moveTo(cue.x - ux * back, cue.y - uy * back);
+      ctx.lineTo(cue.x - ux * (back + 150), cue.y - uy * (back + 150)); ctx.stroke();
+      ctx.restore();
+      document.getElementById('powerFill').style.width = Math.round(power * 100) + '%';
+    }
+  }
+  // balls
+  balls.forEach(function (b) {
+    if (!b.active) return;
+    var bg = ctx.createRadialGradient(b.x - 4, b.y - 5, 2, b.x, b.y, R + 1);
+    bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.25, b.color); bg.addColorStop(1, b.color);
+    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 7); ctx.fillStyle = bg; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = '#00000066'; ctx.stroke();
+    if (!b.cue) {
+      ctx.beginPath(); ctx.arc(b.x, b.y, 6.5, 0, 7); ctx.fillStyle = '#fffdf4'; ctx.fill();
+      ctx.fillStyle = '#17130f'; ctx.font = '800 9px "Barlow Condensed",sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(b.num), b.x, b.y + 0.5);
+    }
+  });
+}
+function loop(ts) {
+  if (!lastTime) lastTime = ts;
+  var dt = Math.min(0.05, (ts - lastTime) / 1000); lastTime = ts;
+  if (state === 'rolling') { step(dt); draw(); }
+  requestAnimationFrame(loop);
+}
+
+/* ---------- input ---------- */
+function toCanvas(e) {
+  var r = cv.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) };
+}
+cv.addEventListener('pointerdown', function (e) {
+  if (state !== 'aim') return;
+  var p = toCanvas(e); aim = { sx: p.x, sy: p.y, cx: p.x, cy: p.y };
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+  draw();
+});
+cv.addEventListener('pointermove', function (e) {
+  if (!aim) return;
+  var p = toCanvas(e); aim.cx = p.x; aim.cy = p.y; draw();
+});
+function endAim(e) {
+  if (!aim) return;
+  var dx = aim.sx - aim.cx, dy = aim.sy - aim.cy, len = Math.hypot(dx, dy);
+  var a = aim; aim = null;
+  if (state === 'aim' && len > 14) shoot(dx, dy, Math.min(1, len / 300));
+  else { document.getElementById('powerFill').style.width = '0%'; draw(); }
+}
+cv.addEventListener('pointerup', endAim);
+cv.addEventListener('pointercancel', function () { aim = null; draw(); });
+
+document.getElementById('againBtn').addEventListener('click', rack);
+document.getElementById('rerackBtn').addEventListener('click', rack);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (used by tools/sims/bar_pool_sim.js) ---------- */
+window.__POOL = {
+  get balls() { return balls; },
+  rack: rack, shoot: shoot, step: step, draw: draw,
+  get state() { return state; }, get shots() { return shots; }, get pocketed() { return pocketed; },
+  setBall: function (i, x, y, vx, vy) { var b = balls[i]; b.x = x; b.y = y; b.vx = vx || 0; b.vy = vy || 0; b.active = true; },
+  setState: function (s) { state = s; }
+};
+
+rack();
+requestAnimationFrame(loop);
+if (DEMO) { setTimeout(function () { shoot(1, 0.08, 0.72); }, 650); }
+</script>
+</body>
+</html>
