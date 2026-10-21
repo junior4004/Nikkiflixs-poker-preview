@@ -366,6 +366,97 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
 .bet-stack i{box-shadow:0 2px 0 #2a050c,0 4px 4px rgba(0,0,0,.5),inset 0 2px 3px rgba(255,255,255,.6),inset 0 -3px 4px rgba(0,0,0,.42)}
 .pot-chips i{box-shadow:0 2px 0 rgba(20,2,6,.8),0 4px 5px rgba(0,0,0,.55),inset 0 2px 3px rgba(255,255,255,.6),inset 0 -3px 4px rgba(0,0,0,.4)}
 .bj-bet-stack i{box-shadow:0 2px 0 rgba(20,2,6,.8),0 4px 5px rgba(0,0,0,.55),inset 0 2px 3px rgba(255,255,255,.6),inset 0 -3px 4px rgba(0,0,0,.4)}
+/* BUILD 158: craps donor table #1 — TALL VERTICAL OVAL (a real craps boat), phone-portrait-first.
+   Gold script across the TOP of the felt; a real printed layout for exactly the bets the engine
+   settles: numbers (place), center props, one end's line layout. Presentation only — no JS,
+   ids, classes or data-craps-bet hooks changed. The far-end mirror bank/wing stay in the DOM
+   (the engine treats both ends identically and both stay wired); the portrait felt prints one end.
+   No odds / buy / lay zones are printed because the engine does not settle them. */
+.casino-table-room.craps-mode .casino-stage{inset:62px 0 150px;padding:46px 8px 10px;overflow:hidden;perspective:none}
+.casino-table-room.craps-mode .casino-controls{min-height:0}
+.craps-felt{width:min(600px,97vw);height:100%;max-height:940px;min-height:0;border-radius:50% / 11%;transform:none;background:#4a0a16 url("assets/green-velvet-felt.jpg") center / cover no-repeat;box-shadow:0 30px 48px #000f,0 12px 0 #1f0b05,0 18px 0 #080402,0 0 0 3px #080302,0 0 0 13px #5d2c0e,0 0 0 15px #201005,inset 0 0 0 3px #d49a54,inset 0 0 0 999px rgba(24,3,8,.34),inset 0 4px 4px #ffd08380,inset 0 -18px 34px rgba(10,0,2,.55)!important}
+.craps-felt::before{inset:16px 18px 20px;border-radius:50% / 9%}
+.craps-felt::after{inset:20px 22px 24px;border-radius:50% / 9%}
+.craps-perspective{inset:14px 24px 104px;display:flex;flex-direction:column;gap:6px;filter:drop-shadow(0 1px 1px #4a0711)}
+.craps-wordmark{flex:0 0 auto;font:400 clamp(38px,11vw,58px)/1 "Great Vibes Local",cursive;color:#f6d36f;text-align:center;text-shadow:0 3px 4px #41000b,0 0 16px rgba(255,211,97,.5);padding-top:2px;pointer-events:none}
+.craps-top-numbers{flex:0 0 auto;height:auto;display:block;padding:0}
+.craps-top-numbers .craps-number-bank:nth-child(2){display:none}
+.craps-number-bank{gap:4px}
+.craps-number-cell{min-height:58px;border:2px solid rgba(255,226,150,.75);border-radius:10px;background:rgba(26,2,6,.42)}
+.craps-number-cell strong{font-size:clamp(24px,7vw,38px)}
+.craps-number-cell span:not(.puck){font-size:clamp(8px,2.2vw,10px);color:#ffd98a}
+.craps-number-cell .puck{width:20px;height:20px;right:3px;top:3px;font-size:7px;border-width:2px}
+.craps-number-cell[data-number="9"] strong{font-size:clamp(20px,5.6vw,32px)}
+.craps-lower-layout{flex:1 1 auto;height:auto;display:flex;flex-direction:column;gap:6px;min-height:0}
+.craps-lower-layout .wing-right{display:none}
+.craps-center-props{order:-1;display:flex;flex-direction:column;gap:5px;padding:0}
+.craps-center-props .craps-layout-button{font-size:clamp(10px,2.7vw,13px)}
+.craps-center-props .craps-any-seven{font-size:clamp(11px,3vw,14px)}
+.hardway-grid,.horn-grid{gap:4px}
+.hardway-grid .craps-layout-button,.horn-grid .craps-layout-button{font-size:clamp(9px,2.5vw,12px);padding:5px 2px}
+.hardway-grid b,.horn-grid b{font-size:clamp(15px,4.4vw,20px)}
+.craps-mode-panel{gap:4px}
+.craps-mode-panel .craps-mode-button{font-size:clamp(9px,2.5vw,12px);padding:7px 2px;border:2px solid rgba(255,226,150,.75);border-radius:10px;background:rgba(26,2,6,.42)}
+.craps-big-pair{gap:4px}
+.craps-big-pair button{font-size:clamp(13px,3.6vw,18px)}
+.craps-wing{display:flex;flex-direction:column;gap:5px;min-height:0}
+.craps-wing .craps-layout-button{flex:1 1 0}
+.craps-wing .craps-come{flex:1.5 1 0}
+.craps-perspective .craps-layout-button,.craps-perspective .craps-number-cell{background:rgba(26,2,6,.42)}
+.craps-perspective .craps-layout-button,.craps-perspective .craps-mode-button{border:2px solid rgba(255,226,150,.75);border-radius:10px}
+.craps-layout-button.selected,.craps-number-cell.selected,.craps-mode-button.selected{background:rgba(185,25,45,.45)}
+.craps-wing .craps-dont-come{font-size:clamp(10px,2.8vw,13px)}
+.craps-wing .craps-come{font-size:clamp(30px,9vw,44px);color:#fff0ca}
+.craps-wing .craps-field{display:grid;grid-template-columns:1fr;font-size:clamp(11px,3vw,14px)}
+.craps-wing .field-nums{font-size:clamp(15px,4.6vw,22px);word-spacing:.35em}
+.craps-wing .craps-dont-pass{font-size:clamp(14px,4.2vw,20px)}
+.craps-wing .craps-pass{font-size:clamp(17px,5.2vw,25px);letter-spacing:.16em;border-radius:10px 10px 60px 60px / 10px 10px 26px 26px}
+.craps-perspective>.craps-brand{display:none}
+.craps-dice-lane{left:15%;right:15%;top:12%;bottom:14%}
+.craps-felt.dice-home .dice-flight{transform:translate(calc(-50% + clamp(26px,8vw,84px)),-218%) scale(.68)}
+@keyframes diceRollAcross{0%{transform:translate(calc(-50% + clamp(26px,8vw,84px)),-218%) scale(.68)}22%{transform:translate(calc(-50% + 16px),-80%) scale(.86)}48%{transform:translate(calc(-50% - 26px),55%) scale(.97)}72%{transform:translate(calc(-50% + 10px),138%) scale(1.02)}88%{transform:translate(calc(-50% - 6px),30%) scale(.99)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes diceHooked{0%,46%{transform:translate(-50%,-50%) scale(1)}52%{transform:translate(calc(-50% + 8px),-62%) scale(.99)}65%{transform:translate(calc(-50% + 26px),-122%) scale(.92)}78%{transform:translate(calc(-50% + 48px),-172%) scale(.8)}90%{transform:translate(calc(-50% + 66px),-204%) scale(.7)}100%{transform:translate(calc(-50% + clamp(26px,8vw,84px)),-218%) scale(.68)}}
+.craps-nikki{left:2%;top:-46px;width:104px;height:142px;transform:none}
+.craps-nikki img{width:104px;height:122px}
+.mickey{right:2%;top:-40px;transform:none}
+.craps-stick{width:min(300px,58vw)}
+.craps-player-tray{left:10px;bottom:8px;width:104px;padding:5px 6px 6px}
+.craps-player-tray strong{font-size:8px}
+.craps-player-tray>span{font-size:11px}
+.craps-player-chips{height:24px}
+.craps-bank-chip{width:23px;height:11px;border-width:1px}
+.craps-hud{left:118px;right:8px;bottom:8px;width:auto;transform:none;grid-template-columns:auto 1fr auto}
+.craps-result{display:block;font-size:12px}
+.casino-message.craps-message{font-size:clamp(10px,2.6vw,13px)}
+@media(max-width:720px){
+  .casino-table-room.craps-mode .casino-stage{inset:58px 0 138px;padding:44px 5px 8px}
+  .craps-felt{width:100%;height:100%;min-height:0;border-radius:50% / 10%}
+  .craps-felt::before{inset:12px 10px 16px;border-radius:50% / 8%}
+  .craps-felt::after{inset:15px 13px 19px;border-radius:50% / 8%}
+  .craps-perspective{inset:10px 14px 96px;gap:4px}
+  .craps-wordmark{font-size:clamp(32px,10vw,44px)}
+  .craps-number-cell{min-height:50px}
+  .craps-number-cell strong{font-size:clamp(19px,6vw,26px)}
+  .craps-number-cell span:not(.puck){font-size:7px}
+  .craps-number-cell .puck{width:15px;height:15px;font-size:6px}
+  .craps-dice-lane{left:13%;right:13%;top:13%;bottom:15%}
+  .craps-dice-lane .die{width:58px;height:58px;flex-basis:58px}
+  .craps-dice-lane .die-face{--pip-size:5px;border-radius:8px}
+  .craps-dice-lane .face-front{transform:translateZ(29px)}
+  .craps-dice-lane .face-back{transform:rotateY(180deg) translateZ(29px)}
+  .craps-dice-lane .face-right{transform:rotateY(90deg) translateZ(29px)}
+  .craps-dice-lane .face-left{transform:rotateY(-90deg) translateZ(29px)}
+  .craps-dice-lane .face-top{transform:rotateX(90deg) translateZ(29px)}
+  .craps-dice-lane .face-bottom{transform:rotateX(-90deg) translateZ(29px)}
+  .dice-flight{gap:20px}
+  .craps-nikki{left:-2%;top:-42px;transform:scale(.62);transform-origin:top left}
+  .mickey{right:-2%;top:-36px;transform:scale(.64);transform-origin:top right}
+  .craps-stick{width:210px}
+  .craps-hud{left:104px;right:5px;bottom:6px;width:auto}
+  .craps-result{display:none}
+  .point-puck{font-size:9px;padding:5px 7px}
+  .casino-message.craps-message{font-size:9.5px}
+}
 </style>
 <style>
 .seat-flag{position:absolute;top:-9px;right:-17px;font-size:25px;z-index:6;filter:drop-shadow(0 1px 3px #000)}
@@ -459,7 +550,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 157</div>
+  <div class="build-stamp" id="buildStamp">BUILD 158</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -515,22 +606,23 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     </div>
     <div class="casino-felt craps-felt" id="crapsGame" hidden>
       <div class="craps-perspective" id="crapsLayout" aria-label="Standard casino craps betting layout printed on red felt">
-        <div class="craps-top-numbers" aria-label="Place, buy, and lay number boxes">
+        <div class="craps-wordmark" aria-hidden="true">Nikkiflixs</div>
+        <div class="craps-top-numbers" aria-label="Place number boxes">
           <div class="craps-number-bank">
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="4"><span class="puck">ON</span><strong>4</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="5"><span class="puck">ON</span><strong>5</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="6"><span class="puck">ON</span><strong>SIX</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="8"><span class="puck">ON</span><strong>8</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="9"><span class="puck">ON</span><strong>NINE</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="10"><span class="puck">ON</span><strong>10</strong><span>PLACE · BUY · LAY</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="4"><span class="puck">ON</span><strong>4</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="5"><span class="puck">ON</span><strong>5</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="6"><span class="puck">ON</span><strong>SIX</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="8"><span class="puck">ON</span><strong>8</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="9"><span class="puck">ON</span><strong>NINE</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="10"><span class="puck">ON</span><strong>10</strong><span>PLACE</span></button>
           </div>
           <div class="craps-number-bank">
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="4"><span class="puck">ON</span><strong>4</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="5"><span class="puck">ON</span><strong>5</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="6"><span class="puck">ON</span><strong>SIX</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="8"><span class="puck">ON</span><strong>8</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="9"><span class="puck">ON</span><strong>NINE</strong><span>PLACE · BUY · LAY</span></button>
-            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="10"><span class="puck">ON</span><strong>10</strong><span>PLACE · BUY · LAY</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="4"><span class="puck">ON</span><strong>4</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="5"><span class="puck">ON</span><strong>5</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="6"><span class="puck">ON</span><strong>SIX</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="8"><span class="puck">ON</span><strong>8</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="9"><span class="puck">ON</span><strong>NINE</strong><span>PLACE</span></button>
+            <button class="craps-number-cell" type="button" data-craps-bet="place" data-number="10"><span class="puck">ON</span><strong>10</strong><span>PLACE</span></button>
           </div>
         </div>
         <div class="craps-lower-layout">
