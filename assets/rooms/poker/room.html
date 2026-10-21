@@ -5,44 +5,145 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nikkiflixs Poker Room</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+@font-face{font-family:'Great Vibes Local';src:url('assets/great-vibes.ttf') format('truetype');font-display:swap}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a0505;color:#f5e6c8;font-family:system-ui,sans-serif;padding:20px;max-width:800px;margin:0 auto}
-h1{text-align:center;color:#f2c76f;margin:20px 0;font-size:28px}
-h2{color:#f2c76f;margin:25px 0 15px;font-size:20px;border-bottom:1px solid #f2c76f44;padding-bottom:8px}
-.table-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:500px){.table-grid{grid-template-columns:1fr}}
-.table-card{background:#1a0f0a;border:2px solid #f2c76f66;border-radius:12px;padding:18px;text-align:center;text-decoration:none;color:#f5e6c8;display:block}
-.table-card:hover{border-color:#f2c76f;background:#241410}
-.table-card .tname{font-size:18px;font-weight:700;margin-bottom:6px}
-.table-card .tblinds{font-size:14px;color:#d4a95a;margin-bottom:4px}
-.table-card .tseats{font-size:13px;color:#999}
-.table-card.green{border-color:#2d8a4a}
-.table-card.green .tname{color:#7dffa8}
-.table-card.red{border-color:#a02020}
-.table-card.red .tname{color:#ff8a8a}
+body{background:#0a0505;background-image:radial-gradient(ellipse 120% 60% at 50% -10%,#2a1408 0%,#0a0505 60%);color:#f5e6c8;font-family:"Source Sans 3",system-ui,sans-serif;padding:20px 16px 34px;max-width:800px;margin:0 auto;min-height:100vh}
+h1{text-align:center;color:#f2c76f;margin:14px 0 4px;font:800 34px/1.05 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;text-shadow:0 3px 16px #000}
+.room-sub{text-align:center;color:#c9b083;font-size:13px;letter-spacing:.28em;text-transform:uppercase;margin-bottom:8px}
+h2{color:#f2c76f;margin:28px 0 14px;font:700 22px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;border-bottom:1px solid #f2c76f44;padding-bottom:8px}
+.table-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.table-grid{grid-template-columns:1fr}}
+.table-card{display:block;text-decoration:none;color:#f5e6c8;background:linear-gradient(160deg,#211209,#120905 70%);border:1px solid #8a6a34;border-radius:16px;overflow:hidden;box-shadow:0 14px 34px #000c,inset 0 1px 0 #f2c76f2e;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+.table-card:hover,.table-card:active{transform:translateY(-3px);border-color:#f2c76f;box-shadow:0 20px 44px #000d,inset 0 1px 0 #f2c76f40}
+.table-card .felt{height:86px;position:relative;background-size:cover;background-position:center;box-shadow:inset 0 -18px 26px #000000a6,inset 0 10px 18px #ffffff14}
+.table-card.green .felt{background-image:url('assets/green-velvet-felt.jpg')}
+.table-card.red .felt{background-image:url('assets/red-velvet-felt.jpg')}
+.table-card .felt::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 90% 130% at 50% 0%,transparent 55%,#00000059 100%);border-bottom:2px solid #c9a24d}
+.table-card .felt-script{position:absolute;left:16px;bottom:8px;font-family:'Great Vibes Local','Great Vibes',cursive;font-size:30px;line-height:1;color:#f7d774;text-shadow:0 2px 8px #000,0 0 22px #f2c76f66;transform:rotate(-4deg)}
+.table-card .felt-game{position:absolute;right:14px;bottom:12px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.24em;color:#ffeec2;text-shadow:0 1px 6px #000;text-transform:uppercase}
+.table-card .cbody{padding:14px 16px 16px}
+.table-card .tname{font:800 25px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px}
+.table-card.green .tname{color:#8df0ab}
+.table-card.red .tname{color:#ff9d9d}
+.table-card .occ{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.table-card .dots{display:inline-flex;gap:5px}
+.table-card .dots i{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a8,#c9962e 70%,#8a5f16);box-shadow:0 1px 4px #000a,inset 0 0 0 1px #f2c76f55}
+.table-card .dots i.off{background:#241207;box-shadow:inset 0 0 0 2px #6e5327}
+.table-card .pill{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;padding:7px 11px;border-radius:999px;white-space:nowrap}
+.table-card .pill.open{color:#9df5b6;background:#0e3d1e;border:1px solid #2d8a4a}
+.table-card .pill.full{color:#ffc4c4;background:#471014;border:1px solid #a92929}
+.table-card .meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.table-card .mchip{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;color:#e8cf96;background:#1c1109;border:1px solid #77592c;border-radius:6px;padding:7px 9px;text-transform:uppercase}
+.table-card .play{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:9px;font:800 17px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#221100;background:linear-gradient(135deg,#ffe9a8,#e0aa3e 55%,#b97c1c);box-shadow:0 6px 16px #000a,inset 0 1px 0 #fff8}
+.table-card .play.view{color:#f2c76f;background:#1c1109;border:1px solid #a37c33;box-shadow:inset 0 1px 0 #f2c76f2e}
+.foot{text-align:center;margin:32px 0 0;color:#6b5a3e;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.build-stamp{position:fixed;left:10px;bottom:10px;z-index:50;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#f2c76f;background:#140b06e6;border:1px solid #77592c;border-radius:6px;padding:6px 9px}
 </style>
 </head>
 <body>
 <h1>🃏 Nikkiflixs Poker Room</h1>
+<p class="room-sub">Theater and Poker Room · Est. 2026</p>
 
 <h2>Texas Hold'em — Green Felt (Emerald)</h2>
 <div class="table-grid">
-<a class="table-card green" href="table-emerald-FINAL.html"><div class="tname">Emerald Table 1</div><div class="tblinds">Blinds 1 / 2</div><div class="tseats">8-max · No minimum</div></a>
-<a class="table-card green" href="table-emerald-FINAL.html"><div class="tname">Emerald Table 2</div><div class="tblinds">Blinds 1 / 2</div><div class="tseats">8-max · No minimum</div></a>
-<a class="table-card green" href="table-emerald-FINAL.html"><div class="tname">Emerald Table 3</div><div class="tblinds">Blinds 25 / 50</div><div class="tseats">8-max · Buy-in 2,000–5,000</div></a>
-<a class="table-card green" href="table-emerald-FINAL.html"><div class="tname">Emerald Table 4</div><div class="tblinds">Blinds 25 / 50</div><div class="tseats">8-max · Buy-in 2,000–5,000</div></a>
-<a class="table-card green" href="table-emerald-FINAL.html"><div class="tname">Emerald Table 5</div><div class="tblinds">Blinds 100 / 200</div><div class="tseats">8-max · Buy-in 10,000+</div></a>
+<a class="table-card green" href="table-emerald-FINAL.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Emerald Table 1</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pill full">FULL</span></div>
+    <div class="meta"><span class="mchip">Blinds 1 / 2</span><span class="mchip">No minimum</span><span class="mchip">8-max</span></div>
+    <span class="play view">View Table →</span>
+  </div>
+</a>
+<a class="table-card green" href="table-emerald-FINAL.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Emerald Table 2</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span><span class="pill open">1 Seat Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 1 / 2</span><span class="mchip">No minimum</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card green" href="table-emerald-FINAL.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Emerald Table 3</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span><span class="pill open">2 Seats Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 25 / 50</span><span class="mchip">Buy-in 2,000–5,000</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card green" href="table-emerald-FINAL.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Emerald Table 4</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span><span class="pill open">1 Seat Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 25 / 50</span><span class="mchip">Buy-in 2,000–5,000</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card green" href="table-emerald-FINAL.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Emerald Table 5</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span><span class="pill open">2 Seats Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 100 / 200</span><span class="mchip">Buy-in 10,000+</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
 </div>
 
 <h2>Texas Hold'em — Red Felt</h2>
 <div class="table-grid">
-<a class="table-card red" href="table-red-3d-v2.html"><div class="tname">Red Table 1</div><div class="tblinds">Blinds 1 / 2</div><div class="tseats">8-max · No minimum</div></a>
-<a class="table-card red" href="table-red-3d-v2.html"><div class="tname">Red Table 2</div><div class="tblinds">Blinds 1 / 2</div><div class="tseats">8-max · No minimum</div></a>
-<a class="table-card red" href="table-red-3d-v2.html"><div class="tname">Red Table 3</div><div class="tblinds">Blinds 25 / 50</div><div class="tseats">8-max · Buy-in 2,000–5,000</div></a>
-<a class="table-card red" href="table-red-3d-v2.html"><div class="tname">Red Table 4</div><div class="tblinds">Blinds 25 / 50</div><div class="tseats">8-max · Buy-in 2,000–5,000</div></a>
-<a class="table-card red" href="table-red-3d-v2.html"><div class="tname">Red Table 5</div><div class="tblinds">Blinds 100 / 200</div><div class="tseats">8-max · Buy-in 10,000+</div></a>
+<a class="table-card red" href="table-red-3d-v2.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Red Table 1</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span><span class="pill open">1 Seat Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 1 / 2</span><span class="mchip">No minimum</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card red" href="table-red-3d-v2.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Red Table 2</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="pill full">FULL</span></div>
+    <div class="meta"><span class="mchip">Blinds 1 / 2</span><span class="mchip">No minimum</span><span class="mchip">8-max</span></div>
+    <span class="play view">View Table →</span>
+  </div>
+</a>
+<a class="table-card red" href="table-red-3d-v2.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Red Table 3</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i></span><span class="pill open">3 Seats Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 25 / 50</span><span class="mchip">Buy-in 2,000–5,000</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card red" href="table-red-3d-v2.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Red Table 4</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i></span><span class="pill open">2 Seats Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 25 / 50</span><span class="mchip">Buy-in 2,000–5,000</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
+<a class="table-card red" href="table-red-3d-v2.html">
+  <div class="felt"><span class="felt-script">Nikkiflixs</span><span class="felt-game">Texas Hold'em</span></div>
+  <div class="cbody">
+    <div class="tname">Red Table 5</div>
+    <div class="occ"><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i></span><span class="pill open">1 Seat Open</span></div>
+    <div class="meta"><span class="mchip">Blinds 100 / 200</span><span class="mchip">Buy-in 10,000+</span><span class="mchip">8-max</span></div>
+    <span class="play">Play →</span>
+  </div>
+</a>
 </div>
 
-<p style="text-align:center;margin:30px 0;color:#666;font-size:13px">Nikkiflixs Poker Room</p>
+<p class="foot">Nikkiflixs Poker Room</p>
+<div class="build-stamp">BUILD 154</div>
 </body>
 </html>
