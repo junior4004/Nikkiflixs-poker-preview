@@ -1,5 +1,5 @@
 /* BUILD 155 pop sim: mega-pop effect params + bubble/reassembly sequence + pricing.
-   Drives the real UI: POP button -> pick Taunt -> tap a seat. Then the shotgun (shared explodePortrait path). */
+   Drives the real UI: POP button -> pick Taunt -> tap a seat. Then the shotgun (BUILD 156: huge hole, no explosion). */
 const fs = require('fs');
 const { JSDOM } = require('/home/hatch/workspace/poker-tables/nikkiflixs-server/node_modules/jsdom');
 const html = fs.readFileSync('/home/hatch/workspace/poker-push/assets/rooms/poker/table-red-3d-v2.html', 'utf8');
@@ -82,7 +82,7 @@ function check(name, ok, detail) { console.log((ok ? 'PASS' : 'FAIL') + ' | ' + 
   check('hero pop count spent (5 -> 4)', w.localStorage.getItem('nikkiflixs_pops_taunt') === '4', 'taunt=' + w.localStorage.getItem('nikkiflixs_pops_taunt'));
   check('total event ~3.5-4.5s (back start ~2.9s nominal; jsdom timer lag tolerated)', rec.tBack >= 2700 && rec.tBack <= 3600, 'backStart=' + rec.tBack + 'ms');
 
-  /* ---- Shotgun shares the upgraded explodePortrait ---- */
+  /* ---- BUILD 156: shotgun no longer explodes — ONE huge hole, no tiles ---- */
   await sleep(600);
   d.getElementById('throwBtn').click(); await sleep(300);
   giftItem('Shotgun').click(); await sleep(250);           // first pick = one-time notice
@@ -92,8 +92,8 @@ function check(name, ok, detail) { console.log((ok ? 'PASS' : 'FAIL') + ' | ' + 
   seat4.querySelector('.pod').dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
   await sleep(500);
   const sgTiles = seat4.querySelectorAll('.pop-tile').length;
-  const sgFlash = !!seat4.querySelector('.pop-flash');
-  check('shotgun uses upgraded explosion (9 chunks + flash)', sgTiles === 9 && sgFlash, 'tiles=' + sgTiles + ' flash=' + sgFlash);
+  const sgHoles = seat4.querySelectorAll('.shotgun-hole').length;
+  check('BUILD 156 shotgun = ONE huge hole, NO explosion tiles', sgHoles === 1 && sgTiles === 0, 'holes=' + sgHoles + ' tiles=' + sgTiles);
   await sleep(2600);
 
   check('zero page errors', errors.length === 0, errors.slice(0, 3).join(' ; '));

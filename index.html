@@ -92,7 +92,7 @@
 
 <style>
 /* Enhanced stage: bigger, brighter, more lights and sparkle */
-.stage{transform:scale(1.05);transform-origin:center bottom;}
+.stage{transform:none;}
 .stage-bg{filter:brightness(1.25) saturate(1.3) contrast(1.1);}
 .backdrop-glow{background:radial-gradient(ellipse at 50% 30%,rgba(255,215,130,.45),rgba(255,180,80,.2) 40%,transparent 70%);animation:glowPulse 3s ease-in-out infinite alternate;}
 @keyframes glowPulse{from{opacity:.7}to{opacity:1}}
@@ -155,6 +155,17 @@ body.room-open #supportLauncher {
 #walkShow .ws-skip:active{background:rgba(240,212,136,.25)}
 @media (prefers-reduced-motion:reduce){#walkShow .ws-walker{animation-duration:.01s}.ws-figure,.ws-frame-a,.ws-frame-b{animation:none}}
 
+</style>
+<style>
+/* CURTAIN RETURN FIX (staged 2026-10-20): when the stage is in the lobby state
+   (.ready), the curtains are HELD OPEN at every viewport width. Before this,
+   the only always-open curtain state lived in a max-width:560px media query,
+   so on wider viewports nothing kept the curtains open once .intro-active
+   was removed at the end of the intro. */
+.stage.ready .curtain.left{transform:translateX(-91%) skewX(-4deg)}
+.stage.ready .curtain.right{transform:translateX(91%) skewX(4deg)}
+.stage.ready .valance{transform:translateY(-72%);opacity:.2}
+.stage.ready .curtain,.stage.ready .valance{pointer-events:none}
 </style>
 </head>
 <body>
@@ -417,6 +428,7 @@ function runStageSequence(){
 function revealStage(){
   if(openingStarted)return;
   openingStarted=true;
+  try{sessionStorage.setItem('nikkiflixs_entered','1')}catch(e){}
   runStageSequence(); /* v16: start walkout BEHIND the fading card — no flash of old stairs */
   setTimeout(function(){ introFilm.classList.add('done'); },850); /* hide card after fade completes */
 }
@@ -432,6 +444,43 @@ document.getElementById('introEnter').addEventListener('click',function(){
   introFilm.classList.add('fading');
   revealStage(); /* starts walkout behind fading card — no stairs flash */
 });
+/* CURTAIN RETURN FIX (staged 2026-10-20): a returning visitor — exited a room
+   back to the lobby (room EXIT buttons are full navigations to "/"), browser
+   Back, or a bfcache restore — must land on the clean lobby instantly, never
+   on the tap-to-enter gate / closed curtains / hidden tiles. The intro is a
+   first-visit experience only. Before this, .ready was added ONLY by the
+   intro-completion path, and no code ran on load or pageshow to restore it. */
+function nikkiflixsIsReturn(){
+  try{ if(sessionStorage.getItem('nikkiflixs_entered')==='1') return true; }catch(e){}
+  try{
+    var nav=(performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||null;
+    if(nav&&nav.type==='back_forward') return true;
+    if(performance.navigation&&performance.navigation.type===2) return true;
+  }catch(e){}
+  return false;
+}
+function restoreLobbyInstant(){
+  openingStarted=true; openingAudioFinished=true;
+  try{ openingVoice.pause(); }catch(e){}
+  openingTimers.forEach(clearTimeout); openingTimers=[];
+  try{ clearInterval(walkFrameTimer); }catch(e){}
+  try{ cancelAnimationFrame(bubbleSyncFrame); }catch(e){}
+  if(typeof clearBubbles==='function'){ try{ clearBubbles(); }catch(e){} }
+  introFilm.classList.remove('fading'); introFilm.classList.add('done');
+  var ws=document.getElementById('walkShow');
+  if(ws){ ws.classList.remove('walk'); ws.classList.add('finished'); }
+  var skipBtn=document.getElementById('skip-walk');
+  if(skipBtn) skipBtn.style.display='none';
+  catalog.classList.add('hidden');
+  roomView.classList.add('hidden');
+  document.body.classList.remove('room-open');
+  showroom.classList.remove('hidden','intro-active','voice-playing');
+  showroom.classList.add('ready');
+  try{ setSupportLobbyVisibility(true); }catch(e){}
+}
+if(nikkiflixsIsReturn()) restoreLobbyInstant();
+document.addEventListener('DOMContentLoaded',function(){ if(nikkiflixsIsReturn()) restoreLobbyInstant(); });
+window.addEventListener('pageshow',function(ev){ if(ev.persisted||nikkiflixsIsReturn()) restoreLobbyInstant(); });
 document.addEventListener('pointerdown',function resumeOpeningSound(){if(openingStarted&&!openingAudioStarted&&!openingAudioFinished)cueOpening(false)},{capture:true});
 function art(item){var kind=item[2];if(kind==='poker')return '<div class="item-art"><img src="assets/rooms/poker/assets/poker-lobby/'+item[3]+'" alt="Painted poker table" loading="lazy"></div>';if(kind==='game')return '<div class="item-art game-art" aria-hidden="true"></div>';if(kind==='casino')return '<div class="item-art casino-art" aria-hidden="true"><span class="cabinet" data-mark="'+item[3][0]+'"></span><span class="cabinet" data-mark="'+item[3][1]+'"></span><span class="cabinet" data-mark="'+item[3][2]+'"></span></div>';return '<div class="item-art poster-art"><img src="'+item[3]+'" alt="Poster for '+item[0]+'"></div>'}
 function openCatalog(key){var d=data[key];document.getElementById('catalogKicker').textContent=d.kicker;document.getElementById('catalogTitle').textContent=d.title;document.getElementById('catalogSub').innerHTML=d.sub+(key==='poker'?'<span class="rake-note">House takes 5% rake, capped at 500 per hand.</span>':'');listing.innerHTML='';d.items.forEach(function(item){var url=roomLinks[key],el=document.createElement(url?'a':'article');el.className='item';if(url){el.href=url;el.target='_blank';el.rel='noopener noreferrer'}var playLabel=url?'Open room <b>→</b>':'Machine preview';if(key==='poker'){/* v22 bot seating: list always shows 1-2 seats open, never full, never empty */var maxP=item[0].indexOf('8-Max')>-1?8:6,openS=1+Math.floor(Math.random()*2);playLabel=(maxP-openS)+'/'+maxP+' players · Take a seat <b>→</b>';}el.innerHTML=art(item)+'<div class="item-body"><h2>'+item[0]+'</h2><p>'+item[1]+'</p><span class="play">'+playLabel+'</span></div>';if(key==='theater'&&url)el.addEventListener('click',function(){theaterChoice.currentTime=0;theaterChoice.play().catch(function(){})});if(key==='poker'&&url)el.addEventListener('click',function(ev){ev.preventDefault();var pickSaid=false;try{pickSaid=sessionStorage.getItem('nikkiflixs_nikki_poker_pick')==='1';}catch(e){}if(pickSaid){openEmbeddedRoom('poker');return;}try{sessionStorage.setItem('nikkiflixs_nikki_poker_pick','1');}catch(e){}pokerSay(pokerPickAudio,"That's an excellent table. They're having a good game right now. Good luck.",function(){openEmbeddedRoom('poker');});});listing.appendChild(el)});hostLine.classList.remove('show');showroom.classList.add('hidden');catalog.classList.remove('hidden');setSupportLobbyVisibility(false);window.scrollTo(0,0)}

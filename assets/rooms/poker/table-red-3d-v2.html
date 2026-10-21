@@ -306,6 +306,32 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
 .pop-tile{transition:transform .85s cubic-bezier(.16,.68,.35,1),opacity .85s}
 .pop-boom.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(1.15);opacity:.94}
 .pop-boom.back .pop-tile{transition:transform .55s ease-in,opacity .55s}
+/* BUILD 156: throwables + guns v2 — rendered item art, per-item behavior, gun signatures */
+.gift-item .g img.item-art{width:46px;height:46px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.thrown-item img{width:54px;height:54px;object-fit:contain;display:block}
+.fx-art{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.splat-decal{position:absolute;left:50%;top:44%;width:var(--ss,68px);height:var(--ss,68px);transform:translate(-50%,-50%) scale(.4);z-index:7;pointer-events:none;opacity:0}
+.splat-decal .blob{position:absolute;inset:0;background:radial-gradient(circle at 42% 38%,var(--sc1) 0 46%,var(--sc2) 68%,rgba(0,0,0,0) 80%);border-radius:58% 42% 55% 45%/48% 56% 44% 52%;filter:drop-shadow(0 3px 5px rgba(0,0,0,.45))}
+.splat-decal img{position:absolute;left:50%;top:50%;width:60%;height:60%;object-fit:contain;transform:translate(-50%,-50%) rotate(-8deg)}
+.splat-decal .glyph-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
+.splat-decal.on{animation:splatIn .3s ease-out forwards}
+@keyframes splatIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-14deg)}55%{opacity:1;transform:translate(-50%,-50%) scale(1.14) rotate(3deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0deg)}}
+.splat-decal.fade{opacity:0;transition:opacity .7s}
+.splat-badge.fall{top:32%;animation:none}
+.splat-badge.fall.dropping{transition:transform .68s cubic-bezier(.5,.05,.9,.6),opacity .68s ease-in;transform:translate(-50%,195%) rotate(58deg);opacity:0}
+.splat-badge.stickin{top:38%;font-size:36px;transform:translate(-50%,-50%) rotate(38deg);animation:quiverIn 2.6s ease-out}
+@keyframes quiverIn{0%{transform:translate(-50%,-50%) rotate(38deg)}4%{transform:translate(-50%,-50%) rotate(30deg)}9%{transform:translate(-50%,-50%) rotate(45deg)}15%{transform:translate(-50%,-50%) rotate(33deg)}22%{transform:translate(-50%,-50%) rotate(42deg)}32%{transform:translate(-50%,-50%) rotate(36deg)}45%,100%{transform:translate(-50%,-50%) rotate(38deg)}}
+.splat-badge.stickin.fade,.splat-badge.fall.fade{opacity:0;transition:opacity .8s}
+.shotgun-hole{position:absolute;left:50%;top:50%;width:88%;height:84%;transform:translate(-50%,-50%) scale(.6);border-radius:47% 53% 50% 50%/52% 47% 53% 48%;background:radial-gradient(circle,#000 0 50%,#171208 59%,#3a2c1c 67%,rgba(30,20,10,.55) 76%,rgba(0,0,0,0) 88%);box-shadow:inset 0 0 18px 8px rgba(0,0,0,.9),0 0 0 2px rgba(0,0,0,.35);z-index:8;pointer-events:none;opacity:0}
+.shotgun-hole.on{animation:sgPunch .28s ease-out forwards}
+@keyframes sgPunch{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}60%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.shotgun-hole.fade{opacity:0;transition:opacity 1s}
+.bullet-hole.big{width:19px;height:19px;background:radial-gradient(circle,#050505 0 38%,#26221e 46%,rgba(15,12,10,.6) 58%,rgba(0,0,0,0) 74%);box-shadow:0 0 0 2px rgba(255,240,210,.18),0 1px 3px rgba(0,0,0,.7)}
+.bullet-hole.np{width:10px;height:10px;z-index:5}
+.nameplate.name-torn{clip-path:polygon(0 0,100% 0,100% 84%,94% 100%,86% 87%,77% 99%,68% 86%,58% 100%,49% 87%,40% 99%,31% 86%,22% 100%,14% 87%,6% 99%,0 86%);transform:rotate(-.6deg)}
+.pop-flash.small{width:92px;height:92px;margin:-46px 0 0 -46px;box-shadow:0 0 26px 10px rgba(255,200,60,.45)}
+.pop-boom.small .pop-tile{transition-duration:.6s}
+.pop-boom.small.go .pop-tile{transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(1.02);opacity:.95}
 /* BUILD 151: richer table-picker cards + occupancy pills */
 .table-choice{gap:18px;padding:20px;border-radius:14px;background:linear-gradient(150deg,#2e1424,#170a10 72%);border:1px solid #6d4a26;box-shadow:0 16px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,220,150,.14)}
 .table-choice:hover{border-color:#c9a24d}
@@ -433,7 +459,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 155</div>
+  <div class="build-stamp" id="buildStamp">BUILD 156</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -1112,7 +1138,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   /* ===== GIFTS, FLAGS & POPS — Jerry's specs 2026-10-20: throws FREE; flags GC 5 per sitting (gone when you leave); pops sold 3/$1, two flavors. ===== */
   var seatWins={},seatBest={},seatFlags={},throwArm=null,popArm=null,gunArm=null;
   var pstats={},handParts=[];function ps(i){if(!pstats[i])pstats[i]={hands:0,wins:0,losses:0,actions:0,folds:0,fs:{PREFLOP:0,FLOP:0,TURN:0,RIVER:0},bestName:'',bestRank:null,bestPot:0};return pstats[i]}
-  var THROWABLES=[['pie','Cream Pie','🥧','splat'],['tomato','Tomato','🍅','splat'],['shoe','Shoe','👞','stick'],['fish','Fish','🐟','stick'],['egg','Egg','🥚','splat'],['dynamite','Dynamite','🧨','boom'],['rose','Rose','🌹','stick'],['champagne','Champagne','🍾','splat'],['banana','Banana','🍌','splat'],['cake','Cake','🎂','splat'],['donut','Donut','🍩','splat'],['burger','Burger','🍔','splat'],['sock','Sock','🧦','stick'],['duck','Rubber Duck','🦆','stick'],['snowball','Snowball','🌨️','splat'],['balloon','Water Balloon','🎈','splat'],['glove','Boxing Glove','🥊','stick'],['coconut','Coconut','🥥','splat'],['paint','Paint Splat','🎨','splat'],['tp','Toilet Paper','🧻','stick'],['boot','Boot','🥾','stick'],['lemon','Lemon','🍋','splat'],['melon','Watermelon','🍉','splat'],['spray','Spray Can','💦','splat'],['poop','Poop','💩','bigsplat'],['grenade','Grenade','💣','boom'],['missile','Missile','🚀','boom']];
+  var THROWABLES=[['pie','Cream Pie','🥧','splat'],['tomato','Tomato','🍅','splat'],['shoe','Shoe','👞','fall'],['fish','Fish','🐟','stick'],['egg','Egg','🥚','splat'],['dynamite','Dynamite','🧨','boom'],['rose','Rose','🌹','stick'],['champagne','Champagne','🍾','splat'],['banana','Banana','🍌','splat'],['cake','Cake','🎂','splat'],['donut','Donut','🍩','splat'],['burger','Burger','🍔','splat'],['sock','Sock','🧦','stick'],['duck','Rubber Duck','🦆','stick'],['snowball','Snowball','🌨️','splat'],['balloon','Water Balloon','🎈','splat'],['glove','Boxing Glove','🥊','stick'],['coconut','Coconut','🥥','splat'],['paint','Paint Splat','🎨','splat'],['tp','Toilet Paper','🧻','stick'],['boot','Boot','🥾','stick'],['lemon','Lemon','🍋','splat'],['melon','Watermelon','🍉','splat'],['spray','Spray Can','💦','splat'],['arrow','Arrow','🏹','stickin'],['dart','Dart','🎯','stickin'],['poop','Poop','💩','bigsplat'],['grenade','Grenade','💣','boom'],['missile','Missile','🚀','boom']];
   var TAUNT_LINES=['Ouch — that hand hurt just watching 😂','Big stack, tiny hand!','The cards said NOPE.','Somewhere a fold is crying right now.','Winner winner? Not YOU 😄','That bluff had a family!'];
   var MAD_LINES=['I had NOTHING and almost won 😤','That river card owes me money!','I am not mad. (I am mad.)','You did not win — the deck GAVE it to you!','Rematch. RIGHT NOW.','My chips are just visiting your stack.'];
   var COUNTRY_CODES=['AD','AE','AF','AG','AI','AL','AM','AO','AQ','AR','AS','AT','AU','AW','AX','AZ','BA','BB','BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BV','BW','BY','BZ','CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CU','CV','CW','CX','CY','CZ','DE','DJ','DK','DM','DO','DZ','EC','EE','EG','EH','ER','ES','ET','FI','FJ','FK','FM','FO','FR','GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP','GQ','GR','GS','GT','GU','GW','GY','HK','HM','HN','HR','HT','HU','ID','IE','IL','IM','IN','IO','IQ','IR','IS','IT','JE','JM','JO','JP','KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ','LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY','MA','MC','MD','ME','MF','MG','MH','MK','ML','MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ','NA','NC','NE','NF','NG','NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT','PW','PY','QA','RE','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK','SL','SM','SN','SO','SR','SS','ST','SV','SX','SY','SZ','TC','TD','TF','TG','TH','TJ','TK','TL','TM','TN','TO','TR','TT','TV','TW','TZ','UA','UG','UM','US','UY','UZ','VA','VC','VE','VG','VI','VN','VU','WF','WS','YE','YT','ZA','ZM','ZW'];
@@ -1139,35 +1165,66 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   giftModal.querySelector('#giftClose').addEventListener('click',function(){giftModal.classList.remove('open')});
   function openGift(title,sub,items,onPick){document.getElementById('giftTitle').textContent=title;document.getElementById('giftSub').textContent=sub||'';var grid=document.getElementById('giftGrid');grid.innerHTML='';items.forEach(function(it){var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){giftModal.classList.remove('open');onPick(it)});grid.appendChild(b)});giftModal.classList.add('open')}
   function seatCenter(index){var r=seats[index].querySelector('.portrait-wrap').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
-  function flyItem(glyph,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';el.textContent=glyph;el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px';document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate('+(dx*.5)+'px,'+(dy-90)+'px) rotate(240deg)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg)'}],{duration:620,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
+  var ITEM_ART='assets/item-art/';
+  function artFile(id){if(id==='poop'||id==='pistol')return null;return 'item-'+id+'.webp'}
+  function itemGlyphHTML(id,glyph){var f=artFile(id);return f?'<img class="item-art" src="'+ITEM_ART+f+'" alt="">':glyph}
+  function fxContent(id,glyph){var f=artFile(id);return f?'<img class="fx-art" src="'+ITEM_ART+f+'" alt="">':glyph}
+  function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate('+(dx*.5)+'px,'+(dy-90)+'px) rotate(240deg)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg)'}],{duration:620,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
   function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
+  var SPLAT_STYLE={tomato:['#ff5a3c','#c21707',66],pie:['#fff3d6','#e8b64c',74],egg:['#ffe066','#f5a623',52],champagne:['#ffe9a8','#d4a017',60],banana:['#ffe14d','#e0a800',56],cake:['#ffb3d9','#e2543e',68],donut:['#ff9ecb','#8a4b2a',60],burger:['#ffb347','#7a3b12',66],snowball:['#ffffff','#bcd8ff',56],balloon:['#ff6b81','#c21807',60],coconut:['#fdfdf8','#5d4037',58],paint:['#c39bff','#5e35b1',72],lemon:['#fff176','#f9a825',52],melon:['#ff6b5e','#1d8a46',72],spray:['#90caf9','#1565c0',56]};
+  function splatDecal(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var st=SPLAT_STYLE[item[0]]||['#ffd94d','#b8860b',62];var s=document.createElement('span');s.className='splat-decal';s.style.setProperty('--sc1',st[0]);s.style.setProperty('--sc2',st[1]);s.style.setProperty('--ss',st[2]+'px');var blob=document.createElement('i');blob.className='blob';s.appendChild(blob);var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';s.appendChild(im)}else{var gc=document.createElement('span');gc.className='glyph-c';gc.textContent=item[2];s.appendChild(gc)}wrap.appendChild(s);setTimeout(function(){s.classList.add('on')},20);setTimeout(function(){s.classList.add('fade')},2500);setTimeout(function(){s.remove()},3300)}
   function impactFx(index,item){var kind=item[3]||'splat',glyph=item[2];
-    if(kind==='boom'){explodePortrait(index);splat(index,'💥');return}
-    if(kind==='bigsplat'){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge big';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},3600);return}
-    if(kind==='stick'){var w2=seats[index].querySelector('.portrait-wrap');var s2=document.createElement('span');s2.className='splat-badge stick';s2.textContent=glyph;w2.appendChild(s2);setTimeout(function(){s2.classList.add('fade')},5200);setTimeout(function(){s2.remove()},6100);return}
-    splat(index,glyph)}
+    if(kind==='boom'){explodePortrait(index,0,true);return}
+    if(kind==='bigsplat'){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge big';s.innerHTML=fxContent(item[0],glyph);wrap.appendChild(s);setTimeout(function(){s.remove()},3600);return}
+    if(kind==='stick'){var w2=seats[index].querySelector('.portrait-wrap');var s2=document.createElement('span');s2.className='splat-badge stick';s2.innerHTML=fxContent(item[0],glyph);w2.appendChild(s2);setTimeout(function(){s2.classList.add('fade')},5200);setTimeout(function(){s2.remove()},6100);return}
+    if(kind==='fall'){var w3=seats[index].querySelector('.portrait-wrap');w3.classList.remove('splat-shake');void w3.offsetWidth;w3.classList.add('splat-shake');var s3=document.createElement('span');s3.className='splat-badge fall';s3.innerHTML=fxContent(item[0],glyph);w3.appendChild(s3);setTimeout(function(){s3.classList.add('dropping')},430);setTimeout(function(){s3.remove()},1250);return}
+    if(kind==='stickin'){var w4=seats[index].querySelector('.portrait-wrap');w4.classList.remove('splat-shake');void w4.offsetWidth;w4.classList.add('splat-shake');var s4=document.createElement('span');s4.className='splat-badge stickin';s4.innerHTML=fxContent(item[0],glyph);w4.appendChild(s4);setTimeout(function(){s4.classList.add('fade')},5400);setTimeout(function(){s4.remove()},6300);return}
+    splatDecal(index,item)}
   var GUNS=[
     {id:'mgun',label:'Machine Gun',glyph:'🔫🔫',ammoKey:'mg',per:'cartridge'},
     {id:'sgun',label:'Shotgun',glyph:'🔫💥',ammoKey:'sg',per:'shell'},
     {id:'pistol',label:'Six-Shooter',glyph:'🔫',ammoKey:'pt',per:'bullet'}];
   var GUN_NOTICES={
-    mgun:'🔫 Machine Gun — you get 2 FREE cartridges. Each cartridge puts 5 bullet holes in their picture. When they are gone the gun will NOT fire. Buy more cartridges in the Gift Shop.',
-    sgun:'🔫 Shotgun — you get 2 FREE shells. Each shot blows their picture apart. When they are gone the gun will NOT fire. Buy more shells in the Gift Shop.',
-    pistol:'🔫 Six-Shooter — you get 1 FREE bullet. After that the gun will NOT fire. Buy single bullets or a full 6-bullet cylinder in the Gift Shop.'};
+    mgun:'🔫 Machine Gun — you get 2 FREE cartridges. Each cartridge shreds their NAMEPLATE with a burst of bullet holes — Bonnie & Clyde style. When they are gone the gun will NOT fire. Buy more cartridges in the Gift Shop.',
+    sgun:'🔫 Shotgun — you get 2 FREE shells. Each shot blows ONE huge hole clean through their picture — the frame survives. When they are gone the gun will NOT fire. Buy more shells in the Gift Shop.',
+    pistol:'🔫 Six-Shooter — you get 1 FREE bullet. Every bullet puts one BIG hole in their face — a full 6-bullet cylinder dumps all six, one after another. When they are gone the gun will NOT fire. Buy single bullets or a full cylinder in the Gift Shop.'};
   function ammoGet(){try{var raw=localStorage.getItem('nikkiflixs_ammo');if(raw){var a=JSON.parse(raw);return{mg:Math.max(0,+a.mg||0),sg:Math.max(0,+a.sg||0),pt:Math.max(0,+a.pt||0)}}}catch(e){}var seed={mg:2,sg:2,pt:1};ammoSet(seed);return seed}
   function ammoSet(a){try{localStorage.setItem('nikkiflixs_ammo',JSON.stringify(a))}catch(e){}}
   function ammoSub(gun){if(creatorOn())return '∞ ammo';var n=ammoGet()[gun.ammoKey];return n>0?n+' '+gun.per+(n===1?'':'s')+' left':'OUT — buy ammo'}
-  function sfxGun(auto,boom){try{if(!alertsUnlocked||!audio)return;if(audio.state==='suspended')audio.resume();if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*0.3),audio.sampleRate);var d=sfxNoiseBuf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}
-    var shots=boom?1:(auto?5:1);
+  function sfxGun(auto,boom,nShots){try{if(!alertsUnlocked||!audio)return;if(audio.state==='suspended')audio.resume();if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*0.3),audio.sampleRate);var d=sfxNoiseBuf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+    var shots=nShots||(boom?1:(auto?5:1));
     for(var s=0;s<shots;s++){(function(k){setTimeout(function(){var src=audio.createBufferSource();src.buffer=sfxNoiseBuf;var f=audio.createBiquadFilter();f.type='lowpass';f.frequency.value=boom?900:2100;var g=audio.createGain();var t=audio.currentTime;g.gain.setValueAtTime(boom?.7:.5,t);g.gain.exponentialRampToValueAtTime(.001,t+(boom?.4:.09));src.connect(f);f.connect(g);g.connect(audio.destination);src.start();src.stop(t+(boom?.45:.12))},k*95)})(s)}
   }catch(e){}}
-  function addBulletHole(wrap){var hd=document.createElement('span');hd.className='bullet-hole';hd.style.left=(16+Math.random()*60)+'%';hd.style.top=(12+Math.random()*60)+'%';wrap.appendChild(hd);setTimeout(function(){hd.classList.add('fade')},6400);setTimeout(function(){hd.remove()},7300)}
+  function addBulletHole(wrap,cls){var hd=document.createElement('span');hd.className='bullet-hole'+(cls?' '+cls:'');hd.style.left=(16+Math.random()*60)+'%';hd.style.top=(12+Math.random()*60)+'%';wrap.appendChild(hd);setTimeout(function(){hd.classList.add('fade')},6400);setTimeout(function(){hd.remove()},7300)}
+  function addNameplateHole(np,i,total){var hd=document.createElement('span');hd.className='bullet-hole np';hd.style.left=(4+(i+.5)*(92/Math.max(total,1))+(Math.random()*4-2))+'%';hd.style.top=(18+Math.random()*58)+'%';np.appendChild(hd);setTimeout(function(){hd.classList.add('fade')},6400);setTimeout(function(){hd.remove()},7300)}
   function fireGunAt(fromIndex,toIndex,gun){
-    if(fromIndex===0&&!creatorOn()){var a=ammoGet();if(a[gun.ammoKey]<=0){say('Out of '+gun.per+'s — buy more in the Gift Shop.',3000);return}a[gun.ammoKey]--;ammoSet(a)}
     var wrap=seats[toIndex].querySelector('.portrait-wrap');if(!wrap)return;
-    if(gun.id==='sgun'){sfxGun(false,true);explodePortrait(toIndex);splat(toIndex,'💥')}
-    else if(gun.id==='mgun'){sfxGun(true,false);for(var i=0;i<5;i++){(function(n){setTimeout(function(){addBulletHole(wrap)},n*95)})(i)}wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake')}
-    else{sfxGun(false,false);addBulletHole(wrap);wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake')}
+    if(gun.id==='pistol'){
+      var shots=(fromIndex!==0||creatorOn())?6:Math.min(6,ammoGet().pt);
+      if(fromIndex===0&&!creatorOn()){
+        if(shots<=0){say('Out of '+gun.per+'s — buy more in the Gift Shop.',3000);return}
+        var a=ammoGet();a[gun.ammoKey]-=shots;ammoSet(a);
+      }
+      sfxGun(false,false,shots);
+      for(var i=0;i<shots;i++){(function(n){setTimeout(function(){addBulletHole(wrap,'big');if(n===0){wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake')}},n*135)})(i)}
+    }
+    else if(gun.id==='sgun'){
+      if(fromIndex===0&&!creatorOn()){var a2=ammoGet();if(a2[gun.ammoKey]<=0){say('Out of '+gun.per+'s — buy more in the Gift Shop.',3000);return}a2[gun.ammoKey]--;ammoSet(a2)}
+      sfxGun(false,true);
+      var old=wrap.querySelector('.shotgun-hole');if(old)old.remove();
+      var hole=document.createElement('span');hole.className='shotgun-hole';wrap.appendChild(hole);
+      setTimeout(function(){hole.classList.add('on')},20);
+      wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');
+      setTimeout(function(){hole.classList.add('fade')},6000);setTimeout(function(){hole.remove()},7100);
+    }
+    else if(gun.id==='mgun'){
+      if(fromIndex===0&&!creatorOn()){var a3=ammoGet();if(a3[gun.ammoKey]<=0){say('Out of '+gun.per+'s — buy more in the Gift Shop.',3000);return}a3[gun.ammoKey]--;ammoSet(a3)}
+      var np=seats[toIndex].querySelector('.nameplate');if(!np)return;
+      sfxGun(true,false,12);
+      var totalHoles=14;
+      for(var j=0;j<totalHoles;j++){(function(n){setTimeout(function(){addNameplateHole(np,n,totalHoles)},n*48)})(j)}
+      np.classList.add('name-torn');setTimeout(function(){np.classList.remove('name-torn')},7000);
+    }
     if(fromIndex===0)say('You shot '+names[toIndex]+' with the '+gun.label.toLowerCase()+'!',2200);
     logEvent('gun-fired',{from:fromIndex,to:toIndex,gun:gun.id});
   }
@@ -1178,12 +1235,12 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     gunArm=gun;throwArm=null;popArm=null;document.body.classList.add('targeting');armExpire();
     say('Tap a player to shoot them with the '+gun.label.toLowerCase()+' — tap your own picture to cancel',3200);
   }
-  function doThrow(fromIndex,toIndex,item){flyItem(item[2],fromIndex,toIndex,function(){impactFx(toIndex,item);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})})}
-  function explodePortrait(toIndex,holdUntil){
+  function doThrow(fromIndex,toIndex,item){flyItem(item,fromIndex,toIndex,function(){impactFx(toIndex,item);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})})}
+  function explodePortrait(toIndex,holdUntil,small){
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap?wrap.querySelector('.portrait'):null;
     if(!wrap||!img||!img.getAttribute('src'))return;
-    var W=74,H=84,N=3,boom=document.createElement('div');boom.className='pop-boom';
-    var flash=document.createElement('div');flash.className='pop-flash';wrap.appendChild(flash);
+    var W=74,H=84,N=3,boom=document.createElement('div');boom.className='pop-boom'+(small?' small':'');
+    var flash=document.createElement('div');flash.className='pop-flash'+(small?' small':'');wrap.appendChild(flash);
     setTimeout(function(){flash.classList.add('on')},10);setTimeout(function(){flash.remove()},580);
     for(var r=0;r<N;r++)for(var c=0;c<N;c++){
       var t=document.createElement('div');t.className='pop-tile';
@@ -1191,19 +1248,28 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
       t.style.backgroundSize=W+'px '+H+'px';
       t.style.backgroundPosition=(-c*(W/N))+'px '+(-r*(H/N))+'px';
       t.style.width=(100/N)+'%';t.style.height=(100/N)+'%';t.style.left=(c*100/N)+'%';t.style.top=(r*100/N)+'%';
-      var txv=(c-1)*(185+Math.random()*115)+(Math.random()*90-45);
-      if(c===1)txv=Math.random()*130-65;
-      if(c!==1&&Math.abs(txv)<305)txv=(c===0?-1:1)*(305+Math.random()*55);
-      var tyv=(r-1)*(125+Math.random()*85)+(Math.random()*70-35)-30;
+      var txv,tyv,rotv;
+      if(small){
+        txv=(c-1)*(54+Math.random()*38)+(Math.random()*36-18);
+        if(c===1)txv=Math.random()*56-28;
+        tyv=(r-1)*(42+Math.random()*30)+(Math.random()*28-14)-8;
+        rotv=(Math.random()<.5?-1:1)*(90+Math.random()*150);
+      }else{
+        txv=(c-1)*(185+Math.random()*115)+(Math.random()*90-45);
+        if(c===1)txv=Math.random()*130-65;
+        if(c!==1&&Math.abs(txv)<305)txv=(c===0?-1:1)*(305+Math.random()*55);
+        tyv=(r-1)*(125+Math.random()*85)+(Math.random()*70-35)-30;
+        rotv=(Math.random()<.5?-1:1)*(260+Math.random()*460);
+      }
       t.style.setProperty('--tx',txv+'px');
       t.style.setProperty('--ty',tyv+'px');
-      t.style.setProperty('--rot',((Math.random()<.5?-1:1)*(260+Math.random()*460))+'deg');
-      t.style.transitionDelay=((r*N+c)*22)+'ms';
+      t.style.setProperty('--rot',rotv+'deg');
+      t.style.transitionDelay=((r*N+c)*(small?14:22))+'ms';
       boom.appendChild(t);
     }
     wrap.appendChild(boom);img.style.visibility='hidden';
     setTimeout(function(){boom.classList.add('go')},30);
-    var backAt=holdUntil||1750;
+    var backAt=holdUntil||(small?1000:1750);
     setTimeout(function(){boom.classList.add('back')},backAt);
     setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},backAt+800);
   }
@@ -1218,7 +1284,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function openStoreChooser(){openGift('🛒 Nikkiflixs Stores','Gold coins and POPS live in the Coin Store — gifts, flags and dice sets live in the Gift Shop.',[{id:'coins',label:'Coin Store',glyph:'🪙',sub:'Gold coin packs + POPS — 3 for $1'},{id:'gifts',label:'Gift Shop',glyph:'🎁',sub:'Gifts, country flags, dice sets & more'}],function(it){location.href=it.id==='coins'?'/assets/rooms/casino/coin-store.html':'/assets/rooms/casino/gift-shop.html'})}
   document.getElementById('adminBtn').addEventListener('click',function(){openAdmin()});
   document.getElementById('storeBtn').addEventListener('click',function(){openStoreChooser()});
-  document.getElementById('throwBtn').addEventListener('click',function(){if(throwArm){disarmAll();say('Throw cancelled',1000);return}openGift('Throw Something — FREE','Pick an item, then tap a player. Throwing is always free.',THROWABLES.map(function(t){return{id:t[0],label:t[1],glyph:t[2],raw:t}}).concat(GUNS.map(function(g){return{id:'gun_'+g.id,label:g.label,glyph:g.glyph,sub:ammoSub(g),raw:{gun:g}}})),function(it){if(it.raw&&it.raw.gun){pickGun(it.raw.gun);return}throwArm=it.raw;popArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to throw the '+it.raw[1].toLowerCase()+' — tap your own picture to cancel',3200)})});
+  document.getElementById('throwBtn').addEventListener('click',function(){if(throwArm){disarmAll();say('Throw cancelled',1000);return}openGift('Throw Something — FREE','Pick an item, then tap a player. Throwing is always free.',THROWABLES.map(function(t){return{id:t[0],label:t[1],glyph:itemGlyphHTML(t[0],t[2]),raw:t}}).concat(GUNS.map(function(g){return{id:'gun_'+g.id,label:g.label,glyph:itemGlyphHTML(g.id,g.glyph),sub:ammoSub(g),raw:{gun:g}}})),function(it){if(it.raw&&it.raw.gun){pickGun(it.raw.gun);return}throwArm=it.raw;popArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to throw the '+it.raw[1].toLowerCase()+' — tap your own picture to cancel',3200)})});
   document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 3 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){say('You are out of those pops — they are in the Coin Store, 3 for $1. Tap STORE up top.',3400);return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
   document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0]&&!creatorOn();if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
   var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
@@ -1246,7 +1312,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     document.getElementById('pcPopT').textContent='😂 TAUNT POP ('+popsGet('nikkiflixs_pops_taunt')+')';document.getElementById('pcPopM').textContent='😤 MAD POP ('+popsGet('nikkiflixs_pops_mad')+')';playerModal.classList.add('open')}
   playerModal.addEventListener('click',function(e){if(e.target===playerModal)playerModal.classList.remove('open')});
   playerModal.querySelector('#pcClose').addEventListener('click',function(){playerModal.classList.remove('open')});
-  playerModal.querySelector('#pcThrow').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;openGift('Throw at '+names[t]+' — FREE','It lands right on them.',THROWABLES.map(function(x){return{id:x[0],label:x[1],glyph:x[2],raw:x}}),function(it){doThrow(0,t,it.raw)})});
+  playerModal.querySelector('#pcThrow').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;openGift('Throw at '+names[t]+' — FREE','It lands right on them.',THROWABLES.map(function(x){return{id:x[0],label:x[1],glyph:itemGlyphHTML(x[0],x[2]),raw:x}}),function(it){doThrow(0,t,it.raw)})});
   playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'taunt')});
   playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'mad')});
   seats.forEach(function(seat,index){seat.addEventListener('pointerdown',function(e){if(!(throwArm||popArm||gunArm))return;e.preventDefault();window.__tapFiredAt=Date.now();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm,g=gunArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);else if(g)fireGunAt(0,index,g)});

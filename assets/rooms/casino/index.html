@@ -192,6 +192,21 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
 </style>
 <style>#nl-badge-frame{display:none!important;visibility:hidden!important;pointer-events:none!important;}</style>
 
+<style>
+/* CURTAIN RETURN FIX (staged 2026-10-20): once this showroom's intro has played
+   (or on any return visit), body.intro-done pins every timed intro element at
+   its END state with animations OFF. Before this, the splash, curtains, valance,
+   speech cards and room choices were pure timeline CSS animations, so any
+   return — Back button, a fresh load, or un-hiding the scene (which restarts
+   CSS animations) — replayed the full closed-curtain sequence from zero. */
+body.intro-done .splash-intro{display:none!important}
+body.intro-done .curtain{animation:none!important;animation-name:none!important;animation-duration:0s!important;animation-delay:0s!important}
+body.intro-done .curtain.left{transform:translateX(-91%) skewX(-4deg)}
+body.intro-done .curtain.right{transform:translateX(91%) skewX(4deg)}
+body.intro-done .valance{animation:none!important;transform:translateY(-72%);opacity:.18}
+body.intro-done .speech-card{animation:none!important;opacity:0!important}
+body.intro-done .room-choices{animation:none!important;transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body class="intro-active">
 <section class="splash-intro" id="splashIntro" aria-label="Nikkiflixs opening">
@@ -201,9 +216,9 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
   <img class="lobby-bg" src="assets/casino-floor.webp" alt="A dramatic gold-lit poker club showroom and stage">
   <div class="stage-lights" aria-hidden="true"></div><div class="curtain left" aria-hidden="true"></div><div class="curtain right" aria-hidden="true"></div><div class="valance" aria-hidden="true"></div>
   <nav class="room-choices" aria-label="Choose a room">
-    <a class="room-choice" href="https://muse.ai/s/nikkiflix-poker-gz65ou1pcxdw" target="_blank" rel="noopener noreferrer"><small>NIKKI HOSTS</small><strong>Poker Room</strong></a>
-    <a class="room-choice" href="https://muse.ai/s/nikkiflix-game-room-xwd67wzxmxpxmoxq" target="_blank" rel="noopener noreferrer"><small>NIKKI HOSTS</small><strong>Game Room</strong></a>
-    <a class="room-choice" href="https://muse.ai/s/nicki-flakes-theater-ck67xbxk6xxxutxy" target="_blank" rel="noopener noreferrer"><small>PROMISE HOSTS</small><strong>Movie Theater</strong></a>
+    <a class="room-choice" href="../poker/index.html"><small>NIKKI HOSTS</small><strong>Poker Room</strong></a>
+    <a class="room-choice" href="../games/index.html"><small>NIKKI HOSTS</small><strong>Game Room</strong></a>
+    <a class="room-choice" href="../theater/index.html"><small>PROMISE HOSTS</small><strong>Movie Theater</strong></a>
     <button class="room-choice" id="enterCasino"><small>PROMISE HOSTS</small><strong>Poker Club</strong></button>
   </nav>
 </section>
@@ -287,6 +302,13 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
   "use strict";
   var balance=10000, betIndex=1, bets=[100,250,500,1000,2500,5000,10000], current="triple", spinning=false, soundOn=true, freeSpins=0, audioCtx=null, adminFreePlay=false;
   window.addEventListener("message",function(event){if(event.data&&event.data.type==="nikkiflixs-admin-mode"){adminFreePlay=!!event.data.enabled;var note=document.querySelector(".session-note");if(note)note.textContent=adminFreePlay?"ADMIN · FREE PLAY · bets do not reduce your balance":"Play only · no cash value · balance resets with this session";}});
+  /* CURTAIN RETURN FIX (staged 2026-10-20): returning visitors skip the intro.
+     The flag lives in sessionStorage: it survives moving between rooms in
+     this tab and clears when the tab closes (same convention as the lobby). */
+  function markCasinoEntered(){document.body.classList.add("intro-done");document.body.classList.remove("intro-active");try{sessionStorage.setItem("nikkiflixs_casino_entered","1")}catch(e){}}
+  function casinoIsReturn(){try{if(sessionStorage.getItem("nikkiflixs_casino_entered")==="1")return true;}catch(e){}try{var nav=(performance.getEntriesByType&&performance.getEntriesByType("navigation")[0])||null;if(nav&&nav.type==="back_forward")return true;if(performance.navigation&&performance.navigation.type===2)return true;}catch(e){}return false;}
+  if(casinoIsReturn()){document.body.classList.add("intro-done");document.body.classList.remove("intro-active");}
+  window.addEventListener("pageshow",function(ev){if(ev.persisted||casinoIsReturn()){document.body.classList.add("intro-done");document.body.classList.remove("intro-active");}});
   var machineData={
     triple:{title:"Triple Diamond",subtitle:"One line. Three diamonds. Forty times your bet.",rows:1,reels:3,
       strips:["DIAMOND","BAR1","NF","CHERRY","BAR2","7R","BAR3","7B","7R","BAR1","NF","CHERRY","WILD","BAR2","7B"],
@@ -505,16 +527,16 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
   $("machineMenuButton").addEventListener("click",function(){var menu=$("machineMenu"),opening=menu.hidden;menu.hidden=!opening;this.setAttribute("aria-expanded",opening?"true":"false")});
   $("soundBtn").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"Volume on":"Volume off";this.setAttribute("aria-label",soundOn?"Turn volume off":"Turn volume on");if(soundOn)tone(520,.1,"sine",.04)});
   function enterCasino(){ /* v15: entry silent; machine-list line once the page has settled */
-    $("lobbyScene").classList.add("hidden");$("casinoRoom").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");$("machineGallery").classList.remove("hidden");$("playView").classList.add("hidden");document.body.classList.remove("intro-active","machine-active");window.scrollTo(0,0);tone(420,.14,"triangle",.045);setTimeout(function(){ if(window.__promiseListV15)window.__promiseListV15(); },900); }
+    $("lobbyScene").classList.add("hidden");$("casinoRoom").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");$("machineGallery").classList.remove("hidden");$("playView").classList.add("hidden");document.body.classList.remove("intro-active","machine-active");markCasinoEntered();window.scrollTo(0,0);tone(420,.14,"triangle",.045);setTimeout(function(){ if(window.__promiseListV15)window.__promiseListV15(); },900); }
   $("enterCasino").addEventListener("click",enterCasino);
   $("giftShopBtn").addEventListener("click",function(){window.location.href="gift-shop.html";});
   $("coinStoreBtn").addEventListener("click",function(){window.location.href="coin-store.html";});
   $("sportsbookBtn").addEventListener("click",function(){window.location.href="sportsbook.html";});
   $("appStoreBtn").addEventListener("click",function(){window.location.href="app-store.html";});
-  $("backShowroom").addEventListener("click",function(){$("casinoRoom").classList.add("hidden");$("lobbyScene").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");document.body.classList.add("intro-active");window.scrollTo(0,0)});
+  $("backShowroom").addEventListener("click",function(){$("casinoRoom").classList.add("hidden");$("lobbyScene").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");document.body.classList.add("intro-done");window.scrollTo(0,0)});
   $("backMachines").addEventListener("click",function(){$("machineMenu").hidden=true;$("machineMenuButton").setAttribute("aria-expanded","false");$("playView").classList.add("hidden");$("machineGallery").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");window.scrollTo(0,0)});
-  $("backLobbyMachine").addEventListener("click",function(){$("machineMenu").hidden=true;$("machineMenuButton").setAttribute("aria-expanded","false");$("casinoRoom").classList.add("hidden");$("lobbyScene").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");document.body.classList.add("intro-active");window.scrollTo(0,0)});
-  setTimeout(function(){document.body.classList.remove("intro-active")},15100);
+  $("backLobbyMachine").addEventListener("click",function(){$("machineMenu").hidden=true;$("machineMenuButton").setAttribute("aria-expanded","false");$("casinoRoom").classList.add("hidden");$("lobbyScene").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");document.body.classList.add("intro-done");window.scrollTo(0,0)});
+  setTimeout(function(){markCasinoEntered()},15100);
   enterCasino();selectMachine("triple");document.querySelectorAll(".machine-tab").forEach(function(b){b.classList.remove("active");b.setAttribute("aria-pressed","false")});
 
   // === TABLE GAMES: Roulette, Craps, Blackjack ===
