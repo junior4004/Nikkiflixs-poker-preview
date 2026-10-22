@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Nikkiflixs Blackjack · 3-Player</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+:root{--ink:#f8f2df;--muted:#c9c0a6;--bg:#100c09;--gold:#ddb866;--line:#5e452a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:var(--bg);color:var(--ink)}
+body{background-image:linear-gradient(#090603d9,#090603f2),url('../poker/assets/poker-lobby/table-01.webp');background-size:cover;background-position:center;background-attachment:fixed;padding-bottom:190px}
+button{cursor:pointer;font:inherit}
+.build-stamp{position:fixed;left:8px;bottom:8px;z-index:66;font:700 9px/1 sans-serif;letter-spacing:.08em;color:#a5936b;background:#000a;padding:4px 6px;border-radius:6px;pointer-events:none}
+.topbar{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:12px 12px 4px}
+.back{min-height:44px;padding:8px 14px;border:1px solid var(--line);background:#1a1510;color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;flex:1;text-align:center;font:800 clamp(22px,6vw,34px)/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.03em;color:#f4d68d;text-shadow:0 3px 14px #000}
+.bal{border:1px solid var(--line);background:#0d0a08;border-radius:8px;padding:6px 12px;text-align:center}
+.bal small{display:block;font:700 9px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:var(--muted)}
+.bal b{font:800 20px/1.1 "Barlow Condensed",sans-serif;color:#ffe9bd}
+.stage{max-width:760px;margin:6px auto 0;padding:0 12px}
+/* ===== BUILD 182: THE SQUARE — square felt, rounded corners, wood rail (geometry from
+   table-square-4max.html), dealer notch in the TOP-RIGHT corner ===== */
+.table{position:relative;border-radius:46px;min-height:560px;padding:14px;box-shadow:0 24px 60px #000d,0 0 0 3px #080504,0 0 0 8px #6d3c20,0 0 0 10px #d9a45c7a,0 0 0 13px #331a09;background-color:#0e5b2c;background-image:linear-gradient(125deg,transparent 4% 18%,rgba(255,235,219,.12) 29%,rgba(255,248,234,.33) 36%,rgba(255,207,190,.11) 44%,transparent 57%),linear-gradient(74deg,transparent 0 46%,rgba(255,226,206,.16) 58%,transparent 70%),url("../poker/assets/green-velvet-felt.jpg");background-size:auto,auto,100% 100%;background-position:center;background-repeat:no-repeat;background-blend-mode:screen,screen,normal}
+.table::after{content:"";position:absolute;inset:18px;border-radius:30px;box-shadow:inset 0 0 88px #06280f,inset 0 0 0 2px #e0a36a45;pointer-events:none}
+.dealer-notch{position:absolute;right:16px;top:16px;transform:rotate(40deg);width:110px;height:50px;z-index:6;pointer-events:none;text-align:center}
+.dealer-notch::before{content:"";position:absolute;left:50%;top:-12px;transform:translateX(-50%);width:106px;height:40px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#241207,#0a0505 72%);box-shadow:inset 0 -3px 0 #d9a54e,inset 0 -12px 16px #000,0 2px 4px #000a}
+.dealer-notch img{position:relative;top:2px;width:30px;height:30px;border-radius:50%;border:2px solid #e7c46a;object-fit:cover;object-position:top;box-shadow:0 3px 8px #000d;transform:rotate(-40deg);filter:contrast(1.07) saturate(1.1) brightness(.97)}
+.dealer-notch span{position:relative;display:block;margin-top:0;font:800 8.5px "Barlow Condensed",sans-serif;letter-spacing:.34em;color:#f3d999;text-shadow:0 1px 3px #000;transform:rotate(-40deg)}
+.brand{position:absolute;left:0;right:0;top:12px;text-align:center;pointer-events:none}
+.brand .brand-name{display:block;font:italic 700 34px/1 "Brush Script MT","Segoe Script",cursive;color:#f5c65a;text-shadow:0 2px 10px #000a;letter-spacing:.02em}
+.dealer-zone{position:absolute;left:0;right:0;top:56px;text-align:center;z-index:3}
+.zone-label{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.3em;color:#ffe9bdcc;text-transform:uppercase;margin-bottom:5px;text-shadow:0 2px 4px #000}
+.hand{display:flex;gap:6px;justify-content:center;min-height:80px}
+.hand .card{margin-left:-16px}.hand .card:first-child{margin-left:0}
+.felt-text{position:absolute;left:16%;right:16%;top:45%;text-align:center;pointer-events:none;color:#f2ca72d9;font:700 13px/1.7 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 2px 6px #000;z-index:1}
+.seat3p{position:absolute;z-index:4;text-align:center;width:118px}
+.seat3p .p-avatar{width:46px;height:46px;margin:0 auto;border-radius:50%;overflow:hidden;border:2px solid #e8c883;background:radial-gradient(circle at 50% 35%,#2a1218,#0d0508 75%);box-shadow:0 4px 10px #000b}
+.seat3p .p-avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
+.seat3p .p-name{font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.18em;color:#ffe9bd;margin:3px 0 5px;text-shadow:0 2px 4px #000}
+.seat3p .p-hand{display:flex;justify-content:center;min-height:62px}
+.seat3p .p-hand .card{margin-left:-24px}.seat3p .p-hand .card:first-child{margin-left:0}
+.seat3p .p-bet{width:52px;height:52px;margin:5px auto 0;border:2px dashed #f2ca7288;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#ffe9bd;font:800 13px/1 "Barlow Condensed",sans-serif;background:#00000055}
+.seat3p .p-bet.on{border-style:solid;border-color:#f2ca72;background:#00000088;box-shadow:0 0 12px #f5c65a55}
+.seat-left{left:2px;top:34%}
+.seat-right{right:2px;top:34%}
+.seat-hero{left:50%;transform:translateX(-50%);bottom:8px;width:220px}
+.seat-hero .p-hand{min-height:80px}
+.seat-hero .p-hand .card{margin-left:-16px}.seat-hero .p-hand .card:first-child{margin-left:0}
+.seat-hero .p-bet{margin-top:2px}
+.hand-total{display:inline-block;margin-top:5px;padding:4px 12px;border-radius:999px;background:#070709f2;border:1px solid #ffffff5a;font:800 14px/1 "Barlow Condensed",sans-serif;color:#ffe9bd;visibility:hidden}
+.hand-total.bust{color:#ff9a9a;border-color:#ff6b6b}
+.hand-total.bj{color:#ffe27a;border-color:#ffe27a;box-shadow:0 0 12px #ffe27a66}
+.p-status{display:block;margin-top:4px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#c9c0a6;text-shadow:0 2px 4px #000;min-height:12px}
+.p-status.win{color:#7dff9f}.p-status.lose{color:#ff9a9a}.p-status.push{color:#ffe9bd}
+.card{width:58px;height:80px;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;color:#15161a;font:800 32px/.8 "Barlow Condensed",sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:7px 6px;position:relative;box-shadow:0 6px 10px #000c;flex:none}
+.card.red{color:#c20f25}
+.card .suit{font-size:24px;line-height:1;margin-top:2px}
+.card.back{background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999}
+.card.back span{display:none}
+.card.small{width:44px;height:62px;font-size:24px;padding:5px 4px}
+.card.small .suit{font-size:18px}
+.card.dealt{animation:cardDeal .5s cubic-bezier(.2,.75,.3,1)}
+@keyframes cardDeal{0%{transform:translateY(-130px) rotate(-10deg) scale(.85);opacity:0}55%{opacity:1}100%{transform:none;opacity:1}}
+.rules{max-width:560px;margin:14px auto 0;padding:12px 14px;border:1px solid #5e452a;border-radius:10px;background:#141009cc;font-size:12.5px;color:#c9c0a6;line-height:1.55}
+.rules b{color:#ddb866}
+.controls{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(180deg,#171115f6,#070506fd);border-top:1px solid #ffffff22;padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.msg{min-height:22px;text-align:center;font:700 14px/1.4 "Source Sans 3",sans-serif;color:#ffe9bd;margin-bottom:8px}
+.msg.win{color:#7dff9f}.msg.lose{color:#ff9a9a}.msg.push{color:#c9c0a6}
+.chip-row{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
+.chip{width:56px;height:56px;border-radius:50%;border:3px dashed #fff8d3;font:800 14px/1 "Barlow Condensed",sans-serif;color:#fff;text-shadow:0 2px 3px #000;box-shadow:0 4px 0 rgba(0,0,0,.5),inset 0 0 0 2px #ffffff26;display:grid;place-items:center}
+.chip.c1{background:radial-gradient(ellipse,#fff 0 18%,#9aa0a8 19% 56%,#4a4e55 57%)}
+.chip.c5{background:radial-gradient(ellipse,#f5d9de 0 18%,#bd2038 19% 56%,#74101f 57%)}
+.chip.c25{background:radial-gradient(ellipse,#d9edff 0 18%,#1767b9 19% 56%,#0a3a78 57%)}
+.chip.c100{background:radial-gradient(ellipse,#fff1bd 0 18%,#d69c19 19% 56%,#875a08 57%);color:#2a1c05;text-shadow:0 1px 2px #fff8}
+.chip.c500{background:radial-gradient(ellipse,#e8c8f5 0 18%,#7b2fbf 19% 56%,#3d1466 57%)}
+.btn-row{display:flex;gap:8px;justify-content:center}
+.btn-row.hidden{display:none}
+.abtn{flex:1;max-width:150px;min-height:52px;border-radius:9px;border:1px solid #ffffff42;background:linear-gradient(180deg,#303640,#111318);color:#fff;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;box-shadow:0 4px 10px #000a}
+.abtn.gold{border-color:#e2b34f;background:linear-gradient(180deg,#b8872d,#654216)}
+.abtn.red{border-color:#ee6a72;background:linear-gradient(180deg,#b63b46,#621720)}
+.abtn.green{border-color:#5fd08a;background:linear-gradient(180deg,#2f8f57,#123f26)}
+.abtn:disabled{opacity:.35}
+.abtn:active:not(:disabled){transform:translateY(1px)}
+@media(max-width:420px){.felt-text{left:24%;right:24%;font-size:11px}.table{min-height:540px}}
+</style>
+</head>
+<body>
+<div class="build-stamp">BUILD 182</div>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Tables</button>
+  <h1>Blackjack · 3-Player</h1>
+  <div class="bal"><small>BALANCE</small><b id="balance">0</b></div>
+</div>
+<div class="stage">
+  <div class="table" id="bjTable">
+    <div class="brand"><span class="brand-name">Nikkiflixs</span></div>
+    <div class="dealer-notch" aria-hidden="true"><img src="../../nikki-avatar.webp" alt="" draggable="false"><span>DEALER</span></div>
+    <div class="dealer-zone">
+      <div class="zone-label">Dealer · Nikki</div>
+      <div class="hand" id="dealerHand"></div>
+      <div><span class="hand-total" id="dealerTotal">0</span></div>
+    </div>
+    <div class="felt-text">Blackjack pays 3 to 2<br>Dealer stands on 17</div>
+    <div class="seat3p seat-left" id="seatL">
+      <div class="p-avatar"><img src="../../avatars/bots/player-14.webp" alt="" draggable="false"></div>
+      <div class="p-name">POPS</div>
+      <div class="p-hand" id="handL"></div>
+      <span class="hand-total" id="totalL">0</span>
+      <div class="p-bet" id="betL">—</div>
+      <span class="p-status" id="statusL"></span>
+    </div>
+    <div class="seat3p seat-right" id="seatR">
+      <div class="p-avatar"><img src="../../avatars/bots/player-05.webp" alt="" draggable="false"></div>
+      <div class="p-name">SCARLET</div>
+      <div class="p-hand" id="handR"></div>
+      <span class="hand-total" id="totalR">0</span>
+      <div class="p-bet" id="betR">—</div>
+      <span class="p-status" id="statusR"></span>
+    </div>
+    <div class="seat3p seat-hero" id="seatH">
+      <div class="p-bet" id="betH">BET</div>
+      <div class="p-hand" id="handH" style="margin-top:6px"></div>
+      <span class="hand-total" id="totalH">0</span>
+      <span class="p-status" id="statusH"></span>
+      <div class="p-name" style="margin-top:2px">YOU</div>
+    </div>
+  </div>
+  <div class="rules"><b>How to play:</b> Three seats, one dealer — more cards in play, a better read on the shoe. Tap chips to place your bet, then press DEAL. Pops and Scarlet bet 25 and play their own hands against the dealer; only your seat touches your balance. Blackjack pays 3:2. Dealer stands on all 17s. Double down on your first two cards for one more card.<br><b>Want a quieter table?</b> <a href="blackjack.html" style="color:#f5c65a;font-weight:700">Play solo blackjack →</a></div>
+</div>
+<div class="controls">
+  <div class="msg" id="msg">Tap chips to place your bet.</div>
+  <div class="chip-row" id="chipRow">
+    <button class="chip c1" data-v="1" type="button">1</button>
+    <button class="chip c5" data-v="5" type="button">5</button>
+    <button class="chip c25" data-v="25" type="button">25</button>
+    <button class="chip c100" data-v="100" type="button">100</button>
+    <button class="chip c500" data-v="500" type="button">500</button>
+  </div>
+  <div class="btn-row" id="betRow">
+    <button class="abtn red" id="clearBet" type="button">CLEAR</button>
+    <button class="abtn gold" id="dealBtn" type="button">DEAL</button>
+  </div>
+  <div class="btn-row hidden" id="playRow">
+    <button class="abtn" id="hitBtn" type="button">HIT</button>
+    <button class="abtn gold" id="standBtn" type="button">STAND</button>
+    <button class="abtn green" id="doubleBtn" type="button">DOUBLE</button>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+var MIN_BET=10;try{var qm=new URLSearchParams(location.search).get('min');if(qm&&+qm>0)MIN_BET=+qm;}catch(e){}
+var BOT_BET=25;
+/* ---- one wallet: the sitewide bankroll (BUILD 182) ---- */
+var WALLET_KEY='nikkiflixs_bankroll';
+function loadWallet(){try{var v=parseInt(localStorage.getItem(WALLET_KEY),10);if(isNaN(v)||v<0){v=10000;localStorage.setItem(WALLET_KEY,String(v));}return v;}catch(e){return 10000;}}
+var balance=loadWallet();
+function saveWallet(){try{localStorage.setItem(WALLET_KEY,String(balance));}catch(e){}$('balance').textContent=balance.toLocaleString('en-US');}
+saveWallet();
+/* ---- sounds: BUILD 179 ceramic samples + the solo table's card flick ---- */
+var SFX_BASE='../poker/assets/sfx/',sfxCache={};
+function sfx(name,vol){try{var a=sfxCache[name]||(sfxCache[name]=new Audio(SFX_BASE+name+'.mp3'));a.volume=(vol==null?.6:vol);a.currentTime=0;a.play().catch(function(){});}catch(e){}}
+var AC=null;function audio(){try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC;}catch(e){return null;}}
+function softFlick(vol){var ac=audio();if(!ac)return;try{var t=ac.currentTime,dur=.16,buf=ac.createBuffer(1,Math.floor(ac.sampleRate*dur),ac.sampleRate),d=buf.getChannelData(0);for(var i=0;i<d.length;i++){var p=i/d.length;d[i]=(Math.random()*2-1)*Math.pow(1-p,1.6);}var src=ac.createBufferSource();src.buffer=buf;var bp=ac.createBiquadFilter();bp.type='bandpass';bp.Q.value=.8;bp.frequency.setValueAtTime(950,t);bp.frequency.exponentialRampToValueAtTime(340,t+dur);var hp=ac.createBiquadFilter();hp.type='highpass';hp.frequency.value=240;var g=ac.createGain();g.gain.setValueAtTime(vol||.5,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);src.connect(bp);bp.connect(hp);hp.connect(g);g.connect(ac.destination);src.start(t);}catch(e){}}
+/* ---- shoe: 6 decks, reshuffle under 75 (solo table rules) ---- */
+var RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],SUITS=['♠','♥','♦','♣'],shoe=[];
+function buildShoe(){shoe=[];for(var d=0;d<6;d++)for(var s=0;s<4;s++)for(var r=0;r<13;r++)shoe.push({r:RANKS[r],s:SUITS[s]});for(var i=shoe.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=shoe[i];shoe[i]=shoe[j];shoe[j]=t;}}
+buildShoe();
+function draw(){if(shoe.length<75){buildShoe();setMsg('Shuffling a fresh shoe…');}return shoe.pop();}
+function handValue(cards){var t=0,a=0,i,v;for(i=0;i<cards.length;i++){v=cards[i].r;if(v==='A'){a++;t+=11;}else if(v==='K'||v==='Q'||v==='J')t+=10;else t+=parseInt(v,10);}while(t>21&&a>0){t-=10;a--;}return{total:t,soft:a>0,bust:t>21};}
+function isBJ(cards){return cards.length===2&&handValue(cards).total===21;}
+function cardEl(c,faceDown,small){var d=document.createElement('div');d.className='card dealt'+(small?' small':'')+(faceDown?' back':'')+((c.s==='♥'||c.s==='♦')&&!faceDown?' red':'');var r=document.createElement('span');r.textContent=faceDown?'':c.r;var s=document.createElement('span');s.className='suit';s.textContent=faceDown?'':c.s;d.appendChild(r);d.appendChild(s);return d;}
+/* ---- seats ---- */
+function Seat(handId,totalId,betId,statusId,small){return{ cards:[],bet:0,elHand:$(handId),elTotal:$(totalId),elBet:$(betId),elStatus:$(statusId),small:!!small,done:false,bj:false };}
+var hero=Seat('handH','totalH','betH','statusH',false);
+var botL=Seat('handL','totalL','betL','statusL',true);
+var botR=Seat('handR','totalR','betR','statusR',true);
+var dealer={cards:[],elHand:$('dealerHand'),elTotal:$('dealerTotal')};
+var seats=[botL,hero,botR];
+var phase='bet',heroBet=0,acted=false;
+function renderSeat(st,hideHole){st.elHand.innerHTML='';st.cards.forEach(function(c,i){st.elHand.appendChild(cardEl(c,hideHole&&i===1,st.small));});var v=handValue(st.cards);if(st.cards.length&&!(hideHole&&st===dealerSeat())){st.elTotal.style.visibility='visible';st.elTotal.textContent=v.total+(v.bust?' BUST':'');st.elTotal.classList.toggle('bust',v.bust);st.elTotal.classList.toggle('bj',isBJ(st.cards));}else if(st.cards.length){st.elTotal.style.visibility='visible';st.elTotal.textContent=handValue([st.cards[0]]).total;st.elTotal.classList.remove('bust','bj');}else{st.elTotal.style.visibility='hidden';}
+  st.elBet.textContent=st.bet>0?st.bet:(st===hero?(heroBet>0?heroBet:'BET'):'—');st.elBet.classList.toggle('on',st.bet>0||(st===hero&&heroBet>0));}
+function dealerSeat(){return dealer;}
+function renderDealer(hideHole){dealer.elHand.innerHTML='';dealer.cards.forEach(function(c,i){dealer.elHand.appendChild(cardEl(c,hideHole&&i===1,false));});if(!dealer.cards.length){dealer.elTotal.style.visibility='hidden';return;}dealer.elTotal.style.visibility='visible';if(hideHole){dealer.elTotal.textContent=handValue([dealer.cards[0]]).total;dealer.elTotal.classList.remove('bust','bj');}else{var v=handValue(dealer.cards);dealer.elTotal.textContent=v.total+(v.bust?' BUST':'');dealer.elTotal.classList.toggle('bust',v.bust);dealer.elTotal.classList.toggle('bj',isBJ(dealer.cards));}}
+function renderAll(hideHole){seats.forEach(function(st){renderSeat(st,false);});renderDealer(hideHole);}
+function setStatus(st,text,cls){st.elStatus.textContent=text;st.elStatus.className='p-status'+(cls?' '+cls:'');}
+function setMsg(t,cls){var m=$('msg');m.textContent=t;m.className='msg'+(cls?' '+cls:'');}
+function showBetRow(){$('betRow').classList.remove('hidden');$('playRow').classList.add('hidden');}
+function showPlayRow(){$('betRow').classList.add('hidden');$('playRow').classList.remove('hidden');$('doubleBtn').disabled=!( !acted && balance>=heroBet );}
+function dealTo(st,faceDown){var c=draw();st.cards.push(c);softFlick(.45);renderAll(true);return c;}
+/* ---- betting ---- */
+$('chipRow').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b||phase!=='bet')return;var v=+b.getAttribute('data-v');if(heroBet+v>balance){setMsg('Not enough balance for that chip.','lose');return;}heroBet+=v;sfx('chip-clack',.55);setMsg('Bet '+heroBet+' — tap DEAL when ready.');renderSeat(hero,false);});
+$('clearBet').addEventListener('click',function(){if(phase!=='bet')return;heroBet=0;sfx('chip-slide',.4);setMsg('Bet cleared. Tap chips to place your bet.');renderSeat(hero,false);});
+function resetTable(){seats.forEach(function(st){st.cards=[];st.bet=0;st.done=false;st.bj=false;setStatus(st,'','');});dealer.cards=[];heroBet=0;acted=false;renderAll(false);renderDealer(false);}
+$('dealBtn').addEventListener('click',function(){
+  if(phase!=='bet')return;
+  if(heroBet<MIN_BET){setMsg('Minimum bet is '+MIN_BET+'. Tap chips to place your bet.','lose');return;}
+  if(heroBet>balance){setMsg('Bet is more than your balance.','lose');return;}
+  balance-=heroBet;saveWallet();
+  hero.bet=heroBet;botL.bet=BOT_BET;botR.bet=BOT_BET;
+  seats.forEach(function(st){setStatus(st,'','');st.done=false;});
+  sfx('chip-clack',.6);setTimeout(function(){sfx('chip-clack',.5);},140);
+  phase='deal';setMsg('Dealing…');
+  var order=[hero,botL,botR,dealer,hero,botL,botR,dealer],step=0;
+  (function next(){if(step>=order.length){startPlay();return;}dealTo(order[step],false);step++;setTimeout(next,240);})();
+});
+function startPlay(){
+  phase='play';renderAll(true);
+  hero.bj=isBJ(hero.cards);botL.bj=isBJ(botL.cards);botR.bj=isBJ(botR.cards);
+  if(hero.bj){setStatus(hero,'BLACKJACK','push');setMsg('Blackjack! The table plays out…');hero.done=true;setTimeout(botsPlay,700);return;}
+  setMsg('Your hand: '+handValue(hero.cards).total+'. Hit, stand, or double.');
+  showPlayRow();
+}
+$('hitBtn').addEventListener('click',function(){if(phase!=='play'||hero.done)return;acted=true;$('doubleBtn').disabled=true;dealTo(hero,false);var v=handValue(hero.cards);if(v.bust){setStatus(hero,'BUST','lose');hero.done=true;setTimeout(botsPlay,650);}else if(v.total===21){hero.done=true;setTimeout(botsPlay,650);}else setMsg('Your hand: '+v.total+'.');});
+$('standBtn').addEventListener('click',function(){if(phase!=='play'||hero.done)return;hero.done=true;botsPlay();});
+$('doubleBtn').addEventListener('click',function(){if(phase!=='play'||hero.done||acted)return;if(balance<heroBet){setMsg('Not enough balance to double.','lose');return;}acted=true;balance-=heroBet;heroBet+=heroBet;hero.bet=heroBet;saveWallet();sfx('chip-clack',.55);dealTo(hero,false);hero.done=true;setMsg('Doubled to '+heroBet+'. One card — the table plays out…');setTimeout(botsPlay,700);});
+function botPlay(st,cb){(function step(){var v=handValue(st.cards);if(!st.bj&&v.total<17){dealTo(st,false);setTimeout(step,620);}else{st.done=true;if(v.bust)setStatus(st,'BUST','lose');cb();}})();}
+function botsPlay(){showBetRow();$('betRow').style.visibility='hidden';botPlay(botL,function(){botPlay(botR,function(){dealerPlay();});});}
+function dealerPlay(){
+  renderAll(false); /* reveal the hole card */
+  (function step(){var v=handValue(dealer.cards);if(v.total<17){dealTo(dealer,false);renderAll(false);setTimeout(step,650);}else settle();})();
+}
+function settleSeat(st){
+  var v=handValue(st.cards),dv=handValue(dealer.cards);
+  if(st.bj&&!isBJ(dealer.cards)){setStatus(st,'BLACKJACK · WINS','win');return 'bj';}
+  if(v.bust){setStatus(st,'BUST · LOSES','lose');return 'lose';}
+  if(dv.bust){setStatus(st,'WINS','win');return 'win';}
+  if(isBJ(dealer.cards)){setStatus(st,'DEALER BJ · LOSES','lose');return 'lose';}
+  if(v.total>dv.total){setStatus(st,'WINS','win');return 'win';}
+  if(v.total<dv.total){setStatus(st,'LOSES','lose');return 'lose';}
+  setStatus(st,'PUSH','push');return 'push';
+}
+function settle(){
+  phase='settle';renderAll(false);
+  var res={};seats.forEach(function(st){res[st===hero?'hero':(st===botL?'L':'R')]=settleSeat(st);});
+  var hr=res.hero,credit=0;
+  if(hr==='bj')credit=heroBet+Math.floor(heroBet*1.5);
+  else if(hr==='win')credit=heroBet*2;
+  else if(hr==='push')credit=heroBet;
+  if(credit>0){balance+=credit;saveWallet();sfx('chip-clack',.6);setTimeout(function(){sfx('chip-clack',.5);},160);}
+  if(hr==='bj')setMsg('Blackjack! You win '+Math.floor(heroBet*1.5)+' profit.','win');
+  else if(hr==='win')setMsg('You win '+heroBet+'! Dealer pays.','win');
+  else if(hr==='push')setMsg('Push — your bet comes back.','push');
+  else setMsg(handValue(hero.cards).bust?'Bust. The dealer takes it.':'Dealer has '+handValue(dealer.cards).total+'. The dealer takes it.','lose');
+  heroBet=0;seats.forEach(function(st){st.bet=0;});
+  setTimeout(function(){phase='bet';resetTable();$('betRow').style.visibility='';showBetRow();setMsg('Tap chips to place your next bet.');},2600);
+}
+$('backBtn').addEventListener('click',function(){
+  try{if(window.parent&&window.parent!==window&&window.parent.postMessage){window.parent.postMessage({type:'nikkiflixs-leave-room'},'*');}}catch(e){}
+  try{window.history.back();}catch(e){}
+});
+resetTable();
+window.__bj3p={get phase(){return phase;},get balance(){return balance;},get heroBet(){return heroBet;},hero:hero,botL:botL,botR:botR,dealer:dealer,placeBet:function(v){heroBet=v;renderSeat(hero,false);},deal:function(){$('dealBtn').click();},hit:function(){$('hitBtn').click();},stand:function(){$('standBtn').click();}};
+})();
+</script>
+</body>
+</html>

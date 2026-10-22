@@ -538,10 +538,10 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
 .square-table .table{left:12%;top:23%;width:76%;height:56%;border-radius:46px}
 .square-table .table::before{inset:15px;border-radius:34px}
 .square-table .table::after{inset:18px;border-radius:30px}
-.square-table .dealer-notch{position:absolute;left:50%;top:0;transform:translateX(-50%);width:150px;height:58px;z-index:6;pointer-events:none;text-align:center}
+.square-table .dealer-notch{position:absolute;left:auto;right:-14px;top:-12px;transform:rotate(40deg);width:150px;height:58px;z-index:6;pointer-events:none;text-align:center}
 .square-table .dealer-notch::before{content:"";position:absolute;left:50%;top:-31px;transform:translateX(-50%);width:176px;height:66px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#241207,#0a0505 72%);box-shadow:inset 0 -3px 0 #d9a54e,inset 0 -12px 16px #000,0 2px 4px #000a}
-.square-table .dealer-notch img{position:relative;top:2px;width:36px;height:36px;border-radius:50%;border:2px solid #e7c46a;object-fit:cover;object-position:top;box-shadow:0 3px 8px #000d}
-.square-table .dealer-notch span{position:relative;display:block;margin-top:0;font:800 8.5px "Barlow Condensed",sans-serif;letter-spacing:.34em;color:#f3d999;text-shadow:0 1px 3px #000}
+.square-table .dealer-notch img{position:relative;top:2px;width:36px;height:36px;border-radius:50%;border:2px solid #e7c46a;object-fit:cover;object-position:top;box-shadow:0 3px 8px #000d;transform:rotate(-40deg)}
+.square-table .dealer-notch span{position:relative;display:block;margin-top:0;font:800 8.5px "Barlow Condensed",sans-serif;letter-spacing:.34em;color:#f3d999;text-shadow:0 1px 3px #000;transform:rotate(-40deg)}
 .square-table .seat[data-view-slot="0"]{--x:50%!important;--y:88.5%!important;--kx:63%!important;--ky:73%!important}
 .square-table .seat[data-view-slot="1"]{--x:10%!important;--y:84%!important;--kx:25%!important;--ky:71%!important}
 .square-table .seat[data-view-slot="2"]{--x:10.5%!important;--y:50%!important;--kx:20%!important;--ky:50%!important}
@@ -616,7 +616,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 172</div>
+  <div class="build-stamp" id="buildStamp">BUILD 182</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -848,10 +848,12 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
         if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;if(sfxFile('chip-clack',.85))return;
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dc=sfxNoiseBuf.getChannelData(0);for(var j=0;j<dc.length;j++)dc[j]=(Math.random()*2-1)*(1-j/dc.length)}
         [0,.05,.11].forEach(function(off){
-          /* deep body knock — a real chip's low thock, not a ping */
-          var o=audio.createOscillator(),g2=audio.createGain();o.type='sine';o.frequency.setValueAtTime(215+Math.random()*45,now+off);o.frequency.exponentialRampToValueAtTime(118,now+off+.05);g2.gain.setValueAtTime(.17,now+off);g2.gain.exponentialRampToValueAtTime(.001,now+off+.065);o.connect(g2);g2.connect(audio.destination);o.start(now+off);o.stop(now+off+.075);
-          /* low clack — filtered noise burst under the knock */
-          var ns=audio.createBufferSource();ns.buffer=sfxNoiseBuf;var nf=audio.createBiquadFilter();nf.type='bandpass';nf.frequency.value=1050+Math.random()*300;nf.Q.value=.9;var ng=audio.createGain();ng.gain.setValueAtTime(.15,now+off);ng.gain.exponentialRampToValueAtTime(.001,now+off+.045);ns.connect(nf);nf.connect(ng);ng.connect(audio.destination);ns.start(now+off);
+          /* BUILD 182 ceramic fallback (same model as the BUILD 179 chip-clack sample):
+             quiet low clay thock + noise-excited inharmonic ring partials 2350/3300/4700 Hz */
+          var o=audio.createOscillator(),g2=audio.createGain();o.type='sine';o.frequency.setValueAtTime(215+Math.random()*45,now+off);o.frequency.exponentialRampToValueAtTime(118,now+off+.05);g2.gain.setValueAtTime(.11,now+off);g2.gain.exponentialRampToValueAtTime(.001,now+off+.06);o.connect(g2);g2.connect(audio.destination);o.start(now+off);o.stop(now+off+.07);
+          [2350,3300,4700].forEach(function(fp,pi){
+            var ns=audio.createBufferSource();ns.buffer=sfxNoiseBuf;ns.playbackRate.value=.9+Math.random()*.25;var nf=audio.createBiquadFilter();nf.type='bandpass';nf.frequency.value=fp+Math.random()*160-80;nf.Q.value=8;var ng=audio.createGain();ng.gain.setValueAtTime([.20,.14,.09][pi],now+off);ng.gain.exponentialRampToValueAtTime(.001,now+off+.028+pi*.012);ns.connect(nf);nf.connect(ng);ng.connect(audio.destination);ns.start(now+off);ns.stop(now+off+.09);
+          });
         });
       }else if(kind==='win'){
         [0,.06,.12,.19].forEach(function(off){var o=audio.createOscillator(),g3=audio.createGain();o.type='triangle';o.frequency.value=1250+off*4200;g3.gain.setValueAtTime(.08,now+off);g3.gain.exponentialRampToValueAtTime(.001,now+off+.055);o.connect(g3);g3.connect(audio.destination);o.start(now+off);o.stop(now+off+.065)});
@@ -925,6 +927,9 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
   var markerPositions=[['38%','68%'],['22%','66%'],['19%','46%'],['22%','32%'],['58%','32%'],['71%','32%'],['74%','46%'],['71%','66%']];
+  /* BUILD 182: square table — D/SB/BB pucks hug each seat's inside edge with their own lane
+     (cards / bet stack / puck never share a spot); oval-era spots floated mid-felt. */
+  if(document.querySelector('.table-room.square-table')){markerPositions=[['45%','72%'],['31%','61%'],['31%','39%'],['40%','33%'],['40%','26%'],['69%','33%'],['69%','39%'],['69%','61%']]}
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index]&&stacks[index]>0)return index}return after}
   function dealerIndex(){return dealerButton}
   function smallBlindIndex(){return nextEligible(dealerButton)}
@@ -968,12 +973,18 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   }
   /* BUILD 165: designed card faces. Paints an SVG pip layout / court panel / ace as the
      card's background image ONLY — textContent (bare rank), className and data-suit are set by
-     the existing paint sites and stay untouched (test contract). Backs are pure CSS below. */
+     the existing paint sites and stay untouched (test contract). Backs are pure CSS below.
+     BUILD 182: pips are drawn as VECTOR PATHS, not font glyphs — SVG-as-image cannot use the
+     page font, so every phone substituted its own system suit glyphs (wide, smeared ink that
+     differed per device). Paths render identical and true-proportioned everywhere. */
   var PIP_LAYOUTS={'2':[[50,20],[50,120,1]],'3':[[50,20],[50,70],[50,120,1]],'4':[[29,20],[71,20],[29,120,1],[71,120,1]],'5':[[29,20],[71,20],[50,70],[29,120,1],[71,120,1]],'6':[[29,20],[71,20],[29,70],[71,70],[29,120,1],[71,120,1]],'7':[[29,20],[71,20],[50,45],[29,70],[71,70],[29,120,1],[71,120,1]],'8':[[29,20],[71,20],[50,45],[29,70],[71,70],[50,95,1],[29,120,1],[71,120,1]],'9':[[29,20],[71,20],[29,52],[71,52],[50,70],[29,88,1],[71,88,1],[29,120,1],[71,120,1]],'10':[[29,20],[71,20],[50,36],[29,52],[71,52],[29,88,1],[71,88,1],[50,104,1],[29,120,1],[71,120,1]]};
+  var SUIT_PATHS={'\u2660':"M0,-38 C-3,-24 -30,-10 -30,10 C-30,24 -20,32 -10,32 C-3,32 1,27 0,19 C-1,27 3,32 10,32 C20,32 30,24 30,10 C30,-10 3,-24 0,-38 Z M0,13 C-1,25 -4,35 -9.5,44 L9.5,44 C4,35 1,25 0,13 Z",'\u2665':"M0,36 C-5,23 -34,7 -34,-13 C-34,-28 -23,-37 -12,-37 C-5,-37 0,-32 0,-27 C0,-32 5,-37 12,-37 C23,-37 34,-28 34,-13 C34,7 5,23 0,36 Z",'\u2666':"M0,-40 L25,0 L0,40 L-25,0 Z",'\u2663':"M-13.5,-15 A13.5,13.5 0 1,0 13.5,-15 A13.5,13.5 0 1,0 -13.5,-15 Z M-27,7 A13.5,13.5 0 1,0 0,7 A13.5,13.5 0 1,0 -27,7 Z M0,7 A13.5,13.5 0 1,0 27,7 A13.5,13.5 0 1,0 0,7 Z M-3,6 C-2,19 -4,30 -9.5,41 L9.5,41 C4,30 2,19 3,6 Z"};
+  var SUIT_SCALE={'\u2660':.30,'\u2665':.275,'\u2666':.30,'\u2663':.355};
+  function suitPip(suit,x,y,scale,flip){return "<path d='"+SUIT_PATHS[suit]+"' transform='translate("+x+" "+y+") rotate("+(flip?180:0)+") scale("+scale+")'/>"}
   function cardArtSVG(rank,suit){var red=(suit==='\u2665'||suit==='\u2666'),col=red?'#c20f25':'#17181c',o="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='xMidYMid meet'>";
-    if(rank==='A'){o+="<circle cx='50' cy='64' r='31' fill='none' stroke='#c9a227' stroke-width='1.6' opacity='.55'/><text x='50' y='66' font-size='88' text-anchor='middle' dominant-baseline='central' fill='"+col+"'>"+suit+"</text><text x='50' y='126' font-size='10' letter-spacing='2.5' text-anchor='middle' fill='#8a6d1f' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
-    else if(PIP_LAYOUTS[rank]){PIP_LAYOUTS[rank].forEach(function(p){o+="<text x='"+p[0]+"' y='"+p[1]+"' font-size='27' text-anchor='middle' dominant-baseline='central' fill='"+col+"'"+(p[2]?" transform='rotate(180 "+p[0]+" "+p[1]+")'":"")+">"+suit+"</text>"});o+="<text x='50' y='135' font-size='7.5' letter-spacing='1.4' text-anchor='middle' fill='"+col+"' opacity='.45' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
-    else{o+="<rect x='13' y='8' width='74' height='124' rx='9' fill='#fdf6e0' stroke='#b98a1e' stroke-width='1.8'/><rect x='18.5' y='13.5' width='63' height='113' rx='6' fill='none' stroke='#b98a1e' stroke-width='.8'/><text x='50' y='66' font-size='56' text-anchor='middle' dominant-baseline='central' fill='"+col+"' font-family='Georgia,serif' font-weight='700'>"+rank+"</text><text x='50' y='99' font-size='23' text-anchor='middle' dominant-baseline='central' fill='"+col+"'>"+suit+"</text><text x='50' y='120' font-size='8' letter-spacing='1.6' text-anchor='middle' fill='#8a6d1f' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
+    if(rank==='A'){o+="<circle cx='50' cy='64' r='31' fill='none' stroke='#c9a227' stroke-width='1.6' opacity='.55'/><g fill='"+col+"'>"+suitPip(suit,50,63,.82,0)+"</g><text x='50' y='126' font-size='10' letter-spacing='2.5' text-anchor='middle' fill='#8a6d1f' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
+    else if(PIP_LAYOUTS[rank]){o+="<g fill='"+col+"'>";PIP_LAYOUTS[rank].forEach(function(p){o+=suitPip(suit,p[0],p[1],SUIT_SCALE[suit],p[2]?1:0)});o+="</g><text x='50' y='135' font-size='7.5' letter-spacing='1.4' text-anchor='middle' fill='"+col+"' opacity='.45' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
+    else{o+="<rect x='13' y='8' width='74' height='124' rx='9' fill='#fdf6e0' stroke='#b98a1e' stroke-width='1.8'/><rect x='18.5' y='13.5' width='63' height='113' rx='6' fill='none' stroke='#b98a1e' stroke-width='.8'/><text x='50' y='66' font-size='56' text-anchor='middle' dominant-baseline='central' fill='"+col+"' font-family='Georgia,serif' font-weight='700'>"+rank+"</text><g fill='"+col+"'>"+suitPip(suit,50,97,SUIT_SCALE[suit]*.92,0)+"</g><text x='50' y='120' font-size='8' letter-spacing='1.6' text-anchor='middle' fill='#8a6d1f' font-family='Georgia,serif' font-weight='700'>NIKKIFLIXS</text>"}
     return o+'</svg>'}
   function paintCardFace(el,rank,suit){if(!el||!rank||!suit)return;el.setAttribute('data-rank',rank);el.style.backgroundImage='url("data:image/svg+xml,'+encodeURIComponent(cardArtSVG(rank,suit))+'"),linear-gradient(145deg,#fffdf6,#ece5d3)';el.style.backgroundSize='100% 100%,100% 100%';el.style.backgroundRepeat='no-repeat'}
   function clearCardFace(el){if(!el)return;el.removeAttribute('data-rank');el.style.backgroundImage='';el.style.backgroundSize='';el.style.backgroundRepeat=''}

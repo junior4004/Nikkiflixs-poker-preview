@@ -228,7 +228,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
     <div class="wallet" aria-label="Session gold coin balance"><span>SESSION COINS</span><strong id="galleryBalance">10,000</strong><span>GC</span></div>
   </div>
   <section class="machine-gallery" id="machineGallery" aria-labelledby="floorTitle">
-    <header class="lobby-hero"><div class="lobby-copy"><p class="eyebrow">Promise &middot; Poker Club</p><h1 id="floorTitle">Choose your machine</h1><p>Classic cabinets and modern bonus play. Tap a machine to take your seat.</p><p class="hero-line" id="heroLine" aria-live="polite"></p></div><div class="lobby-host" aria-label="Promise, your poker club host"><img src="assets/promise-avatar.webp" alt="Promise, your poker club host"></div></header>
+    <header class="lobby-hero"><div class="lobby-copy"><p class="eyebrow">Promise &middot; Poker Club</p><h1 id="floorTitle">Choose your machine</h1><p>The brand-new slot floor is through the gold doors. Video poker and the table games are right here.</p><p class="hero-line" id="heroLine" aria-live="polite"></p></div><div class="lobby-host" aria-label="Promise, your poker club host"><img src="assets/promise-avatar.webp" alt="Promise, your poker club host"></div></header>
     <nav class="machine-tabs" id="machineTabs" aria-label="Poker Club machines"></nav>
   </section>
   <section class="play-view hidden" id="playView">
@@ -288,7 +288,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
 <script>
 (function(){
   "use strict";
-  var balance=10000, betIndex=1, bets=[100,250,500,1000,2500,5000,10000], current="triple", spinning=false, soundOn=true, freeSpins=0, audioCtx=null, adminFreePlay=false;
+  var balance=10000, betIndex=1, bets=[100,250,500,1000,2500,5000,10000], current="poker", spinning=false, soundOn=true, freeSpins=0, audioCtx=null, adminFreePlay=false;
   window.addEventListener("message",function(event){if(event.data&&event.data.type==="nikkiflixs-admin-mode"){adminFreePlay=!!event.data.enabled;var note=document.querySelector(".session-note");if(note)note.textContent=adminFreePlay?"ADMIN · FREE PLAY · bets do not reduce your balance":"Play only · no cash value · balance resets with this session";}});
   /* CURTAIN RETURN FIX (staged 2026-10-20): returning visitors skip the intro.
      The flag lives in sessionStorage: it survives moving between rooms in
@@ -297,54 +297,15 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   function casinoIsReturn(){try{if(sessionStorage.getItem("nikkiflixs_casino_entered")==="1")return true;}catch(e){}try{var nav=(performance.getEntriesByType&&performance.getEntriesByType("navigation")[0])||null;if(nav&&nav.type==="back_forward")return true;if(performance.navigation&&performance.navigation.type===2)return true;}catch(e){}return false;}
   if(casinoIsReturn()){document.body.classList.add("intro-done");document.body.classList.remove("intro-active");}
   window.addEventListener("pageshow",function(ev){if(ev.persisted||casinoIsReturn()){document.body.classList.add("intro-done");document.body.classList.remove("intro-active");}});
-  var machineData={
-    triple:{title:"Triple Diamond",subtitle:"One line. Three diamonds. Forty times your bet.",rows:1,reels:3,
-      strips:["DIAMOND","BAR1","NF","CHERRY","BAR2","7R","BAR3","7B","7R","BAR1","NF","CHERRY","WILD","BAR2","7B"],
-      rules:"The center line is the only payline. Three matching premium symbols pay the listed multiplier. Any three BAR symbols pay 1×. The gold wild substitutes for any regular symbol. Three Nikkiflixs symbols award 10 free spins plus 5× your bet.",
-      pays:[["Three Diamonds","40× bet"],["Three Red 7s","25× bet"],["Three Triple BARs","12× bet"],["Any three 7s","8× bet"],["Three Double BARs","6× bet"],["Three Wilds","30× bet"],["Three Nikkiflixs + 10 free spins","5× bet"],["Three Single BARs","3× bet"],["Three Cherries","2× bet"],["Any three BARs","1× bet"]]},
-    sevens:{title:"Lucky Sevens",subtitle:"Red and blue — line up the lucky seven.",rows:1,reels:3,
-      strips:["7R","CHERRY","BAR1","NF","7B","BAR2","DIAMOND","7R","BAR2","CHERRY","NF","7B","BAR3","WILD","DIAMOND","7R"],
-      rules:"The center line is the only payline. Three red 7s are the top award. Any mixed set of three 7s pays 10×. The gold wild substitutes for any regular symbol. Three Nikkiflixs symbols award 10 free spins plus 5× your bet.",
-      pays:[["Three Red 7s","50× bet"],["Three Diamonds","30× bet"],["Three Blue 7s","25× bet"],["Any three 7s","10× bet"],["Three Nikkiflixs + 10 free spins","5× bet"],["Three Cherries","2× bet"]]},
-    nights:{title:"Nikkiflixs Nights",subtitle:"Five reels. Five lines. Three Nikkiflixs start 10 free spins.",rows:3,reels:5,
-      strips:["T|MOON","T|STAR","NF","T|COMET","T|NIGHT","WILD","T|MOON","T|STAR","T|COMET","NF","T|NIGHT","WILD","T|MOON","T|STAR","T|COMET"],
-      rules:"Five paylines are included: top, middle, bottom, V, and inverted V. Wins read left to right with at least three matching night-sky pictures; gold wilds substitute for every regular picture. Three or more Nikkiflixs symbols anywhere on a paid spin award 10 free spins and 5× your bet. Free spins cannot retrigger the bonus, so every bonus round ends after its 10 spins. Line awards add together.",
-      pays:[["Five matching night-sky pictures","20× bet"],["Five Wilds","30× bet"],["Four matching","10× bet"],["Three matching","4× bet"],["3+ Nikkiflixs anywhere + 10 free spins","5× bet"]]}
-  };
-  var themedMachines=[
-    ["martian","Martian Millions","MARTIAN|UFO|ROCKET|PLANET","Three strange worlds. One out-of-this-world jackpot."],
-    ["horror","Midnight Horror","CASTLE|MOON|BAT|CRYPT","A shadowy midnight reel with a monster-sized prize."],
-    ["candy","Candy Cash","LOLLIPOP|TAFFY|BONBON|CANDY","Sugar-bright symbols and a sweet jackpot."],
-    ["football","Football Fortune","FOOTBALL|HELMET|GOAL|FIELD","Drive down the field for a championship payout."],
-    ["baseball","Grand Slam Gold","BASEBALL|BAT|GLOVE|DIAMOND","Load the bases and swing for the jackpot."],
-    ["pirate","Pirate Treasure","SHIP|HAT|MAP|PIRATE","Sail with the captain and uncover the hidden fortune."],
-    ["western","Wild West Gold","BOOT|SHERIFF|SADDLE|CANYON","Ride into a frontier-sized jackpot."],
-    ["dragon","Dragon Fortune","DRAGON|FLAME|JADE|TEMPLE","Ancient treasure waits beyond the fire."],
-    ["pharaoh","Pharaoh's Gold","PHARAOH|SCARAB|PYRAMID|ANKH","Unearth the royal vault."],
-    ["arctic","Arctic Riches","POLAR|ICE|AURORA|SNOW","A frozen reel with a hot payout."],
-    ["jungle","Jungle Jackpot","TIGER|VINE|TEMPLE|GOLD","Deep-jungle symbols and a hidden fortune."],
-    ["ocean","Ocean Treasure","PEARL|ANCHOR|WAVE|CORAL","Dive for pearls and sunken gold."],
-    ["neon","Neon City","NEON|NIGHT|CITY|STAR","Bright lights and electric wins."],
-    ["rodeo","Rodeo Riches","BULL|BOOT|ROPE|BUCKLE","Eight seconds from a big payout."],
-    ["railroad","Golden Railroad","ENGINE|TRACK|WHISTLE|GOLD","Ride the rails to a golden station."],
-    ["horseshoe","Lucky Horseshoe","HORSESHOE|CLOVER|BELL|STAR","Classic luck in a polished cabinet."],
-    ["moon","Moonlight Magic","MOON|COMET|STAR|ORBIT","Chase a jackpot across the night sky."],
-    ["firehouse","Firehouse Fortune","ENGINE|HELMET|ALARM|LADDER","Sound the alarm for a red-hot win."],
-    ["royal","Royal Crown","CROWN|THRONE|SCEPTER|ROYAL","A regal reel with palace-sized prizes."],
-    ["shamrock","Shamrock Gold","SHAMROCK|HARP|POT|GOLD","Find the gold at the end of every reel."],
-    ["motor","Motor City","MOTOR|WHEEL|ROAD|TURBO","High-octane reels built for the fast lane."],
-    ["safari","Safari Spins","LION|ELEPHANT|SUN|SAVANNA","A wild ride across the golden plains."],
-    ["temple","Treasure Temple","IDOL|TEMPLE|TORCH|GEM","Match the ancient icons and open the vault."],
-    ["deluxe","Diamond Deluxe","DIAMOND|CROWN|GOLD|STAR","A polished classic with a brilliant top prize."]
-  ];
-  themedMachines.forEach(function(d){var tokens=d[2].split("|").map(function(x){return "T|"+x});machineData[d[0]]={title:d[1],subtitle:d[3],rows:1,reels:3,strips:[tokens[0],tokens[1],"WILD","NF",tokens[2],tokens[3],tokens[0],"WILD",tokens[1],"NF",tokens[2],tokens[3]],rules:"The center line is the only payline. Three matching theme pictures pay 20× your bet. The gold wild substitutes for any theme picture. Three Nikkiflixs symbols award 10 free spins plus 5× your bet.",pays:[["Three matching theme pictures","20× bet"],["Three wilds","30× bet"],["Two matching pictures + wild","20× bet"],["Three Nikkiflixs + 10 free spins","5× bet"]]};});
+  var machineData={};
   machineData.roulette={title:"Roulette",subtitle:"European wheel · single zero",rows:1,reels:1,type:"roulette",strips:[],rules:"Place your bet on red/black, odd/even, or a specific number, then spin the wheel. Straight number pays 35:1, red/black and odd/even pay 1:1.",pays:[["Straight number","35× bet"],["Red / Black","1× bet"],["Odd / Even","1× bet"],["1-18 / 19-36","1× bet"]]};
   machineData.craps={title:"Craps",subtitle:"Pass line · roll the dice",rows:1,reels:1,type:"craps",strips:[],rules:"Bet the pass line. Come-out roll: 7 or 11 wins, 2/3/12 loses. Any other number is the point — roll it again before 7 to win.",pays:[["Pass line win","1× bet"]]};
   machineData.blackjack={title:"Blackjack 21",subtitle:"Beat the dealer · pays 3:2",rows:1,reels:1,type:"blackjack",strips:[],rules:"Get closer to 21 than the dealer without going over. Blackjack pays 3:2. Dealer hits to 17.",pays:[["Blackjack","3:2"],["Win","1× bet"],["Push","Bet back"]]};
   machineData.poker={title:"Jacks or Better Video Poker",subtitle:"Deal five cards, hold what you want, then draw.",rows:1,reels:5,type:"poker",strips:[],rules:"Bet, deal five cards, tap any cards you want to hold, then draw once. Standard five-card hands pay exactly as listed below. NF and Wild cards are special cards, not substitutes: a hand with one or two NF cards pays nothing, regardless of its other cards; three or more NF cards pay 5× your bet and award 10 free deals. A hand with exactly one Wild pays 1× your bet, and a hand with exactly two Wilds pays 3× your bet; when a Wild is present, the machine uses that Wild award instead of evaluating the other cards as a standard poker hand.",pays:[["Royal flush","250× bet"],["Straight flush","50× bet"],["Four of a kind","25× bet"],["Full house","9× bet"],["Flush","6× bet"],["Straight","4× bet"],["Three of a kind","3× bet"],["Two pair","2× bet"],["Jacks or Better","1× bet"],["Exactly one Wild (special award)","1× bet"],["Exactly two Wilds (special award)","3× bet"],["Three or more NF + 10 free deals","5× bet"],["One or two NF cards","No win"]]};
+  machineData.slots={title:"The Slot Floor",subtitle:"Three brand-new machines \u2014 a classic 3-reel and two 5-reel 20-line games",rows:1,reels:3,type:"slots",strips:[],rules:"",pays:[]};
   var $=function(id){return document.getElementById(id)};
   var balanceEl=$("balance"),galleryBalanceEl=$("galleryBalance"),betEl=$("bet"),reelsEl=$("reels"),messageEl=$("message"),winEl=$("win"),spinBtn=$("spinBtn"),lever=$("lever"),toast=$("toast"),pokerPhase=0,pokerHand=[],held={};
-  function buildMachineGallery(){var order=["triple","sevens","nights","martian","horror","candy","football","baseball","poker","roulette","craps","blackjack","pirate","western","dragon","pharaoh","arctic","jungle","ocean","neon","rodeo","railroad","horseshoe","moon","firehouse","royal","shamrock","motor","safari","temple","deluxe"],tabs=$("machineTabs");tabs.innerHTML=order.map(function(id){var m=machineData[id],desc=m.type==="poker"?"5-card draw · hold and draw":(m.type==="roulette"?"European wheel · 35:1 straight":(m.type==="craps"?"Pass line · roll the dice":(m.type==="blackjack"?"Beat the dealer · 3:2 blackjack":(m.reels+" reels · Nikkiflixs bonus · 10 free spins"))));return '<button class="machine-tab" data-machine="'+id+'" aria-pressed="false"><img class="mini-cabinet-art" src="'+(id==="triple"?"assets/cabinet-diamonds.webp":"assets/cabinet-sevens.webp")+'" alt="'+m.title+' slot cabinet"><span><strong>'+m.title+'</strong><small>'+desc+'</small></span></button>';}).join("");}
+  function buildMachineGallery(){var order=["slots","poker","roulette","craps","blackjack"],tabs=$("machineTabs");tabs.innerHTML=order.map(function(id){var m=machineData[id],desc=id==="slots"?"3-reel classic \u00b7 5-reel 20-line \u00b7 free spins":(m.type==="poker"?"5-card draw \u00b7 hold and draw":(m.type==="roulette"?"European wheel \u00b7 35:1 straight":(m.type==="craps"?"Pass line \u00b7 roll the dice":"Beat the dealer \u00b7 3:2 blackjack")));return '<button class="machine-tab" data-machine="'+id+'" aria-pressed="false"><img class="mini-cabinet-art" src="'+(id==="slots"?"assets/cabinet-diamonds.webp":"assets/cabinet-sevens.webp")+'" alt="'+m.title+'"><span><strong>'+m.title+'</strong><small>'+desc+'</small></span></button>';}).join("");}
   function fairInt(max){
     if(max<=0) return 0;
     var range=4294967296, limit=range-(range%max), a=new Uint32Array(1), n;
@@ -353,81 +314,11 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   }
   function pick(strip){return strip[fairInt(strip.length)];}
   var __themeUID=0;
-  function themeTint(label){
-    if(/UFO|ROCKET|PLANET|ORBIT|COMET|MOON|STAR|NIGHT|AURORA|NEON/.test(label))return ["#2b4d75","#0c1626"];
-    if(/CASTLE|BAT|CRYPT|DRAGON|PHARAOH|SCARAB|ANKH|PYRAMID|TEMPLE|IDOL|MARTIAN/.test(label))return ["#4d2b3d","#1a0c13"];
-    if(/CANDY|LOLLIPOP|TAFFY|BONBON/.test(label))return ["#752b4d","#260d18"];
-    if(/FOOTBALL|BASEBALL|HELMET|GLOVE|GOAL|FIELD/.test(label))return ["#2b4d2e","#0d1a0f"];
-    if(/PIRATE|SHIP|HAT|MAP|PEARL|ANCHOR|WAVE|CORAL/.test(label))return ["#1f3d4d","#081419"];
-    if(/BOOT|SHERIFF|SADDLE|CANYON|RODEO|BULL|ROPE|BUCKLE|ENGINE|TRACK|WHISTLE|LADDER/.test(label))return ["#633d1f","#200f04"];
-    if(/POLAR|ICE|SNOW/.test(label))return ["#3d5f75","#0d1e29"];
-    if(/TIGER|VINE|LION|ELEPHANT|SUN|SAVANNA/.test(label))return ["#3d632b","#111f0b"];
-    if(/FLAME|TORCH|TURBO|ALARM/.test(label))return ["#632b1b","#1f0b05"];
-    if(/CROWN|THRONE|SCEPTER|ROYAL|GOLD|GEM|BUCKLE|HORSESHOE|CLOVER|BELL|SHAMROCK|HARP|POT|JADE/.test(label))return ["#4d3d1b","#1a1305"];
-    return ["#3b3b4d","#13131b"];
-  }
-  function themeIconSVG(label){
-    var imgMap={"STAR":["assets/reel-star.webp","Golden star"],"MOON":["assets/reel-moon.webp","Crescent moon"],"COMET":["assets/reel-comet.webp","Blazing comet"],"NIGHT":["assets/reel-moon.webp","Starry night"]};for(var k in imgMap){if(label.indexOf(k)>=0)return '<img class="symbol-art" src="'+imgMap[k][0]+'" alt="'+imgMap[k][1]+'">';}
-    var c1="#f7d26e",c2="#8f2518",c3="#16374b",line="#2a1607",x='';
-    if(/SHIP/.test(label))x='<path d="M14 58h72l-12 18H28z" fill="'+c3+'"/><path d="M48 17v42M50 22l27 17H51zM45 28L23 43h22z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/><path d="M20 80q30 12 60 0" fill="none" stroke="#4bb9d6" stroke-width="5"/>';
-    else if(/HAT/.test(label))x='<path d="M22 62q8-35 28-35t28 35q-28 16-56 0z" fill="#211512" stroke="'+c1+'" stroke-width="4"/><path d="M12 69q38 14 76 0" fill="none" stroke="'+c1+'" stroke-width="8"/><circle cx="50" cy="51" r="8" fill="#fff1c2"/><path d="M41 58l18-14M41 44l18 14" stroke="#fff1c2" stroke-width="4"/>';
-    else if(/MAP/.test(label))x='<path d="M18 20l22-8 20 9 22-8v65l-22 8-20-9-22 8z" fill="#e7c67a" stroke="'+line+'" stroke-width="4"/><path d="M40 14v62M60 22v62M29 61q16-29 40-8" fill="none" stroke="'+c2+'" stroke-width="4" stroke-dasharray="5 5"/><path d="M68 47l10 10m0-10L68 57" stroke="'+c2+'" stroke-width="5"/>';
-    else if(/PIRATE/.test(label))x='<circle cx="50" cy="48" r="27" fill="#efb27f" stroke="'+line+'" stroke-width="4"/><path d="M22 36q28-35 56 0z" fill="'+c2+'"/><path d="M30 42h30" stroke="#16100d" stroke-width="7"/><circle cx="38" cy="42" r="9" fill="#16100d"/><circle cx="65" cy="43" r="3"/><path d="M38 63q12 9 24 0" fill="none" stroke="'+line+'" stroke-width="4"/>';
-    else if(/UFO/.test(label))x='<ellipse cx="50" cy="58" rx="38" ry="13" fill="#89d5df" stroke="'+line+'" stroke-width="4"/><path d="M31 53q4-28 19-28t19 28" fill="#b6f5ff" stroke="'+line+'" stroke-width="4"/><circle cx="29" cy="61" r="4" fill="'+c1+'"/><circle cx="50" cy="65" r="4" fill="'+c1+'"/><circle cx="71" cy="61" r="4" fill="'+c1+'"/>';
-    else if(/ROCKET/.test(label))x='<path d="M50 12q24 20 10 55H40Q26 32 50 12z" fill="#e8e8df" stroke="'+line+'" stroke-width="4"/><circle cx="50" cy="39" r="8" fill="#58bed5"/><path d="M40 59L27 74l14-2M60 59l13 15-14-2M42 69l8 20 8-20" fill="'+c2+'" stroke="'+line+'" stroke-width="3"/>';
-    else if(/PLANET|ORBIT/.test(label))x='<circle cx="50" cy="50" r="23" fill="#5db8c7" stroke="'+line+'" stroke-width="4"/><ellipse cx="50" cy="50" rx="42" ry="13" fill="none" stroke="'+c1+'" stroke-width="7" transform="rotate(-18 50 50)"/>';
-    else if(/MOON|NIGHT/.test(label))x='<path d="M68 17q-29 10-23 38 6 23 31 22-14 17-36 8Q13 73 17 44 22 16 50 12z" fill="#f1d174" stroke="'+line+'" stroke-width="4"/>';
-    else if(/BAT/.test(label))x='<path d="M49 45q-13-19-35-10 8 7 6 20 13-7 26 12l4 13 4-13q13-19 26-12-2-13 6-20-22-9-35 10z" fill="#241421" stroke="'+c1+'" stroke-width="3"/>';
-    else if(/CASTLE|CRYPT|TEMPLE|PYRAMID|CITY|FIELD|GOAL|THRONE/.test(label))x='<path d="M16 78V39h13V24h14v15h14V18h14v21h13v39z" fill="'+c3+'" stroke="'+line+'" stroke-width="4"/><path d="M43 78V58q7-13 14 0v20" fill="'+c1+'"/><path d="M10 80h80" stroke="'+c1+'" stroke-width="5"/>';
-    else if(/LOLLIPOP/.test(label))x='<circle cx="46" cy="39" r="24" fill="#ed4a68" stroke="'+line+'" stroke-width="4"/><path d="M38 25q27 11 4 29q-18-12 4-29zM51 61l17 27" fill="none" stroke="#fff" stroke-width="6"/>';
-    else if(/TAFFY|BONBON|CANDY/.test(label))x='<path d="M28 36L9 23l6 24-6 24 19-12h44l19 12-6-24 6-24-19 13z" fill="#ef6b78" stroke="'+line+'" stroke-width="4"/><path d="M38 38h24v20H38z" fill="#fff1b5" transform="rotate(-12 50 48)"/>';
-    else if(/FOOTBALL/.test(label))x='<path d="M15 50q35-32 70 0-35 32-70 0z" fill="#9a4f20" stroke="'+line+'" stroke-width="4"/><path d="M38 39l24 22M39 55l17-17M44 60l17-17" stroke="#fff" stroke-width="4"/>';
-    else if(/BASEBALL/.test(label))x='<circle cx="50" cy="50" r="34" fill="#fff" stroke="'+line+'" stroke-width="4"/><path d="M27 26q15 24 0 48M73 26Q58 50 73 74" fill="none" stroke="#c62828" stroke-width="4" stroke-dasharray="4 4"/>';
-    else if(/HELMET/.test(label))x='<path d="M20 61q0-42 38-42 25 0 28 25H58v25H34z" fill="'+c2+'" stroke="'+line+'" stroke-width="4"/><path d="M58 44v23h25" fill="none" stroke="'+c1+'" stroke-width="5"/>';
-    else if(/GLOVE/.test(label))x='<path d="M33 75q-18-18-5-42 6-10 13 2l3-15q2-9 9-5l1 18 7-15q5-6 10 1l-4 22 9-7q8-4 10 5-6 28-25 40z" fill="#a95c2b" stroke="'+line+'" stroke-width="4"/>';
-    else if(/ANCHOR/.test(label))x='<circle cx="50" cy="20" r="9" fill="none" stroke="'+c1+'" stroke-width="6"/><path d="M50 29v49M25 44h50M17 61q6 25 33 25t33-25M17 61l3 16m63-16-3 16" fill="none" stroke="'+c3+'" stroke-width="7"/>';
-    else if(/BOOT/.test(label))x='<path d="M32 15h27l-5 46q12 11 34 11-3 18-28 16L21 72q15-3 16-13z" fill="#8c4d28" stroke="'+line+'" stroke-width="4"/><path d="M29 67l28 12" stroke="'+c1+'" stroke-width="4"/>';
-    else if(/SHERIFF|STAR/.test(label))x='<path d="M50 10l10 24 25-8-13 22 20 16-25 3-2 25-15-20-15 20-2-25-25-3 20-16-13-22 25 8z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/><circle cx="50" cy="51" r="12" fill="'+c2+'"/>';
-    else if(/SADDLE/.test(label))x='<path d="M18 58q13-32 33-17 18-17 31 8l-8 28H28z" fill="#8a4e2a" stroke="'+line+'" stroke-width="4"/><path d="M43 42q-2-24 12-24 10 0 7 20" fill="none" stroke="'+c1+'" stroke-width="6"/>';
-    else if(/CANYON|SAVANNA/.test(label))x='<path d="M8 79l18-35 13 18 18-43 15 38 11-16 10 38z" fill="#c56e31" stroke="'+line+'" stroke-width="4"/><circle cx="78" cy="25" r="10" fill="'+c1+'"/>';
-    else if(/DRAGON|TIGER|LION|POLAR|ELEPHANT|BULL|PHARAOH|IDOL|MARTIAN/.test(label))x='<path d="M24 36q4-24 26-24t26 24v28Q64 88 50 88T24 64z" fill="'+(/MARTIAN/.test(label)?'#68c779':/POLAR/.test(label)?'#eef6f6':/TIGER|LION/.test(label)?'#d98626':c1)+'" stroke="'+line+'" stroke-width="4"/><path d="M34 47h8m16 0h8" stroke="'+line+'" stroke-width="6"/><path d="M39 68q11 9 22 0" fill="none" stroke="'+line+'" stroke-width="4"/><path d="M25 38L14 20l21 8M75 38l11-18-21 8" fill="'+c2+'" stroke="'+line+'" stroke-width="3"/>';
-    else if(/FLAME|TORCH|AURORA|NEON|TURBO/.test(label))x='<path d="M50 10q9 19 3 31 15-8 18-20 18 28 7 50Q68 90 49 90 23 88 20 65q-2-19 16-37-1 23 11 28 8-16 3-46z" fill="#f0a128" stroke="'+c2+'" stroke-width="4"/><path d="M48 50q10 13 2 28-12-8-2-28z" fill="#fff17c"/>';
-    else if(/JADE|GOLD|PEARL|GEM|DIAMOND|BUCKLE|ROYAL/.test(label))x='<path d="M50 10l34 25-13 43-21 12-21-12-13-43z" fill="#63cdda" stroke="'+line+'" stroke-width="4"/><path d="M16 35h68M29 78l21-68 21 68M16 35l34 55 34-55" fill="none" stroke="#e9ffff" stroke-width="3"/>';
-    else if(/SCARAB/.test(label))x='<ellipse cx="50" cy="55" rx="18" ry="29" fill="#39a69b" stroke="'+line+'" stroke-width="4"/><path d="M50 27v56M31 44L14 31m17 28-20 4m58-19 17-13M69 59l20 4" stroke="'+c1+'" stroke-width="5"/><circle cx="50" cy="22" r="9" fill="'+c1+'"/>';
-    else if(/ANKH/.test(label))x='<ellipse cx="50" cy="28" rx="15" ry="19" fill="none" stroke="'+c1+'" stroke-width="8"/><path d="M50 47v42M29 62h42" stroke="'+c1+'" stroke-width="8"/>';
-    else if(/ICE|SNOW/.test(label))x='<path d="M50 8v84M14 29l72 42M14 71l72-42M50 8l-8 12m8-12 8 12M14 29l15 1m-15-1 7 13M14 71l15-1m-15 1 7-13M50 92l-8-12m8 12 8-12M86 71l-15-1m15 1-7-13M86 29l-15 1m15-1-7 13" stroke="#76d7f0" stroke-width="6"/>';
-    else if(/VINE|CORAL|ROPE|TRACK|LADDER|HARP/.test(label))x='<path d="M24 83q7-54 26-66 20 16 26 66M32 69h36M35 55h30M40 41h20" fill="none" stroke="'+(/CORAL/.test(label)?'#df6254':c1)+'" stroke-width="7"/><circle cx="26" cy="63" r="7" fill="#3f9d55"/><circle cx="72" cy="47" r="7" fill="#3f9d55"/>';
-    else if(/WAVE/.test(label))x='<path d="M7 67q20-38 44-11 18 19 42-7-8 34-39 38Q24 91 7 67z" fill="#4abbd3" stroke="'+c3+'" stroke-width="4"/><path d="M20 68q15-17 29-2" fill="none" stroke="#e7ffff" stroke-width="5"/>';
-    else if(/RODEO|HORSESHOE/.test(label))x='<path d="M25 17v37q0 29 25 29t25-29V17H61v36q0 15-11 15T39 53V17z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/><circle cx="32" cy="30" r="3"/><circle cx="68" cy="30" r="3"/>';
-    else if(/CLOVER|SHAMROCK/.test(label))x='<circle cx="38" cy="38" r="17" fill="#3b9d55" stroke="'+line+'" stroke-width="3"/><circle cx="62" cy="38" r="17" fill="#3b9d55" stroke="'+line+'" stroke-width="3"/><circle cx="38" cy="60" r="17" fill="#3b9d55" stroke="'+line+'" stroke-width="3"/><circle cx="62" cy="60" r="17" fill="#3b9d55" stroke="'+line+'" stroke-width="3"/><path d="M50 69v22" stroke="#27743c" stroke-width="7"/>';
-    else if(/BELL|ALARM|WHISTLE/.test(label))x='<path d="M24 67h52q-10-12-10-31 0-16-16-20-16 4-16 20 0 19-10 31z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/><circle cx="50" cy="76" r="8" fill="'+c2+'"/>';
-    else if(/COMET/.test(label))x='<path d="M10 77l38-31M19 88l36-32M18 61l30-24" stroke="#6bd4e8" stroke-width="7"/><circle cx="64" cy="37" r="23" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/>';
-    else if(/CROWN|SCEPTER/.test(label))x='<path d="M15 30l18 16 17-28 17 28 18-16-8 47H23z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/><path d="M23 64h54" stroke="'+c2+'" stroke-width="7"/><circle cx="50" cy="54" r="6" fill="#55c6df"/>';
-    else if(/POT/.test(label))x='<path d="M22 39h56l-8 39H30z" fill="#211711" stroke="'+c1+'" stroke-width="5"/><ellipse cx="50" cy="40" rx="29" ry="10" fill="'+c1+'"/><circle cx="40" cy="39" r="6" fill="#fff0a8"/><circle cx="56" cy="37" r="6" fill="#fff0a8"/>';
-    else if(/MOTOR|WHEEL|ROAD|ENGINE/.test(label))x='<circle cx="27" cy="70" r="15" fill="#232323" stroke="'+c1+'" stroke-width="4"/><circle cx="75" cy="70" r="15" fill="#232323" stroke="'+c1+'" stroke-width="4"/><path d="M28 70l18-30h20l10 30M46 40l18 30M38 52h34" fill="none" stroke="'+c2+'" stroke-width="7"/>';
-    else if(/SUN/.test(label))x='<circle cx="50" cy="50" r="23" fill="'+c1+'" stroke="'+c2+'" stroke-width="4"/><path d="M50 7v14m0 58v14M7 50h14m58 0h14M20 20l10 10m40 40 10 10m0-60L70 30M30 70 20 80" stroke="'+c1+'" stroke-width="7"/>';
-    else x='<path d="M50 10l12 27 29 3-22 19 7 29-26-15-26 15 7-29L9 40l29-3z" fill="'+c1+'" stroke="'+line+'" stroke-width="4"/>';
-    __themeUID++;var __u=__themeUID,__tint=themeTint(label);
-    var __svg='<svg viewBox="0 0 100 100" aria-hidden="true"><defs>'
-      +'<radialGradient id="tbg'+__u+'" cx="38%" cy="30%" r="85%"><stop offset="0%" stop-color="'+__tint[0]+'"/><stop offset="100%" stop-color="'+__tint[1]+'"/></radialGradient>'
-      +'<linearGradient id="tgd'+__u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff6d8"/><stop offset="35%" stop-color="#e8b84a"/><stop offset="65%" stop-color="#9a6a1e"/><stop offset="100%" stop-color="#f4d878"/></linearGradient>'
-      +'<radialGradient id="tsh'+__u+'" cx="35%" cy="26%" r="80%"><stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/><stop offset="55%" stop-color="#ffffff" stop-opacity="0"/></radialGradient>'
-      +'</defs><circle cx="50" cy="50" r="48" fill="url(#tbg'+__u+')"/><g>'+x+'</g>'
-      +'<circle cx="50" cy="50" r="48" fill="url(#tsh'+__u+')"/>'
-      +'<circle cx="50" cy="50" r="45.5" fill="none" stroke="url(#tgd'+__u+')" stroke-width="5"/>'
-      +'<circle cx="50" cy="50" r="48" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="2"/></svg>';
-    return '<span class="symbol theme premium" role="img" aria-label="'+label.toLowerCase().replace(/_/g," ")+'">'+__svg+'</span>';
-  }
   function wildSVG(){return '<img class="symbol-art" src="assets/reel-wild.webp" alt="Wild symbol">';}
   function symbolHTML(s){
-    var art={"DIAMOND":["assets/reel-diamond.webp","Diamond"],"CHERRY":["assets/reel-cherries.webp","Cherries"],"7R":["assets/reel-seven-red.webp","Red seven"],"7B":["assets/reel-seven-blue.webp","Blue seven"]};
-    if(s.indexOf("BAR")===0){var count=parseInt(s.slice(3),10)||1,blocks="";for(var b=0;b<count;b++)blocks+='<span class="bar-block">BAR</span>';return '<span class="symbol bar" role="img" aria-label="'+(count===1?'Single':count===2?'Double':'Triple')+' BAR">'+blocks+'</span>';}
     if(s==="NF")return '<span class="symbol nf" role="img" aria-label="Nikkiflixs bonus">NF<small>BONUS</small></span>';
     if(s==="WILD")return wildSVG();
-    if(s.indexOf("T|")===0)return themeIconSVG(s.slice(2));
-    if(s.indexOf("C|")===0){var parts=s.split("|");return '<span class="playing-card '+((parts[2]==="H"||parts[2]==="D")?'red':'black')+'"><b>'+parts[1]+'</b><i>'+({S:'♠',H:'♥',D:'♦',C:'♣'}[parts[2]])+'</i></span>';}
-    var item=art[s]||art.DIAMOND;
-    return '<img class="symbol-art" src="'+item[0]+'" alt="'+item[1]+'">';
+    var parts=s.split("|");return '<span class="playing-card '+((parts[2]==="H"||parts[2]==="D")?'red':'black')+'"><b>'+parts[1]+'</b><i>'+({S:'\u2660',H:'\u2665',D:'\u2666',C:'\u2663'}[parts[2]])+'</i></span>';
   }
   function buildCylinder(reel,targets,animate,c){
     var m=machineData[current],visible=m.rows,track=document.createElement("div"),symbols=[],travelCount=animate?(m.reels===3?25:22):visible;
@@ -458,46 +349,14 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   function randomGrid(){var m=machineData[current],g=[];if(m.type==="poker"){var deck=pokerDeck();for(var p=0;p<5;p++)g[p]=[deck[p]];return g;}for(var c=0;c<m.reels;c++){g[c]=[];for(var r=0;r<m.rows;r++)g[c].push(pick(m.strips));}return g;}
   function initialGrid(){var m=machineData[current],g=[];if(m.type==="poker"){var starter=["C|A|S","C|K|H","C|Q|D","C|J|C","C|10|S"];for(var p=0;p<5;p++)g[p]=[starter[p]];return g;}for(var c=0;c<m.reels;c++){g[c]=[];for(var r=0;r<m.rows;r++)g[c].push(m.strips[(c*3+r*2)%m.strips.length]);}return g;}
   function updateUI(){balanceEl.textContent=balance.toLocaleString();galleryBalanceEl.textContent=balance.toLocaleString();betEl.textContent=bets[betIndex];spinBtn.textContent=machineData[current].type==="poker"?(pokerPhase?"Draw":"Deal"):(freeSpins>0?"Free "+freeSpins:"Spin");$("betDown").disabled=spinning||pokerPhase===1||betIndex===0;$("betUp").disabled=spinning||pokerPhase===1||betIndex===bets.length-1;spinBtn.disabled=spinning;}
-  function selectMachine(id){if(spinning)return;current=id;freeSpins=0;pokerPhase=0;pokerHand=[];held={};document.querySelectorAll(".machine-tab").forEach(function(b){var on=b.dataset.machine===id;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on)});var m=machineData[id],cabinet=$("cabinetArt"),cabinetSrc=id==="triple"?"assets/cabinet-diamonds.webp":"assets/cabinet-sevens.webp";cabinet.src=cabinetSrc;cabinet.alt=m.title+" 3D slot machine cabinet";$("machineTitle").textContent=m.title;$("machineSubtitle").textContent=m.subtitle;$("payline").style.display=(m.rows===1&&m.type!=="poker")?"block":"none";messageEl.textContent=m.type==="poker"?"Choose your bet and deal.":"Choose your bet and spin.";winEl.textContent="0 GC";renderSymbols(initialGrid());updateUI();}
+  function selectMachine(id){if(spinning)return;current=id;freeSpins=0;pokerPhase=0;pokerHand=[];held={};document.querySelectorAll(".machine-tab").forEach(function(b){var on=b.dataset.machine===id;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on)});var m=machineData[id],cabinet=$("cabinetArt"),cabinetSrc=id==="__never__"?"assets/cabinet-diamonds.webp":"assets/cabinet-sevens.webp";cabinet.src=cabinetSrc;cabinet.alt=m.title+" 3D slot machine cabinet";$("machineTitle").textContent=m.title;$("machineSubtitle").textContent=m.subtitle;$("payline").style.display=(m.rows===1&&m.type!=="poker")?"block":"none";messageEl.textContent=m.type==="poker"?"Choose your bet and deal.":"Choose your bet and spin.";winEl.textContent="0 GC";renderSymbols(initialGrid());updateUI();}
   function tone(freq,dur,type,vol){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type||"sine";o.frequency.value=freq;g.gain.setValueAtTime(vol||.05,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur)}catch(e){}
-  }
-  function payoutClassic(grid){var a=grid.map(function(x){return x[0]}),m=current,mult=0,label="No win",wilds=a.filter(function(x){return x==="WILD"}).length,base=a.filter(function(x){return x!=="WILD"});
-    if(a.every(function(x){return x==="NF"})){freeSpins+=10;mult=5;label="Nikkiflixs bonus — 10 free spins"}
-    else if(wilds===3){mult=30;label="Triple wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0].indexOf("T|")===0){mult=20;label=base[0].slice(2)+" win with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="DIAMOND"){mult=m==="triple"?40:30;label="Diamond jackpot with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="7R"){mult=m==="triple"?25:50;label="Red sevens with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="7B"){mult=m==="sevens"?25:8;label="Blue sevens with wild"}
-    else if(base.length&&base.every(function(x){return x.charAt(0)==="7"})){mult=m==="sevens"?10:8;label="Mixed sevens with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="BAR3"){mult=12;label="Triple BAR line with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="BAR2"){mult=6;label="Double BAR line with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="BAR1"){mult=3;label="BAR line with wild"}
-    else if(base.length&&base.every(function(x){return x.indexOf("BAR")===0})){mult=1;label="Mixed BARs with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="CHERRY"){mult=2;label="Triple cherries with wild"}
-    else if(base.length&&base.every(function(x){return x===base[0]})&&base[0]==="BELL"){mult=8;label="Triple bells with wild"}
-    return {amount:mult*bets[betIndex],label:label};
-  }
-  function lineAward(vals){var target=null,count=0;
-    for(var i=0;i<vals.length;i++){if(vals[i]==="NF")break;if(vals[i]!=="WILD"&&!target)target=vals[i];if(vals[i]===target||vals[i]==="WILD"||(!target&&vals[i]==="WILD"))count++;else break;}
-    if(!target)target="WILD";if(count<3)return 0;var top=target==="WILD"?30:20,factor=count===5?1:count===4?.5:.2;return top*factor;
-  }
-  function payoutNights(grid,isFreeSpin){var lines=[[0,0,0,0,0],[1,1,1,1,1],[2,2,2,2,2],[0,1,2,1,0],[2,1,0,1,2]],total=0,wins=0;
-    lines.forEach(function(line){var vals=line.map(function(r,c){return grid[c][r]}),a=lineAward(vals);if(a>0){total+=a;wins++;}});
-    var scatters=0;grid.forEach(function(col){col.forEach(function(s){if(s==="NF")scatters++;})});if(scatters>=3&&!isFreeSpin){freeSpins=10;total+=5;return {amount:Math.floor(total*bets[betIndex]),label:"Nikkiflixs bonus — 10 free spins"};}
-    return {amount:Math.floor(total*bets[betIndex]),label:wins?wins+" winning line"+(wins>1?"s":""):"No win"};
   }
   function confetti(){var p=$("particles");p.innerHTML="";for(var i=0;i<28;i++){var e=document.createElement("i");e.className="particle";e.style.left=fairInt(100)+"%";e.style.setProperty("--x",(fairInt(80)-40)+"px");e.style.setProperty("--x2",(fairInt(240)-120)+"px");e.style.animationDelay=(fairInt(200)/1000)+"s";e.style.background=["#f1bc42","#cf2028","#2ba46f","#f7e7a9"][fairInt(4)];p.appendChild(e);}setTimeout(function(){p.innerHTML=""},1500)}
   function showToast(txt){toast.textContent=txt;toast.classList.add("show");clearTimeout(showToast.t);showToast.t=setTimeout(function(){toast.classList.remove("show")},2600)}
   function pokerAward(grid){var cards=grid.map(function(x){return x[0]}),bonus=cards.filter(function(x){return x==="NF"}).length,wilds=cards.filter(function(x){return x==="WILD"}).length;if(bonus>=3){freeSpins+=10;return {amount:bets[betIndex]*5,label:"Nikkiflixs bonus — 10 free deals"};}if(bonus)return {amount:0,label:"No win"};if(wilds)return {amount:bets[betIndex]*(wilds>1?3:1),label:wilds>1?"Wild three of a kind":"Wild pair"};var ranks=cards.map(function(x){return x.split("|")[1]}),suits=cards.map(function(x){return x.split("|")[2]}),values=ranks.map(function(r){return ({J:11,Q:12,K:13,A:14}[r]||+r)}).sort(function(a,b){return a-b}),counts={};values.forEach(function(v){counts[v]=(counts[v]||0)+1});var groups=Object.keys(counts).map(function(k){return counts[k]}).sort(function(a,b){return b-a}),flush=suits.every(function(s){return s===suits[0]}),straight=(values[4]-values[0]===4&&new Set(values).size===5)||values.join(",")==="2,3,4,5,14",mult=0,label="No win";if(straight&&flush&&values[0]===10){mult=250;label="Royal flush"}else if(straight&&flush){mult=50;label="Straight flush"}else if(groups[0]===4){mult=25;label="Four of a kind"}else if(groups[0]===3&&groups[1]===2){mult=9;label="Full house"}else if(flush){mult=6;label="Flush"}else if(straight){mult=4;label="Straight"}else if(groups[0]===3){mult=3;label="Three of a kind"}else if(groups[0]===2&&groups[1]===2){mult=2;label="Two pair"}else if(groups[0]===2){var pair=+Object.keys(counts).filter(function(k){return counts[k]===2})[0];if(pair>=11){mult=1;label="Jacks or Better"}}return {amount:mult*bets[betIndex],label:label};}
   function spinPoker(){var wager=bets[betIndex];if(pokerPhase===0){var isFree=freeSpins>0;if(!isFree&&balance<wager){showToast("Not enough session coins for that bet.");return;}if(isFree)freeSpins--;else if(!adminFreePlay)balance-=wager;held={};pokerHand=randomGrid();spinning=true;winEl.textContent="—";messageEl.textContent="Dealing five cards";updateUI();buildSpinTracks(pokerHand);setTimeout(function(){renderSymbols(pokerHand);spinning=false;pokerPhase=1;messageEl.textContent="Tap cards to hold, then press Draw";updateUI()},3600);return;}var deck=pokerDeck().filter(function(card){return !pokerHand.some(function(col,i){return held[i]&&col[0]===card})}),next=0,newHand=pokerHand.map(function(col,i){return held[i]?col:[deck[next++]]});spinning=true;messageEl.textContent="Drawing new cards";updateUI();buildSpinTracks(newHand,true);setTimeout(function(){pokerHand=newHand;held={};renderSymbols(pokerHand);var out=pokerAward(pokerHand);balance+=out.amount;spinning=false;pokerPhase=0;messageEl.textContent=out.label+(freeSpins>0?" · "+freeSpins+" free deals left":"");winEl.textContent=out.amount.toLocaleString()+" GC";if(out.amount>0){confetti();tone(440,.2,"triangle",.06)}else tone(90,.22,"sine",.04);updateUI()},3600);}
-  function spin(){if(spinning)return;if(machineData[current].type==="poker"){spinPoker();return;}var wager=bets[betIndex],isFree=freeSpins>0;if(!isFree&&balance<wager){showToast("Not enough session coins for that bet.");return;}spinning=true;if(isFree)freeSpins--;else if(!adminFreePlay)balance-=wager;winEl.textContent="—";messageEl.textContent=isFree?"Free spin — reels rolling":"All reels rolling";updateUI();tone(120,.12,"square",.035);
-    lever.classList.remove("pulled");void lever.offsetWidth;lever.classList.add("pulled");
-    var grid=randomGrid(),m=machineData[current],finishAt=(m.reels===3?1850:1700)+(m.reels-1)*(m.reels===3?620:360)+350;
-    buildSpinTracks(grid);
-    setTimeout(function(){
-      var out=current==="nights"?payoutNights(grid,isFree):payoutClassic(grid);balance+=out.amount;renderSymbols(grid);spinning=false;messageEl.textContent=out.label+(freeSpins>0?" · "+freeSpins+" free left":"");winEl.textContent=out.amount.toLocaleString()+" GC";if(out.amount>0){confetti();tone(440,.2,"triangle",.06);setTimeout(function(){tone(660,.25,"triangle",.05)},110)}else tone(90,.22,"sine",.04);updateUI();
-    },finishAt);
-  }
+  function spin(){if(spinning)return;spinPoker();}
   function openRules(){var m=machineData[current];$("modalTitle").textContent=m.title+" paytable";$("rulesCopy").textContent=m.rules;$("payoutBody").innerHTML=m.pays.map(function(p){return "<tr><td>"+p[0]+"</td><td>"+p[1]+"</td></tr>"}).join("");$("modal").classList.add("open");$("closeModal").focus();}
   function closeRules(){$("modal").classList.remove("open");$("rulesBtn").focus();}
   buildMachineGallery();
@@ -525,7 +384,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   $("backMachines").addEventListener("click",function(){$("machineMenu").hidden=true;$("machineMenuButton").setAttribute("aria-expanded","false");$("playView").classList.add("hidden");$("machineGallery").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");window.scrollTo(0,0)});
   $("backLobbyMachine").addEventListener("click",function(){$("machineMenu").hidden=true;$("machineMenuButton").setAttribute("aria-expanded","false");$("casinoRoom").classList.add("hidden");$("lobbyScene").classList.remove("hidden");$("casinoRoom").classList.remove("machine-mode");document.body.classList.remove("machine-active");document.body.classList.add("intro-done");window.scrollTo(0,0)});
   setTimeout(function(){markCasinoEntered()},15100);
-  enterCasino();selectMachine("triple");document.querySelectorAll(".machine-tab").forEach(function(b){b.classList.remove("active");b.setAttribute("aria-pressed","false")});
+  enterCasino();selectMachine("poker");document.querySelectorAll(".machine-tab").forEach(function(b){b.classList.remove("active");b.setAttribute("aria-pressed","false")});
 
   // === TABLE GAMES: Roulette, Craps, Blackjack ===
   var tableGames={roulette:null,craps:null,blackjack:null};
@@ -710,6 +569,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   // v13: table-game routing for selectMachine (host pick line lives in the tab click handler)
   var origSelectMachine = selectMachine;
   selectMachine = function(id){
+    if(id==='slots'){window.location.href='slots.html';return;}
     var m=machineData[id];
     if(m.type==='roulette'||m.type==='craps'||m.type==='blackjack'){
       current=id;
@@ -802,15 +662,6 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   "use strict";
   var __MUS_SCALES={major:[0,2,4,5,7,9,11],minor:[0,2,3,5,7,8,10],penta:[0,2,4,7,9],phryg:[0,1,3,5,7,8,10],dor:[0,2,3,5,7,9,10],hmin:[0,2,3,5,7,8,11]};
   var __MUS_MOODS={
-    triple:["major",48,"triangle",4200],sevens:["major",50,"triangle",4000],nights:["minor",45,"sine",5200],
-    martian:["phryg",47,"sawtooth",3600],horror:["minor",38,"sine",6000],candy:["major",55,"triangle",3400],
-    football:["major",48,"square",3200],baseball:["major",48,"triangle",3600],pirate:["dor",45,"triangle",4200],
-    western:["penta",48,"triangle",3400],dragon:["hmin",44,"sine",4800],pharaoh:["phryg",44,"sine",4800],
-    arctic:["major",52,"sine",5600],jungle:["penta",46,"triangle",3800],ocean:["major",47,"sine",5000],
-    neon:["minor",45,"sawtooth",3200],rodeo:["penta",48,"square",3400],railroad:["major",47,"triangle",3200],
-    horseshoe:["major",53,"triangle",3800],moon:["minor",50,"sine",5400],firehouse:["major",48,"square",3000],
-    royal:["major",48,"triangle",4400],shamrock:["penta",50,"triangle",3400],motor:["minor",43,"sawtooth",3000],
-    safari:["penta",46,"triangle",4000],temple:["hmin",44,"sine",5000],deluxe:["major",48,"triangle",4200],
     poker:["major",48,"triangle",4600],roulette:["minor",45,"sine",4800],craps:["major",50,"square",3400],blackjack:["dor",47,"triangle",4400]
   };
   var M={timer:null,gain:null,ctx:null,id:null};
@@ -851,7 +702,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
     stopThemeMusic();
     if(!window.__musicUnlocked||muted())return;
     var c=ctx();if(!c)return;
-    var mood=__MUS_MOODS[id]||__MUS_MOODS.triple;
+    var mood=__MUS_MOODS[id]||__MUS_MOODS.poker;
     var scale=__MUS_SCALES[mood[0]],root=mood[1],wave=mood[2],barDur=mood[3]/1000;
     try{
       var master=c.createGain();master.gain.value=0.0;
@@ -900,7 +751,7 @@ body.intro-done .room-choices{animation:none!important;transform:translateX(-50%
   var sb=document.getElementById("soundBtn");
   if(sb)sb.addEventListener("click",function(){
     var on=this.textContent.indexOf("Volume on")>=0;
-    if(on){var act=document.querySelector(".machine-tab.active");window.startThemeMusic(act?act.dataset.machine:"triple");}
+    if(on){var act=document.querySelector(".machine-tab.active");window.startThemeMusic(act?act.dataset.machine:"poker");}
     else window.stopThemeMusic();
   });
   /* mount the lever on the cabinet's right edge (separated from the spin button) */

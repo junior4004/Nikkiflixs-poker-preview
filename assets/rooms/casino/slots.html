@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>The Slot Floor — Nikkiflixs Poker Club</title>
+<meta name="description" content="The Nikkiflixs slot floor: a classic 3-reel single-line machine and two modern 5-reel 20-line machines. Real illustrated art, printed paytables, free spins. Gold coins, no cash value.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#f0d488; --gold-hi:#fff3c4; --gold-deep:#9a6a1e; --crimson:#8f1d2c; --crimson-deep:#4d0a16;
+    --ink:#f5eedd; --panel:#12100c; --line:rgba(240,212,136,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Source Sans 3",sans-serif;color:var(--ink);min-height:100dvh;overflow-x:hidden;
+    background:
+      radial-gradient(1100px 500px at 50% -8%, rgba(143,29,44,.34), transparent 62%),
+      radial-gradient(800px 420px at 85% 110%, rgba(154,106,30,.20), transparent 60%),
+      linear-gradient(180deg,#0a0906,#050403 60%,#020202);
+  }
+  button{font-family:inherit;cursor:pointer}
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ===== header ===== */
+  .floor-head{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:10px 12px;
+    background:linear-gradient(180deg,rgba(10,8,5,.97),rgba(10,8,5,.88));border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+  .back-btn{min-height:44px;padding:9px 12px;font-size:14px;white-space:nowrap;flex:none;border:1px solid var(--line);background:#171310;color:var(--ink);font-weight:700;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center}
+  .floor-title{font:800 clamp(18px,5.6vw,24px)/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;white-space:nowrap}
+  .floor-title small{display:block;font:600 10px/1.2 "Source Sans 3";letter-spacing:.3em;color:#c9bba5}
+  .head-spacer{flex:1}
+  .wallet-pill{display:flex;align-items:baseline;gap:6px;padding:7px 12px;border:1px solid #7e5d28;border-radius:999px;background:#070b0c;min-height:44px;align-items:center}
+  .wallet-pill small{font-size:9px;letter-spacing:.14em;color:#c9bba5;font-weight:700}
+  .wallet-pill strong{font:800 20px/1 "Barlow Condensed";color:var(--gold);font-variant-numeric:tabular-nums}
+  .wallet-pill span{font-size:10px;color:#c9bba5}
+  .icon-btn{min-width:44px;min-height:44px;font-size:11px;letter-spacing:.05em;white-space:nowrap;padding:0 9px;flex:none;border:1px solid var(--line);background:#171310;color:var(--gold);border-radius:8px;font-weight:700}
+
+  /* ===== machine switcher ===== */
+  .switcher{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:1060px;margin:14px auto 0;padding:0 12px}
+  .m-tab{position:relative;border:1px solid var(--line);border-radius:12px;padding:10px 8px 9px;background:linear-gradient(180deg,#1a1409,#0c0a06);color:var(--ink);text-align:center;min-height:104px;transition:border-color .15s, box-shadow .15s}
+  .m-tab .thumb{height:46px;display:grid;place-items:center}
+  .m-tab .thumb svg{height:46px;width:46px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+  .m-tab strong{display:block;font:800 17px/1.05 "Barlow Condensed";letter-spacing:.06em;text-transform:uppercase;margin-top:5px}
+  .m-tab small{display:block;font-size:10.5px;color:#c9bba5;margin-top:2px;letter-spacing:.04em}
+  .m-tab[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 2px rgba(240,212,136,.35),0 10px 28px rgba(0,0,0,.55)}
+  .m-tab .tag{position:absolute;top:6px;right:6px;font:700 8.5px/1 "Source Sans 3";letter-spacing:.14em;color:#1e1003;background:linear-gradient(180deg,var(--gold-hi),var(--gold));padding:3px 6px;border-radius:4px}
+
+  /* ===== stage / cabinet ===== */
+  .stage{max-width:1060px;margin:12px auto 34px;padding:0 12px;display:flex;justify-content:center}
+  .cabinet{position:relative;width:min(100%,560px);border-radius:22px;padding:14px 14px 16px;
+    background:linear-gradient(165deg,#3d0d18 0%,#6d1220 30%,#8f1d2c 52%,#5c0e1c 78%,#2c060f 100%);
+    border:1px solid #d8ab54;box-shadow:0 30px 70px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,240,190,.5),inset 0 -14px 30px rgba(0,0,0,.45)}
+  .cabinet.theme-neon{background:linear-gradient(165deg,#0b1030 0%,#17235c 34%,#232a6e 55%,#10173f 80%,#05071a 100%);border-color:#5f7cff}
+  .cabinet.theme-crimson{background:linear-gradient(165deg,#2a0208 0%,#57060f 32%,#7d0a18 55%,#43030b 80%,#180106 100%);border-color:#c8953f}
+  .marquee{position:relative;text-align:center;padding:16px 40px 12px;border-radius:14px;margin-bottom:12px;
+    background:linear-gradient(180deg,#fff6d8,#f3d98b 55%,#dfb95e);color:#33190a;box-shadow:inset 0 -6px 14px rgba(146,96,16,.45),inset 0 2px 0 #fffdf2,0 4px 10px rgba(0,0,0,.4)}
+  .theme-neon .marquee{background:linear-gradient(180deg,#0e1440,#131c5e 60%,#0a0f38);color:#bfe9ff;box-shadow:inset 0 0 22px rgba(64,140,255,.55),inset 0 2px 0 rgba(160,220,255,.5),0 4px 10px rgba(0,0,0,.5)}
+  .theme-crimson .marquee{background:linear-gradient(180deg,#f7e3ac,#e8c877 55%,#c69c3e);color:#2c040b}
+  .marquee .brand{font:700 10px/1 "Source Sans 3";letter-spacing:.34em;text-transform:uppercase;opacity:.75}
+  .marquee h1{font:800 clamp(30px,7vw,44px)/0.95 "Barlow Condensed";letter-spacing:.05em;text-transform:uppercase;margin:3px 0 2px}
+  .marquee p{margin:0;font:600 12.5px/1.25 "Source Sans 3";letter-spacing:.05em;opacity:.85}
+  .bulbs{position:absolute;inset:3px;pointer-events:none}
+  .bulbs i{position:absolute;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffbe8,#ffd968 55%,#c78f16);box-shadow:0 0 7px 2px rgba(255,205,80,.55)}
+  .bulbs.chase i{animation:bulbChase .7s steps(1) infinite}
+  .bulbs.chase i:nth-child(even){animation-delay:.35s}
+  @keyframes bulbChase{0%,49%{opacity:1}50%,100%{opacity:.25;box-shadow:none}}
+  .theme-neon .bulbs i{background:radial-gradient(circle at 35% 30%,#eafcff,#59c8ff 55%,#2060c7);box-shadow:0 0 8px 2px rgba(80,190,255,.6)}
+
+  .glass{border-radius:12px;padding:9px 12px;margin-bottom:12px;font-size:12.5px;line-height:1.5;
+    background:linear-gradient(180deg,rgba(255,248,224,.96),rgba(247,231,179,.92));color:#3a2408;border:1px solid #b98c34;box-shadow:inset 0 1px 0 #fffdf2, inset 0 -8px 16px rgba(146,96,16,.18)}
+  .theme-neon .glass{background:linear-gradient(180deg,rgba(10,16,52,.94),rgba(8,12,40,.94));color:#cfe9ff;border-color:#3f5fd0;box-shadow:inset 0 0 18px rgba(64,140,255,.25)}
+  .glass h2{font:800 13px/1 "Barlow Condensed";letter-spacing:.22em;text-transform:uppercase;margin:0 0 5px;color:#7c5410}
+  .theme-neon .glass h2{color:#7fd0ff}
+  .glass .cols{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}
+  .glass .row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted rgba(120,84,16,.35);padding:1px 0}
+  .theme-neon .glass .row{border-color:rgba(127,208,255,.25)}
+  .glass .row b{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .glass .fine{grid-column:1/-1;font-size:11px;opacity:.85;border:none}
+
+  .reel-frame{position:relative;border-radius:14px;padding:10px;background:linear-gradient(180deg,#241a08,#120d04);border:1px solid #d8ab54;box-shadow:inset 0 2px 0 rgba(255,240,190,.35), inset 0 10px 24px rgba(0,0,0,.8)}
+  .theme-neon .reel-frame{background:linear-gradient(180deg,#060a28,#03051a);border-color:#5f7cff}
+  .theme-crimson .reel-frame{background:linear-gradient(180deg,#1c050a,#0d0205);border-color:#c8953f}
+  .reels{display:flex;gap:8px}
+  .reel{position:relative;flex:1;overflow:hidden;border-radius:8px;background:linear-gradient(180deg,#fdf6dd,#fffdf4 18%,#f7ecc9 82%,#e9d9a8);box-shadow:inset 0 14px 18px rgba(90,60,5,.28),inset 0 -14px 18px rgba(90,60,5,.28),inset 2px 0 6px rgba(90,60,5,.18),inset -2px 0 6px rgba(90,60,5,.18)}
+  .theme-neon .reel{background:linear-gradient(180deg,#0a1038,#101a56 20%,#0a1038 80%,#05081f);box-shadow:inset 0 14px 18px rgba(0,0,10,.75),inset 0 -14px 18px rgba(0,0,10,.75)}
+  .theme-crimson .reel{background:linear-gradient(180deg,#f8ecd2,#fffaf0 18%,#f3e3c2 82%,#e2cb9c);box-shadow:inset 0 14px 18px rgba(80,10,10,.25),inset 0 -14px 18px rgba(80,10,10,.25)}
+  .reel-track{display:flex;flex-direction:column;will-change:transform}
+  .reel-track.blur{filter:blur(2.2px) saturate(1.15)}
+  .cell{display:grid;place-items:center;padding:4px}
+  .cell svg{width:100%;height:100%;max-width:104px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.30))}
+  .theme-neon .cell svg{filter:drop-shadow(0 0 7px rgba(90,180,255,.45)) drop-shadow(0 3px 3px rgba(0,0,0,.5))}
+  .cell.win-cell{animation:cellPulse .5s ease-in-out infinite alternate;border-radius:8px;background:radial-gradient(circle,rgba(255,216,106,.5),transparent 72%)}
+  @keyframes cellPulse{from{transform:scale(1)}to{transform:scale(1.07)}}
+  .payline-mark{position:absolute;left:0;right:0;top:50%;height:0;border-top:3px solid rgba(207,32,40,.85);transform:translateY(-50%);pointer-events:none;opacity:0;transition:opacity .2s}
+  .payline-mark::before,.payline-mark::after{content:"";position:absolute;top:-7px;border:6px solid transparent}
+  .payline-mark::before{left:2px;border-left-color:#cf2028}
+  .payline-mark::after{right:2px;border-right-color:#cf2028}
+  .show-line .payline-mark{opacity:1}
+  #lineOverlay{position:absolute;inset:10px;pointer-events:none;opacity:0;transition:opacity .25s}
+  #lineOverlay.on{opacity:1}
+  .fs-badge{position:absolute;top:-11px;right:12px;z-index:5;font:800 13px/1 "Barlow Condensed";letter-spacing:.12em;color:#1e1003;
+    background:linear-gradient(180deg,var(--gold-hi),#eec25e);border:1px solid #8a5f14;border-radius:999px;padding:6px 12px;box-shadow:0 6px 16px rgba(0,0,0,.5);display:none}
+  .fs-badge.on{display:block;animation:cellPulse .5s ease-in-out infinite alternate}
+
+  .coins{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+  .coins i{position:absolute;top:-26px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff6c8,#f0c94e 55%,#a87b1c);border:1.5px solid #8a5f14;box-shadow:inset 0 0 0 2.5px rgba(255,244,190,.65),0 2px 4px rgba(0,0,0,.4);animation:coinFall linear forwards}
+  @keyframes coinFall{to{transform:translateY(560px) rotate(560deg);opacity:.15}}
+
+  /* ===== console ===== */
+  .console{margin-top:12px;border-radius:14px;padding:12px;background:linear-gradient(180deg,rgba(8,6,3,.88),rgba(8,6,3,.96));border:1px solid rgba(240,212,136,.4);box-shadow:inset 0 1px 0 rgba(255,240,190,.18)}
+  .readout{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:30px;margin-bottom:10px}
+  .message{font:600 16px/1.25 "Barlow Condensed";letter-spacing:.05em;color:#ffe9ad}
+  .winbox{text-align:right}
+  .winbox small{display:block;font-size:9px;letter-spacing:.22em;color:#c9bba5;font-weight:700}
+  .winbox strong{font:800 26px/1 "Barlow Condensed";color:var(--gold);font-variant-numeric:tabular-nums}
+  .controls{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap}
+  .betbox{display:flex;align-items:center;gap:0;border:1px solid #7e5d28;border-radius:10px;overflow:hidden;background:#070b0c}
+  .betbox button{width:46px;min-height:52px;font-size:24px;background:#1b1712;color:var(--gold);border:none}
+  .betbox button:disabled{opacity:.35;cursor:default}
+  .betbox .betval{padding:2px 10px;text-align:center;min-width:86px}
+  .betbox .betval small{display:block;font-size:9px;letter-spacing:.16em;color:#c9bba5;font-weight:700}
+  .betbox .betval b{font:800 21px/1.05 "Barlow Condensed";color:#fff;font-variant-numeric:tabular-nums}
+  .betbox .betval i{display:block;font-style:normal;font-size:10px;color:#c9bba5;font-variant-numeric:tabular-nums}
+  .maxbet{min-height:52px;padding:0 14px;border:1px solid #7e5d28;border-radius:10px;background:#1b1712;color:var(--gold);font:800 14px/1 "Barlow Condensed";letter-spacing:.1em}
+  .maxbet:disabled{opacity:.35}
+  .balbox{flex:1;min-width:96px;text-align:center;border:1px solid #7e5d28;border-radius:10px;background:#070b0c;padding:4px 8px}
+  .balbox small{display:block;font-size:9px;letter-spacing:.18em;color:#c9bba5;font-weight:700}
+  .balbox strong{font:800 22px/1.1 "Barlow Condensed";color:var(--gold);font-variant-numeric:tabular-nums}
+  .spin-btn{flex:1.4;min-width:128px;min-height:56px;border:none;border-radius:12px;font:800 26px/1 "Barlow Condensed";letter-spacing:.14em;color:#2c1503;
+    background:linear-gradient(180deg,#fff0b3,#f3cd62 45%,#d99b26 80%,#b57a16);box-shadow:0 6px 0 #7c5410,0 12px 24px rgba(0,0,0,.55),inset 0 1px 0 #fffbe8;transition:transform .06s, box-shadow .06s}
+  .spin-btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #7c5410,0 6px 12px rgba(0,0,0,.5)}
+  .spin-btn:disabled{filter:grayscale(.45) brightness(.75);cursor:default}
+  .spin-btn.free{background:linear-gradient(180deg,#ffe9f4,#ff9ecf 45%,#e2549a 80%,#b52f74);box-shadow:0 6px 0 #7c1c4c,0 12px 24px rgba(0,0,0,.55);color:#38041e}
+  .subrow{display:flex;gap:9px;margin-top:10px}
+  .subrow button{flex:1;min-height:44px;border:1px solid var(--line);border-radius:9px;background:#171310;color:var(--ink);font-weight:700;font-size:13.5px}
+  .session-note{max-width:1060px;margin:0 auto;padding:0 12px 26px;font-size:12px;color:#a08c66;text-align:center}
+
+  /* lever (classic machine) */
+  .cabinet.has-lever{padding-right:58px}
+  .lever{position:absolute;right:3px;top:55%;transform:translateY(-50%);width:48px;height:205px;background:none;border:none;padding:0;z-index:7}
+  .lever .rail{position:absolute;right:14px;top:26px;width:9px;height:158px;border-radius:6px;background:linear-gradient(90deg,#5c4512,#c9a24a,#5c4512);box-shadow:0 2px 6px rgba(0,0,0,.6)}
+  .lever .stick{position:absolute;right:16px;top:20px;width:5px;height:86px;border-radius:3px;background:linear-gradient(90deg,#8a8f96,#e8ecf0,#8a8f96);transform-origin:50% 100%;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+  .lever .ball{position:absolute;right:6.5px;top:-8px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffb3ab,#cf2028 52%,#6d0416);box-shadow:0 3px 7px rgba(0,0,0,.55),inset 0 -3px 6px rgba(0,0,0,.4);transition:top .35s cubic-bezier(.3,1.6,.5,1)}
+  .lever .base{position:absolute;right:7px;bottom:6px;width:24px;height:20px;border-radius:5px;background:linear-gradient(180deg,#e8c877,#8a5f14);box-shadow:0 2px 5px rgba(0,0,0,.55)}
+  .lever .lbl{position:absolute;right:2px;bottom:-14px;font:700 9px/1 "Source Sans 3";letter-spacing:.18em;color:#e8d9ae}
+  .lever.pulled .stick{transform:rotate(38deg)}
+  .lever.pulled .ball{top:56px}
+  .lever:disabled{opacity:.45}
+
+  /* ===== paytable modal ===== */
+  .modal{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:rgba(2,2,2,.72);padding:14px}
+  .modal.open{display:grid}
+  .modal-card{width:min(560px,100%);max-height:88dvh;overflow:auto;border-radius:16px;background:linear-gradient(180deg,#1d1710,#100d08);border:1px solid var(--gold-deep);box-shadow:0 30px 80px rgba(0,0,0,.8);padding:18px}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .modal-head h2{font:800 26px/1 "Barlow Condensed";letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin:0}
+  .close-x{min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:9px;background:#171310;color:var(--ink);font-size:20px}
+  .rules-copy{font-size:13.5px;line-height:1.55;color:#e6d9bd}
+  .pay-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0}
+  .pay-grid .ph,.pay-grid .pc{padding:6px 4px;text-align:center;border-radius:7px;background:#0a0805;border:1px solid rgba(240,212,136,.22);font-variant-numeric:tabular-nums}
+  .pay-grid .ph{font:700 10px/1.2 "Source Sans 3";letter-spacing:.06em;color:#c9bba5}
+  .pay-grid .ph svg{width:34px;height:34px;display:block;margin:0 auto 3px}
+  .pay-grid .pc{font:800 15px/1.15 "Barlow Condensed";color:var(--gold)}
+  .pay-grid .pc small{display:block;font:600 9px/1 "Source Sans 3";color:#c9bba5;letter-spacing:.1em}
+  .pay-list{width:100%;border-collapse:collapse;font-size:14px}
+  .pay-list td{padding:6px 4px;border-bottom:1px solid rgba(240,212,136,.16)}
+  .pay-list td:last-child{text-align:right;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .line-diagrams{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:10px 0}
+  .line-diagrams figure{margin:0;text-align:center}
+  .line-diagrams svg{width:100%;background:#0a0805;border:1px solid rgba(240,212,136,.22);border-radius:6px}
+  .line-diagrams figcaption{font-size:10px;color:#c9bba5;margin-top:2px}
+
+  .toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:70;background:#1d1710;border:1px solid var(--gold-deep);color:var(--ink);
+    padding:11px 18px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;max-width:92vw;text-align:center}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:640px){
+    .switcher{grid-template-columns:repeat(3,1fr);gap:7px}
+    .m-tab{min-height:96px;padding:8px 4px}
+    .m-tab strong{font-size:14.5px}
+    .m-tab small{font-size:9.5px}
+    .glass .cols{grid-template-columns:1fr}
+    .cabinet{padding:11px 10px 13px}
+    .lever{right:0;top:55%;transform:translateY(-50%) scale(.9)}
+    .floor-title{font-size:20px}
+    .message{font-size:14.5px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bulbs.chase i,.cell.win-cell,.fs-badge.on{animation:none}
+    .coins i{display:none}
+  }
+</style>
+</head>
+<body>
+<header class="floor-head">
+  <a class="back-btn" href="index.html">&larr; Poker Club</a>
+  <div class="floor-title">The Slot Floor<small>Nikkiflixs Poker Club</small></div>
+  <div class="head-spacer"></div>
+  <div class="wallet-pill" aria-label="Your gold coin balance"><small>BALANCE</small><strong id="walletPill">0</strong><span>GC</span></div>
+  <button class="icon-btn" id="soundBtn" aria-label="Turn sound off" aria-pressed="true">SOUND ON</button>
+</header>
+
+<nav class="switcher" id="switcher" aria-label="Choose a slot machine"></nav>
+
+<main class="stage">
+  <div class="cabinet" id="cabinet">
+    <header class="marquee">
+      <div class="bulbs" id="bulbs" aria-hidden="true"></div>
+      <div class="brand">Nikkiflixs Poker Club</div>
+      <h1 id="mTitle">Nikkiflixs Gold</h1>
+      <p id="mSub"></p>
+    </header>
+    <section class="glass" id="glass" aria-label="Printed paytable"></section>
+    <div class="reel-frame" id="reelFrame">
+      <div class="fs-badge" id="fsBadge">FREE SPINS 0</div>
+      <div class="reels" id="reels"></div>
+      <div class="payline-mark" id="paylineMark"></div>
+      <svg id="lineOverlay" viewBox="0 0 500 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="coins" id="coins" aria-hidden="true"></div>
+    </div>
+    <div class="console">
+      <div class="readout">
+        <span class="message" id="message" aria-live="polite">Choose your bet and spin.</span>
+        <div class="winbox"><small>WIN</small><strong id="winOut">0</strong></div>
+      </div>
+      <div class="controls">
+        <div class="betbox" aria-label="Bet controls">
+          <button id="betDown" aria-label="Lower bet">&minus;</button>
+          <div class="betval"><small id="betLabel">BET</small><b id="betOut">0</b><i id="betSub"></i></div>
+          <button id="betUp" aria-label="Raise bet">+</button>
+        </div>
+        <button class="maxbet" id="maxBet">MAX BET</button>
+        <div class="balbox" aria-label="Balance"><small>BALANCE · GC</small><strong id="balOut">0</strong></div>
+        <button class="spin-btn" id="spinBtn">SPIN</button>
+      </div>
+      <div class="subrow">
+        <button id="paytableBtn">PAYTABLE &amp; RULES</button>
+        <button id="backBtn">ALL MACHINES &middot; CLUB FLOOR</button>
+      </div>
+    </div>
+    <button class="lever" id="lever" aria-label="Pull the lever to spin">
+      <span class="rail"></span><span class="stick"></span><span class="ball"></span><span class="base"></span><span class="lbl">PULL</span>
+    </button>
+  </div>
+</main>
+<p class="session-note">Gold coins have no cash value and cannot be cashed out. Every paytable is printed on the machine — what you see is exactly what it pays.</p>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="modalTitle">Paytable</h2><button class="close-x" id="closeModal" aria-label="Close paytable">&times;</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+/* ================= UTILITIES — same fairness discipline as the tables ================= */
+function fairInt(max){
+  if(max<=0) return 0;
+  var range=4294967296, limit=range-(range%max), a=new Uint32Array(1), n;
+  do{ crypto.getRandomValues(a); n=a[0]; }while(n>=limit);
+  return n%max;
+}
+/* Spread stops evenly around a strip, the way real machines are laid out. */
+function interleave(counts){
+  var total=0,k; for(k in counts) total+=counts[k];
+  var rem={},s; for(s in counts) rem[s]=counts[s];
+  var strip=[];
+  for(var i=0;i<total;i++){
+    var best=null,bestScore=-1;
+    for(var sym in rem){ if(!rem[sym]) continue;
+      var score=rem[sym]/(i+1)+(strip[strip.length-1]===sym?-0.4:0);
+      if(score>bestScore){bestScore=score;best=sym;} }
+    strip.push(best); rem[best]--;
+  }
+  return strip;
+}
+
+/* ================= SYMBOL ART — hand-drawn layered SVG, one set, three palettes ================= */
+var PAL={
+  gold:   {seven:["#ff9a86","#d21f33","#6d0416"], dia:["#f2feff","#8fd8f2","#2e7fb8"], bell:["#ffeda6","#eec25e","#9a6a1e"],
+           cherry:["#ffa08c","#e0263c","#7d0a1e"], lemon:["#fff6a3","#ffd21f","#d99a06"], barBg:["#43434e","#0a0a0e"], barTx:"#f6d97b",
+           wild:["#ffefa3","#f0b62e","#a8740c"], nfIn:"#7d1220", nfTx:"#ffe9ad", gem:"#43d5ff"},
+  neon:   {seven:["#ffc9e8","#ff3fa4","#9c0f5c"], dia:["#e2fcff","#43d5ff","#1668c7"], bell:["#eccfff","#9a5cff","#4c1d95"],
+           cherry:["#ffc2d4","#ff2e63","#8f1038"], lemon:["#f6ffb8","#c6f53f","#6d9c06"], barBg:["#1a2566","#05081f"], barTx:"#7fe7ff",
+           wild:["#ffefa3","#ff9f1c","#b3540a"], nfIn:"#2a1060", nfTx:"#a5f3ff", gem:"#ff3fa4"},
+  crimson:{seven:["#ffeda6","#d99b26","#7c4a06"], dia:["#ffc4ba","#d21f33","#6d0416"], bell:["#ffdda8","#c97b2d","#6e3c0c"],
+           cherry:["#ffa08c","#c21830","#5f0815"], lemon:["#fff6a3","#f2b81d","#b57a06"], barBg:["#33030b","#120106"], barTx:"#f6d97b",
+           wild:["#ffefa3","#f0b62e","#a8740c"], nfIn:"#20040a", nfTx:"#ffe9ad", gem:"#ffd34d"}
+};
+var __uid=0;
+function grad(id,stops){ return '<linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1">'+stops.map(function(s,i){return '<stop offset="'+(i/(stops.length-1)*100)+'%" stop-color="'+s+'"/>';}).join("")+'</linearGradient>'; }
+function rad(id,stops){ return '<radialGradient id="'+id+'" cx="36%" cy="28%" r="85%">'+stops.map(function(s,i){return '<stop offset="'+(i/(stops.length-1)*100)+'%" stop-color="'+s+'"/>';}).join("")+'</radialGradient>'; }
+function spark(x,y,s,o){ return '<path d="M'+x+' '+(y-s)+' L'+(x+s*.28)+' '+(y-s*.28)+' L'+(x+s)+' '+y+' L'+(x+s*.28)+' '+(y+s*.28)+' L'+x+' '+(y+s)+' L'+(x-s*.28)+' '+(y+s*.28)+' L'+(x-s)+' '+y+' L'+(x-s*.28)+' '+(y-s*.28)+' Z" fill="#ffffff" opacity="'+(o||.85)+'"/>'; }
+function symbolSVG(id,theme){
+  var P=PAL[theme]||PAL.gold, u='g'+(++__uid), out='';
+  var goldLin=grad(u+'a',["#fff6d8","#eec25e","#9a6a1e","#f4d878"]);
+  function svg(inner,defs){ return '<svg viewBox="0 0 120 120" role="img" aria-label="'+id+'"><defs>'+(defs||'')+goldLin+'</defs>'+inner+'</svg>'; }
+  if(id==='SEVEN'){
+    out='<ellipse cx="60" cy="106" rx="30" ry="5" fill="#000" opacity=".18"/>'
+      +'<path d="M26 20 H98 L64 102 H40 L70 42 H26 Z" fill="'+P.seven[2]+'"/>'
+      +'<path d="M30 25 H90 L61 96 H46 L72 39 H30 Z" fill="url(#'+u+'s)"/>'
+      +'<path d="M30 25 H90 L84 39 H30 Z" fill="#ffffff" opacity=".38"/>'
+      +'<path d="M52 50 L46 96 H56 L64 50 Z" fill="#ffffff" opacity=".14"/>'
+      +spark(88,30,7,.9);
+    return svg(out, grad(u+'s',P.seven));
+  }
+  if(id==='DIAMOND'){
+    out='<ellipse cx="60" cy="106" rx="28" ry="5" fill="#000" opacity=".16"/>'
+      +'<path d="M22 52 L38 30 H82 L98 52 L60 104 Z" fill="url(#'+u+'d)"/>'
+      +'<path d="M22 52 H98 L60 104 Z" fill="#ffffff" opacity=".10"/>'
+      +'<path d="M38 30 L48 52 L60 104 L72 52 L82 30 L60 44 Z" fill="#ffffff" opacity=".20"/>'
+      +'<path d="M22 52 L48 52 L60 104 L38 30 M98 52 L72 52 L60 104 L82 30 M38 30 H82 M48 52 H72" stroke="#ffffff" stroke-opacity=".55" fill="none" stroke-width="1.6"/>'
+      +'<path d="M30 52 L60 66 L90 52 L60 104 Z" fill="'+P.dia[2]+'" opacity=".22"/>'
+      +spark(36,26,8,.95)+spark(92,44,6,.8);
+    return svg(out, grad(u+'d',P.dia));
+  }
+  if(id==='CHERRY'){
+    out='<ellipse cx="58" cy="106" rx="32" ry="5" fill="#000" opacity=".16"/>'
+      +'<path d="M62 16 Q78 36 88 62 M62 16 Q50 40 36 62" stroke="#4a3418" stroke-width="5" fill="none" stroke-linecap="round"/>'
+      +'<path d="M62 16 Q84 4 98 14 Q86 30 64 24 Z" fill="url(#'+u+'l)"/>'
+      +'<path d="M62 16 Q84 4 98 14" stroke="#2e5c1e" stroke-width="2" fill="none"/>'
+      +'<circle cx="88" cy="80" r="20" fill="url(#'+u+'c)"/><circle cx="36" cy="84" r="17" fill="url(#'+u+'c)"/>'
+      +'<ellipse cx="81" cy="72" rx="6.5" ry="4.5" fill="#fff" opacity=".65" transform="rotate(-24 81 72)"/>'
+      +'<ellipse cx="30" cy="77" rx="5" ry="3.6" fill="#fff" opacity=".6" transform="rotate(-24 30 77)"/>';
+    return svg(out, grad(u+'l',["#a5d66a","#4e9c35","#2e5c1e"])+rad(u+'c',P.cherry));
+  }
+  if(id==='BELL'){
+    out='<ellipse cx="60" cy="106" rx="28" ry="5" fill="#000" opacity=".16"/>'
+      +'<circle cx="60" cy="18" r="7" fill="url(#'+u+'b)"/>'
+      +'<path d="M60 22 C74 22 82 34 82 50 C82 66 86 76 94 86 H26 C34 76 38 66 38 50 C38 34 46 22 60 22 Z" fill="url(#'+u+'b)"/>'
+      +'<path d="M26 86 H94 L90 96 H30 Z" fill="'+P.bell[2]+'"/>'
+      +'<circle cx="60" cy="100" r="7" fill="'+P.bell[2]+'"/><circle cx="57.5" cy="97.5" r="2.4" fill="#fff" opacity=".5"/>'
+      +'<path d="M46 32 C42 42 41 58 43 72" stroke="#ffffff" stroke-opacity=".45" stroke-width="5" fill="none" stroke-linecap="round"/>'
+      +'<path d="M30 78 H90" stroke="'+P.bell[2]+'" stroke-width="3" opacity=".6"/>';
+    return svg(out, grad(u+'b',P.bell));
+  }
+  if(id==='LEMON'){
+    out='<ellipse cx="60" cy="106" rx="30" ry="5" fill="#000" opacity=".16"/>'
+      +'<g transform="rotate(-22 60 62)">'
+      +'<ellipse cx="60" cy="62" rx="37" ry="25" fill="url(#'+u+'e)"/>'
+      +'<circle cx="24" cy="62" r="5" fill="'+P.lemon[2]+'"/><circle cx="96" cy="62" r="5" fill="'+P.lemon[2]+'"/>'
+      +'<path d="M34 50 Q60 62 86 50 M34 74 Q60 62 86 74 M60 40 V84" stroke="#ffffff" stroke-opacity=".5" stroke-width="2.4" fill="none"/>'
+      +'<ellipse cx="48" cy="50" rx="12" ry="5" fill="#fff" opacity=".45" transform="rotate(-14 48 50)"/></g>'
+      +'<path d="M66 30 Q84 18 96 24 Q88 40 68 38 Z" fill="url(#'+u+'l)"/>';
+    return svg(out, rad(u+'e',P.lemon)+grad(u+'l',["#a5d66a","#4e9c35","#2e5c1e"]));
+  }
+  if(id==='BAR1'||id==='BAR2'||id==='BAR3'){
+    var n=+id.slice(3), rows=[];
+    var ys = n===1?[38] : n===2?[27,63] : [17,46,75];
+    var h = n===1?44 : n===2?29 : 23;
+    var inner='';
+    ys.forEach(function(y){
+      inner+='<rect x="21" y="'+y+'" width="78" height="'+h+'" rx="5" fill="url(#'+u+'p)"/>'
+        +'<rect x="24.5" y="'+(y+3)+'" width="71" height="'+(h-6)+'" rx="3.5" fill="none" stroke="url(#'+u+'a)" stroke-width="1.8"/>'
+        +'<text x="60" y="'+(y+h/2)+'" text-anchor="middle" dominant-baseline="central" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="'+(n===1?27:n===3?19:23)+'" letter-spacing="4" fill="'+P.barTx+'">BAR</text>';
+    });
+    out='<ellipse cx="60" cy="108" rx="32" ry="4.5" fill="#000" opacity=".16"/>'+inner;
+    return svg(out, grad(u+'p',P.barBg));
+  }
+  if(id==='WILD'){
+    out='<circle cx="60" cy="60" r="47" fill="url(#'+u+'w)"/>'
+      +'<circle cx="60" cy="60" r="47" fill="none" stroke="#7c5410" stroke-width="2"/>'
+      +'<circle cx="60" cy="60" r="41" fill="none" stroke="#fff3c4" stroke-width="1.6" opacity=".8"/>'
+      +'<path d="M60 15 L68 42 L97 42 L74 59 L82 88 L60 71 L38 88 L46 59 L23 42 L52 42 Z" fill="url(#'+u+'a)" stroke="#7c5410" stroke-width="1.6"/>'
+      +'<path d="M60 24 L65 42 L52 42 Z" fill="#ffffff" opacity=".5"/>'
+      +'<rect x="24" y="52" width="72" height="17" rx="4" fill="#8f1d2c" stroke="#f4d878" stroke-width="1.4"/>'
+      +'<text x="60" y="61" text-anchor="middle" dominant-baseline="central" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="16.5" letter-spacing="3.5" fill="#ffe9ad">WILD</text>';
+    return svg(out, rad(u+'w',P.wild));
+  }
+  if(id==='NF'){
+    out='<circle cx="60" cy="58" r="46" fill="url(#'+u+'a)"/>'
+      +'<circle cx="60" cy="58" r="46" fill="none" stroke="#7c5410" stroke-width="2"/>'
+      +'<circle cx="60" cy="58" r="38" fill="'+P.nfIn+'"/>'
+      +'<circle cx="60" cy="58" r="38" fill="none" stroke="url(#'+u+'a)" stroke-width="1.6"/>'
+      +'<text x="60" y="52" text-anchor="middle" dominant-baseline="central" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="31" letter-spacing="1" fill="'+P.nfTx+'">NF</text>'
+      +'<path d="M30 76 H90 L84 92 H36 Z" fill="#8f1d2c" stroke="#f4d878" stroke-width="1.2"/>'
+      +'<text x="60" y="84.5" text-anchor="middle" dominant-baseline="central" font-family="Source Sans 3, sans-serif" font-weight="700" font-size="9.5" letter-spacing="2.6" fill="#ffe9ad">BONUS</text>'
+      +spark(30,26,6,.8)+spark(94,32,5,.7);
+    return svg(out);
+  }
+  if(id==='STAR'){
+    out='<ellipse cx="60" cy="106" rx="28" ry="5" fill="#000" opacity=".2"/>'
+      +'<path d="M60 12 L74 44 L109 46 L82 68 L91 102 L60 82 L29 102 L38 68 L11 46 L46 44 Z" fill="url(#'+u+'t)"/>'
+      +'<path d="M60 12 L74 44 L109 46 L82 68 L91 102 L60 82 L29 102 L38 68 L11 46 L46 44 Z" fill="none" stroke="#dff8ff" stroke-width="2"/>'
+      +'<path d="M60 22 L68 46 L46 44 Z" fill="#ffffff" opacity=".5"/>'
+      +'<circle cx="60" cy="60" r="9" fill="'+P.gem+'" stroke="#dff8ff" stroke-width="1.6"/>';
+    return svg(out, grad(u+'t',P.dia));
+  }
+  if(id==='CROWN'){
+    out='<ellipse cx="60" cy="106" rx="30" ry="5" fill="#000" opacity=".18"/>'
+      +'<path d="M24 82 L19 34 L43 52 L60 24 L77 52 L101 34 L96 82 Z" fill="url(#'+u+'a)"/>'
+      +'<path d="M24 82 L19 34 L43 52 L60 24 L77 52 L101 34 L96 82 Z" fill="none" stroke="#7c5410" stroke-width="2"/>'
+      +'<rect x="22" y="82" width="76" height="12" rx="3" fill="url(#'+u+'a)" stroke="#7c5410" stroke-width="1.6"/>'
+      +'<circle cx="19" cy="30" r="5.5" fill="url(#'+u+'a)"/><circle cx="60" cy="20" r="6" fill="url(#'+u+'a)"/><circle cx="101" cy="30" r="5.5" fill="url(#'+u+'a)"/>'
+      +'<circle cx="38" cy="66" r="5" fill="#d21f33"/><circle cx="60" cy="70" r="6" fill="'+P.gem+'"/><circle cx="82" cy="66" r="5" fill="#2e9e5b"/>'
+      +'<path d="M30 44 L40 56" stroke="#ffffff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>';
+    return svg(out);
+  }
+  return svg('<text x="60" y="66" text-anchor="middle" font-size="20" fill="#fff">'+id+'</text>');
+}
+window.__nfFairInt=fairInt; window.__nfInterleave=interleave; window.__nfSymbolSVG=symbolSVG;
+})();
+</script>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var fairInt=window.__nfFairInt, interleave=window.__nfInterleave, symbolSVG=window.__nfSymbolSVG;
+
+/* ================= ONE WALLET — localStorage 'nikkiflixs_bankroll', same as the coin store ================= */
+var BANK_KEY='nikkiflixs_bankroll';
+function bankGet(){ try{ var raw=localStorage.getItem(BANK_KEY); if(raw===null){ localStorage.setItem(BANK_KEY,'10000'); return 10000; } var v=parseInt(raw,10); return isNaN(v)?0:Math.max(0,v); }catch(e){ return 10000; } }
+function bankSet(v){ try{ localStorage.setItem(BANK_KEY,String(Math.max(0,Math.floor(v)))); }catch(e){} }
+
+/* ================= MACHINE DATA — pays printed on the glass are these numbers ================= */
+var CLASSIC_COUNTS={SEVEN:1,DIAMOND:1,BAR3:1,BAR2:2,BAR1:3,BELL:2,CHERRY:2,LEMON:5,WILD:1,NF:2};
+var CLASSIC_PAY={SEVEN:120,DIAMOND:50,BAR3:40,BAR2:20,BELL:15,BAR1:10,CHERRY:10,LEMON:6};
+var CLASSIC_LABEL={SEVEN:'Sevens',DIAMOND:'Diamonds',BAR3:'Triple BARs',BAR2:'Double BARs',BAR1:'Single BARs',BELL:'Bells',CHERRY:'Cherries',LEMON:'Lemons'};
+var FIVE_PAY_ROWS=[ /* [symbol, 3oak, 4oak, 5oak] x line bet */
+  ['WILD',50,200,1000],['SEVEN',25,100,500],['DIAMOND',20,75,300],['MID',15,50,200],
+  ['BELL',10,30,120],['BAR1',8,25,100],['CHERRY',5,25,100],['LEMON',5,20,80]];
+var SCAT_PAY={3:5,4:20,5:100}, SCAT_SPINS={3:10,4:15,5:20};
+var LINES=[[1,1,1,1,1],[0,0,0,0,0],[2,2,2,2,2],[0,1,2,1,0],[2,1,0,1,2],[1,0,0,0,1],[1,2,2,2,1],[0,0,1,0,0],[2,2,1,2,2],[1,0,1,0,1],[1,2,1,2,1],[0,1,1,1,0],[2,1,1,1,2],[0,1,0,1,0],[2,1,2,1,2],[1,1,0,1,1],[1,1,2,1,1],[0,0,2,0,0],[2,2,0,2,2],[1,0,2,0,1]];
+function fivePayTable(midSym){ var t={}; FIVE_PAY_ROWS.forEach(function(r){ t[r[0]==='MID'?midSym:r[0]]=[r[1],r[2],r[3]]; }); return t; }
+function fiveCountsFor(midSym){
+  var base=[
+    {SEVEN:1,DIAMOND:2,MID:2,BELL:3,BAR1:3,CHERRY:4,LEMON:5,WILD:1,NF:3},
+    {SEVEN:1,DIAMOND:2,MID:2,BELL:3,BAR1:4,CHERRY:4,LEMON:5,WILD:1,NF:2},
+    {SEVEN:1,DIAMOND:2,MID:3,BELL:3,BAR1:3,CHERRY:4,LEMON:5,WILD:1,NF:2},
+    {SEVEN:1,DIAMOND:2,MID:2,BELL:3,BAR1:4,CHERRY:4,LEMON:5,WILD:1,NF:2},
+    {SEVEN:2,DIAMOND:2,MID:2,BELL:3,BAR1:3,CHERRY:4,LEMON:5,WILD:1,NF:2}];
+  return base.map(function(c){ var o={}; for(var k in c) o[k==='MID'?midSym:k]=c[k]; return o; });
+}
+var MACHINES={
+  gold:{ id:'gold', kind:'classic', theme:'gold', name:'Nikkiflixs Gold', tag:'CLASSIC',
+    sub:'The old-school machine. Three reels, one line, nothing to hide.',
+    counts:CLASSIC_COUNTS, strip:interleave(CLASSIC_COUNTS), bets:[25,50,100,250,500,1000], thumb:'SEVEN' },
+  neon:{ id:'neon', kind:'five', theme:'neon', name:'Neon Vegas', tag:'20 LINES',
+    sub:'Five reels, twenty lines, and a bonus that lights up the strip.',
+    midSym:'STAR', counts:fiveCountsFor('STAR'), pay:fivePayTable('STAR'), betPerLine:[1,2,5,10,25], thumb:'DIAMOND',
+    rules:'All 20 lines are always in play. Line wins pay left to right; only the highest win per line is paid, and wins on different lines add up. WILD substitutes for every symbol except the NF BONUS scatter. Scatters pay in any position: the scatter award is multiplied by your total bet, and 3 or more scatters start free spins at the same bet. Free spins can retrigger.' },
+  crimson:{ id:'crimson', kind:'five', theme:'crimson', name:'Crimson Royale', tag:'20 LINES',
+    sub:'Five reels in crimson and gold. Crowns, rubies, and a royal bonus.',
+    midSym:'CROWN', counts:fiveCountsFor('CROWN'), pay:fivePayTable('CROWN'), betPerLine:[1,2,5,10,25], thumb:'CROWN',
+    rules:'All 20 lines are always in play. Line wins pay left to right; only the highest win per line is paid, and wins on different lines add up. WILD substitutes for every symbol except the NF BONUS scatter. Scatters pay in any position: the scatter award is multiplied by your total bet, and 3 or more scatters start free spins at the same bet. Free spins can retrigger.' }
+};
+MACHINES.neon.strips=MACHINES.neon.counts.map(interleave);
+MACHINES.crimson.strips=MACHINES.crimson.counts.map(interleave);
+
+/* ================= EVALUATION — the exact math the printed paytables promise ================= */
+function isBar(s){ return s==='BAR1'||s==='BAR2'||s==='BAR3'; }
+function evalClassic(a){
+  if(a[0]==='NF'&&a[1]==='NF'&&a[2]==='NF') return {mult:5, bonus:true, label:'NF BONUS — 5× plus 10 free spins'};
+  var best=0,label='';
+  var wilds=a.filter(function(x){return x==='WILD';}).length;
+  if(wilds===3){ best=250; label='Three WILDS — the jackpot'; }
+  if(a.indexOf('NF')<0){
+    var base=a.filter(function(x){return x!=='WILD';});
+    if(base.length&&base.every(function(x){return x===base[0];})&&CLASSIC_PAY[base[0]]){
+      if(CLASSIC_PAY[base[0]]>best){ best=CLASSIC_PAY[base[0]]; label='Three '+CLASSIC_LABEL[base[0]]+(wilds?' (wild helped)':''); }
+    }
+    if(base.length&&a.every(function(x){return isBar(x)||x==='WILD';})&&!base.every(function(x){return x===base[0];})){
+      if(5>best){ best=5; label='Any three BARs'; }
+    }
+  }
+  if(a[0]==='CHERRY'&&best===0){ best=2; label='Cherry on reel one'; }
+  return {mult:best, bonus:false, label:best?label:'No win'};
+}
+function lineWinDetail(m,vals){
+  var best=0,bSym=null,bN=0;
+  for(var sym in m.pay){
+    var n=0;
+    for(var i=0;i<5;i++){ if(vals[i]===sym||vals[i]==='WILD') n++; else break; }
+    if(n>=3){ var p=m.pay[sym][n-3]; if(p>best||(p===best&&n>bN)){ best=p; bSym=sym; bN=n; } }
+  }
+  return best?{amount:best,sym:bSym,n:bN}:null;
+}
+function evalFive(m,grid){
+  var lineWins=[],coins=0;
+  LINES.forEach(function(line,li){
+    var vals=line.map(function(r,c){ return grid[c][r]; });
+    var w=lineWinDetail(m,vals);
+    if(w){ lineWins.push({line:li,sym:w.sym,n:w.n,amount:w.amount}); coins+=w.amount; }
+  });
+  var scat=0; grid.forEach(function(col){ col.forEach(function(s){ if(s==='NF') scat++; }); });
+  return {lineWins:lineWins,coins:coins,scat:scat,scatPay:SCAT_PAY[scat]||0,scatSpins:SCAT_SPINS[scat]||0};
+}
+
+/* ================= STATE + SOUND ================= */
+var current='gold', betIndex={gold:1,neon:2,crimson:2}, freeSpins=0, spinning=false, soundOn=true, adminFreePlay=false, SPEED=1, audioCtx=null;
+window.addEventListener('message',function(e){ if(e.data&&e.data.type==='nikkiflixs-admin-mode'){ adminFreePlay=!!e.data.enabled; } });
+function tone(freq,dur,type,vol,delay){ if(!soundOn) return; try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  var t=audioCtx.currentTime+(delay||0), o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type=type||'sine'; o.frequency.value=freq;
+  g.gain.setValueAtTime(vol||.05,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur);
+}catch(e){} }
+function winJingle(big){ var seq=big?[523,659,784,1047,1319]:[440,554,659]; seq.forEach(function(f,i){ tone(f,.16,'triangle',.05,i*.09); }); }
+function coinCascade(){ for(var i=0;i<9;i++) tone(1400+fairInt(700),.07,'square',.028,i*.05); }
+
+/* ================= DOM refs ================= */
+var cabinet=$('cabinet'), reelsEl=$('reels'), msgEl=$('message'), winEl=$('winOut'), balEls=[$('balOut'),$('walletPill')],
+    spinBtn=$('spinBtn'), leverEl=$('lever'), fsBadge=$('fsBadge'), overlay=$('lineOverlay'), toastEl=$('toast');
+function fmt(n){ return n.toLocaleString('en-US'); }
+function refreshWallet(){ var b=bankGet(); balEls.forEach(function(e){ e.textContent=fmt(b); }); return b; }
+function showToast(t){ toastEl.textContent=t; toastEl.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(function(){ toastEl.classList.remove('show'); },2800); }
+
+/* ================= SWITCHER + GLASS ================= */
+function buildSwitcher(){
+  var nav=$('switcher'); nav.innerHTML='';
+  Object.keys(MACHINES).forEach(function(id){
+    var m=MACHINES[id], b=document.createElement('button');
+    b.className='m-tab'; b.dataset.machine=id; b.setAttribute('aria-pressed', id===current?'true':'false');
+    b.innerHTML='<span class="tag">'+m.tag+'</span><span class="thumb">'+symbolSVG(m.thumb,m.theme)+'</span><strong>'+m.name+'</strong><small>'+(m.kind==='classic'?'3 reels · 1 line':'5 reels · 20 lines · free spins')+'</small>';
+    b.addEventListener('click',function(){ selectMachine(id); });
+    nav.appendChild(b);
+  });
+}
+function classicGlass(){
+  var rows=[['Three WILDS','250×'],['Three Sevens','120×'],['Three Diamonds','50×'],['Three Triple BARs','40×'],['Three Double BARs','20×'],['Three Bells','15×'],['Three Single BARs','10×'],['Three Cherries','10×'],['Three Lemons','6×'],['Any three BARs','5×'],['Cherry on reel 1','2×'],['Three NF — BONUS','5× + 10 free spins']];
+  return '<h2>Paytable — pays × your bet</h2><div class="cols">'+rows.map(function(r){ return '<div class="row"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>'; }).join('')+
+    '<div class="row fine">One payline — the center row. Highest award only. WILD substitutes for every symbol except NF.</div></div>';
+}
+function fiveGlass(m){
+  var top=[['WILD',m.pay.WILD[2]],['SEVEN',m.pay.SEVEN[2]],['DIAMOND',m.pay.DIAMOND[2]]];
+  return '<h2>Paytable — top awards × line bet</h2><div class="cols">'
+    + top.map(function(r){ return '<div class="row"><span>Five '+r[0]+'S</span><b>'+fmt(r[1])+'×</b></div>'; }).join('')
+    + '<div class="row"><span>3 NF scatters</span><b>5× bet + 10 free</b></div>'
+    + '<div class="row"><span>4 NF scatters</span><b>20× bet + 15 free</b></div>'
+    + '<div class="row"><span>5 NF scatters</span><b>100× bet + 20 free</b></div>'
+    + '<div class="row fine">20 lines always in play · left to right · WILD substitutes for all but the NF scatter · full paytable in PAYTABLE &amp; RULES.</div></div>';
+}
+
+/* ================= REEL RENDERING ================= */
+function cellHTML(sym,theme,h){ return '<div class="cell" style="height:'+h+'px">'+symbolSVG(sym,theme)+'</div>'; }
+function renderStatic(grid){
+  var m=MACHINES[current]; reelsEl.innerHTML='';
+  var frame=$('reelFrame'); var rows=m.kind==='classic'?1:3;
+  var H=rows===1?118:104;
+  grid.forEach(function(col){
+    var reel=document.createElement('div'); reel.className='reel'; reel.style.height=(rows*H)+'px';
+    var track=document.createElement('div'); track.className='reel-track';
+    track.innerHTML=col.map(function(s){ return cellHTML(s,m.theme,H); }).join('');
+    reel.appendChild(track); reelsEl.appendChild(reel);
+  });
+}
+function initialGrid(m){
+  if(m.kind==='classic') return [['SEVEN'],['DIAMOND'],['WILD']];
+  return m.strips.map(function(st){ return [st[5],st[6],st[7]]; });
+}
+function randomWindow(m){
+  if(m.kind==='classic') return [0,0,0].map(function(){ return [m.strip[fairInt(m.strip.length)]]; });
+  return m.strips.map(function(st){ var k=fairInt(st.length); return [st[(k+st.length-1)%st.length], st[k], st[(k+1)%st.length]]; });
+}
+
+/* spin animation: build a long track ending in the target window, WAAPI where available */
+function spinReels(grid,done){
+  var m=MACHINES[current], rows=m.kind==='classic'?1:3, H=m.kind==='classic'?118:104;
+  var reelNodes=reelsEl.querySelectorAll('.reel'), total=grid.length, finished=0;
+  grid.forEach(function(col,c){
+    var reel=reelNodes[c]; reel.innerHTML=''; reel.style.height=(rows*H)+'px';
+    var track=document.createElement('div'); track.className='reel-track blur';
+    var fillers = m.kind==='classic'?16:13, syms=[];
+    var stripArr = m.kind==='classic'?m.strip:m.strips[c];
+    for(var i=0;i<fillers;i++) syms.push(stripArr[fairInt(stripArr.length)]);
+    var all=syms.concat(col);
+    track.innerHTML=all.map(function(s){ return cellHTML(s,m.theme,H); }).join('');
+    reel.appendChild(track);
+    var distance=(all.length-rows)*H, dur=(1050+c*(m.kind==='classic'?430:250))*SPEED;
+    if(track.animate){
+      track.animate([
+        {transform:'translate3d(0,0,0)',offset:0},
+        {transform:'translate3d(0,'+(-distance*.55)+'px,0)',offset:.55},
+        {transform:'translate3d(0,'+(-distance-9)+'px,0)',offset:.88},
+        {transform:'translate3d(0,'+(-distance)+'px,0)',offset:1}
+      ],{duration:dur,easing:'cubic-bezier(.15,.6,.25,1)',fill:'forwards'});
+    } else {
+      track.style.transform='translate3d(0,'+(-distance)+'px,0)';
+    }
+    setTimeout(function(){
+      track.classList.remove('blur');
+      tone(170+c*40,.07,'square',.03);
+      if(++finished===total) done();
+    }, dur);
+  });
+}
+
+/* ================= WIN PRESENTATION ================= */
+function coinBurst(n){
+  var box=$('coins'); box.innerHTML='';
+  for(var i=0;i<n;i++){ var c=document.createElement('i'); var s=12+fairInt(15);
+    c.style.left=fairInt(94)+'%'; c.style.width=s+'px'; c.style.height=s+'px';
+    c.style.animationDuration=(0.9+fairInt(70)/100)+'s'; c.style.animationDelay=(fairInt(45)/100)+'s';
+    box.appendChild(c); }
+  setTimeout(function(){ box.innerHTML=''; },2400);
+}
+function countUp(el,to){
+  var start=performance.now(), dur=Math.min(1100,300+to/4);
+  function step(t){ var p=Math.min(1,(t-start)/dur); el.textContent=fmt(Math.round(to*(0.2+0.8*p)* (p<1?1:1) * (p===1?1:1))); if(p<1) requestAnimationFrame(step); else el.textContent=fmt(to); }
+  if(window.requestAnimationFrame&&SPEED===1) requestAnimationFrame(step); else el.textContent=fmt(to);
+}
+function celebrate(win,bet){
+  var ratio=bet?win/bet:0;
+  if(win<=0) return;
+  if(ratio>=10||win>=2500){ $('bulbs').classList.add('chase'); coinBurst(26); coinCascade(); winJingle(true); setTimeout(function(){ $('bulbs').classList.remove('chase'); },2200); }
+  else if(ratio>=3){ coinBurst(12); winJingle(true); }
+  else winJingle(false);
+}
+
+/* ================= BET / UI ================= */
+function totalBet(){ var m=MACHINES[current]; return m.kind==='classic'?m.bets[betIndex[current]]:m.betPerLine[betIndex[current]]*20; }
+function updateConsole(){
+  var m=MACHINES[current], tb=totalBet();
+  $('betOut').textContent=fmt(tb);
+  $('betLabel').textContent = m.kind==='classic'?'BET · 1 LINE':'TOTAL BET';
+  $('betSub').textContent = m.kind==='classic'?'one payline':('20 lines × '+m.betPerLine[betIndex[current]]+' per line');
+  $('betDown').disabled=spinning||betIndex[current]===0;
+  $('betUp').disabled=spinning||betIndex[current]===(m.kind==='classic'?m.bets.length-1:m.betPerLine.length-1);
+  $('maxBet').disabled=spinning;
+  spinBtn.disabled=spinning;
+  spinBtn.classList.toggle('free',freeSpins>0);
+  spinBtn.textContent=spinning?'···':(freeSpins>0?('FREE SPIN · '+freeSpins):'SPIN');
+  leverEl.style.display=m.kind==='classic'?'':'none';
+  leverEl.disabled=spinning;
+  fsBadge.classList.toggle('on',freeSpins>0);
+  fsBadge.textContent='FREE SPINS '+freeSpins;
+  refreshWallet();
+}
+
+/* ================= SPIN FLOW ================= */
+var forceNext=null; /* test hook: {classic:[a,b,c]} or {five:grid} */
+function doSpin(){
+  if(spinning) return;
+  var m=MACHINES[current], tb=totalBet(), isFree=freeSpins>0;
+  var bal=bankGet();
+  if(!isFree&&!adminFreePlay){
+    if(bal<tb){ showToast('Not enough coins for that bet — grab your daily bonus in the lobby or top up at the Coin Store.'); tone(90,.2,'sine',.04); return; }
+    bankSet(bal-tb);
+  }
+  if(isFree) freeSpins--;
+  spinning=true; winEl.textContent='0';
+  msgEl.textContent=isFree?'Free spin — good luck':'Reels rolling…';
+  overlay.classList.remove('on'); overlay.innerHTML='';
+  document.querySelectorAll('.win-cell').forEach(function(c){ c.classList.remove('win-cell'); });
+  $('paylineMark').parentElement.classList.remove('show-line');
+  updateConsole(); tone(120,.1,'square',.03);
+  var grid;
+  if(forceNext){ grid=forceNext; forceNext=null; }
+  else grid=randomWindow(m);
+  spinReels(grid,function(){ settle(grid,tb,isFree); });
+}
+function settle(grid,tb,wasFree){
+  var m=MACHINES[current]; spinning=false;
+  if(m.kind==='classic'){
+    var line=grid.map(function(c){ return c[0]; });
+    var out=evalClassic(line), win=out.mult*tb;
+    if(win>0) bankSet(bankGet()+win);
+    if(out.bonus) freeSpins+=10;
+    $('paylineMark').parentElement.classList.add('show-line');
+    if(out.mult>0){
+      document.querySelectorAll('.reel').forEach(function(r){ var cell=r.querySelector('.cell:last-child'); if(cell) cell.classList.add('win-cell'); });
+      msgEl.textContent=out.label+' — '+fmt(win)+' GC'+(freeSpins>0?' · '+freeSpins+' free spins banked':'');
+    } else {
+      msgEl.textContent = (countSym(line,'NF')===2)?'Two NF bonus symbols — one more starts the bonus':'No win — spin again';
+    }
+    countUp(winEl,win); celebrate(win,tb);
+  } else {
+    var res=evalFive(m,grid);
+    var win=res.coins*m.betPerLine[betIndex[current]]+res.scatPay*tb;
+    if(win>0) bankSet(bankGet()+win);
+    if(res.scatSpins>0) freeSpins+=res.scatSpins;
+    if(res.lineWins.length||res.scat>=3){
+      var parts=[];
+      if(res.lineWins.length) parts.push(res.lineWins.length+' line win'+(res.lineWins.length>1?'s':''));
+      if(res.scat>=3) parts.push(res.scat+' scatters — '+res.scatSpins+' FREE SPINS');
+      else if(res.scat===2) parts.push('two scatters — one more starts free spins');
+      msgEl.textContent=parts.join(' · ')+' — '+fmt(win)+' GC';
+      showWinLines(m,res,win);
+    } else {
+      msgEl.textContent = res.scat===2?'Two scatters — one more starts free spins':'No win — spin again';
+    }
+    countUp(winEl,win); celebrate(win,tb);
+  }
+  updateConsole();
+}
+function countSym(arr,s){ return arr.filter(function(x){return x===s;}).length; }
+function showWinLines(m,res,win){
+  /* highlight the cells of the single best line + draw its path; cycle if several */
+  var reels=reelsEl.querySelectorAll('.reel');
+  var idx=0;
+  function drawOne(){
+    document.querySelectorAll('.win-cell').forEach(function(c){ c.classList.remove('win-cell'); });
+    overlay.innerHTML='';
+    if(!res.lineWins.length){ overlay.classList.remove('on'); return; }
+    var w=res.lineWins[idx%res.lineWins.length], line=LINES[w.line];
+    var pts=line.map(function(r,c){ return ((c+0.5)*100)+','+((r+0.5)*100); }).join(' ');
+    overlay.innerHTML='<polyline points="'+pts+'" fill="none" stroke="#ffd968" stroke-width="3.5" stroke-linejoin="round" style="filter:drop-shadow(0 0 5px rgba(255,190,60,.9))"/>';
+    overlay.classList.add('on');
+    for(var c=0;c<w.n;c++){ var cell=reels[c].querySelectorAll('.cell')[line[c]+(reels[c].querySelectorAll('.cell').length-3)]; if(cell) cell.classList.add('win-cell'); }
+    idx++;
+  }
+  drawOne();
+  if(res.lineWins.length>1){ var iv=setInterval(function(){ if(spinning){ clearInterval(iv); overlay.classList.remove('on'); return; } drawOne(); },950); setTimeout(function(){ clearInterval(iv); }, 950*4); }
+}
+
+/* ================= PAYTABLE MODAL ================= */
+function openPaytable(){
+  var m=MACHINES[current];
+  $('modalTitle').textContent=m.name+' — Paytable';
+  var html='';
+  if(m.kind==='classic'){
+    html='<p class="rules-copy">One payline: the center row. The highest award on the line is paid, multiplied by your total bet. WILD substitutes for every symbol except NF. A cherry on reel 1 pays 2×. Three NF symbols pay 5× and award 10 free spins, played at the same bet; free spins can retrigger.</p>'
+      +'<table class="pay-list">'
+      +[['Three WILDS','250× bet'],['Three Sevens','120× bet'],['Three Diamonds','50× bet'],['Three Triple BARs','40× bet'],['Three Double BARs','20× bet'],['Three Bells','15× bet'],['Three Single BARs','10× bet'],['Three Cherries','10× bet'],['Three Lemons','6× bet'],['Any three BARs (mixed)','5× bet'],['Cherry on reel 1','2× bet'],['Three NF — BONUS','5× bet + 10 free spins']]
+        .map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'; }).join('')+'</table>';
+  } else {
+    var order=['WILD','SEVEN','DIAMOND',m.midSym,'BELL','BAR1','CHERRY','LEMON'];
+    var names={WILD:'Wild',SEVEN:'Seven',DIAMOND:'Diamond',STAR:'Star',CROWN:'Crown',BELL:'Bell',BAR1:'BAR',CHERRY:'Cherry',LEMON:'Lemon'};
+    html='<p class="rules-copy">'+m.rules+'</p><div class="pay-grid">'
+      +'<div class="ph">SYMBOL</div><div class="ph">×3</div><div class="ph">×4</div><div class="ph">×5</div><div class="ph">&nbsp;</div>'
+      + order.map(function(s){ return '<div class="ph">'+symbolSVG(s,m.theme)+names[s]+'</div>'+m.pay[s].map(function(p){ return '<div class="pc">'+fmt(p)+'<small>× line bet</small></div>'; }).join('')+'<div></div>'; }).join('')
+      +'</div>'
+      +'<table class="pay-list">'
+      +[['3 NF scatters anywhere','5× total bet + 10 free spins'],['4 NF scatters anywhere','20× total bet + 15 free spins'],['5 NF scatters anywhere','100× total bet + 20 free spins']]
+        .map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'; }).join('')+'</table>'
+      +'<h3 style="font:800 15px Barlow Condensed;letter-spacing:.14em;color:var(--gold);margin:14px 0 4px">THE 20 LINES</h3><div class="line-diagrams">'
+      + LINES.map(function(line,i){ var pts=line.map(function(r,c){ return ((c+0.5)*20)+','+((r+0.5)*20); }).join(' ');
+          return '<figure><svg viewBox="0 0 100 60"><polyline points="'+pts+'" fill="none" stroke="#ffd968" stroke-width="2.4"/>'+line.map(function(r,c){ return '<circle cx="'+((c+0.5)*20)+'" cy="'+((r+0.5)*20)+'" r="3" fill="#ffd968"/>'; }).join('')+'</svg><figcaption>Line '+(i+1)+'</figcaption></figure>'; }).join('')
+      +'</div>';
+  }
+  $('modalBody').innerHTML=html;
+  $('modal').classList.add('open');
+}
+function closePaytable(){ $('modal').classList.remove('open'); }
+
+/* ================= SELECT MACHINE ================= */
+function selectMachine(id){
+  if(spinning) return;
+  current=id; freeSpins=0;
+  var m=MACHINES[id];
+  cabinet.className='cabinet theme-'+m.theme+(m.kind==='classic'?' has-lever':'');
+  $('mTitle').textContent=m.name; $('mSub').textContent=m.sub;
+  $('glass').innerHTML = m.kind==='classic'?classicGlass():fiveGlass(m);
+  document.querySelectorAll('.m-tab').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.machine===id?'true':'false'); });
+  /* marquee bulbs */
+  var bulbs=$('bulbs'); bulbs.innerHTML='';
+  var W=cabinet.clientWidth||360;
+  for(var i=0;i<14;i++){ var b=document.createElement('i'); b.style.left=(4+i*7.1)+'%'; b.style.top='3px'; bulbs.appendChild(b); }
+  for(var j=0;j<14;j++){ var b2=document.createElement('i'); b2.style.left=(4+j*7.1)+'%'; b2.style.bottom='3px'; bulbs.appendChild(b2); }
+  renderStatic(initialGrid(m));
+  msgEl.textContent='Choose your bet and spin.';
+  winEl.textContent='0';
+  overlay.classList.remove('on');
+  updateConsole();
+}
+
+/* ================= WIRING ================= */
+$('betDown').addEventListener('click',function(){ if(betIndex[current]>0){ betIndex[current]--; tone(300,.05,'sine',.03); updateConsole(); } });
+$('betUp').addEventListener('click',function(){ var m=MACHINES[current], mx=m.kind==='classic'?m.bets.length-1:m.betPerLine.length-1; if(betIndex[current]<mx){ betIndex[current]++; tone(380,.05,'sine',.03); updateConsole(); } });
+$('maxBet').addEventListener('click',function(){ var m=MACHINES[current]; betIndex[current]=m.kind==='classic'?m.bets.length-1:m.betPerLine.length-1; tone(440,.06,'sine',.03); updateConsole(); });
+spinBtn.addEventListener('click',doSpin);
+leverEl.addEventListener('click',function(){ if(spinning) return; leverEl.classList.add('pulled'); tone(140,.12,'square',.04); setTimeout(function(){ leverEl.classList.remove('pulled'); },430); doSpin(); });
+$('paytableBtn').addEventListener('click',openPaytable);
+$('closeModal').addEventListener('click',closePaytable);
+$('modal').addEventListener('click',function(e){ if(e.target===$('modal')) closePaytable(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closePaytable(); });
+$('backBtn').addEventListener('click',function(){ window.location.href='index.html'; });
+$('soundBtn').addEventListener('click',function(){ soundOn=!soundOn; this.textContent=soundOn?'SOUND ON':'SOUND OFF'; this.setAttribute('aria-pressed',soundOn?'true':'false'); this.setAttribute('aria-label',soundOn?'Turn sound off':'Turn sound on'); if(soundOn) tone(520,.09,'sine',.04); });
+window.addEventListener('storage',function(e){ if(e.key===BANK_KEY&&!spinning) refreshWallet(); });
+
+buildSwitcher();
+selectMachine('gold');
+refreshWallet();
+
+/* test hooks (used by tools/sims/slots_sim.js) */
+window.SLOTS_API={
+  machines:MACHINES, lines:LINES, evalClassic:evalClassic, evalFive:evalFive,
+  bankGet:bankGet, bankSet:bankSet, totalBet:totalBet,
+  forceNext:function(g){ forceNext=g; }, spin:doSpin, select:selectMachine,
+  state:function(){ return {current:current, freeSpins:freeSpins, spinning:spinning, balance:bankGet()}; },
+  fast:function(){ SPEED=0.03; }
+};
+})();
+</script>
+</body>
+</html>

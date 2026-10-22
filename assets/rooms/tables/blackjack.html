@@ -160,18 +160,18 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
    gold script wordmark on the felt. Presentation only — no JS, ids, hooks,
    card or control markup changed; the deco layer is pointer-events:none. */
 @font-face{font-family:"Great Vibes Local";src:url("../poker/assets/great-vibes.ttf") format("truetype");font-weight:400;font-display:swap}
-.table{border-radius:30%/17%;min-height:450px;box-shadow:0 24px 60px #000d,0 0 0 3px #080504,0 0 0 8px #6d3c20,0 0 0 10px #d9a45c7a,0 0 0 13px #331a09}
+.table{border-radius:30%/17%;min-height:545px;box-shadow:0 24px 60px #000d,0 0 0 3px #080504,0 0 0 8px #6d3c20,0 0 0 10px #d9a45c7a,0 0 0 13px #331a09}
 .felt{border-radius:27%/15%;inset:15px 18px}
 .dealer-zone{top:8%;z-index:2}
 .dealer-zone .zone-label{display:none}
 .player-zone{z-index:2}
-.felt-text{top:33.5%;z-index:1}
+.felt-text{top:29%;z-index:1}
 .felt-text .big{font-size:18px;letter-spacing:.1em}
 .felt-text .wm{font-family:"Great Vibes Local","Great Vibes",cursive;font-size:34px;font-weight:400;letter-spacing:0;text-transform:none;color:#f6d36f;text-shadow:0 2px 4px #41000b,0 0 14px rgba(255,211,97,.45)}
 .bj-deco{position:absolute;inset:0;z-index:1;pointer-events:none}
 .bj-notch{position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:178px;height:22px;background:linear-gradient(180deg,#241305,#170b04);border-radius:0 0 90px 90px;box-shadow:inset 0 -6px 10px #00000090,0 2px 3px #d9a45c55}
-.bj-dealer{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;overflow:hidden;background:#1a0d12;border:2px solid #e8c883;box-shadow:0 0 0 2px #00000070,0 0 18px #f5c65a66,0 6px 14px #000c}
-.bj-dealer img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transform:scale(1.15);display:block}
+.bj-dealer{position:absolute;top:-24px;left:50%;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#2a1218,#0d0508 75%);border:2px solid #e8c883;box-shadow:0 0 0 2px #00000090,0 0 18px #f5c65a66,0 6px 14px #000d}
+.bj-dealer img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;transform:scale(1.15);display:block;filter:contrast(1.07) saturate(1.1) brightness(.97)}
 .bj-dealer .bj-dname{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);background:#000a;padding:1px 5px;border-radius:6px;font:800 7.5px/1.3 "Barlow Condensed",sans-serif;color:#ffe9bd;letter-spacing:.08em;white-space:nowrap}
 .bj-seat{position:absolute;width:50px;height:50px;border-radius:50%;background:#1a0d12;border:2px solid #e8c883;box-shadow:0 0 0 2px #00000060,0 5px 12px #000b}
 .bj-seat img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 18%;transform:scale(1.15);display:block}
@@ -208,7 +208,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <div class="zone-label" style="margin-top:6px">You</div>
     </div>
   </div>
-  <div class="rules"><b>How to play:</b> Tap chips to place your bet, then press DEAL. Get closer to 21 than the dealer without going over. Blackjack pays 3:2. Dealer stands on all 17s. Double down on your first two cards for one more card. Split pairs into two hands.</div>
+  <div class="rules"><b>How to play:</b> Tap chips to place your bet, then press DEAL. Get closer to 21 than the dealer without going over. Blackjack pays 3:2. Dealer stands on all 17s. Double down on your first two cards for one more card. Split pairs into two hands.<br><b>More cards in play?</b> <a href="blackjack-3p.html" style="color:#f5c65a;font-weight:700">Play the 3-player table →</a></div>
 </div>
 <div class="controls">
   <div class="msg" id="msg">Tap chips to place your bet.</div>
@@ -890,7 +890,7 @@ function updateBetUI(){renderBetStack();}
 chipRow.addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b||phase!=='bet')return;
   var v=parseInt(b.getAttribute('data-v'),10);
   if(balance<bet+v){setMsg('Not enough tokens for that chip.','lose');return;}
-  bet+=v;betDenoms.push(v);sfx('chip-click',.5);updateBetUI();
+  bet+=v;betDenoms.push(v);sfx('chip-clack',.55);updateBetUI();
   document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('sel');});b.classList.add('sel');});
 $('clearBet').addEventListener('click',function(){if(phase!=='bet')return;bet=0;betDenoms=[];updateBetUI();sfx('chip-slide',.4);setMsg('Tap chips to place your bet.');});
 $('dealBtn').addEventListener('click',function(){
