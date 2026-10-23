@@ -234,6 +234,33 @@ body.room-open #supportLauncher {
 .intro-banner-video{left:0;top:0;right:0;bottom:0;transform:none;width:100%;height:100%;max-height:none;object-fit:cover;object-position:30% 50%;box-shadow:none}
 @media(max-width:560px){.intro-banner-video{max-height:none}}
 </style>
+<style>
+/* BUILD 248 (2026-10-23, entry gate ROUND 2 — owner's verdict on Build
+   246, verbatim sense: "I want that exact scene to fit the screen — the
+   WHOLE scene to fit the screen — not just stretched out." Build 246
+   cover-fit the 3:1 banner into the tall phone viewport, which cropped
+   it to a slice: an NF at the top, half a slot machine, a piece of the
+   script letters. Round 2: the banner video renders CONTAIN-fit at full
+   width, edge to edge, aspect preserved — the ENTIRE scene is visible
+   in one view: NF medallion, the full Nikkiflixs script, nikkiflixs.com,
+   the poker table on the left, the machines on the right. Nothing
+   cropped, nothing stretched. The wall around the scene is a DESIGNED
+   backdrop — a deep burgundy-to-near-black radial gradient drawn from
+   the scene's own palette (no image at all: not a blurred copy, not an
+   enlarged copy, not a duplicate of the art anywhere) — and the scene
+   carries a gold hairline top and bottom plus a deep shadow, so it
+   reads as a framed poster on a dark wall. The scene sits slightly
+   ABOVE center — like a marquee sign mounted high on the wall, with
+   the burgundy glow pooling beneath it toward the Install bar
+   (position picked from rendered frames at 412x915: dead-center left
+   the emptier band above the scene; 46% reads intentional against
+   both bars). Tap to Enter (full-width top bar) and Install
+   Nikkiflixs (full-width bottom bar) are exactly as Build 207 left
+   them. Presentation only — gate flow, install logic, sounds untouched. */
+.intro-film{background:radial-gradient(ellipse 130% 90% at 50% 46%,#43150b 0,#200806 45%,#0a0302 75%,#030101 100%)}
+.intro-banner-video{left:0;right:0;top:46%;bottom:auto;transform:translateY(-50%);width:100%;height:auto;max-height:none;object-fit:contain;object-position:50% 50%;border-top:2px solid #b47724;border-bottom:2px solid #b47724;box-shadow:0 24px 70px rgba(0,0,0,.75)}
+@media(max-width:560px){.intro-banner-video{max-height:none}}
+</style>
 </head>
 <body>
 <section class="intro-film" id="introFilm" aria-label="Nikkiflixs opening">
