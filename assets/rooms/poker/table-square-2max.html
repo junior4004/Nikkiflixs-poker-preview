@@ -634,6 +634,28 @@ body.targeting .pod{box-shadow:0 0 24px rgba(255,217,77,.55)}
 .seat.showdown-flash[data-view-slot="1"] .pocket,.seat.showdown-flash[data-view-slot="2"] .pocket,.seat.showdown-flash[data-view-slot="3"] .pocket{left:auto!important;right:-50px!important;top:44px!important;transform:none!important;flex-direction:column!important;gap:0!important}
 .seat.showdown-flash .pocket .hole+.hole{margin-left:0!important;margin-top:-32px!important}
 </style>
+<style>
+/* BUILD 205: POKERIST-2D SEATED BUSTS — port of Build 204 (red table) to the
+   heads-up square. Same treatment: every player is a head-and-shoulders BUST
+   seated in a pod built into the table rim — a dark rail socket behind the
+   shoulders (.portrait-wrap::before) and the socket's front lip crossing the
+   lower chest (::after) — and the Build 199 dissolve mask gains the wide
+   shoulder ellipse (118% 52% at 50% 100%, solid to 55%) alongside the 199
+   head ellipse, so the full figure survives instead of floating as a bare
+   head. Geometry is scaled to this page's own seat scale: Build 195's
+   window was 88x98 here (red's was 100x114), so the bust window is 104x105
+   — the same proportional jump red made to 118x122 — with socket, lip and
+   ring insets scaled to match; pod height (142) and the nameplate (top:100)
+   keep the same 5px lip/plate relationship red has. BARE-HEADS law intact:
+   no border or ring around a head; the turn timer stays the only ring and
+   shows on the active seat only. Same gallery people — no new art.
+   Build 200's card fans and toolbar untouched. Visual only. */
+.portrait-wrap{width:104px;height:105px}
+.portrait{width:104px;height:105px;-webkit-mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%);mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%)}
+.portrait-wrap::before{content:"";position:absolute;left:50%;top:67px;width:140px;height:50px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 10px 12px rgba(0,0,0,.8),inset 0 -6px 9px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 12px 16px rgba(0,0,0,.5)}
+.portrait-wrap::after{content:"";position:absolute;left:50%;bottom:-7px;width:125px;height:28px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 3px 5px rgba(240,205,109,.4),inset 0 -8px 10px rgba(0,0,0,.7),0 8px 11px rgba(0,0,0,.5)}
+.turn-ring{inset:-7px -9px;z-index:3}
+</style>
 </head>
 <body>
 

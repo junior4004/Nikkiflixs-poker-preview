@@ -620,6 +620,26 @@ body.targeting .seat .portrait{box-shadow:0 0 22px #e5ba53d9}
 .seat.showdown-flash[data-view-slot="1"] .pocket,.seat.showdown-flash[data-view-slot="2"] .pocket,.seat.showdown-flash[data-view-slot="3"] .pocket{left:auto!important;right:-50px!important;top:44px!important;transform:none!important;flex-direction:column!important;gap:0!important}
 .seat.showdown-flash .pocket .hole+.hole{margin-left:0!important;margin-top:-32px!important}
 </style>
+<style>
+/* BUILD 204: POKERIST-2D SEATED BUSTS (Jerry's order 2026-10-22 21:06 MDT,
+   from Pokerist's 2D mode — file 2774_0_wxfn.png: 'There's their 2D. I'll be
+   happy with these type if you can get them right.') Every player is now a
+   head-and-shoulders BUST seated in a pod built into the table rim: the bust
+   emerges from a dark rail socket behind the shoulders, and the socket's
+   front lip crosses the lower chest, so the person sits IN the table
+   furniture — no floating head, no picture frame. BARE-HEADS law untouched:
+   still no border or ring around a head; the turn timer stays the only ring
+   and shows on the active seat only. Same gallery people, reframed — no new
+   art. Build 199's dissolve mask ate the shoulders (bottom-centre alpha
+   ~0.24, which is why the seats read as floating heads); the bust mask keeps
+   the 199 head ellipse and adds a wide shoulder ellipse so the full figure
+   survives. Build 200's card fans and toolbar are untouched. Visual only. */
+.portrait-wrap{width:118px;height:122px}
+.portrait{width:118px;height:122px;-webkit-mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%);mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%)}
+.portrait-wrap::before{content:"";position:absolute;left:50%;top:78px;width:160px;height:58px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 12px 14px rgba(0,0,0,.8),inset 0 -7px 10px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 14px 18px rgba(0,0,0,.5)}
+.portrait-wrap::after{content:"";position:absolute;left:50%;bottom:-8px;width:142px;height:32px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 3px 5px rgba(240,205,109,.4),inset 0 -9px 11px rgba(0,0,0,.7),0 9px 13px rgba(0,0,0,.5)}
+.turn-ring{inset:-8px -10px;border-radius:50%/48%;z-index:3}
+</style>
 </head>
 <body>
 

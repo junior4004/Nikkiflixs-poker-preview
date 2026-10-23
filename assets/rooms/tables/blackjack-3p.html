@@ -105,9 +105,24 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
 #rulesPanel{display:none;position:fixed;left:12px;right:12px;z-index:60;max-width:560px;margin:0 auto;max-height:44dvh;overflow-y:auto}
 #rulesPanel.open{display:block}
 </style>
+<style>
+/* BUILD 205: POKERIST-2D SEATED BUSTS — port of Build 204 (red table) to the
+   3-player blackjack seats. Each .p-avatar was a 46px bare head (Build
+   201); now it is a 58x60 head-and-shoulders BUST seated in the seat
+   furniture: the Build 201 dissolve mask gains Build 204's wide shoulder
+   ellipse so the figure survives, and the avatar gains a dark rail socket
+   behind the shoulders (::before) with its front lip crossing the lower
+   chest (::after) — Pokerist-2D style, scaled to this page's smaller
+   seats. Name, dealt hand and bet spot flow below the bust exactly as
+   before; the dealer notch is unchanged. Visual only. */
+.seat3p .p-avatar{position:relative;z-index:0;width:58px;height:60px}
+.seat3p .p-avatar img{object-position:50% 22%;-webkit-mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%);mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%)}
+.seat3p .p-avatar::before{content:"";position:absolute;left:50%;top:36px;width:79px;height:27px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 8px 9px rgba(0,0,0,.8),inset 0 -5px 7px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 9px 12px rgba(0,0,0,.5)}
+.seat3p .p-avatar::after{content:"";position:absolute;left:50%;bottom:-4px;width:70px;height:16px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
+</style>
 </head>
 <body>
-<div class="build-stamp">BUILD 201</div>
+<div class="build-stamp">BUILD 205</div>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Tables</button>
   <h1>Blackjack · 3-Player</h1>
