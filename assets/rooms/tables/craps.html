@@ -905,14 +905,17 @@ function diceSound(){try{
     g.gain.setValueAtTime(0.0001,st);g.gain.exponentialRampToValueAtTime(0.12,st+0.012);g.gain.exponentialRampToValueAtTime(0.0001,st+0.07);
     o.connect(f);f.connect(g);g.connect(actx.destination);o.start(st);o.stop(st+0.09);}
 }catch(e){}}
-var balance=10000, chip=5, phase='comeout', point=null, rolling=false;
+var WALLET_KEY='nikkiflixs_bankroll';
+function loadWallet(){try{var v=parseInt(localStorage.getItem(WALLET_KEY),10);if(isNaN(v)||v<0){v=10000;localStorage.setItem(WALLET_KEY,String(v));}return v;}catch(e){return 10000;}}
+function saveWallet(){try{localStorage.setItem(WALLET_KEY,String(balance));}catch(e){}}
+var balance=loadWallet(), chip=5, phase='comeout', point=null, rolling=false;
 var bets, spotEls={};
 function resetBets(){bets={pass:0,dontPass:0,come:0,dontCome:0,comeBets:[],dontComeBets:[],place:{4:0,5:0,6:0,8:0,9:0,10:0},field:0,hard:{4:0,6:0,8:0,10:0}};}
 resetBets();
 var $=function(id){return document.getElementById(id);};
 var msg=$('msg'),balanceEl=$('balance'),rollBtn=$('rollBtn'),puck=$('puck');
 function fmt(n){return n.toLocaleString('en-US');}
-function updateBal(){balanceEl.textContent=fmt(balance);}
+function updateBal(){balanceEl.textContent=fmt(balance);saveWallet();}
 function setMsg(t,cls){msg.textContent=t;msg.className='msg'+(cls?' '+cls:'');}
 /* ===== Tip the crew (Jerry's order 2026-10-09) ===== */
 (function(){
