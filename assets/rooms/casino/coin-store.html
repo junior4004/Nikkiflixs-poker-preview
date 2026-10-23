@@ -60,7 +60,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <div id="pops"></div>
   <p class="note">Pops are used at the poker table under the POP button. They never expire.</p>
   <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">🎯 Ammo &amp; Grenades</h2>
-  <p class="hint">The premium guns in the poker THROW picker eat ammo — one clip, cylinder or shell per shot, and grenades are one per throw. You have: <b id="ammoOwned">🔫 Clips 0 · Cylinders 0 · Shells 0 · 🧨 Grenades 0</b></p>
+  <p class="hint">The premium guns in the poker THROW picker eat ammo — one clip per burst, SIX shots per cylinder, one shell per blast, and grenades are one per throw. You have: <b id="ammoOwned">🔫 Clips 0 · Cylinders 0 · Shells 0 · 🧨 Grenades 0</b></p>
   <div id="ammo"></div>
   <p class="note">Ammo is spent only at the poker table, only when you fire. It never expires.</p>
   <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">🔥 Flamethrower — Permanent Unlock</h2>
@@ -123,7 +123,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       var card=buy.closest('.tier'); if(!card)return;
       var amt=card.querySelector('.amt')?card.querySelector('.amt').textContent:'';
       var nm=card.querySelector('.nm')?card.querySelector('.nm').textContent:'';
-      if(buy.dataset&&buy.dataset.ammo){var ak=buy.dataset.ammo,an=parseInt(buy.dataset.count||'0',10)||0,aa={mg:0,pt:0,sg:0,gr:0};try{var rr=JSON.parse(localStorage.getItem('nikkiflixs_ammo')||'{}');['mg','pt','sg','gr'].forEach(function(k){aa[k]=Math.max(0,parseInt(rr[k],10)||0)});aa[ak]+=an;localStorage.setItem('nikkiflixs_ammo',JSON.stringify(aa))}catch(err){}if(window.paintAmmo)window.paintAmmo();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+      if(buy.dataset&&buy.dataset.ammo){var ak=buy.dataset.ammo,an=parseInt(buy.dataset.count||'0',10)||0,aa={mg:0,pt:0,sg:0,gr:0,ptShots:0};try{var rr=JSON.parse(localStorage.getItem('nikkiflixs_ammo')||'{}');['mg','pt','sg','gr'].forEach(function(k){aa[k]=Math.max(0,parseInt(rr[k],10)||0)});aa.ptShots=Math.min(6,Math.max(0,parseInt(rr.ptShots,10)||0));aa[ak]+=an;localStorage.setItem('nikkiflixs_ammo',JSON.stringify(aa))}catch(err){}if(window.paintAmmo)window.paintAmmo();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
       if(buy.dataset&&buy.dataset.unlock){try{localStorage.setItem('nikkiflixs_unlock_'+buy.dataset.unlock,'1')}catch(err){}if(window.paintFlame)window.paintFlame();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
       var cm=amt.match(/([\d,]+)\s*coins/);
       if(cm){var n=parseInt(cm[1].replace(/,/g,''),10);bankSet(bankGet()+n);paintBal();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
@@ -216,6 +216,7 @@ function money(n){return '$'+n.toFixed(2);}
   POPS.forEach(function(p){
     var d=document.createElement('div');
     d.className='tier';
+    if(p.price===1.00)d.id='store-pops-'+(p.key==='nikkiflixs_pops_taunt'?'taunt':'mad'); /* BUILD 246: deep-link target for the table's out-of-ammo popup */
     d.innerHTML='<div class="coin">'+p.icon+'</div><div class="info"><div class="nm">'+p.name+'</div><div class="amt">'+p.count+' pops · '+money(p.price)+'</div><div class="per">'+p.per+'</div></div>';
     var buy=document.createElement('button');
     buy.className='buy';buy.type='button';buy.textContent='BUY';
@@ -225,14 +226,14 @@ function money(n){return '$'+n.toFixed(2);}
   });
   paintPops();
   var AMMO_KEY='nikkiflixs_ammo';
-  function ammoAll(){var a={mg:0,pt:0,sg:0,gr:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)})}catch(e){}return a}
+  function ammoAll(){var a={mg:0,pt:0,sg:0,gr:0,ptShots:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)});a.ptShots=Math.min(6,Math.max(0,parseInt(raw.ptShots,10)||0))}catch(e){}return a} /* BUILD 242: ptShots (rounds in the loaded six-shooter cylinder) rides along so a store buy never wipes a half-shot cylinder */
   function ammoAdd(key,n){var a=ammoAll();a[key]+=n;try{localStorage.setItem(AMMO_KEY,JSON.stringify(a))}catch(e){}paintAmmo()}
-  window.paintAmmo=function(){var el=document.getElementById('ammoOwned');if(!el)return;var a=ammoAll();el.textContent='🔫 Clips '+a.mg+' · Cylinders '+a.pt+' · Shells '+a.sg+' · 🧨 Grenades '+a.gr;};
+  window.paintAmmo=function(){var el=document.getElementById('ammoOwned');if(!el)return;var a=ammoAll();el.textContent='🔫 Clips '+a.mg+' · Cylinders '+a.pt+(a.ptShots>0?' ('+a.ptShots+'/6 loaded)':'')+' · Shells '+a.sg+' · 🧨 Grenades '+a.gr;};
   var AMMO=[
     {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:5,price:1.00,img:'item-mgun.webp',per:'One clip = one full burst at the poker table'},
     {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:18,price:3.00,img:'item-mgun.webp',per:'Stock up — cheaper per clip'},
     {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:65,price:10.00,img:'item-mgun.webp',per:'The big drum — best price per clip'},
-    {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:3,price:1.00,img:'item-pistol.webp',per:'One cylinder = one two-shot volley at the table'},
+    {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:3,price:1.00,img:'item-pistol.webp',per:'One cylinder = SIX shots at the table — one hole per trigger pull, unused shots stay loaded'},
     {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:11,price:3.00,img:'item-pistol.webp',per:'Stock up — cheaper per cylinder'},
     {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:40,price:10.00,img:'item-pistol.webp',per:'The big belt — best price per cylinder'},
     {name:'Shotgun Shells',key:'sg',unit:'shells',count:3,price:1.00,img:'item-sgun.webp',per:'One shell = one head-blasting shot'},
@@ -245,6 +246,7 @@ function money(n){return '$'+n.toFixed(2);}
   var ammoWrap=document.getElementById('ammo');
   AMMO.forEach(function(p){
     var d=document.createElement('div');d.className='tier';
+    if(p.price===1.00)d.id='store-ammo-'+p.key; /* BUILD 246: deep-link target for the table's out-of-ammo popup */
     d.innerHTML='<div class="coin"><img src="../poker/assets/item-art/'+p.img+'" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:8px"></div><div class="info"><div class="nm">'+p.name+'</div><div class="amt">'+p.count+' '+p.unit+' · '+money(p.price)+'</div><div class="per">'+p.per+'</div></div>';
     var buy=document.createElement('button');buy.className='buy';buy.type='button';buy.textContent='BUY';
     buy.setAttribute('aria-label','Buy '+p.count+' '+p.name+' for '+money(p.price));
@@ -391,6 +393,13 @@ function money(n){return '$'+n.toFixed(2);}
     if(balEl) balEl.textContent = coins.toLocaleString('en-US');
   });
 })();
+</script>
+<script>
+/* BUILD 246: players arriving from the poker table's out-of-ammo popup land
+   on #store-ammo-<key> / #store-pops-<flavor> — scroll that exact tier into
+   the middle of the screen and pulse a gold outline on it so the buy they
+   came for is the first thing they see. */
+(function(){var h=(location.hash||'').replace('#','');if(!/^store-(ammo|pops)-/.test(h))return;var el=document.getElementById(h);if(!el)return;var st=document.createElement('style');st.textContent='.tier-spot{outline:3px solid #ffd968!important;outline-offset:2px;animation:spotPulse 1s ease-in-out 3}@keyframes spotPulse{50%{outline-color:#fff3c4}}';document.head.appendChild(st);setTimeout(function(){el.scrollIntoView({block:'center'});el.classList.add('tier-spot')},60);})();
 </script>
 
 </body>

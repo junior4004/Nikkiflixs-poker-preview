@@ -531,6 +531,147 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 @keyframes popFlash{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
 .pop-tile{box-shadow:inset 0 0 0 1px rgba(255,220,130,.5),0 3px 7px rgba(0,0,0,.55)}
 </style>
+<style>
+/* BUILD 243 — SPEC v3 GUN IMPACTS (owner 2026-10-23 05:35 MDT: the machine
+   gun must leave "a bunch of BIG visible bullet holes EVERYWHERE — face
+   AND nameplate", and the shotgun "blows ONE BIG HOLE in the avatar,
+   then it comes back"). MG holes are now the big 24px craters (239 face
+   treatment) split 6 face / 3 nameplate via plateHole(). The shotgun
+   crater is one jagged 60px hole centred on the bust: a hard near-black
+   core with a torn, lit rim (clip-path star) that reads as blown-out,
+   not drawn-on. It fades and the bust is whole again. */
+.sg-crater{position:absolute;left:50%;top:36%;width:60px;height:60px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;background:radial-gradient(circle,rgba(4,2,2,.99) 0 30%,rgba(16,8,5,.97) 48%,rgba(52,28,14,.75) 62%,rgba(255,214,150,.34) 72%,rgba(0,0,0,0) 80%);clip-path:polygon(50% 0%,61% 13%,77% 6%,83% 25%,98% 31%,89% 46%,100% 59%,85% 66%,90% 83%,71% 82%,63% 98%,49% 87%,35% 100%,27% 83%,9% 84%,14% 65%,0% 55%,13% 43%,5% 27%,21% 21%,27% 5%,41% 13%);filter:drop-shadow(0 2px 5px rgba(0,0,0,.8));transition:opacity .5s ease}
+.sg-crater.fade{opacity:0}
+</style>
+<style>
+/* BUILD 244 — SPEC v3 POP SAYING (owner 2026-10-23 05:35 MDT: pops explode
+   as built, "but the funny SAYING must be BIG/readable"). The bubble was
+   11px single-line — unreadable at a glance on a phone. It is now a proper
+   speech bubble: 16px extrabold, wrapped to two lines max, riding above
+   the explosion tiles so the line lands while the head is in pieces. */
+.pop-bubble{font:800 16px/1.3 sans-serif;padding:10px 14px;white-space:normal;max-width:200px;text-align:center;border-radius:12px;bottom:104%;z-index:12}
+</style>
+<style>
+/* BUILD 245 — SPEC v3 FLAMETHROWER ASH (owner 2026-10-23 05:35 MDT:
+   "burns it up to ASHES, then it comes back"). The 239-era burn ended at
+   a dark char tint, which reads as a shadow, not ash. Now the charred
+   bust desaturates to pale grey, dims, sags a few px (crumbling), and a
+   speckled ash layer settles over it for a ~0.9s hold before everything
+   fades and the portrait restores whole. Inline transition is set by
+   flameThrow only on the burning portrait, so no other filter change on
+   the page animates. */
+.portrait.ashed{filter:grayscale(1) brightness(.66) contrast(.9);opacity:.55;transform:scale(.965) translateY(3px)}
+.ash-layer{position:absolute;inset:0;z-index:9;pointer-events:none;border-radius:44%;background:radial-gradient(ellipse 62% 52% at 50% 46%,rgba(198,192,182,.55),rgba(146,140,132,.4) 55%,rgba(96,92,86,0) 78%),radial-gradient(circle at 30% 30%,rgba(226,222,214,.55) 0 6%,rgba(226,222,214,0) 13%),radial-gradient(circle at 68% 22%,rgba(216,212,204,.5) 0 5%,rgba(216,212,204,0) 12%),radial-gradient(circle at 55% 68%,rgba(210,206,198,.45) 0 7%,rgba(210,206,198,0) 14%),radial-gradient(circle at 42% 52%,rgba(120,116,110,.35) 0 9%,rgba(120,116,110,0) 16%);transition:opacity .5s ease}
+.ash-layer.fade{opacity:0}
+</style>
+<style>
+/* BUILD 246 — OUT-OF-AMMO PURCHASE POPUP card (SPEC v3): same panel
+   language as the gift/player modals, centred content, the item art at
+   64px, and a full-width gold BUY bar — unmissable on a phone. */
+.ammo-pop{text-align:center;align-items:center}
+.ammo-pop .ap-glyph{min-height:64px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.ammo-pop .ap-glyph .item-art{width:64px;height:64px}
+.ap-buy{width:100%;margin-top:8px;background:linear-gradient(180deg,#ffedb0,#eec25e 48%,#d29a2e);color:#221100;border:1px solid #a37c33;border-radius:9px;padding:13px;font:800 16px "Barlow Condensed",sans-serif;letter-spacing:.07em;cursor:pointer;box-shadow:0 6px 14px #000a}
+.ap-buy:active{transform:translateY(1px)}
+.ammo-pop .gift-close{width:100%}
+</style>
+<style>
+/* BUILD 247 — SPEC v3 CLASSIC IMPACTS (owner 2026-10-23 05:35 MDT): the
+   splat class must SPLAT — a coloured burst blob in the item's own colour
+   with satellite drips and the item art stuck in the middle of it, sitting
+   ON the bust for its full duration, no bounce. The old splat was a bare
+   emoji floating at 38% — it read as a sticker, not an impact. The hard
+   class gets no mark at all: it hits and bounces away (bounceOff). The
+   shoe's signature is a CSS footprint — ball, sole and heel in dark
+   translucent brown, stamped at a boot angle — that fades with the effect. */
+.splat-mark{position:absolute;width:58px;height:52px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;transition:opacity .5s ease}
+.splat-mark.fade{opacity:0}
+.splat-mark .blob{position:absolute;inset:0;border-radius:58% 42% 55% 45%/48% 56% 44% 52%;opacity:.94;box-shadow:0 2px 6px rgba(0,0,0,.5),inset 0 -4px 8px rgba(0,0,0,.25)}
+.splat-mark .dot{position:absolute;border-radius:50%;opacity:.94}
+.splat-mark .dot.d1{width:13px;height:11px;left:-9px;top:8px}
+.splat-mark .dot.d2{width:9px;height:8px;right:-7px;bottom:10px}
+.splat-mark img{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+.splat-mark .gly{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:24px}
+.shoe-print{position:absolute;width:17px;height:32px;transform:translate(-50%,-50%) rotate(18deg);z-index:8;pointer-events:none;opacity:.85;filter:blur(.4px);transition:opacity .6s ease;background:radial-gradient(ellipse 48% 26% at 50% 13%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 56% 38% at 50% 56%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 42% 15% at 50% 92%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 75%)}
+.shoe-print.fade{opacity:0}
+</style>
+<style>
+/* BUILD 251 (F2): holes must READ as shot holes — plain black dots failed
+   on his phone. Every hole now has a scorched black core, a bright
+   orange-yellow hot rim, a soft outer glow, and fine cracks radiating
+   outward (a conic-gradient star on ::after, radially faded) — visible on
+   light AND dark faces at phone size. The shotgun crater gets the same
+   hot rim inside its jagged edge. */
+.bullet-hole{background:radial-gradient(circle,#030303 0 34%,#190c03 44%,#ff9d2e 56%,#ffd94a 63%,rgba(255,166,40,0) 76%);box-shadow:0 0 7px 2px rgba(255,150,30,.5)}
+.bullet-hole::after{content:"";position:absolute;inset:-42%;border-radius:50%;background:repeating-conic-gradient(from 8deg,rgba(24,12,4,.9) 0deg 1.5deg,transparent 1.5deg 43deg);-webkit-mask-image:radial-gradient(circle,#000 52%,transparent 74%);mask-image:radial-gradient(circle,#000 52%,transparent 74%)}
+.sg-crater{background:radial-gradient(circle,rgba(3,2,2,.99) 0 34%,rgba(20,9,3,.98) 52%,rgba(255,128,26,.92) 68%,rgba(255,196,64,.55) 76%,rgba(0,0,0,0) 86%);box-shadow:inset 0 0 16px 5px rgba(0,0,0,.9),0 0 16px 4px rgba(255,140,30,.4)}
+</style>
+<style>
+/* BUILD 252 (F4): the player card is ONE SCREEN, NO SCROLL, EVER — he had
+   to scroll inside the card to reach the flamethrower and it cost him his
+   turn. The panel caps to the viewport, the stats tighten (the four
+   fold-stage rows fold into one line), the avatar shrinks, and the
+   throwable grid drops its 290px scroll box for five slimmer columns:
+   every tile, premium flamethrower included, visible at once at 412x915
+   and 390x844. */
+.gift-panel.player-card{max-height:96vh;padding:14px 12px}
+.gift-panel.player-card h3{margin:0 0 2px}
+#pcStats{font-size:12px!important;line-height:1.35!important}
+#pcThrowGrid{max-height:none;overflow:visible;overflow-x:visible;overflow-y:visible;grid-template-columns:repeat(5,1fr);gap:5px}
+#pcThrowGrid .gift-item{padding:5px 2px 4px;font-size:10px;line-height:1.15}
+#pcThrowGrid .gift-item .g{font-size:19px}
+#pcThrowGrid .gift-header{grid-column:1/-1;padding:3px 0 0;font-size:11px}
+</style>
+<style>
+/* BUILD 253 (F5+F6+F10) — three small things from his tap-test shots.
+   F5: heads lift ~3% MORE (4px) at every seat EXCEPT the top-right
+   (view-slot 5, Drea's seat) — her chin clearance is the reference the
+   others are matched to. Heads only: seats and plates do not move.
+   F6: digits +~2% — bet amounts 16 -> 17px ("almost perfect", his words),
+   nameplate stack amounts 14 -> 15px. Digits only; boxes unchanged.
+   F10: the mid-edge seats' pods sit ~21px past the stage edge, so their
+   nameplates clip ("IALL BLIND"). Plates at view-slots 2 and 6 shift
+   22px inward, fully on-screen, and slot 6's blind badge moves to the
+   badge's inner side. */
+.seat .portrait-wrap{top:-12px}
+.seat[data-view-slot="4"] .portrait-wrap{top:-9px}
+.seat[data-view-slot="5"] .portrait-wrap{top:-8px}
+.bet-amount{font-size:17px}
+.nameplate span{font-size:15px}
+.seat[data-view-slot="2"] .nameplate{transform:translateX(22px)}
+.seat[data-view-slot="6"] .nameplate{transform:translateX(-22px)}
+.seat[data-view-slot="6"] .blind{right:auto;left:-12px}
+</style>
+<style>
+/* BUILD 254 (F9): seat busts must read as bare HEADS, not photos in a
+   dark rectangular backdrop ("like a picture frame"). The Build 214
+   dissolve kept too much of each source photo's own dark interior, which
+   still reads as a rectangle. The mask tightens to the head itself —
+   solid through the face, fully transparent well before the wrap's
+   edges — so nothing rectangular survives at any seat. Dealer Nikki's
+   notch is out of scope and untouched. */
+.portrait{-webkit-mask-image:radial-gradient(ellipse 70% 66% at 50% 41%,#000 58%,transparent 75%);mask-image:radial-gradient(ellipse 70% 66% at 50% 41%,#000 58%,transparent 75%)}
+</style>
+<style>
+/* BUILD 258 (F4, second pass): the 252 pass removed the grid's own scroll
+   box, but Chromium geometry proved the PANEL still overflowed — 978px of
+   content in an 876px panel at 412x915 (flamethrower tile and the CLOSE
+   button cut off), 989 in 808 at 390x844. That is the owner's exact
+   complaint, so this pass cuts the real height: six slimmer grid columns
+   (fewer rows), smaller tile art, a 44px card avatar, tighter panel
+   chrome and stats. Verified by geometry probe after the change. */
+.gift-panel.player-card{max-height:97vh;padding:10px}
+.gift-panel.player-card h3{font-size:17px}
+#pcThrowGrid{grid-template-columns:repeat(6,1fr);gap:4px}
+#pcThrowGrid .gift-item{padding:4px 1px 3px;font-size:9.5px}
+#pcThrowGrid .gift-item .g{font-size:17px}
+#pcThrowGrid .gift-item img{width:26px;height:26px}
+#pcThrowGrid .gift-header{padding:2px 0 0;font-size:10.5px}
+#pcStats{font-size:11.5px!important;line-height:1.3!important}
+#playerModal .p-actions{margin:6px 0 0}
+#playerModal .p-actions button{padding:7px 4px}
+#pcClose{padding:8px}
+</style>
 </head>
 <body>
 
@@ -740,14 +881,39 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
   function setStack(index,value){stacks[index]=Math.max(0,Math.floor(value));seats[index].querySelector('.nameplate span').textContent=money(stacks[index]);seats[index].querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)}
   function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);if(stacks[index]===0)handAllIn[index]=true;logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0)sfx('chips');return paid}
-  function refillCreator(src){
-    var before=bank;bank=bank+250000;walletSave();
-    if(stacks[0]<25000)setStack(0,25000);
+  var pendingCreatorReset=false;
+  function applyCreatorReset(src,force){
+    /* the reset itself: BETWEEN hands only; automatic resets fire only
+       from under 100; the amount is always 5,000 */
+    if(handRunning)return false;
+    if(!force&&stacks[0]>=100){logEvent('creator-refill-skipped',{src:src,reason:'stack-100-plus',stack:stacks[0]});return false}
+    setStack(0,5000);
     pendingJoinNextHand=true;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;
-    ['buyModal','chipModal'].forEach(function(id){var m=document.getElementById(id);if(m)m.classList.remove('open')});
     seats[0].classList.remove('out-of-chips');
-    say('👑 Creator refill — wallet '+money(bank)+' · stack '+money(stacks[0]),3400);
-    logEvent('creator-refill',{src:src,walletBefore:before,wallet:bank,stack:stacks[0]});
+    say('👑 Creator reset — stack '+money(stacks[0]),3000);
+    logEvent('creator-refill',{src:src,stack:stacks[0]});
+    return true;
+  }
+  function refillCreator(src){
+    /* BUILD 249 (F7 — OWNER'S ADMIN MONEY RULES, 2026-10-23 06:44 MDT;
+       supersedes Build 240's stack behaviour — the ammo refill-to-10 in
+       applyCreatorSeat stands untouched): (a) the creator's stack NEVER
+       refills mid-hand — all-in means all-in; (b) a reset lands only
+       BETWEEN hands, and the automatic one only when his stack is under
+       100; (c) the reset / sit-down amount is 5,000; (d) the manual admin
+       reset obeys the same between-hands gate. Non-admin money behaviour
+       is untouched by this build. */
+    if(src==='admin'){
+      if(handRunning){say('👑 Reset lands between hands — never mid-hand',2800);logEvent('creator-refill-refused',{src:src,reason:'mid-hand',stack:stacks[0]});return}
+      var before=bank;bank=bank+250000;walletSave();
+      ['buyModal','chipModal'].forEach(function(id){var m=document.getElementById(id);if(m)m.classList.remove('open')});
+      applyCreatorReset('admin',true);
+      say('👑 Creator reset — wallet '+money(bank)+' · stack '+money(stacks[0]),3400);
+      logEvent('creator-wallet-topup',{src:src,walletBefore:before,wallet:bank,stack:stacks[0]});
+      return;
+    }
+    if(handRunning){pendingCreatorReset=true;logEvent('creator-refill-deferred',{src:src,stack:stacks[0]});return}
+    applyCreatorReset(src,false);
   }
   function holdSeatForReload(index){
     sittingOut[index]=true;handFolded[index]=true;seats[index].classList.add('out-of-chips','folded');
@@ -780,6 +946,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     say(name+' takes a seat',2600)
   }
   function prepareNextHand(){
+    if(pendingCreatorReset){pendingCreatorReset=false;if(creatorOn())applyCreatorReset('auto-between-hands',false)}
     var rotatedOut=false;
     seats.forEach(function(seat,index){
       if(index===0){if(stacks[0]<=0&&!sittingOut[0])holdSeatForReload(0);return}
@@ -806,6 +973,40 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function logEvent(type,detail){auditLog.push({time:Date.now(),hand:handNumber,type:type,detail:detail||{}});if(auditLog.length>300)auditLog.shift()}
   function clearTimers(){timers.forEach(clearTimeout);timers=[]}
   function say(message,duration){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){toast.classList.remove('show')},duration||1500)}
+  var throwBufCache=null;
+  function throwNoiseBuffer(){if(throwBufCache)return throwBufCache;var sr=audio.sampleRate||44100;var b=audio.createBuffer(1,Math.floor(sr*.5),sr);var d0=b.getChannelData(0);for(var i=0;i<d0.length;i++)d0[i]=Math.random()*2-1;throwBufCache=b;return b}
+  function throwSnd(kind){
+    /* BUILD 250 (F1): throwable sounds — synthesized on the same WebAudio
+       graph as the table sfx, unlocked the same way (first tap). Every
+       call lands in the audit log as 'throw-sfx', so the firing order the
+       owner demanded (card closes -> THEN the effect -> every shot HEARD)
+       is provable from the log alone. */
+    if(!audio||!alertsUnlocked)return;
+    logEvent('throw-sfx',{kind:kind});
+    try{
+      var t=audio.currentTime;
+      function noise(dur,f0,f1,type,vol){var src=audio.createBufferSource();src.buffer=throwNoiseBuffer();var fl=audio.createBiquadFilter();fl.type=type||'lowpass';fl.frequency.setValueAtTime(f0,t);fl.frequency.exponentialRampToValueAtTime(Math.max(40,f1),t+dur);var g=audio.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);src.connect(fl);fl.connect(g);g.connect(audio.destination);src.start(t);src.stop(t+dur+.05)}
+      if(kind==='shot'){noise(.10,3400,300,'lowpass',.5);tone(150,.09,'sine',.32)}
+      else if(kind==='blast'){noise(.30,1500,140,'lowpass',.85);tone(105,.24,'sine',.5)}
+      else if(kind==='boom'){noise(.42,950,110,'lowpass',.8);tone(145,.34,'sine',.5)}
+      else if(kind==='whoosh'){noise(.30,600,2100,'bandpass',.16)}
+      else if(kind==='splat'){noise(.16,700,180,'lowpass',.55);tone(250,.13,'sine',.3)}
+      else if(kind==='thud'){noise(.05,900,300,'lowpass',.25);tone(165,.08,'sine',.4)}
+    }catch(e){}
+  }
+  function flameRoar(ms){
+    /* BUILD 250 (F1): the flamethrower ROARS for the whole burn — a looped
+       noise bed through a wandering low-pass that swells with the stream
+       and dies as the stream cuts (the ash moment after it is silent). */
+    if(!audio||!alertsUnlocked)return;
+    logEvent('throw-sfx',{kind:'roar'});
+    try{
+      var t=audio.currentTime,src=audio.createBufferSource();src.buffer=throwNoiseBuffer();src.loop=true;
+      var fl=audio.createBiquadFilter();fl.type='lowpass';fl.frequency.setValueAtTime(420,t);fl.frequency.linearRampToValueAtTime(760,t+.5);fl.frequency.linearRampToValueAtTime(380,t+ms/1000-.3);
+      var g=audio.createGain();g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.5,t+.09);g.gain.setValueAtTime(.5,t+Math.max(.1,ms/1000-.35));g.gain.exponentialRampToValueAtTime(.001,t+ms/1000);
+      src.connect(fl);fl.connect(g);g.connect(audio.destination);src.start(t);src.stop(t+ms/1000+.05);
+    }catch(e){}
+  }
   function beep(freq,duration){try{if(!alertsUnlocked||!audio)return false;if(audio.state==='suspended')audio.resume();var o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;g.gain.value=.055;o.connect(g);g.connect(audio.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.stop(audio.currentTime+duration);return true}catch(e){return false}}
   function buzz(pattern){if(alertsUnlocked&&navigator.vibrate){navigator.vibrate(pattern);return true}return false}
   var sfxLast={},sfxNoiseBuf=null;
@@ -979,7 +1180,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     demoHands[index].forEach(function(card,cardIndex){cards[cardIndex].className='hole'+(['♥','♦'].indexOf(card[1])>-1?' red':'');cards[cardIndex].textContent=card[0];cards[cardIndex].setAttribute('data-suit',card[1]);cards[cardIndex].style.opacity='1'});
     seats[index].setAttribute('aria-label',names[index]+' holds '+demoHands[index][0][0]+demoHands[index][0][1]+' and '+demoHands[index][1][0]+demoHands[index][1][1])
   }
-  function resetVisuals(){clearTurn();clearShowdownHighlight();clearBetDisplays();motion.innerHTML='';muck.classList.remove('show');handFolded={};handAllIn={};Object.keys(sittingOut).forEach(function(index){if(sittingOut[index]&&!pendingBotSeat[index]&&!emptyBotSeat[index])handFolded[index]=true}) /* BUILD 237: sitting out to WAIT (new bot, empty seat) is not folding — only seats actually out of a dealt hand may show FOLDED */;pot=0;potValueNode.textContent='$0';potChips.style.opacity='1';document.querySelectorAll('.board-card').forEach(function(c){c.style.opacity='0';c.classList.remove('showdown-winner','showdown-dim')});seats.forEach(function(seat,index){seat.classList.remove('folded','showdown-flash');if(handFolded[index])seat.classList.add('folded');seat.querySelector('.pod').appendChild(seat.querySelector('.pocket'));seat.querySelectorAll('.hole').forEach(function(c){c.style.opacity='0';setHoleBack(c)});seat.querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)})}
+  function resetVisuals(){clearTurn();clearShowdownHighlight();clearBetDisplays();motion.innerHTML='';muck.classList.remove('show');handFolded={};handAllIn={};Object.keys(sittingOut).forEach(function(index){if(sittingOut[index])handFolded[index]=true}) /* BUILD 256 (F8): participation follows sittingOut EXACTLY — handFolded is the hand's participant list for the betting rounds AND the showdown, not just the FOLDED display. Build 237 exempted empty/waiting seats here, and an exempted seat kept the phantom demo cards randomizeHands deals to everyone: it acted and could WIN pots it was never dealt into (the owner's cardless-player bug, sampler-reproduced). The 237 display exemption survives in the class pass below; participation exempts no one. */;pot=0;potValueNode.textContent='$0';potChips.style.opacity='1';document.querySelectorAll('.board-card').forEach(function(c){c.style.opacity='0';c.classList.remove('showdown-winner','showdown-dim')});seats.forEach(function(seat,index){seat.classList.remove('folded','showdown-flash');if(handFolded[index]&&!pendingBotSeat[index]&&!emptyBotSeat[index])seat.classList.add('folded');seat.querySelector('.pod').appendChild(seat.querySelector('.pocket'));seat.querySelectorAll('.hole').forEach(function(c){c.style.opacity='0';setHoleBack(c)});seat.querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)})}
   function showLayoutProof(){
     clearTimers();handRunning=false;addButton.disabled=false;resetVisuals();setBlinds();deck.className='deck';pot=34;potValueNode.textContent='$34';potChips.style.opacity='1';
     [0,1,2,3,4].forEach(function(index){document.querySelectorAll('.board-card')[index].style.opacity='1'});
@@ -1296,15 +1497,15 @@ function throwPickerItems(){var items=THROWABLES.map(function(t){return{id:t[0],
   function popsSet(k,v){try{localStorage.setItem(k,String(Math.max(0,Math.floor(v))))}catch(e){}}
   function popsTotal(){return popsGet('nikkiflixs_pops_taunt')+popsGet('nikkiflixs_pops_mad')}
 var AMMO_KEY='nikkiflixs_ammo';
-function ammoGet(){var a={mg:0,pt:0,sg:0,gr:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)})}catch(e){}return a}
+function ammoGet(){var a={mg:0,pt:0,sg:0,gr:0,ptShots:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)});a.ptShots=Math.min(6,Math.max(0,parseInt(raw.ptShots,10)||0))}catch(e){}return a} /* BUILD 242 (SPEC v3): ptShots = rounds left in the LOADED six-shooter cylinder, 0-6, persisted with the ammo */
 function ammoSet(a){try{localStorage.setItem(AMMO_KEY,JSON.stringify(a))}catch(e){}}
-function consumeAmmo(fromIndex,aid){if(fromIndex!==0||!aid)return;var a=ammoGet();if(creatorOn()){/* BUILD 240: ADMIN ALWAYS FULL — the used type refills to 10 immediately */if(a[aid]!==10){a[aid]=10;ammoSet(a)}return}if(a[aid]>0){a[aid]-=1;ammoSet(a)}}
-function ammoGate(it){if(creatorOn())return true;if(ammoGet()[it.ammo]>0)return true;say(it.ammo==='gr'?'Out of grenades — purchase more at the store':'Out of bullets — purchase more at the store',2800);return false}
-function ammoSub(g){if(creatorOn())return '∞ — Creator';var n=ammoGet()[g[2]];return g[3]+': '+n+(n===0?' — store has more':'')}
+function consumeAmmo(fromIndex,aid){if(fromIndex!==0||!aid)return;var a=ammoGet();if(creatorOn()){/* BUILD 240: ADMIN ALWAYS FULL — the used type refills to 10 immediately */if(a[aid]!==10||(aid==='pt'&&a.ptShots!==6)){a[aid]=10;if(aid==='pt')a.ptShots=6;ammoSet(a)}return}if(aid==='pt'){/* BUILD 242: REAL CYLINDER — one shot per trigger pull; when the loaded cylinder runs dry the next owned cylinder loads, and only then is a cylinder spent */if(a.ptShots<=0&&a.pt>0){a.pt-=1;a.ptShots=6}if(a.ptShots>0){a.ptShots-=1;ammoSet(a)}return}if(a[aid]>0){a[aid]-=1;ammoSet(a)}}
+function ammoGate(it){if(creatorOn())return true;var a=ammoGet();if(it.ammo==='pt'){if(a.ptShots>0||a.pt>0)return true}else if(a[it.ammo]>0)return true;showAmmoPopup(it.ammo);return false} /* BUILD 242: the six-shooter is empty only with no shots loaded AND no spare cylinder. BUILD 246: the empty case opens the purchase popup (below), not a toast */
+function ammoSub(g){if(creatorOn())return '∞ — Creator';var a=ammoGet();if(g[2]==='pt'){var dots='';for(var i=0;i<6;i++)dots+=(i<a.ptShots?'●':'○');return 'Cylinder '+dots+' '+a.ptShots+'/6 shots'+(a.pt>0?' · '+a.pt+' spare':'')+(a.ptShots===0&&a.pt===0?' — store has more':'')}var n=a[g[2]];return g[3]+': '+n+(n===0?' — store has more':'')} /* BUILD 242: the picker shows the loaded cylinder honestly — shots left, spares behind it */
 function flameOwned(){if(creatorOn())return true;try{return localStorage.getItem('nikkiflixs_unlock_flame')==='1'}catch(e){return false}}
 function flameSub(){return flameOwned()?'∞ — yours forever':'🔒 $8 in the Coin Store — yours forever'}
 function unlockGate(it){if(flameOwned())return true;say('Flamethrower is locked — $8 in the Coin Store unlocks it forever',2800);return false}
-function grantCheck(){try{if(!localStorage.getItem('nikkiflixs_grants_v1')){popsSet('nikkiflixs_pops_taunt',popsGet('nikkiflixs_pops_taunt')+1);popsSet('nikkiflixs_pops_mad',popsGet('nikkiflixs_pops_mad')+1);var a0=ammoGet();a0.gr+=1;ammoSet(a0);localStorage.setItem('nikkiflixs_grants_v1','1')}var a=ammoGet(),chg=false;['mg','pt','sg'].forEach(function(k){if(a[k]===0){a[k]=1;chg=true}});if(chg)ammoSet(a)}catch(e){}}
+function grantCheck(){try{if(!localStorage.getItem('nikkiflixs_grants_v1')){popsSet('nikkiflixs_pops_taunt',popsGet('nikkiflixs_pops_taunt')+1);popsSet('nikkiflixs_pops_mad',popsGet('nikkiflixs_pops_mad')+1);var a0=ammoGet();a0.gr+=1;ammoSet(a0);localStorage.setItem('nikkiflixs_grants_v1','1')}var a=ammoGet(),chg=false;['mg','sg'].forEach(function(k){if(a[k]===0){a[k]=1;chg=true}});if(a.pt===0&&a.ptShots===0){a.pt=1;chg=true}if(chg)ammoSet(a) /* BUILD 242: login top-up treats the six-shooter as empty only when dry AND unloaded */}catch(e){}}
 grantCheck();
   function paintPopBtn(){var el=document.getElementById('popCount');if(el)el.textContent=creatorOn()?'∞':popsTotal()}
   function seatFlagBadge(index){var wrap=seats[index].querySelector('.portrait-wrap');if(!wrap)return null;var b=wrap.querySelector('.seat-flag');if(!b){b=document.createElement('span');b.className='seat-flag';wrap.appendChild(b)}return b}
@@ -1320,15 +1521,36 @@ grantCheck();
   document.body.appendChild(giftModal);
   giftModal.addEventListener('click',function(e){if(e.target===giftModal)giftModal.classList.remove('open')});
   giftModal.querySelector('#giftClose').addEventListener('click',function(){giftModal.classList.remove('open')});
+  /* BUILD 246 (SPEC v3): OUT-OF-AMMO PURCHASE POPUP (owner 2026-10-23 05:37 MDT) — when a NON-ADMIN player fires on empty, a plain toast left them guessing; now a card for THAT item pops: what ran out, the Coin Store's real $1 pack (packs up to $10 behind it), and a BUY button that lands them in the store right on that item (the store highlights the anchored tier). It appears EVERY empty attempt. Creators never see it — ammoGate / doPop return before this for them, and their stock is always 10. */
+  var AMMO_SHOP={mg:{what:'Machine-Gun Clips',pack:'5 clips for $1.00',head:'Out of bullets!',anchor:'store-ammo-mg',art:'mgun'},pt:{what:'Six-Shooter Cylinders',pack:'3 cylinders for $1.00',head:'Out of bullets!',anchor:'store-ammo-pt',art:'pistol'},sg:{what:'Shotgun Shells',pack:'3 shells for $1.00',head:'Out of bullets!',anchor:'store-ammo-sg',art:'sgun'},gr:{what:'Grenades',pack:'1 grenade for $1.00',head:'Out of grenades!',anchor:'store-ammo-gr',art:'grenade'},'pop-taunt':{what:'Loser-Taunt Pops',pack:'6 pops for $1.00',head:'Out of pops!',anchor:'store-pops-taunt',gly:'😂'},'pop-mad':{what:'Mad Pops',pack:'6 pops for $1.00',head:'Out of pops!',anchor:'store-pops-mad',gly:'😤'}};
+  var ammoPop=document.createElement('div');ammoPop.className='gift-modal';ammoPop.id='ammoPop';
+  ammoPop.innerHTML='<div class="gift-panel ammo-pop"><div class="ap-glyph" id="apGlyph"></div><h3 id="apHead"></h3><p id="apBody" style="font-size:14px;line-height:1.5;margin:2px 0 4px"></p><p id="apPack" style="font-size:15px;margin:0 0 4px;color:#ffe9a8;font-weight:800"></p><button class="ap-buy" id="apBuy" type="button"></button><button class="gift-close" id="apClose" type="button">NOT NOW</button></div>';
+  document.body.appendChild(ammoPop);
+  ammoPop.addEventListener('click',function(e){if(e.target===ammoPop)ammoPop.classList.remove('open')});
+  ammoPop.querySelector('#apClose').addEventListener('click',function(){ammoPop.classList.remove('open')});
+  var apAnchor='';
+  ammoPop.querySelector('#apBuy').addEventListener('click',function(){location.href='/assets/rooms/casino/coin-store.html#'+apAnchor});
+  function showAmmoPopup(kind){var s=AMMO_SHOP[kind];if(!s)return;apAnchor=s.anchor;document.getElementById('apGlyph').innerHTML=s.art?itemGlyphHTML(s.art,''):'<span style="font-size:42px;line-height:1">'+s.gly+'</span>';document.getElementById('apHead').textContent=s.head;document.getElementById('apBody').textContent='You are out of '+s.what+' — purchase more at the Coin Store and keep firing.';document.getElementById('apPack').textContent=s.pack+' · bigger packs up to $10';document.getElementById('apBuy').textContent='BUY '+s.what.toUpperCase()+' — $1.00';ammoPop.classList.add('open')}
   function openGift(title,sub,items,onPick){document.getElementById('giftTitle').textContent=title;document.getElementById('giftSub').textContent=sub||'';var grid=document.getElementById('giftGrid');grid.innerHTML='';items.forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){giftModal.classList.remove('open');onPick(it)});grid.appendChild(b)});giftModal.classList.add('open')}
   function seatCenter(index){var r=seats[index].querySelector('.portrait-wrap').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
   function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=(item[0]==='flame'?FLAME_URI:ITEM_ART+f);im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1)'},{transform:'translate('+(dx*.5)+'px,'+(dy-135)+'px) rotate(240deg) scale(1.22)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg) scale(1)'}],{duration:760,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
   function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
-  function flameThrow(fromIndex,toIndex){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var dx=b.x-a.x,dy=b.y-a.y;var len=Math.max(60,Math.sqrt(dx*dx+dy*dy));var ang=Math.atan2(dy,dx)*180/Math.PI;var st=document.createElement('div');st.className='flame-stream';st.style.left=a.x+'px';st.style.top=(a.y-23)+'px';st.style.width=len+'px';st.style.transform='rotate('+ang+'deg)';st.innerHTML='<i></i><i></i><i></i>';document.body.appendChild(st);setTimeout(function(){st.classList.add('on')},30);var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var ov=document.createElement('div');ov.className='flame-overlay';wrap.appendChild(ov);var img=seats[toIndex].querySelector('.portrait');setTimeout(function(){st.classList.add('off');ov.classList.add('fade');if(img)img.classList.add('charred')},1500);setTimeout(function(){st.remove();ov.remove()},1900);setTimeout(function(){if(img)img.classList.remove('charred')},2500)}
-function bulletHole(wrap,big){var h=document.createElement('span');h.className='bullet-hole'+(big?' big':'');/* BUILD 239: holes land in the FACE zone (they were scattered over hair/shoulders/backdrop) */if(big){h.style.left=(30+Math.random()*38)+'%';h.style.top=(12+Math.random()*32)+'%'}else{h.style.left=(24+Math.random()*52)+'%';h.style.top=(8+Math.random()*44)+'%'}wrap.appendChild(h);setTimeout(function(){h.classList.add('fade')},2500);setTimeout(function(){h.remove()},3000)}
-function fireGuns(toIndex,kind){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');if(kind==='mg'){var n=0;var iv=setInterval(function(){bulletHole(wrap,false);n++;if(n>=9)clearInterval(iv)},45)}else{bulletHole(wrap,true);setTimeout(function(){bulletHole(wrap,true)},170)}}
-function grenadeBlast(toIndex){explodePortrait(toIndex);var plate=seats[toIndex].querySelector('.nameplate');if(plate){plate.classList.add('plate-blast');setTimeout(function(){plate.classList.remove('plate-blast')},1900)}}
-function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleRetaliation(toIndex);var aid=item[3];if(aid==='fl'){flameThrow(fromIndex,toIndex);if(fromIndex===0)say('You torched '+names[toIndex]+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}consumeAmmo(fromIndex,aid);if(aid==='mg'||aid==='pt'){fireGuns(toIndex,aid);if(fromIndex===0)say('You shot '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}if(aid==='sg'){explodePortrait(toIndex);if(fromIndex===0)say('You blasted '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}flyItem(item,fromIndex,toIndex,function(){if(aid==='gr')grenadeBlast(toIndex);else splat(toIndex,item[2]);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})});}
+  /* BUILD 247 (SPEC v3): the classic throwables split by WHAT THEY DO on
+     impact. SPLAT class = soft / wet / food (pie, tomato, egg, cake...) in
+     SPLAT_ITEMS below; everything else is HARD class (solid — shoe, fish,
+     glove, coconut...) and bounces off via bounceOff(). */
+  var SPLAT_ITEMS={pie:1,tomato:1,egg:1,cake:1,donut:1,burger:1,banana:1,melon:1,lemon:1,paint:1,spray:1,snowball:1,balloon:1};
+  var SPLAT_COLORS={pie:'#f0dcb0',tomato:'#d92b1f',egg:'#f7b731',cake:'#ff9ecb',donut:'#e08a4c',burger:'#c97b2d',banana:'#f5d90a',melon:'#ff5a76',lemon:'#efe13a',paint:'#7a4fd0',spray:'#59b7ff',snowball:'#eaf6ff',balloon:'#39c2ff'};
+  function splatMark(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('splat');var col=SPLAT_COLORS[item[0]]||'#e33';var m=document.createElement('div');m.className='splat-mark';m.style.left=(30+Math.random()*40)+'%';m.style.top=(24+Math.random()*36)+'%';m.innerHTML='<span class="blob" style="background:'+col+'"></span><span class="dot d1" style="background:'+col+'"></span><span class="dot d2" style="background:'+col+'"></span>'+(artFile(item[0])?'<img style="clip-path:circle(46% at 50% 50%)" src="'+ITEM_ART+artFile(item[0])+'" alt="">':'<span class="gly">'+item[2]+'</span>');wrap.appendChild(m);setTimeout(function(){m.classList.add('fade')},3200);setTimeout(function(){m.remove()},3900)}
+  function shoePrint(index){var wrap=seats[index].querySelector('.portrait-wrap');var p=document.createElement('span');p.className='shoe-print';p.style.left=(38+Math.random()*24)+'%';p.style.top=(30+Math.random()*22)+'%';wrap.appendChild(p);setTimeout(function(){p.classList.add('fade')},3000);setTimeout(function(){p.remove()},3700)}
+  function bounceOff(item,toIndex){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('thud');setTimeout(function(){throwSnd('thud')},470);if(item[0]==='shoe'||item[0]==='boot')shoePrint(toIndex);var b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(b.x-27)+'px';el.style.top=(b.y-27)+'px'}else{el.textContent=item[2];el.style.left=(b.x-15)+'px';el.style.top=(b.y-15)+'px'}document.body.appendChild(el);if(!el.animate){setTimeout(function(){el.remove()},60);return}var dir=b.x<window.innerWidth/2?-1:1;var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1.12)'},{transform:'translate('+(dir*16)+'px,-32px) rotate(130deg) scale(1)',offset:.34},{transform:'translate('+(dir*34)+'px,8px) rotate(235deg) scale(.95)',offset:.58},{transform:'translate('+(dir*48)+'px,-15px) rotate(315deg) scale(.9)',offset:.8},{transform:'translate('+(dir*64)+'px,20px) rotate(395deg) scale(.85)',opacity:'0'}],{duration:820,easing:'ease-out'});anim.onfinish=function(){el.remove()}}
+  function flameThrow(fromIndex,toIndex){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var dx=b.x-a.x,dy=b.y-a.y;var len=Math.max(60,Math.sqrt(dx*dx+dy*dy));var ang=Math.atan2(dy,dx)*180/Math.PI;var st=document.createElement('div');st.className='flame-stream';st.style.left=a.x+'px';st.style.top=(a.y-23)+'px';st.style.width=len+'px';st.style.transform='rotate('+ang+'deg)';st.innerHTML='<i></i><i></i><i></i>';document.body.appendChild(st);flameRoar(1500);setTimeout(function(){st.classList.add('on')},30);var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var ov=document.createElement('div');ov.className='flame-overlay';wrap.appendChild(ov);var img=seats[toIndex].querySelector('.portrait');setTimeout(function(){st.classList.add('off');ov.classList.add('fade');if(img){img.style.transition='filter .45s ease,opacity .45s ease,transform .45s ease';img.classList.add('charred')}},1500);setTimeout(function(){st.remove();ov.remove()},1900);setTimeout(function(){/* BUILD 245 (SPEC v3): the burn must end in ASH — the charred bust crumbles into a grey, flaking ash state that holds a beat, then the avatar returns */if(img){img.classList.remove('charred');img.classList.add('ashed')}var ash=document.createElement('div');ash.className='ash-layer';wrap.appendChild(ash);setTimeout(function(){ash.classList.add('fade')},900);setTimeout(function(){ash.remove();if(img){img.classList.remove('ashed');img.style.transition=''}},1500)},2050)}
+function bulletHole(wrap,big){var h=document.createElement('span');h.className='bullet-hole'+(big?' big':'');/* BUILD 239: holes land in the FACE zone (they were scattered over hair/shoulders/backdrop) */if(big){h.style.left=(30+Math.random()*38)+'%';h.style.top=(12+Math.random()*32)+'%'}else{h.style.left=(24+Math.random()*52)+'%';h.style.top=(8+Math.random()*44)+'%'}wrap.appendChild(h);setTimeout(function(){h.classList.add('fade')},3200);setTimeout(function(){h.remove()},3900)}
+function plateHole(plate){var h=document.createElement('span');h.className='bullet-hole big';h.style.left=(10+Math.random()*76)+'%';h.style.top='50%';plate.appendChild(h);setTimeout(function(){h.classList.add('fade')},3200);setTimeout(function(){h.remove()},3900)}
+function fireGuns(toIndex,kind){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');if(kind==='mg'){/* BUILD 243 (SPEC v3): the burst peppers the FACE *and* the NAMEPLATE — six big holes in the face zone, three big holes across the plate */var plate=seats[toIndex].querySelector('.nameplate');var n=0;var iv=setInterval(function(){throwSnd('shot');if(n<6||!plate)bulletHole(wrap,true);else plateHole(plate);n++;if(n>=9)clearInterval(iv)},45)}else{throwSnd('shot');/* BUILD 243: the six-shooter fires ONE shot per pull — one big hole, nowhere else */bulletHole(wrap,true)}}
+function grenadeBlast(toIndex){throwSnd('boom');explodePortrait(toIndex);var plate=seats[toIndex].querySelector('.nameplate');if(plate){plate.classList.add('plate-blast');setTimeout(function(){plate.classList.remove('plate-blast')},1900)}}
+function shotgunBlast(toIndex){/* BUILD 243 (SPEC v3): ONE BIG HOLE blown in the bust — a single crater, not the pop tile explosion and not a pellet spray — then the avatar returns whole as it fades */var wrap=seats[toIndex].querySelector('.portrait-wrap');if(!wrap)return;wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('blast');var c=document.createElement('div');c.className='sg-crater';wrap.appendChild(c);setTimeout(function(){c.classList.add('fade')},2400);setTimeout(function(){c.remove()},3100)}
+function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleRetaliation(toIndex);var aid=item[3];if(aid==='fl'){flameThrow(fromIndex,toIndex);if(fromIndex===0)say('You torched '+names[toIndex]+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}consumeAmmo(fromIndex,aid);if(aid==='mg'||aid==='pt'){fireGuns(toIndex,aid);if(fromIndex===0)say('You shot '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}if(aid==='sg'){shotgunBlast(toIndex);if(fromIndex===0)say('You blasted '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}throwSnd('whoosh');flyItem(item,fromIndex,toIndex,function(){if(aid==='gr')grenadeBlast(toIndex);else if(SPLAT_ITEMS[item[0]])splatMark(toIndex,item);else bounceOff(item,toIndex);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})});} /* BUILD 247: splat class SPLATS and stays readable; hard class HITS, BOUNCES off a couple of times and goes (the shoe/boot also stamp a print) */
   function explodePortrait(toIndex){
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap?wrap.querySelector('.portrait'):null;
     if(!wrap||!img||!img.getAttribute('src'))return;
@@ -1349,19 +1571,19 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     setTimeout(function(){boom.classList.add('back')},1100); /* BUILD 239: scattered state holds longer so the burst reads */
     setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},1560);
   }
-  function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0&&creatorOn()){popsSet(key,10);paintPopBtn()}/* BUILD 240: admin pops refill to 10 on use */if(fromIndex===0&&!creatorOn()){if(popsGet(key)<=0){say('Out of those pops — grab more in the Coin Store',2600);return}popsSet(key,popsGet(key)-1);paintPopBtn()}
+  function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0&&creatorOn()){popsSet(key,10);paintPopBtn()}/* BUILD 240: admin pops refill to 10 on use */if(fromIndex===0&&!creatorOn()){if(popsGet(key)<=0){showAmmoPopup(flavor==='taunt'?'pop-taunt':'pop-mad');return}popsSet(key,popsGet(key)-1);paintPopBtn()} /* BUILD 246: empty pops open the purchase popup too */
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap.querySelector('.portrait');
-    explodePortrait(toIndex);
+    throwSnd('boom');explodePortrait(toIndex);
     var lines=flavor==='taunt'?TAUNT_LINES:MAD_LINES,bub=document.createElement('div');bub.className='pop-bubble';bub.textContent=lines[Math.floor(Math.random()*lines.length)];wrap.appendChild(bub);setTimeout(function(){bub.remove()},2700);
-    splat(toIndex,'💥');if(fromIndex===0)say('You POPPED '+names[toIndex]+'!',2000);logEvent('player-popped',{from:fromIndex,to:toIndex,flavor:flavor});if(fromIndex===0&&toIndex!==0)scheduleRetaliation(toIndex)}
+    if(fromIndex===0)say('You POPPED '+names[toIndex]+'!',2000);logEvent('player-popped',{from:fromIndex,to:toIndex,flavor:flavor});if(fromIndex===0&&toIndex!==0)scheduleRetaliation(toIndex)}
   function openStoreChooser(){openGift('🛒 Nikkiflixs Stores','Gold coins and POPS live in the Coin Store — gifts, flags and dice sets live in the Gift Shop.',[{id:'coins',label:'Coin Store',glyph:'🪙',sub:'Gold coin packs + POPS — 6 for $1'},{id:'gifts',label:'Gift Shop',glyph:'🎁',sub:'Gifts, country flags, dice sets & more'}],function(it){location.href=it.id==='coins'?'/assets/rooms/casino/coin-store.html':'/assets/rooms/casino/gift-shop.html'})}
   document.getElementById('adminBtn').addEventListener('click',function(){openAdmin()});
   document.getElementById('storeBtn').addEventListener('click',function(){openStoreChooser()});
   
-  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 6 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){say('You are out of those pops — they are in the Coin Store, 6 for $1. Tap STORE up top.',3400);return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
+  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 6 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){showAmmoPopup(it.id==='taunt'?'pop-taunt':'pop-mad');return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
   document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0]&&!creatorOn();if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
   var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
-  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one, it fires at them</div><div class="gift-grid" id="pcThrowGrid" style="max-height:290px"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
+  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:44px;height:44px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one, it fires at them</div><div class="gift-grid" id="pcThrowGrid"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
   document.body.appendChild(playerModal);
   var pcTarget=null;
   function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';var self=index===0,S=ps(index);
@@ -1373,10 +1595,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     +'<span>Win rate</span><b>'+(H?Math.round(100*W/played)+'%':'—')+'</b>'
     +'<span>Hands played</span><b>'+H+'</b>'
     +'<span>Folded</span><b>'+F+' ('+pct(F)+' of hands)</b>'
-    +'<span>· Pre-flop folds</span><b>'+FS.PREFLOP+' ('+pct(FS.PREFLOP)+')</b>'
-    +'<span>· Flop folds</span><b>'+FS.FLOP+' ('+pct(FS.FLOP)+')</b>'
-    +'<span>· Turn folds</span><b>'+FS.TURN+' ('+pct(FS.TURN)+')</b>'
-    +'<span>· River folds</span><b>'+FS.RIVER+' ('+pct(FS.RIVER)+')</b>'
+    +'<span>Folds by street</span><b>Pre '+FS.PREFLOP+' · Flop '+FS.FLOP+' · Turn '+FS.TURN+' · River '+FS.RIVER+'</b>'
     +'<span>Best hand won</span><b>'+(BN||'—')+'</b>'
     +'<span>Biggest pot won</span><b>'+money(BP)+'</b></div>'
     +(self?'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">Your lifetime record on this phone — it saves and keeps growing.</p>':'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">This session at the tables.</p>');
@@ -1389,9 +1608,9 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
      THROW button is gone at the owner's order): tap a person once, tap a
      throwable, it fires at that person immediately — the same gates and
      the same doThrow the card's old THROW button used, no arm step. */
-  function renderPcThrow(){var grid=document.getElementById('pcThrowGrid');grid.innerHTML='';throwPickerItems().forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;doThrow(0,t,it.raw)});grid.appendChild(b)})}
-  playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'taunt')});
-  playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'mad')});
+  function renderPcThrow(){var grid=document.getElementById('pcThrowGrid');grid.innerHTML='';throwPickerItems().forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;setTimeout(function(){doThrow(0,t,it.raw)},320)});grid.appendChild(b)})}
+  playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)setTimeout(function(){doPop(0,t,'taunt')},320)});
+  playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)setTimeout(function(){doPop(0,t,'mad')},320)});
   seats.forEach(function(seat,index){seat.addEventListener('click',function(e){
     if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
     if(index!==0&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(index); /* BUILD 241: the whole pod is the tap target — taps landing on the nameplate, the felt cards or the flag used to miss .portrait-wrap and never open the card (owner: sometimes 1 tap, sometimes 4-5) */
@@ -1440,7 +1659,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   document.body.appendChild(adminModal);
   adminModal.querySelector('.gift-x').addEventListener('click',function(){adminModal.classList.remove('open')});
   adminModal.addEventListener('click',function(e){if(e.target===adminModal)adminModal.classList.remove('open')});
-  function applyCreatorSeat(){if(creatorOn()){names[0]='The Creator';restoreName(0);/* BUILD 240: ADMIN ALWAYS FULL — flamethrower owned by default (persist the unlock so it reads owned everywhere), and every consumable topped to 10 whenever creator mode is active */try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}var a=ammoGet(),chg=false;['mg','pt','sg','gr'].forEach(function(k){if(a[k]<10){a[k]=10;chg=true}});if(chg)ammoSet(a);['nikkiflixs_pops_taunt','nikkiflixs_pops_mad'].forEach(function(k){if(popsGet(k)<10)popsSet(k,10)})}paintPopBtn()}
+  function applyCreatorSeat(sitDown){if(creatorOn()){names[0]='The Creator';restoreName(0);/* BUILD 240: ADMIN ALWAYS FULL — flamethrower owned by default (persist the unlock so it reads owned everywhere), and every consumable topped to 10 whenever creator mode is active */try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}var a=ammoGet(),chg=false;['mg','pt','sg','gr'].forEach(function(k){if(a[k]<10){a[k]=10;chg=true}});if(a.ptShots<6){a.ptShots=6;chg=true}if(chg)ammoSet(a); /* BUILD 242: creator mode tops the loaded cylinder to 6 shots with the cylinders */['nikkiflixs_pops_taunt','nikkiflixs_pops_mad'].forEach(function(k){if(popsGet(k)<10)popsSet(k,10)});if(sitDown&&!handRunning&&stacks[0]<5000)setStack(0,5000)}paintPopBtn()}
   function paintAdmin(msg){
     var b=document.getElementById('adminBody');if(!b)return;var on=creatorOn();var hasPin=false;try{hasPin=!!localStorage.getItem('nikkiflixs_creator_pin')}catch(e){}
     var html='<p style="margin:4px 0 10px;color:#e8ddc4;font-size:14px;line-height:1.45">'+(on?'👑 <strong>Creator mode is ON.</strong> Everything is free and unlimited for you on this phone — tables, store, dice, pops, flags. Your seat name is <strong>The Creator</strong>.':'Creator mode is OFF. '+(hasPin?'Enter your PIN to switch it on.':'Set your PIN once — after that, this phone knows you.'))+'</p>';
@@ -1448,7 +1667,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     if(on)html+='<button class="gp-btn" id="adminOff" type="button" style="margin-bottom:10px">EXIT CREATOR MODE</button>';
     html+='<div id="adminMsg" style="min-height:20px;color:#ffd968;font-size:14px;margin-bottom:6px">'+(msg||'')+'</div>';
     if(on){
-      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">💰 YOUR MONEY</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Wallet <strong style="color:#ffd968">'+money(bank)+'</strong> · Stack at the table <strong style="color:#ffd968">'+money(stacks[0])+'</strong>. If you bust, creator refill is AUTOMATIC — and this button tops you up anytime:</p><button class="gp-btn" id="adminRefill" type="button" style="margin-bottom:6px">💰 REFILL ME — WALLET +250,000 · STACK TO 25,000</button>';
+      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">💰 YOUR MONEY</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Wallet <strong style="color:#ffd968">'+money(bank)+'</strong> · Stack at the table <strong style="color:#ffd968">'+money(stacks[0])+'</strong>. Your stack NEVER refills mid-hand — all-in means all-in. Bust out and the reset lands BETWEEN hands, and only if your stack is under 100: back to 5,000. This button is the manual reset (between hands only) and tops your wallet:</p><button class="gp-btn" id="adminRefill" type="button" style="margin-bottom:6px">💰 RESET — WALLET +250,000 · STACK TO 5,000 (BETWEEN HANDS)</button>';
       html+='<h4 style="margin:10px 0 4px;color:#f4d68d">🎟️ GENERATE A GIFT CODE</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">These are your giveaway codes — free gifts you hand out: gold coins, pops, dice sets and gifts (#11–#29 are the dice sets and gifts). Tap GENERATE next to an item and this panel makes a one-time code for it. Send the code to the player — they type it into REDEEM A CODE in their profile or the Coin Store and the item lands in their account. Codes you make are listed under this section so you can copy them again.</p>';
       CATALOG.forEach(function(c){html+='<div class="admin-row"><span>#'+c[0]+' — '+c[3]+'</span><button class="gp-btn gen-btn" data-no="'+c[0]+'" type="button">GENERATE</button></div>'});
       html+='<div id="genOut" style="margin-top:10px"></div>';
@@ -1463,7 +1682,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
       if(pinHash(pin)===stored){try{localStorage.setItem('nikkiflixs_creator','1')}catch(e){}applyCreatorSeat();paintAdmin('Creator mode is ON — welcome back, boss.');say('Creator mode ON',2200)}
       else paintAdmin('Wrong PIN — try again.');
     });
-    var rf=document.getElementById('adminRefill');if(rf)rf.addEventListener('click',function(){refillCreator('admin');paintAdmin('✅ Refilled — wallet '+money(bank)+', stack '+money(stacks[0])+'.')});
+    var rf=document.getElementById('adminRefill');if(rf)rf.addEventListener('click',function(){var mid=handRunning;refillCreator('admin');paintAdmin(mid?'⛔ Mid-hand — a reset never lands mid-hand; it will be there between hands.':'✅ Reset — wallet '+money(bank)+', stack '+money(stacks[0])+'.')});
     var off=document.getElementById('adminOff');if(off)off.addEventListener('click',function(){try{localStorage.removeItem('nikkiflixs_creator')}catch(e){}names[0]='You';restoreName(0);paintPopBtn();paintAdmin('Creator mode off. You are a regular player again on this phone.')});
     b.querySelectorAll('.gen-btn').forEach(function(btn){btn.addEventListener('click',function(){
       var no=parseInt(btn.getAttribute('data-no'),10);var code=makeCode(no);var what='';CATALOG.forEach(function(c){if(c[0]===no)what=c[3]});
@@ -1483,14 +1702,14 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   document.getElementById('redeemBtn').addEventListener('click',function(){var v=document.getElementById('redeemInput').value;var r=redeemCode(v);document.getElementById('redeemMsg').textContent=r.msg;if(r.ok){say(r.msg,3000);document.getElementById('redeemInput').value=''}});
   document.getElementById('profileAdmin').addEventListener('click',function(){document.getElementById('profileModal').classList.remove('open');openAdmin()});
   document.getElementById('profileRedeem').addEventListener('click',function(){document.getElementById('profileModal').classList.remove('open');redeemModal.classList.add('open')});
-  if(creatorOn())applyCreatorSeat();
+  if(creatorOn())applyCreatorSeat(true);
   /* ===== ACCOUNTS (server sign-up / login — real accounts) ===== */
   var API_BASE='https://nikkiflixs-poker-server.onrender.com';
   function acctGet(){try{return JSON.parse(localStorage.getItem('nikkiflixs_account')||'null')}catch(e){return null}}
   function acctToken(){try{return localStorage.getItem('nikkiflixs_session')||''}catch(e){return ''}}
   function acctSet(token,info){try{if(token)localStorage.setItem('nikkiflixs_session',token);else localStorage.removeItem('nikkiflixs_session');if(info)localStorage.setItem('nikkiflixs_account',JSON.stringify(info));else localStorage.removeItem('nikkiflixs_account')}catch(e){}}
   function applyAccountRole(info){
-    if(info&&info.role==='creator'){try{localStorage.setItem('nikkiflixs_creator','1')}catch(e){}applyCreatorSeat()}
+    if(info&&info.role==='creator'){try{localStorage.setItem('nikkiflixs_creator','1')}catch(e){}applyCreatorSeat(true)}
     else if(info){try{localStorage.removeItem('nikkiflixs_creator')}catch(e){}if(names[0]==='The Creator'){names[0]='You';restoreName(0)}paintPopBtn()}
   }
   var accountModal=document.createElement('div');accountModal.className='gift-modal';accountModal.id='accountModal';
