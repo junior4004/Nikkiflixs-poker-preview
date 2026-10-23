@@ -319,6 +319,30 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
 .table-choice .join-table{flex:1 1 100%}
 }
 </style>
+<style>
+/* BUILD 214: BIGGER BARE 2D BUST HEADS — RED (Jerry's order 2026-10-22
+   23:42 MDT, poker step 1: 'the eight player table just make the avatar
+   heads bigger like the 2D ones I showed you — that's it.') The restored
+   Oct-20 master wears round gold-rim portrait ovals; every seat now wears
+   the bigger Pokerist-2D bust from Builds 204-206 — the same gallery
+   people reframed head-and-shoulders — BARE: no gold rim, no border, no
+   backing plate, no pod socket, no lip. The bust grows out of the EXACT
+   anchor the portrait occupied (same left/top inside the pod; the wrap's
+   top-centre does not move) and the dissolve mask is Build 204's
+   two-ellipse bust mask, so the figure melts into the scene instead of
+   sitting in a picture. NOTHING else changes: seat coordinates,
+   nameplates, pockets, chips, felt, toolbar, sounds, wallet and the
+   throwable mechanics are byte-identical outside this block. The turn
+   timer stays the only ring and scales with the wrap; the winner and
+   targeting hard outline rings become soft glows, because a hard
+   rectangular outline around a dissolved bust would read as a frame
+   (Build 199 precedent). */
+.portrait-wrap{width:104px;height:108px}
+.portrait{width:104px;height:108px;border:0;border-radius:0;background:transparent;box-shadow:none;-webkit-mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%);mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%),radial-gradient(ellipse 118% 52% at 50% 100%,#000 55%,transparent 92%)}
+.turn-ring{inset:-8px -10px;border-radius:50%/48%}
+.seat.showdown-winner-seat .portrait{box-shadow:0 0 26px #ffd046}
+body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
+</style>
 </head>
 <body>
 
