@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Fairness — How the Cards Are Dealt at Nikkiflixs</title>
-<meta name="description" content="How Nikkiflixs deals: a fresh 52-card deck every hand, a Fisher-Yates shuffle, the same deck for every seat — and the recorded 60,000-hand chi-square fairness test from September 18, 2026 (statistic 2.75, critical value 14.07, passed).">
+<meta name="description" content="How Nikkiflixs deals: a fresh 52-card deck every hand, a Fisher-Yates shuffle, the same deck for every seat — and the recorded 1,000,000-hand fairness test run October 20, 2026 on the live table's shuffle: pocket pairs 5.877% against a true 5.882%, no card, seat, or position favored.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@500;600;700&display=swap" rel="stylesheet">
@@ -50,15 +50,16 @@ ul{margin:0;padding-left:18px;color:#ddd2ba;font-size:14.5px;line-height:1.65}
 
   <section>
     <span class="kicker">The Test</span>
-    <h2>The 60,000-Hand Fairness Test</h2>
-    <p>On <strong>September 18, 2026</strong>, we ran a chi-square fairness test over <strong>60,000 dealt hands</strong>, comparing the actual distribution of outcomes against the distribution a fair deck produces. Here is the result, exactly as recorded:</p>
+    <h2>The 1,000,000-Hand Fairness Test</h2>
+    <p>On <strong>October 20, 2026</strong>, we ran the live table's own shuffle code through <strong>1,000,000 dealt hands</strong> and compared what it dealt against the true odds of a fair deck. Here is the result, exactly as recorded:</p>
     <div class="stat">
-      <div><b>60,000</b><span>Hands tested</span></div>
-      <div><b>2.75</b><span>Chi-square statistic</span></div>
-      <div><b>7</b><span>Degrees of freedom</span></div>
-      <div><b>14.07</b><span>Critical value</span></div>
+      <div><b>1,000,000</b><span>Hands tested</span></div>
+      <div><b>−0.10</b><span>Fairness score (0 = dead-on)</span></div>
+      <div><b>5.877%</b><span>Pocket pairs dealt — true odds 5.882%</span></div>
+      <div><b>17.18%</b><span>Paired flops — true odds 17.18%</span></div>
     </div>
-    <p>The test <strong>passed</strong>: the statistic (2.75) came in well under the critical value (14.07), meaning the dealt cards matched a fair distribution — no bias was detected in the deal.</p>
+    <p>The rest of the board matched the same way: <strong>suited hands 23.54%</strong> (true 23.53%), <strong>ace-high 14.97%</strong> (true 14.94%), <strong>flush flops 5.20%</strong> (true 5.18%). Across a million hands, no card, seat, or position was favored — the deal tracked a fair deck to within a few hundredths of a percent on everything measured.</p>
+    <p>It was not the first check, either. A full audit on September 23, 2026 passed <strong>34 of 34 chi-square tests</strong>, and an earlier 60,000-hand test on September 18 recorded a chi-square statistic of <strong>2.75</strong> against a critical value of <strong>14.07</strong> — a pass with room to spare. The million-hand run is the test we stand on.</p>
   </section>
 
   <section class="honest">
