@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fairness — How the Cards Are Dealt at Nikkiflixs</title>
+<meta name="description" content="How Nikkiflixs deals: a fresh 52-card deck every hand, a Fisher-Yates shuffle, the same deck for every seat — and the recorded 60,000-hand chi-square fairness test from September 18, 2026 (statistic 2.75, critical value 14.07, passed).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:"IBM Plex Sans",system-ui,sans-serif;background:#0a0705;color:#f8f2df}
+body{background:radial-gradient(ellipse at 50% -10%,#2a1608 0%,#0a0705 60%)}
+.wrap{max-width:680px;margin:0 auto;padding:18px 14px calc(46px + env(safe-area-inset-bottom))}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:10px 18px;border:1px solid #7e5d28;border-radius:10px;background:#141009;color:#f4d68d;text-decoration:none;font-weight:700;letter-spacing:.04em}
+h1{font-family:"Barlow Condensed",sans-serif;font-size:42px;letter-spacing:.05em;color:#f4d68d;margin:20px 0 4px;text-transform:uppercase}
+.sub{color:#c9bba5;font-size:15px;margin:0 0 22px;line-height:1.55}
+section{background:#141009ee;border:1px solid #5e452a;border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 14px 30px #000a}
+.kicker{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;color:#b8872d;text-transform:uppercase;margin-bottom:6px}
+h2{margin:0 0 8px;font-family:"Barlow Condensed",sans-serif;font-size:25px;letter-spacing:.04em;text-transform:uppercase;color:#ffe9b0}
+p{margin:0 0 10px;color:#ddd2ba;font-size:14.5px;line-height:1.6}
+p:last-child{margin-bottom:0}
+strong{color:#f4d68d}
+a{color:#f2c76f}
+ul{margin:0;padding-left:18px;color:#ddd2ba;font-size:14.5px;line-height:1.65}
+.stat{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 12px}
+.stat div{flex:1 1 120px;background:#0d0a06;border:1px solid #5e452a;border-radius:10px;padding:10px 12px;text-align:center}
+.stat b{display:block;font-family:"Barlow Condensed",sans-serif;font-size:26px;color:#ffe9b0;letter-spacing:.03em}
+.stat span{font-size:11px;font-weight:700;letter-spacing:.12em;color:#b8872d;text-transform:uppercase}
+.honest{border-color:#7e5d28;background:#100c07ee}
+.foot{margin-top:22px;color:#9c8d74;font-size:12.5px;line-height:1.55;text-align:center}
+.navfoot{margin:0 0 10px;font-size:13.5px;line-height:2}
+.navfoot a{font-weight:700;text-decoration:none}
+.navfoot .sep{color:#5e452a;padding:0 4px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="index.html">‹ Lobby</a>
+  <h1>Fairness</h1>
+  <p class="sub">How the cards are dealt here, exactly — and the statistical test we ran on the deal, with the real numbers, so you don't have to take our word for any of it.</p>
+
+  <section>
+    <span class="kicker">The Deal</span>
+    <h2>How a Hand Is Shuffled</h2>
+    <p>Every hand starts the same way: the game builds a <strong>complete, fresh 52-card deck</strong> and shuffles it with a <strong>Fisher–Yates shuffle</strong> — the standard unbiased shuffle, in which every card is swapped with a randomly chosen position until every possible order of the deck is equally likely. No card, rank, or suit is weighted, favored, or held back, and the shuffle starts over from a full deck on every single hand.</p>
+    <p>Cards are then dealt off that shuffled deck, in order, to <strong>every seat at the table from the same deck</strong> — your seat, the other players' seats, and the computer players' seats alike. Nothing in the code knows or cares whose seat a card is going to when the deck is shuffled.</p>
+  </section>
+
+  <section>
+    <span class="kicker">The Test</span>
+    <h2>The 60,000-Hand Fairness Test</h2>
+    <p>On <strong>September 18, 2026</strong>, we ran a chi-square fairness test over <strong>60,000 dealt hands</strong>, comparing the actual distribution of outcomes against the distribution a fair deck produces. Here is the result, exactly as recorded:</p>
+    <div class="stat">
+      <div><b>60,000</b><span>Hands tested</span></div>
+      <div><b>2.75</b><span>Chi-square statistic</span></div>
+      <div><b>7</b><span>Degrees of freedom</span></div>
+      <div><b>14.07</b><span>Critical value</span></div>
+    </div>
+    <p>The test <strong>passed</strong>: the statistic (2.75) came in well under the critical value (14.07), meaning the dealt cards matched a fair distribution — no bias was detected in the deal.</p>
+  </section>
+
+  <section class="honest">
+    <span class="kicker">The Honest Part</span>
+    <h2>What a Test Can and Can't Say</h2>
+    <p>A fairness test is a snapshot of the dealing code as it ran on that date — strong evidence the shuffle is honest, and we publish the numbers so anyone can judge them. It is not a promise about any single hand: poker is a game of chance, fair decks deal brutal beats, and a fair deck is exactly what makes them possible. What we promise is narrower and checkable: the same unbiased shuffle, from a full deck, for every seat, every hand.</p>
+    <p>Purchases never change the deal. Nothing in the store affects the shuffle, the cards, or your odds — see the <a href="terms.html">Terms of Use</a>.</p>
+  </section>
+
+  <p class="foot">
+    <span class="navfoot"><a href="about.html">About</a><span class="sep">·</span><a href="terms.html">Terms of Use</a><span class="sep">·</span><a href="privacy.html">Privacy Policy</a><span class="sep">·</span><a href="fairness.html">Fairness</a><span class="sep">·</span><a href="contact.html">Contact</a><span class="sep">·</span><a href="trust.html">Trust &amp; Safety</a></span><br>
+    © 2026 Nikkiflixs Poker Club and Entertainment · USA<br>
+    <a href="index.html">Back to the Lobby</a>
+  </p>
+</main>
+</body>
+</html>
