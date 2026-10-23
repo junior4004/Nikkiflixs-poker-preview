@@ -59,6 +59,13 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <p class="hint">At the poker table, tap a player and POP them — their picture blows up with a funny line. Sold in packs because they are <b>way</b> too fun to give away. You have: <b id="popsOwned">😂 0 · 😤 0</b></p>
   <div id="pops"></div>
   <p class="note">Pops are used at the poker table under the POP button. They never expire.</p>
+  <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">🎯 Ammo &amp; Grenades</h2>
+  <p class="hint">The premium guns in the poker THROW picker eat ammo — one clip, cylinder or shell per shot, and grenades are one per throw. You have: <b id="ammoOwned">🔫 Clips 0 · Cylinders 0 · Shells 0 · 🧨 Grenades 0</b></p>
+  <div id="ammo"></div>
+  <p class="note">Ammo is spent only at the poker table, only when you fire. It never expires.</p>
+  <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:26px 0 4px">🔥 Flamethrower — Permanent Unlock</h2>
+  <p class="hint">Not ammo, not a pack: pay once and the flamethrower is yours <b>forever</b> — unlimited streams at the poker table, for the life of your account. Status: <b id="flameState">🔒 Locked</b></p>
+  <div class="tier"><div class="coin"><img src="data:image/webp;base64,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" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:8px"></div><div class="info"><div class="nm">Flamethrower</div><div class="amt">Permanent unlock · $8.00</div><div class="per">A constant jet of flame from you to them — watch them burn.</div></div><button class="buy" id="flameBuy" type="button" data-unlock="flame" aria-label="Unlock the Flamethrower forever for $8.00">BUY</button></div>
 </div>
 <div style="margin:26px 0 6px;background:linear-gradient(165deg,#1d1108,#110905 72%);border:1px solid #8a6a34;border-radius:14px;padding:14px;box-shadow:0 12px 28px #000b,inset 0 1px 0 #f2c76f30">
   <h2 style="font:800 20px/1.2 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#ffe9bd;text-transform:uppercase;margin:0 0 6px">🎟️ Have a gift code?</h2>
@@ -116,9 +123,11 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       var card=buy.closest('.tier'); if(!card)return;
       var amt=card.querySelector('.amt')?card.querySelector('.amt').textContent:'';
       var nm=card.querySelector('.nm')?card.querySelector('.nm').textContent:'';
+      if(buy.dataset&&buy.dataset.ammo){var ak=buy.dataset.ammo,an=parseInt(buy.dataset.count||'0',10)||0,aa={mg:0,pt:0,sg:0,gr:0};try{var rr=JSON.parse(localStorage.getItem('nikkiflixs_ammo')||'{}');['mg','pt','sg','gr'].forEach(function(k){aa[k]=Math.max(0,parseInt(rr[k],10)||0)});aa[ak]+=an;localStorage.setItem('nikkiflixs_ammo',JSON.stringify(aa))}catch(err){}if(window.paintAmmo)window.paintAmmo();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+      if(buy.dataset&&buy.dataset.unlock){try{localStorage.setItem('nikkiflixs_unlock_'+buy.dataset.unlock,'1')}catch(err){}if(window.paintFlame)window.paintFlame();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
       var cm=amt.match(/([\d,]+)\s*coins/);
       if(cm){var n=parseInt(cm[1].replace(/,/g,''),10);bankSet(bankGet()+n);paintBal();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
-      if(/pops/.test(amt)){var key=/Mad/.test(nm)?'nikkiflixs_pops_mad':'nikkiflixs_pops_taunt';try{localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10)||0)+3))}catch(err){}paintPopsLine();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
+      if(/pops/.test(amt)){var key=/Mad/.test(nm)?'nikkiflixs_pops_mad':'nikkiflixs_pops_taunt';var pm=amt.match(/(\d+)\s*pops/);var pn=pm?parseInt(pm[1],10):3;try{localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10)||0)+pn))}catch(err){}paintPopsLine();buy.textContent='✓ ADDED';setTimeout(function(){buy.textContent='👑 FREE'},1600);return}
     },true);
   }
 })();
@@ -194,8 +203,12 @@ function money(n){return '$'+n.toFixed(2);}
   };
   document.getElementById('backBtn').addEventListener('click',function(){window.history.back();});
   var POPS=[
-    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:3,price:1.00,icon:'😂',per:'For popping a player who lost — head blows up, funny line included'},
-    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:3,price:1.00,icon:'😤',per:'You lost the hand and you are MAD — let them know it'}
+    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:6,price:1.00,icon:'😂',per:'For popping a player who lost — head blows up, funny line included'},
+    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:20,price:3.00,icon:'😂',per:'Stock up — 20 taunt pops, cheaper per pop'},
+    {name:'Loser-Taunt Pops',key:'nikkiflixs_pops_taunt',count:75,price:10.00,icon:'😂',per:'The big bag — 75 taunt pops, best price per pop'},
+    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:6,price:1.00,icon:'😤',per:'You lost the hand and you are MAD — let them know it'},
+    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:20,price:3.00,icon:'😤',per:'Stock up — 20 mad pops, cheaper per pop'},
+    {name:'Mad Pops',key:'nikkiflixs_pops_mad',count:75,price:10.00,icon:'😤',per:'The big bag — 75 mad pops, best price per pop'}
   ];
   function popsOwned(key){try{return Math.max(0,parseInt(localStorage.getItem(key)||'0',10)||0)}catch(e){return 0}}
   function paintPops(){var el=document.getElementById('popsOwned');if(el)el.textContent='😂 '+popsOwned('nikkiflixs_pops_taunt')+' · 😤 '+popsOwned('nikkiflixs_pops_mad');}
@@ -211,6 +224,79 @@ function money(n){return '$'+n.toFixed(2);}
     d.appendChild(buy);popsWrap.appendChild(d);
   });
   paintPops();
+  var AMMO_KEY='nikkiflixs_ammo';
+  function ammoAll(){var a={mg:0,pt:0,sg:0,gr:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)})}catch(e){}return a}
+  function ammoAdd(key,n){var a=ammoAll();a[key]+=n;try{localStorage.setItem(AMMO_KEY,JSON.stringify(a))}catch(e){}paintAmmo()}
+  window.paintAmmo=function(){var el=document.getElementById('ammoOwned');if(!el)return;var a=ammoAll();el.textContent='🔫 Clips '+a.mg+' · Cylinders '+a.pt+' · Shells '+a.sg+' · 🧨 Grenades '+a.gr;};
+  var AMMO=[
+    {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:5,price:1.00,img:'item-mgun.webp',per:'One clip = one full burst at the poker table'},
+    {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:18,price:3.00,img:'item-mgun.webp',per:'Stock up — cheaper per clip'},
+    {name:'Machine-Gun Clips',key:'mg',unit:'clips',count:65,price:10.00,img:'item-mgun.webp',per:'The big drum — best price per clip'},
+    {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:3,price:1.00,img:'item-pistol.webp',per:'One cylinder = one two-shot volley at the table'},
+    {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:11,price:3.00,img:'item-pistol.webp',per:'Stock up — cheaper per cylinder'},
+    {name:'Six-Shooter Cylinders',key:'pt',unit:'cylinders',count:40,price:10.00,img:'item-pistol.webp',per:'The big belt — best price per cylinder'},
+    {name:'Shotgun Shells',key:'sg',unit:'shells',count:3,price:1.00,img:'item-sgun.webp',per:'One shell = one head-blasting shot'},
+    {name:'Shotgun Shells',key:'sg',unit:'shells',count:11,price:3.00,img:'item-sgun.webp',per:'Stock up — cheaper per shell'},
+    {name:'Shotgun Shells',key:'sg',unit:'shells',count:40,price:10.00,img:'item-sgun.webp',per:'The big box — best price per shell'},
+    {name:'Grenades',key:'gr',unit:'grenades',count:1,price:1.00,img:'item-grenade.webp',per:'Blows up their picture AND their nameplate'},
+    {name:'Grenades',key:'gr',unit:'grenades',count:4,price:3.00,img:'item-grenade.webp',per:'Four for three dollars — cheaper per grenade'},
+    {name:'Grenades',key:'gr',unit:'grenades',count:15,price:10.00,img:'item-grenade.webp',per:'The big crate — best price per grenade'}
+  ];
+  var ammoWrap=document.getElementById('ammo');
+  AMMO.forEach(function(p){
+    var d=document.createElement('div');d.className='tier';
+    d.innerHTML='<div class="coin"><img src="../poker/assets/item-art/'+p.img+'" alt="" style="width:40px;height:40px;object-fit:cover;border-radius:8px"></div><div class="info"><div class="nm">'+p.name+'</div><div class="amt">'+p.count+' '+p.unit+' · '+money(p.price)+'</div><div class="per">'+p.per+'</div></div>';
+    var buy=document.createElement('button');buy.className='buy';buy.type='button';buy.textContent='BUY';
+    buy.setAttribute('aria-label','Buy '+p.count+' '+p.name+' for '+money(p.price));
+    buy.dataset.ammo=p.key;buy.dataset.count=String(p.count);
+    buy.addEventListener('click',function(){openAmmoPayPal(p);});
+    d.appendChild(buy);ammoWrap.appendChild(d);
+  });
+  paintAmmo();
+  window.openAmmoPayPal=function(p){
+    document.getElementById('payTitle').textContent=p.name+' — '+money(p.price);
+    document.getElementById('payDesc').innerHTML='You get <b>'+p.count+' '+p.unit+'</b> for '+money(p.price)+'. They land in your THROW picker at the poker table. Pay with PayPal below.';
+    document.getElementById('payModal').classList.add('open');
+    document.getElementById('paypal-buttons').innerHTML='';
+    paypal.Buttons({
+      createOrder:function(data,actions){
+        return actions.order.create({purchase_units:[{amount:{value:p.price.toFixed(2)},description:p.name+' ('+p.count+' '+p.unit+')'}]});
+      },
+      onApprove:function(data,actions){
+        return actions.order.capture().then(function(details){
+          ammoAdd(p.key,p.count);
+          document.getElementById('payModal').classList.remove('open');
+          alert('Payment complete! '+p.count+' '+p.unit+' added — find them in the THROW picker at the poker table.');
+        });
+      },
+      onError:function(err){alert('Payment failed. Please try again.');}
+    }).render('#paypal-buttons');
+  };
+  window.paintFlame=function(){var owned=false;try{owned=localStorage.getItem('nikkiflixs_creator')==='1'||localStorage.getItem('nikkiflixs_unlock_flame')==='1'}catch(e){}
+    var el=document.getElementById('flameState');if(el)el.textContent=owned?'✅ OWNED — unlimited flamethrower, forever':'🔒 Locked — one payment, yours forever';
+    var b=document.getElementById('flameBuy');if(b){b.disabled=owned;if(owned)b.textContent='OWNED ✓';}};
+  paintFlame();
+  document.getElementById('flameBuy').addEventListener('click',function(){openFlamePayPal();});
+  window.openFlamePayPal=function(){
+    document.getElementById('payTitle').textContent='Flamethrower — $8.00';
+    document.getElementById('payDesc').innerHTML='You get the <b>Flamethrower, forever</b> — a permanent unlock with unlimited uses at the poker table. No ammo, no refills. Pay with PayPal below.';
+    document.getElementById('payModal').classList.add('open');
+    document.getElementById('paypal-buttons').innerHTML='';
+    paypal.Buttons({
+      createOrder:function(data,actions){
+        return actions.order.create({purchase_units:[{amount:{value:'8.00'},description:'Flamethrower permanent unlock'}]});
+      },
+      onApprove:function(data,actions){
+        return actions.order.capture().then(function(details){
+          try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}
+          paintFlame();
+          document.getElementById('payModal').classList.remove('open');
+          alert('Payment complete! The Flamethrower is yours forever — find it in the THROW picker at the poker table.');
+        });
+      },
+      onError:function(err){alert('Payment failed. Please try again.');}
+    }).render('#paypal-buttons');
+  };
   window.openPopPayPal=function(p){
     document.getElementById('payTitle').textContent=p.name+' — '+money(p.price);
     document.getElementById('payDesc').innerHTML='You get <b>'+p.count+' pops</b> for '+money(p.price)+'. They land in your POP button at the poker table. Pay with PayPal below.';
