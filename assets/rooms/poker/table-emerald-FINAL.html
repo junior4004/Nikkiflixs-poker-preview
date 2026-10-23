@@ -640,6 +640,31 @@ body.targeting .seat .portrait{box-shadow:0 0 22px #e5ba53d9}
 .portrait-wrap::after{content:"";position:absolute;left:50%;bottom:-8px;width:142px;height:32px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 3px 5px rgba(240,205,109,.4),inset 0 -9px 11px rgba(0,0,0,.7),0 9px 13px rgba(0,0,0,.5)}
 .turn-ring{inset:-8px -10px;border-radius:50%/48%;z-index:3}
 </style>
+<style>
+/* BUILD 208: ROOM / TABLE-SELECT UN-CHEESE (owner's live phone screenshot
+   2026-10-22: the room "looks cheesy"). Two root causes, both in the shared
+   lobby CSS: (1) .lobby-tools is a no-wrap, flex-end row ~665px wide inside a
+   ~390px phone shell, so the overflow spills into negative x — unreachable
+   inside the fixed .lobby scroller — cutting STORE in half and hiding
+   LEADERBOARD, the balance pill and MY PROFILE off the left edge entirely.
+   (2) .table-choice keeps its desktop 3-column grid (104px thumb + 1fr +
+   ~116px button) at phone widths, leaving the title column ~90px, so card
+   titles wrap word-by-word into a tall skinny column and cards balloon to
+   ~300px. Fix is phone-only geometry: the tools row wraps into full rows of
+   unshrinkable, tappable buttons, and each card becomes a two-row flex —
+   mini-table + readable text block on top, VIEW TABLE as a full-width bar
+   below (the standalone room picker's own card pattern). Desktop rendering,
+   markup, links, seat data and behavior are untouched. */
+@media(max-width:700px){
+.lobby-tools{flex-wrap:wrap;justify-content:flex-start;row-gap:8px}
+.lobby-tools>*{flex:0 0 auto}
+.lobby-tools .buy-main{padding:0 13px}
+.lobby-tools .balance-pill{white-space:nowrap}
+.table-choice{display:flex;flex-wrap:wrap;align-items:center}
+.table-choice>div:not(.table-thumb){flex:1 1 170px;min-width:0}
+.table-choice .join-table{flex:1 1 100%}
+}
+</style>
 </head>
 <body>
 
