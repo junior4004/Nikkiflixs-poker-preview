@@ -309,10 +309,12 @@ body.targeting .pod{box-shadow:0 0 0 3px #ffd94d,0 0 24px rgba(255,217,77,.55);a
 /* BUILD 156: throwables + guns v2 — rendered item art, per-item behavior, gun signatures */
 .gift-item .g img.item-art{width:46px;height:46px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
 .thrown-item img{width:54px;height:54px;object-fit:contain;display:block}
-.fx-art{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5))}
+.fx-art{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 3px 5px rgba(0,0,0,.5));clip-path:circle(39% at 50% 50%);transform:scale(1.3)}
 .splat-decal{position:absolute;left:50%;top:44%;width:var(--ss,68px);height:var(--ss,68px);transform:translate(-50%,-50%) scale(.4);z-index:7;pointer-events:none;opacity:0}
-.splat-decal .blob{position:absolute;inset:0;background:radial-gradient(circle at 42% 38%,var(--sc1) 0 46%,var(--sc2) 68%,rgba(0,0,0,0) 80%);border-radius:58% 42% 55% 45%/48% 56% 44% 52%;filter:drop-shadow(0 3px 5px rgba(0,0,0,.45))}
-.splat-decal img{position:absolute;left:50%;top:50%;width:60%;height:60%;object-fit:contain;transform:translate(-50%,-50%) rotate(-8deg)}
+.splat-decal .blob{position:absolute;inset:0;background:radial-gradient(circle at 42% 38%,var(--sc1) 0 46%,var(--sc2) 68%,rgba(0,0,0,0) 80%);border-radius:63% 37% 55% 45%/42% 61% 39% 58%;filter:drop-shadow(0 3px 5px rgba(0,0,0,.45))}
+.splat-decal .sat{position:absolute;background:radial-gradient(circle at 45% 40%,var(--sc1) 0 52%,var(--sc2) 72%,rgba(0,0,0,0) 88%);border-radius:50%;pointer-events:none}
+.splat-drop{position:absolute;left:50%;top:50%;border-radius:50% 46% 55% 45%;pointer-events:none;z-index:8}
+.splat-decal img{position:absolute;left:50%;top:50%;width:64%;height:64%;object-fit:contain;transform:translate(-50%,-50%) rotate(-8deg) scale(1.32);clip-path:circle(39% at 50% 50%)}
 .splat-decal .glyph-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
 .splat-decal.on{animation:splatIn .3s ease-out forwards}
 @keyframes splatIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-14deg)}55%{opacity:1;transform:translate(-50%,-50%) scale(1.14) rotate(3deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0deg)}}
@@ -554,6 +556,41 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
 .square-table .brand-sub{font-size:15px;letter-spacing:.26em}
 .square-table .table::before{background-color:#801225;background-image:linear-gradient(125deg,transparent 4% 18%,rgba(255,235,219,.12) 29%,rgba(255,248,234,.33) 36%,rgba(255,207,190,.11) 44%,transparent 57%),linear-gradient(74deg,transparent 0 46%,rgba(255,226,206,.16) 58%,transparent 70%),url("assets/red-velvet-felt.jpg");background-size:auto,auto,100% 100%;background-position:center;background-repeat:no-repeat;background-blend-mode:screen,screen,normal;box-shadow:inset 0 0 88px #260008,inset 0 0 0 2px #e0a36a45}
 .square-table .seat[data-index="1"],.square-table .seat[data-index="2"],.square-table .seat[data-index="3"],.square-table .seat[data-index="5"],.square-table .seat[data-index="6"],.square-table .seat[data-index="7"]{display:none!important}
+</style>
+<style>
+/* BUILD 195: seat portraits a little bigger + crisper (Jerry: 'still a little
+   blurry and a little too small'). Size: 72x78 -> 88x98 camera px, nameplate
+   and pod grow to match. Crisp: the portrait img gets its own composited
+   layer so the browser rasterizes it at full device resolution instead of
+   sampling it out of the transform-scaled camera bitmap; a gentle
+   contrast/saturation lift restores the edge the downscale washes out.
+   Sources are 1600x1600 — resolution was never the limit; the render path was. */
+.pod{height:142px}
+.portrait-wrap{width:88px;height:98px}
+.portrait{width:88px;height:98px;transform:translateZ(0);filter:contrast(1.07) saturate(1.05)}
+.nameplate{top:100px}
+.seat.folded .portrait{filter:grayscale(.8) brightness(.55)}
+.seat.empty-seat .portrait{filter:grayscale(.45) brightness(.7)}
+.seat.showdown-loser .portrait{filter:grayscale(.9) brightness(.5)}
+</style>
+<style>
+/* BUILD 199: BARE HEADS (Jerry's law, 2026-10-22 19:24 MDT: no circles AND no
+   squares — 'just the head, nothing around them'; the only ring allowed is
+   the turn timer, and only while it is that player's turn). Every frame
+   comes OFF the seat portrait: the 4px gold border, the dark backing plate
+   and the drop-shadow frame are gone. The portrait art is a rectangular
+   render with its own dark backdrop baked in, so the rectangle is dissolved
+   with a radial edge-fade mask (over the existing ellipse crop) — the head
+   melts into the scene instead of sitting inside a shape. The turn ring on
+   this page was already turn-only (display:none until the seat is .active,
+   stripped by clearTurn the moment the turn ends) and already an ellipse
+   hugging the head, so it stays as the single permitted ring. Winner and
+   targeting highlights are soft glows now — the hard outline rings on the
+   portrait and the pod are gone. */
+.portrait{border:0;background:transparent;box-shadow:none;-webkit-mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%);mask-image:radial-gradient(ellipse 70% 64% at 50% 44%,#000 58%,transparent 97%)}
+.seat.showdown-winner-seat .portrait{box-shadow:0 0 26px #ffd046a6}
+body.targeting .seat .portrait{box-shadow:0 0 22px #e5ba53d9}
+body.targeting .pod{box-shadow:0 0 24px rgba(255,217,77,.55)}
 </style>
 </head>
 <body>
@@ -1347,10 +1384,10 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function artFile(id){if(id==='poop')return null;return 'item-'+id+'.webp'}
   function itemGlyphHTML(id,glyph){var f=artFile(id);return f?'<img class="item-art" src="'+ITEM_ART+f+'" alt="">':glyph}
   function fxContent(id,glyph){var f=artFile(id);return f?'<img class="fx-art" src="'+ITEM_ART+f+'" alt="">':glyph}
-  function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg)'},{transform:'translate('+(dx*.5)+'px,'+(dy-90)+'px) rotate(240deg)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg)'}],{duration:620,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
+  function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1)'},{transform:'translate('+(dx*.5)+'px,'+(dy-110)+'px) rotate(240deg) scale(1.25)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg) scale(1)'}],{duration:760,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
   function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
   var SPLAT_STYLE={tomato:['#ff5a3c','#c21707',66],pie:['#fff3d6','#e8b64c',74],egg:['#ffe066','#f5a623',52],champagne:['#ffe9a8','#d4a017',60],banana:['#ffe14d','#e0a800',56],cake:['#ffb3d9','#e2543e',68],donut:['#ff9ecb','#8a4b2a',60],burger:['#ffb347','#7a3b12',66],snowball:['#ffffff','#bcd8ff',56],balloon:['#ff6b81','#c21807',60],coconut:['#fdfdf8','#5d4037',58],paint:['#c39bff','#5e35b1',72],lemon:['#fff176','#f9a825',52],melon:['#ff6b5e','#1d8a46',72],spray:['#90caf9','#1565c0',56]};
-  function splatDecal(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var st=SPLAT_STYLE[item[0]]||['#ffd94d','#b8860b',62];var s=document.createElement('span');s.className='splat-decal';s.style.setProperty('--sc1',st[0]);s.style.setProperty('--sc2',st[1]);s.style.setProperty('--ss',st[2]+'px');var blob=document.createElement('i');blob.className='blob';s.appendChild(blob);var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';s.appendChild(im)}else{var gc=document.createElement('span');gc.className='glyph-c';gc.textContent=item[2];s.appendChild(gc)}wrap.appendChild(s);setTimeout(function(){s.classList.add('on')},20);setTimeout(function(){s.classList.add('fade')},2500);setTimeout(function(){s.remove()},3300)}
+  function splatDecal(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var st=SPLAT_STYLE[item[0]]||['#ffd94d','#b8860b',62];var s=document.createElement('span');s.className='splat-decal';s.style.setProperty('--sc1',st[0]);s.style.setProperty('--sc2',st[1]);s.style.setProperty('--ss',st[2]+'px');var blob=document.createElement('i');blob.className='blob';s.appendChild(blob);[['-9%','2%',30],['76%','-5%',22],['2%','78%',24],['80%','74%',17]].forEach(function(sp){var si=document.createElement('i');si.className='sat';si.style.left=sp[0];si.style.top=sp[1];si.style.width=sp[2]+'%';si.style.height=sp[2]+'%';s.appendChild(si)});var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';s.appendChild(im)}else{var gc=document.createElement('span');gc.className='glyph-c';gc.textContent=item[2];s.appendChild(gc)}wrap.appendChild(s);for(var di=0;di<9;di++){(function(){var dr=document.createElement('i');dr.className='splat-drop';var sz=5+Math.random()*7;dr.style.width=sz+'px';dr.style.height=sz+'px';dr.style.background=st[di%2?1:0];s.appendChild(dr);var ang=Math.random()*6.283,dist=32+Math.random()*30,dx2=Math.cos(ang)*dist,dy2=Math.sin(ang)*dist+9;if(dr.animate){try{dr.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:'translate(calc(-50% + '+dx2.toFixed(1)+'px),calc(-50% + '+dy2.toFixed(1)+'px)) scale(.3)',opacity:0}],{duration:400+Math.random()*180,easing:'cubic-bezier(.1,.7,.3,1)'})}catch(e){}}setTimeout(function(){dr.remove()},620)})()}setTimeout(function(){s.classList.add('on')},20);setTimeout(function(){s.classList.add('fade')},2500);setTimeout(function(){s.remove()},3300)}
   function impactFx(index,item){var kind=item[3]||'splat',glyph=item[2];
     if(kind==='boom'){explodePortrait(index,0,true);return}
     if(kind==='bigsplat'){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge big';s.innerHTML=fxContent(item[0],glyph);wrap.appendChild(s);setTimeout(function(){s.remove()},3600);return}
@@ -1417,7 +1454,7 @@ body.targeting .seat .portrait{box-shadow:0 0 0 3px #e5ba53,0 0 20px #e5ba53aa}
   function explodePortrait(toIndex,holdUntil,small){
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap?wrap.querySelector('.portrait'):null;
     if(!wrap||!img||!img.getAttribute('src'))return;
-    var W=74,H=84,N=3,boom=document.createElement('div');boom.className='pop-boom'+(small?' small':'');
+    var W=img.clientWidth||88,H=img.clientHeight||98,N=3,boom=document.createElement('div');boom.className='pop-boom'+(small?' small':'');
     var flash=document.createElement('div');flash.className='pop-flash'+(small?' small':'');wrap.appendChild(flash);
     setTimeout(function(){flash.classList.add('on')},10);setTimeout(function(){flash.remove()},580);
     for(var r=0;r<N;r++)for(var c=0;c<N;c++){
