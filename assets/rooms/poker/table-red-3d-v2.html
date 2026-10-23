@@ -379,6 +379,158 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 .flame-overlay.fade{opacity:0}
 .portrait.charred{filter:brightness(.42) sepia(.55) contrast(1.25)}
 </style>
+<style>
+/* BUILD 231 — LITTLE-THINGS PASS (owner's tap-test orders 2026-10-23 04:09–
+   04:22 MDT). Item 1: the felt wordmark is no longer the small horizontal
+   .brand line low on the felt — it is a three-line gold cursive wordmark on
+   a diagonal ARC running from the felt's bottom-left corner to its
+   top-right corner: "Nikkiflixs" big, "Poker Room and Entertainment" a
+   little smaller, "Established in 2026" a little smaller still (his exact
+   words and order). The old .brand rules are inert — the element is gone.
+   Item 2 (markup, same build): Nikki's dealer <img> now embeds a
+   right-sized WebP data URI (288x336, 12.5 KB) instead of the 1.9 MB
+   assets/nikki.png that intermittently failed to arrive on his phone and
+   spilled its alt text across the table. Same picture, same slot, same
+   alt text — it simply cannot fail to load now. */
+.brand-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.brand-svg text{fill:url(#brandGold);font-family:"Great Vibes Local",cursive;paint-order:stroke;stroke:rgba(24,2,10,.38);stroke-width:1px}
+.brand-svg .brand-l1{font-size:126px}
+.brand-svg .brand-l2{font-size:43px}
+.brand-svg .brand-l3{font-size:32px}
+</style>
+<style>
+/* BUILD 232 — LITTLE-THINGS PASS group 2 (owner 2026-10-23, item 4 as
+   amended 04:22 MDT: "a good 3%", and item 8). The pot chip pile AND the
+   board cards move UP 3% of the felt height (felt = 87% of the 760px
+   camera = 661px; 3% = 20px) so the pile's bottom clears the first board
+   card. Both move the same amount — nothing else about the center cluster
+   changes. Item 8: the pot total (#potValue) was in the markup all along
+   but carried the `hidden` attribute, so NO pot total ever showed. It is
+   now displayed BIG, directly under the pot pile, always visible; the
+   existing writers (postRoundBet / resetVisuals / proofs) already keep
+   its text current — only the display changes. */
+.pot{top:calc(45% - 20px)}
+.board{top:calc(55% - 20px)}
+#potValue{display:block;margin-top:3px;font:800 23px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#ffe9a8;text-shadow:0 2px 6px #000,0 0 2px #000}
+</style>
+<style>
+/* BUILD 233 — LITTLE-THINGS PASS group 3 (owner 2026-10-23, items 6+7 as
+   amended 04:22 MDT). Item 6: the posted-bet display is BIGGER — the bet
+   box grows 66x42 -> 84x52, the chip stack grows with it (25x13 -> 32x17
+   chips), and the amount number goes 11px -> 16px so it reads at a glance
+   (at phone scale 11px rendered ~8px — "a tiny unreadable box", his
+   words). Placement tightened in betPositions (script, same build).
+   Item 7: nameplates a little BIGGER with bigger type — plate height
+   41 -> 47px, name 13 -> 15px, stack 12 -> 14px — while the plates stay
+   exactly where they are (top/left untouched; the extra height grows
+   downward inside the pod, which has room). */
+.round-bet{width:84px;height:52px}
+.bet-stack{left:6px;top:5px;width:38px;height:42px}
+.bet-stack i{width:32px;height:17px}
+.bet-stack i:nth-child(2){bottom:9px}
+.bet-stack i:nth-child(3){bottom:18px}
+.bet-amount{left:48px;top:14px;min-width:46px;padding:5px 7px;font-size:16px}
+.nameplate{height:47px}
+.nameplate strong{font-size:15px}
+.nameplate span{font-size:14px}
+</style>
+<style>
+/* BUILD 234 — LITTLE-THINGS PASS group 4 (item 9 AS SUPERSEDED 04:22 MDT:
+   heads only). On his phone the busts read SUNK — nameplates ride up to,
+   and over, the chins. Seats do NOT move; nameplates do NOT move; only the
+   HEAD (the portrait-wrap, which carries the bust, the turn ring and every
+   throwable overlay, so they all lift together and stay registered) rises
+   8px inside its pod — 5px for the top-centre seat, whose headroom to the
+   stage top is smallest. Every chin now clears its plate. */
+.seat .portrait-wrap{top:-8px}
+.seat[data-view-slot="4"] .portrait-wrap{top:-5px}
+</style>
+<style>
+/* BUILD 235 — LITTLE-THINGS PASS group 5 (item 12, owner's annotated photo
+   04:19 MDT: his blue dots on the felt in front of each seat are the
+   placement map). Opponents' hole cards used to sit big INSIDE the pod at
+   its top — directly over the face, hiding it and hiding every throwable
+   impact. They now sit as a SMALL pair ON THE FELT in front of each
+   opponent's seat, at the dot positions from his photo (the pair's centre
+   was calibrated in-browser to land on each dot; the left-middle and
+   right-middle pairs sit a little higher, per his 04:22 amendment). The
+   pair overlaps slightly, offset and tilted like real cards set down on a
+   table — not side-by-side, not stacked into one. Cards shrink 42x59 ->
+   30x42. Faces are 100% uncovered at every seat. The HERO's pocket
+   (view-slot 0) is NOT touched — his cards stay big in front of him,
+   exactly as they were. Folded seats still hide their pocket (the
+   existing .folded rule wins — it is !important); the showdown flash
+   keeps its bigger 38x54 reveal size but now flips up IN PLACE on the
+   felt instead of jumping back into the pod. Only size/placement change;
+   every card writer (deal, fold, reveal) works off the same elements. */
+.seat[data-view-slot="1"] .pocket{left:102px;top:-16px}
+.seat[data-view-slot="2"] .pocket{left:105px;top:-9px}
+.seat[data-view-slot="3"] .pocket{left:105px;top:79px}
+.seat[data-view-slot="4"] .pocket{left:48px;top:128px}
+.seat[data-view-slot="5"] .pocket{left:-38px;top:79px}
+.seat[data-view-slot="6"] .pocket{left:-41px;top:-9px}
+.seat[data-view-slot="7"] .pocket{left:-38px;top:-16px}
+.seat[data-view-slot="1"] .pocket,.seat[data-view-slot="2"] .pocket,.seat[data-view-slot="3"] .pocket,.seat[data-view-slot="4"] .pocket,.seat[data-view-slot="5"] .pocket,.seat[data-view-slot="6"] .pocket,.seat[data-view-slot="7"] .pocket{right:auto;transform:none;width:46px;height:48px}
+.seat[data-view-slot="1"] .pocket .hole,.seat[data-view-slot="2"] .pocket .hole,.seat[data-view-slot="3"] .pocket .hole,.seat[data-view-slot="4"] .pocket .hole,.seat[data-view-slot="5"] .pocket .hole,.seat[data-view-slot="6"] .pocket .hole,.seat[data-view-slot="7"] .pocket .hole{position:absolute;width:30px;height:42px;font-size:19px}
+.seat[data-view-slot="1"] .pocket .hole:first-child,.seat[data-view-slot="2"] .pocket .hole:first-child,.seat[data-view-slot="3"] .pocket .hole:first-child,.seat[data-view-slot="4"] .pocket .hole:first-child,.seat[data-view-slot="5"] .pocket .hole:first-child,.seat[data-view-slot="6"] .pocket .hole:first-child,.seat[data-view-slot="7"] .pocket .hole:first-child{left:0;top:0;transform:rotate(-5deg)}
+.seat[data-view-slot="1"] .pocket .hole+.hole,.seat[data-view-slot="2"] .pocket .hole+.hole,.seat[data-view-slot="3"] .pocket .hole+.hole,.seat[data-view-slot="4"] .pocket .hole+.hole,.seat[data-view-slot="5"] .pocket .hole+.hole,.seat[data-view-slot="6"] .pocket .hole+.hole,.seat[data-view-slot="7"] .pocket .hole+.hole{left:14px;top:3px;margin-left:0;transform:rotate(6deg)}
+.seat.showdown-flash[data-view-slot="1"] .pocket{left:102px!important;top:-16px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="2"] .pocket{left:105px!important;top:-9px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="3"] .pocket{left:105px!important;top:79px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="4"] .pocket{left:48px!important;top:128px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="5"] .pocket{left:-38px!important;top:79px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="6"] .pocket{left:-41px!important;top:-9px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot="7"] .pocket{left:-38px!important;top:-16px!important;transform:none!important}
+.seat.showdown-flash[data-view-slot] .pocket .hole{width:38px;height:54px;font-size:24px}
+.table-room.omaha .seat[data-view-slot="1"] .pocket,.table-room.omaha .seat[data-view-slot="2"] .pocket,.table-room.omaha .seat[data-view-slot="3"] .pocket,.table-room.omaha .seat[data-view-slot="4"] .pocket,.table-room.omaha .seat[data-view-slot="5"] .pocket,.table-room.omaha .seat[data-view-slot="6"] .pocket,.table-room.omaha .seat[data-view-slot="7"] .pocket{width:80px}
+.table-room.omaha .seat[data-view-slot="1"] .pocket .hole,.table-room.omaha .seat[data-view-slot="2"] .pocket .hole,.table-room.omaha .seat[data-view-slot="3"] .pocket .hole,.table-room.omaha .seat[data-view-slot="4"] .pocket .hole,.table-room.omaha .seat[data-view-slot="5"] .pocket .hole,.table-room.omaha .seat[data-view-slot="6"] .pocket .hole,.table-room.omaha .seat[data-view-slot="7"] .pocket .hole{width:27px;height:38px;font-size:16px}
+.table-room.omaha .seat[data-view-slot="1"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="2"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="3"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="4"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="5"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="6"] .pocket .hole:nth-child(3),.table-room.omaha .seat[data-view-slot="7"] .pocket .hole:nth-child(3){left:28px;top:6px;transform:rotate(-3deg)}
+.table-room.omaha .seat[data-view-slot="1"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="2"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="3"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="4"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="5"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="6"] .pocket .hole:nth-child(4),.table-room.omaha .seat[data-view-slot="7"] .pocket .hole:nth-child(4){left:42px;top:9px;transform:rotate(4deg)}
+</style>
+<style>
+/* BUILD 238 — LITTLE-THINGS PASS group 8 (item 11: ADMIN PANEL). The
+   creator panel's buttons (.gp-btn — GENERATE, ENTER, REFILL, REDEEM,
+   store links), its rows (.admin-row), the generated-code display
+   (.code-big) and the panel header (.gift-head/.gift-x) had NO CSS
+   anywhere in the page, so they rendered as default browser buttons —
+   the big blank white boxes the owner saw for items #11-#29. They are
+   now styled in the panel's own gold-on-dark language (same family as
+   the player-card buttons). Presentation only — every handler, the
+   catalog and the code math are byte-identical. The GENERATE section
+   also gains the short explanation the owner asked for: what the items
+   are, what GENERATE does, and how the codes get used (text lives in
+   paintAdmin, same build). */
+.gp-btn{background:linear-gradient(180deg,#3a2c12,#241a08);border:1px solid #e5ba53;color:#ffe7ad;border-radius:9px;padding:9px 14px;font:800 13px "Barlow Condensed",sans-serif;letter-spacing:.06em;cursor:pointer}
+.gp-btn:active{transform:translateY(1px)}
+.admin-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid #ffffff14;color:#e8ddc4;font-size:14px}
+.admin-row small{color:#a4916a}
+.gen-btn{flex:0 0 auto}
+.code-big{font:800 26px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#0c0a08;background:linear-gradient(180deg,#ffe9a8,#e5ba53);border-radius:10px;padding:12px 14px;text-align:center;word-break:break-all}
+.gift-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;color:#f4d68d;font-size:16px}
+.gift-x{background:#22222b;border:1px solid #e5ba5377;color:#ffe7ad;border-radius:8px;width:32px;height:32px;font-size:15px;cursor:pointer;flex:0 0 auto}
+</style>
+<style>
+/* BUILD 239 — PHASE 2A: IMPACTS HE CAN SEE (owner's live v218 verdict:
+   gunfire made the sound but NO bullet holes showed; pops "aren't really
+   exploding"). Reproduced in Chromium and diagnosed from frames: the
+   holes were 11px soft-edged black smudges (16px "big") scattered over
+   the whole bust — hair, shoulders, backdrop — so on a real photo at
+   phone scale they read as dirt, and on dark photos not at all. The pop
+   tiles flew, but they are dark backdrop shards with no flash and no
+   edge: a blink, not an explosion. (Item 12 already uncovered the
+   faces.) Fixes, presentation only — same functions, same economy:
+   holes grow (16px / 24px big), gain a hard near-black core with a pale
+   impact rim that reads on ANY photo, and land in the face zone
+   (bulletHole, same build); the explosion gains a gold flash disc
+   behind the tiles, a lit edge + drop shadow on every shard, wider
+   travel (92px) and a longer scattered hold (1.1s) before reassembly. */
+.bullet-hole{width:16px;height:16px;margin:-8px 0 0 -8px;background:radial-gradient(circle,rgba(8,5,5,.97) 0 42%,rgba(22,14,9,.94) 56%,rgba(255,238,200,.5) 70%,rgba(255,238,200,0) 82%);box-shadow:0 0 4px rgba(0,0,0,.85),inset 0 0 3px #000}
+.bullet-hole.big{width:24px;height:24px;margin:-12px 0 0 -12px}
+.pop-boom::before{content:"";position:absolute;left:50%;top:50%;width:196px;height:196px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,246,214,.98) 0,rgba(255,205,92,.85) 34%,rgba(250,120,30,.45) 58%,rgba(250,120,30,0) 72%);opacity:0;pointer-events:none}
+.pop-boom.go::before{animation:popFlash .5s ease-out both}
+@keyframes popFlash{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
+.pop-tile{box-shadow:inset 0 0 0 1px rgba(255,220,130,.5),0 3px 7px rgba(0,0,0,.55)}
+</style>
 </head>
 <body>
 
@@ -437,7 +589,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     <span class="balance-pill">GOLD COINS <b id="tableBalance">GC 0</b></span>
     <button class="tool" id="adminBtn" type="button" aria-label="Open creator admin">👑 ADMIN</button>
     <button class="tool" id="storeBtn" type="button" aria-label="Open the stores">🛒 STORE</button>
-    <button class="tool" id="throwBtn" type="button" aria-label="Throw something at a player">🎁 THROW</button>
+    
     <button class="tool" id="flagBtn" type="button" aria-label="Pick your country flag">🏳 FLAG</button>
     <button class="tool gold" id="popBtn" type="button" aria-label="Pop a player">💥 POP <span id="popCount">0</span></button>
     <button class="tool leaderboard-table-tool" id="tableLeaderboard" type="button" aria-label="Open poker leaderboard">LEADERBOARD</button>
@@ -448,9 +600,9 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
-      <div class="table"><div class="brand">Nikkiflixs</div></div>
+      <div class="table"><svg class="brand-svg" viewBox="0 0 510 661" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="brandGold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#a87c2a"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#c9962e"/></linearGradient><path id="brandArc1" d="M40,600 Q255,326 470,60" fill="none"/><path id="brandArc2" d="M54,628 Q270,360 466,92" fill="none"/><path id="brandArc3" d="M70,650 Q286,388 460,120" fill="none"/></defs><text class="brand-l1"><textPath href="#brandArc1" startOffset="50%" text-anchor="middle">Nikkiflixs</textPath></text><text class="brand-l2"><textPath href="#brandArc2" startOffset="50%" text-anchor="middle">Poker Room and Entertainment</textPath></text><text class="brand-l3"><textPath href="#brandArc3" startOffset="50%" text-anchor="middle">Established in 2026</textPath></text></svg></div>
       <div class="table-markers" aria-label="Rotating dealer and blind positions"></span></span></span></div>
-      <div class="dealer" aria-label="Nikki, permanent dealer"><img src="assets/nikki.png" alt="Nikki, the dealer, in a black uniform with gold trim"><span class="dealer-name">Nikki · Dealer</span></div>
+      <div class="dealer" aria-label="Nikki, permanent dealer"><img src="data:image/webp;base64,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" alt="Nikki, the dealer, in a black uniform with gold trim"><span class="dealer-name">Nikki · Dealer</span></div>
       <div class="deck" id="deck" aria-label="Deck being shuffled"><i></i><i></i><i></i></div>
       <div class="pot" id="potArea" aria-label="Pot: 0 dollars"><div class="pot-chips" id="potChips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><span id="potValue" hidden>$0</span></div>
       <div class="board" aria-label="Community cards"><span class="board-card red" data-suit="♥">A</span><span class="board-card" data-suit="♠">10</span><span class="board-card" data-suit="♣">9</span><span class="board-card red" data-suit="♦">2</span><span class="board-card" data-suit="♣">5</span></div>
@@ -608,7 +760,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function freshBotStack(){var base=Math.max(activeConfig.bb*60,stacks[0]||0);return Math.max(activeConfig.bb*20,Math.round(base*(.5+Math.random()*1.3)/5)*5)}
   function botLeaves(index,reason){
     emptyBotSeat[index]=true;sittingOut[index]=true;handFolded[index]=true;setStack(index,0);
-    var seat=seats[index];seat.classList.add('folded','seat-open');seat.querySelector('.nameplate strong').textContent='OPEN SEAT';var wrap=seat.querySelector('.portrait-wrap');if(wrap){wrap.style.opacity='.16';wrap.style.filter='grayscale(1)'}
+    var seat=seats[index];seat.classList.add('seat-open');seat.querySelector('.nameplate strong').textContent='OPEN SEAT';var wrap=seat.querySelector('.portrait-wrap');if(wrap){wrap.style.opacity='.16';wrap.style.filter='grayscale(1)'}
     logEvent('bot-left',{seat:index,name:names[index],reason:reason,hand:handNumber});
     later(2000+Math.random()*1500,function(){seatNewBot(index)})
   }
@@ -622,7 +774,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     var stack=freshBotStack(),seat=seats[index],img=seat.querySelector('.portrait');
     names[index]=name;botSeatIn[index]=stack;if(img){img.src=av;img.alt=name}
     var wrap2=seat.querySelector('.portrait-wrap');if(wrap2){wrap2.style.opacity='';wrap2.style.filter=''}
-    seat.classList.remove('seat-open','out-of-chips');seat.classList.add('folded');
+    seat.classList.remove('seat-open','out-of-chips','folded'); /* BUILD 237: a waiting bot is NOT folded — it has not been dealt cards (see resetVisuals note) */
     setStack(index,stack);sittingOut[index]=true;pendingBotSeat[index]=true;delete emptyBotSeat[index];restoreName(index);
     logEvent('bot-joined',{seat:index,name:name,stack:stack,arrivalForHand:handNumber+1});
     say(name+' takes a seat',2600)
@@ -695,6 +847,37 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
       return resumed
     }catch(e){return Promise.resolve()}
   }
+  /* BUILD 236 — LITTLE-THINGS PASS group 6 (item 5: CHECK KNOCK). This
+     lineage dropped the file-based table sounds when it moved to the
+     synthesized sfx() voices — and the check knock went with them: the
+     check branch in runRound never called any sound at all, so checking
+     was silent by construction (his phone was right). The approved
+     knock-on-wood survives in the later lineage in this repo
+     (table-canon.html): the real recording assets/sfx/knock-knock.mp3
+     (0.55s), decoded once into the shared AudioContext, played at the
+     check branch as playSfx('knock-knock',.6). Restored exactly that
+     way — loader and player mirror canon's; only the knock is loaded
+     and no other master sound is touched. */
+  var sfxBuffers={},sfxLoading=false;
+  function loadSfx(){
+    if(sfxLoading||!audio)return;sfxLoading=true;
+    ['knock-knock'].forEach(function(name){
+      fetch('assets/sfx/'+name+'.mp3').then(function(r){return r.arrayBuffer()}).then(function(buf){
+        return audio.decodeAudioData(buf);
+      }).then(function(decoded){sfxBuffers[name]=decoded}).catch(function(){});
+    });
+  }
+  function playSfx(name,vol){
+    try{
+      if(!alertsUnlocked||!audio||!sfxBuffers[name])return false;
+      if(audio.state==='suspended')audio.resume();
+      var src=audio.createBufferSource();src.buffer=sfxBuffers[name];
+      var g=audio.createGain();g.gain.value=(vol==null?.5:vol);
+      src.connect(g);g.connect(audio.destination);src.start();return true;
+    }catch(e){return false}
+  }
+  var _unlockAlerts=unlockAlerts;
+  unlockAlerts=function(){var r=_unlockAlerts();try{loadSfx()}catch(e){}return r};
   document.getElementById('sitIn').addEventListener('click',function(event){
     event.preventDefault();event.stopPropagation();
     unlockAlerts().then(function(){
@@ -711,7 +894,11 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     if(toWinner){slidePotToWinner(Number(seat.getAttribute('data-index')),amount);return}
     var seatIndex=Number(seat.getAttribute('data-index'));postRoundBet(seatIndex,amount,'BET',true)
   }
-  var betPositions=[['50%','74%'],['34%','72%'],['34%','59%'],['34%','40%'],['46%','28%'],['66%','40%'],['66%','59%'],['66%','72%']];
+  /* BUILD 233 (little-things item 6, as amended 04:22 MDT): bet spots sit
+     JUST in front of each player — the old spots threw bets up to 27% of
+     the camera toward mid-table; the new ones sit ~11-16% out from each
+     seat anchor, obviously that player's bet. */
+  var betPositions=[['50%','86%'],['24%','76%'],['22%','59%'],['24%','38%'],['47%','19%'],['76%','38%'],['78%','59%'],['76%','76%']];
   function updateBetPositions(){Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=betPositions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
   updateBetPositions();
   function restoreName(index){var plate=seats[index].querySelector('.nameplate'),strong=plate.querySelector('strong');strong.textContent=names[index];plate.classList.remove('action-state','action-bet','action-raise','action-call','action-check','action-all-in','action-small-blind','action-big-blind')}
@@ -792,7 +979,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     demoHands[index].forEach(function(card,cardIndex){cards[cardIndex].className='hole'+(['♥','♦'].indexOf(card[1])>-1?' red':'');cards[cardIndex].textContent=card[0];cards[cardIndex].setAttribute('data-suit',card[1]);cards[cardIndex].style.opacity='1'});
     seats[index].setAttribute('aria-label',names[index]+' holds '+demoHands[index][0][0]+demoHands[index][0][1]+' and '+demoHands[index][1][0]+demoHands[index][1][1])
   }
-  function resetVisuals(){clearTurn();clearShowdownHighlight();clearBetDisplays();motion.innerHTML='';muck.classList.remove('show');handFolded={};handAllIn={};Object.keys(sittingOut).forEach(function(index){if(sittingOut[index])handFolded[index]=true});pot=0;potValueNode.textContent='$0';potChips.style.opacity='1';document.querySelectorAll('.board-card').forEach(function(c){c.style.opacity='0';c.classList.remove('showdown-winner','showdown-dim')});seats.forEach(function(seat,index){seat.classList.remove('folded','showdown-flash');if(handFolded[index])seat.classList.add('folded');seat.querySelector('.pod').appendChild(seat.querySelector('.pocket'));seat.querySelectorAll('.hole').forEach(function(c){c.style.opacity='0';setHoleBack(c)});seat.querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)})}
+  function resetVisuals(){clearTurn();clearShowdownHighlight();clearBetDisplays();motion.innerHTML='';muck.classList.remove('show');handFolded={};handAllIn={};Object.keys(sittingOut).forEach(function(index){if(sittingOut[index]&&!pendingBotSeat[index]&&!emptyBotSeat[index])handFolded[index]=true}) /* BUILD 237: sitting out to WAIT (new bot, empty seat) is not folding — only seats actually out of a dealt hand may show FOLDED */;pot=0;potValueNode.textContent='$0';potChips.style.opacity='1';document.querySelectorAll('.board-card').forEach(function(c){c.style.opacity='0';c.classList.remove('showdown-winner','showdown-dim')});seats.forEach(function(seat,index){seat.classList.remove('folded','showdown-flash');if(handFolded[index])seat.classList.add('folded');seat.querySelector('.pod').appendChild(seat.querySelector('.pocket'));seat.querySelectorAll('.hole').forEach(function(c){c.style.opacity='0';setHoleBack(c)});seat.querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)})}
   function showLayoutProof(){
     clearTimers();handRunning=false;addButton.disabled=false;resetVisuals();setBlinds();deck.className='deck';pot=34;potValueNode.textContent='$34';potChips.style.opacity='1';
     [0,1,2,3,4].forEach(function(index){document.querySelectorAll('.board-card')[index].style.opacity='1'});
@@ -837,7 +1024,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
           acted[index]=true;var raiseAction=handAllIn[index]?'ALL-IN':(oldCurrentBet===0?'BET':'RAISE');postRoundBet(index,raisePaid,raiseAction,true);later(760,next);return
         }
         var amount=Math.max(0,currentBet-contributions[index]),paid=commitChips(index,amount,amount?'call':'check');contributions[index]+=paid;acted[index]=true;
-        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(index,'CHECK',false);later(420,next)}
+        if(paid){postRoundBet(index,paid,handAllIn[index]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(index,'CHECK',false);playSfx('knock-knock',.6);later(420,next)}
       },{currentBet:currentBet,contribution:contributions[index],bigBlind:bigBlindAmount,lastFullRaise:lastFullRaise})
     }
     next()
@@ -947,7 +1134,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var buyModal=document.getElementById('buyModal');document.getElementById('buyChips').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('closeBuy').addEventListener('click',function(){buyModal.classList.remove('open')});buyModal.addEventListener('click',function(event){if(event.target===buyModal)buyModal.classList.remove('open')});Array.prototype.forEach.call(document.querySelectorAll('.chip-package'),function(button){button.addEventListener('click',function(){say('Secure checkout opens from the live account')})});
   var modal=document.getElementById('chipModal'),range=document.getElementById('chipRange'),amount=document.getElementById('chipAmount'),bankBalance=document.getElementById('bankBalance'),cashierNote=document.getElementById('cashierNote');
   function openModal(isBroke){if(handRunning&&!isBroke){say('Add chips opens between hands, never mid-hand');return}document.getElementById('modalTitle').textContent=isBroke?'You’re out of table chips':'Add chips before the next hand';document.getElementById('modalReason').textContent=isBroke?'Choose how to stay in: add Gold Coins from your account, buy more, or leave the table.':(minimumBuyin===0?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount from your account to your stack.':'Move Gold Coins from your account to your table stack. Minimum buy-in is '+money(minimumBuyin)+'.');bankBalance.textContent=accountConnected?bank.toLocaleString():bank.toLocaleString()+' preview';modal.classList.add('open')}
-  addButton.addEventListener('click',function(){openModal(false)});document.getElementById('closeModal').addEventListener('click',function(){modal.classList.remove('open')});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open')});range.addEventListener('input',function(){amount.textContent=money(Number(range.value))});document.getElementById('confirmAdd').addEventListener('click',function(){var value=Number(range.value);if(value>bank||value<1)return;if(minimumBuyin>0&&stacks[0]===0&&value<minimumBuyin){say('This table requires at least '+money(minimumBuyin));return}if(accountConnected){if(liveTransport&&typeof liveTransport.moveCoinsToTable==='function'){liveTransport.moveCoinsToTable({amount:value,table:{game:activeConfig.game,maxSeats:activeConfig.maxSeats,smallBlind:activeConfig.sb,bigBlind:activeConfig.bb,freeTable:activeConfig.freeTable}});modal.classList.remove('open');say('Waiting for the server to move '+money(value));logEvent('server-stack-transfer-requested',{amount:value,freeTable:activeConfig.freeTable})}else say('Live account transfer is not connected');return}var wasOut=stacks[0]<=0||seats[0].classList.contains('out-of-chips');bank-=value;setStack(0,stacks[0]+value);modal.classList.remove('open');if(wasOut){pendingJoinNextHand=true;sittingOut[0]=true;handFolded[0]=true;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[0].classList.remove('empty-seat','out-of-chips');seats[0].classList.add('folded');seats[0].setAttribute('aria-label','You, reloaded and waiting for the next hand');say(money(value)+' added — you’ll return next hand');logEvent('reload-queued',{seat:0,amount:value,stack:stacks[0],hand:handNumber,freeTable:activeConfig.freeTable})}else say(money(value)+' added to your table stack')});document.getElementById('buyMore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('leaveTable').addEventListener('click',function(){modal.classList.remove('open');pendingJoinNextHand=false;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;sittingOut[0]=true;handFolded[0]=true;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat','folded');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');say('You left the table by choice')});
+  addButton.addEventListener('click',function(){openModal(false)});document.getElementById('closeModal').addEventListener('click',function(){modal.classList.remove('open')});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open')});range.addEventListener('input',function(){amount.textContent=money(Number(range.value))});document.getElementById('confirmAdd').addEventListener('click',function(){var value=Number(range.value);if((value>bank&&!creatorOn())||value<1)return;if(minimumBuyin>0&&stacks[0]===0&&value<minimumBuyin){say('This table requires at least '+money(minimumBuyin));return}if(accountConnected){if(liveTransport&&typeof liveTransport.moveCoinsToTable==='function'){liveTransport.moveCoinsToTable({amount:value,table:{game:activeConfig.game,maxSeats:activeConfig.maxSeats,smallBlind:activeConfig.sb,bigBlind:activeConfig.bb,freeTable:activeConfig.freeTable}});modal.classList.remove('open');say('Waiting for the server to move '+money(value));logEvent('server-stack-transfer-requested',{amount:value,freeTable:activeConfig.freeTable})}else say('Live account transfer is not connected');return}var wasOut=stacks[0]<=0||seats[0].classList.contains('out-of-chips');if(!creatorOn())bank-=value;/* BUILD 240: admin wallet never depletes at the table */setStack(0,stacks[0]+value);modal.classList.remove('open');if(wasOut){pendingJoinNextHand=true;sittingOut[0]=true;handFolded[0]=true;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[0].classList.remove('empty-seat','out-of-chips');seats[0].classList.add('folded');seats[0].setAttribute('aria-label','You, reloaded and waiting for the next hand');say(money(value)+' added — you’ll return next hand');logEvent('reload-queued',{seat:0,amount:value,stack:stacks[0],hand:handNumber,freeTable:activeConfig.freeTable})}else say(money(value)+' added to your table stack')});document.getElementById('buyMore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('leaveTable').addEventListener('click',function(){modal.classList.remove('open');pendingJoinNextHand=false;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;sittingOut[0]=true;handFolded[0]=true;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat','folded');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');say('You left the table by choice')});
   var talk=document.getElementById('talk'),talkHeld=false,micRequestPending=false,micRequestCount=0;
   function microphoneHelp(error){
     if(!window.isSecureContext)return 'Microphone access needs a secure HTTPS page. Open the secure Nikkiflixs address, then tap TALK again.';
@@ -1111,7 +1298,7 @@ function throwPickerItems(){var items=THROWABLES.map(function(t){return{id:t[0],
 var AMMO_KEY='nikkiflixs_ammo';
 function ammoGet(){var a={mg:0,pt:0,sg:0,gr:0};try{var raw=JSON.parse(localStorage.getItem(AMMO_KEY)||'{}');['mg','pt','sg','gr'].forEach(function(k){a[k]=Math.max(0,parseInt(raw[k],10)||0)})}catch(e){}return a}
 function ammoSet(a){try{localStorage.setItem(AMMO_KEY,JSON.stringify(a))}catch(e){}}
-function consumeAmmo(fromIndex,aid){if(fromIndex!==0||!aid||creatorOn())return;var a=ammoGet();if(a[aid]>0){a[aid]-=1;ammoSet(a)}}
+function consumeAmmo(fromIndex,aid){if(fromIndex!==0||!aid)return;var a=ammoGet();if(creatorOn()){/* BUILD 240: ADMIN ALWAYS FULL — the used type refills to 10 immediately */if(a[aid]!==10){a[aid]=10;ammoSet(a)}return}if(a[aid]>0){a[aid]-=1;ammoSet(a)}}
 function ammoGate(it){if(creatorOn())return true;if(ammoGet()[it.ammo]>0)return true;say(it.ammo==='gr'?'Out of grenades — purchase more at the store':'Out of bullets — purchase more at the store',2800);return false}
 function ammoSub(g){if(creatorOn())return '∞ — Creator';var n=ammoGet()[g[2]];return g[3]+': '+n+(n===0?' — store has more':'')}
 function flameOwned(){if(creatorOn())return true;try{return localStorage.getItem('nikkiflixs_unlock_flame')==='1'}catch(e){return false}}
@@ -1138,7 +1325,7 @@ grantCheck();
   function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=(item[0]==='flame'?FLAME_URI:ITEM_ART+f);im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1)'},{transform:'translate('+(dx*.5)+'px,'+(dy-135)+'px) rotate(240deg) scale(1.22)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg) scale(1)'}],{duration:760,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
   function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
   function flameThrow(fromIndex,toIndex){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var dx=b.x-a.x,dy=b.y-a.y;var len=Math.max(60,Math.sqrt(dx*dx+dy*dy));var ang=Math.atan2(dy,dx)*180/Math.PI;var st=document.createElement('div');st.className='flame-stream';st.style.left=a.x+'px';st.style.top=(a.y-23)+'px';st.style.width=len+'px';st.style.transform='rotate('+ang+'deg)';st.innerHTML='<i></i><i></i><i></i>';document.body.appendChild(st);setTimeout(function(){st.classList.add('on')},30);var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var ov=document.createElement('div');ov.className='flame-overlay';wrap.appendChild(ov);var img=seats[toIndex].querySelector('.portrait');setTimeout(function(){st.classList.add('off');ov.classList.add('fade');if(img)img.classList.add('charred')},1500);setTimeout(function(){st.remove();ov.remove()},1900);setTimeout(function(){if(img)img.classList.remove('charred')},2500)}
-function bulletHole(wrap,big){var h=document.createElement('span');h.className='bullet-hole'+(big?' big':'');h.style.left=(10+Math.random()*72)+'%';h.style.top=(6+Math.random()*68)+'%';wrap.appendChild(h);setTimeout(function(){h.classList.add('fade')},2500);setTimeout(function(){h.remove()},3000)}
+function bulletHole(wrap,big){var h=document.createElement('span');h.className='bullet-hole'+(big?' big':'');/* BUILD 239: holes land in the FACE zone (they were scattered over hair/shoulders/backdrop) */if(big){h.style.left=(30+Math.random()*38)+'%';h.style.top=(12+Math.random()*32)+'%'}else{h.style.left=(24+Math.random()*52)+'%';h.style.top=(8+Math.random()*44)+'%'}wrap.appendChild(h);setTimeout(function(){h.classList.add('fade')},2500);setTimeout(function(){h.remove()},3000)}
 function fireGuns(toIndex,kind){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');if(kind==='mg'){var n=0;var iv=setInterval(function(){bulletHole(wrap,false);n++;if(n>=9)clearInterval(iv)},45)}else{bulletHole(wrap,true);setTimeout(function(){bulletHole(wrap,true)},170)}}
 function grenadeBlast(toIndex){explodePortrait(toIndex);var plate=seats[toIndex].querySelector('.nameplate');if(plate){plate.classList.add('plate-blast');setTimeout(function(){plate.classList.remove('plate-blast')},1900)}}
 function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleRetaliation(toIndex);var aid=item[3];if(aid==='fl'){flameThrow(fromIndex,toIndex);if(fromIndex===0)say('You torched '+names[toIndex]+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}consumeAmmo(fromIndex,aid);if(aid==='mg'||aid==='pt'){fireGuns(toIndex,aid);if(fromIndex===0)say('You shot '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}if(aid==='sg'){explodePortrait(toIndex);if(fromIndex===0)say('You blasted '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]});return}flyItem(item,fromIndex,toIndex,function(){if(aid==='gr')grenadeBlast(toIndex);else splat(toIndex,item[2]);if(fromIndex===0)say('You hit '+names[toIndex]+' with the '+item[1].toLowerCase()+'!',2200);logEvent('gift-thrown',{from:fromIndex,to:toIndex,item:item[0]})});}
@@ -1152,17 +1339,17 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
       t.style.backgroundSize=W+'px '+H+'px';
       t.style.backgroundPosition=(-c*(W/N))+'px '+(-r*(H/N))+'px';
       t.style.width=(100/N)+'%';t.style.height=(100/N)+'%';t.style.left=(c*100/N)+'%';t.style.top=(r*100/N)+'%';
-      t.style.setProperty('--tx',((c-1)*68+(Math.random()*30-15))+'px');
-      t.style.setProperty('--ty',((r-1)*68+(Math.random()*30-15)-22)+'px');
+      t.style.setProperty('--tx',((c-1)*92+(Math.random()*36-18))+'px'); /* BUILD 239: wider blast */
+      t.style.setProperty('--ty',((r-1)*92+(Math.random()*36-18)-30)+'px');
       t.style.setProperty('--rot',(Math.random()*200-100)+'deg');
       boom.appendChild(t);
     }
     wrap.appendChild(boom);img.style.visibility='hidden';
     setTimeout(function(){boom.classList.add('go')},30);
-    setTimeout(function(){boom.classList.add('back')},900);
-    setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},1360);
+    setTimeout(function(){boom.classList.add('back')},1100); /* BUILD 239: scattered state holds longer so the burst reads */
+    setTimeout(function(){boom.remove();img.style.visibility='';img.classList.add('pop-reassemble');setTimeout(function(){img.classList.remove('pop-reassemble')},480)},1560);
   }
-  function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0&&!creatorOn()){if(popsGet(key)<=0){say('Out of those pops — grab more in the Coin Store',2600);return}popsSet(key,popsGet(key)-1);paintPopBtn()}
+  function doPop(fromIndex,toIndex,flavor){var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(fromIndex===0&&creatorOn()){popsSet(key,10);paintPopBtn()}/* BUILD 240: admin pops refill to 10 on use */if(fromIndex===0&&!creatorOn()){if(popsGet(key)<=0){say('Out of those pops — grab more in the Coin Store',2600);return}popsSet(key,popsGet(key)-1);paintPopBtn()}
     var wrap=seats[toIndex].querySelector('.portrait-wrap'),img=wrap.querySelector('.portrait');
     explodePortrait(toIndex);
     var lines=flavor==='taunt'?TAUNT_LINES:MAD_LINES,bub=document.createElement('div');bub.className='pop-bubble';bub.textContent=lines[Math.floor(Math.random()*lines.length)];wrap.appendChild(bub);setTimeout(function(){bub.remove()},2700);
@@ -1170,11 +1357,11 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   function openStoreChooser(){openGift('🛒 Nikkiflixs Stores','Gold coins and POPS live in the Coin Store — gifts, flags and dice sets live in the Gift Shop.',[{id:'coins',label:'Coin Store',glyph:'🪙',sub:'Gold coin packs + POPS — 6 for $1'},{id:'gifts',label:'Gift Shop',glyph:'🎁',sub:'Gifts, country flags, dice sets & more'}],function(it){location.href=it.id==='coins'?'/assets/rooms/casino/coin-store.html':'/assets/rooms/casino/gift-shop.html'})}
   document.getElementById('adminBtn').addEventListener('click',function(){openAdmin()});
   document.getElementById('storeBtn').addEventListener('click',function(){openStoreChooser()});
-  document.getElementById('throwBtn').addEventListener('click',function(){if(throwArm){disarmAll();say('Throw cancelled',1000);return}openGift('Throw Something — FREE','Pick an item, then tap a player. Throwing is always free.',throwPickerItems(),function(it){if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;throwArm=it.raw;popArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to throw the '+it.raw[1].toLowerCase()+' — tap your own picture to cancel',3200)})});
+  
   document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 6 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){say('You are out of those pops — they are in the Coin Store, 6 for $1. Tap STORE up top.',3400);return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
   document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0]&&!creatorOn();if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
   var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
-  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcThrow" type="button">🎁 THROW (FREE)</button><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
+  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one, it fires at them</div><div class="gift-grid" id="pcThrowGrid" style="max-height:290px"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
   document.body.appendChild(playerModal);
   var pcTarget=null;
   function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';var self=index===0,S=ps(index);
@@ -1194,17 +1381,21 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     +'<span>Biggest pot won</span><b>'+money(BP)+'</b></div>'
     +(self?'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">Your lifetime record on this phone — it saves and keeps growing.</p>':'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">This session at the tables.</p>');
     document.getElementById('pcStats').innerHTML=rows;
-    document.getElementById('pcThrow').style.display=self?'none':'';document.getElementById('pcPopT').style.display=self?'none':'';document.getElementById('pcPopM').style.display=self?'none':'';
+    document.getElementById('pcThrowSec').style.display=self?'none':'';if(!self)renderPcThrow();document.getElementById('pcPopT').style.display=self?'none':'';document.getElementById('pcPopM').style.display=self?'none':'';
     document.getElementById('pcPopT').textContent='😂 TAUNT POP ('+popsGet('nikkiflixs_pops_taunt')+')';document.getElementById('pcPopM').textContent='😤 MAD POP ('+popsGet('nikkiflixs_pops_mad')+')';playerModal.classList.add('open')}
   playerModal.addEventListener('click',function(e){if(e.target===playerModal)playerModal.classList.remove('open')});
   playerModal.querySelector('#pcClose').addEventListener('click',function(){playerModal.classList.remove('open')});
-  playerModal.querySelector('#pcThrow').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;openGift('Throw at '+names[t]+' — FREE','It lands right on them.',throwPickerItems(),function(it){if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;doThrow(0,t,it.raw)})});
+  /* BUILD 241: the throwable picker lives IN the player card (the toolbar
+     THROW button is gone at the owner's order): tap a person once, tap a
+     throwable, it fires at that person immediately — the same gates and
+     the same doThrow the card's old THROW button used, no arm step. */
+  function renderPcThrow(){var grid=document.getElementById('pcThrowGrid');grid.innerHTML='';throwPickerItems().forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;doThrow(0,t,it.raw)});grid.appendChild(b)})}
   playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'taunt')});
   playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)doPop(0,t,'mad')});
   seats.forEach(function(seat,index){seat.addEventListener('click',function(e){
     if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
-    if(index!==0&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.portrait-wrap'))openPlayerCard(index);
-    if(index===0&&!sittingOut[0]&&e.target.closest&&e.target.closest('.portrait-wrap'))openPlayerCard(0);
+    if(index!==0&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(index); /* BUILD 241: the whole pod is the tap target — taps landing on the nameplate, the felt cards or the flag used to miss .portrait-wrap and never open the card (owner: sometimes 1 tap, sometimes 4-5) */
+    if(index===0&&!sittingOut[0]&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(0);
     if(index===0&&sittingOut[0]&&stacks[0]>0&&!pendingJoinNextHand&&!(e.target.closest&&e.target.closest('#sitIn'))){e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are back in — cards on the next hand',2600)}
   },true)});
   paintPopBtn();
@@ -1249,7 +1440,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   document.body.appendChild(adminModal);
   adminModal.querySelector('.gift-x').addEventListener('click',function(){adminModal.classList.remove('open')});
   adminModal.addEventListener('click',function(e){if(e.target===adminModal)adminModal.classList.remove('open')});
-  function applyCreatorSeat(){if(creatorOn()){names[0]='The Creator';restoreName(0)}paintPopBtn()}
+  function applyCreatorSeat(){if(creatorOn()){names[0]='The Creator';restoreName(0);/* BUILD 240: ADMIN ALWAYS FULL — flamethrower owned by default (persist the unlock so it reads owned everywhere), and every consumable topped to 10 whenever creator mode is active */try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}var a=ammoGet(),chg=false;['mg','pt','sg','gr'].forEach(function(k){if(a[k]<10){a[k]=10;chg=true}});if(chg)ammoSet(a);['nikkiflixs_pops_taunt','nikkiflixs_pops_mad'].forEach(function(k){if(popsGet(k)<10)popsSet(k,10)})}paintPopBtn()}
   function paintAdmin(msg){
     var b=document.getElementById('adminBody');if(!b)return;var on=creatorOn();var hasPin=false;try{hasPin=!!localStorage.getItem('nikkiflixs_creator_pin')}catch(e){}
     var html='<p style="margin:4px 0 10px;color:#e8ddc4;font-size:14px;line-height:1.45">'+(on?'👑 <strong>Creator mode is ON.</strong> Everything is free and unlimited for you on this phone — tables, store, dice, pops, flags. Your seat name is <strong>The Creator</strong>.':'Creator mode is OFF. '+(hasPin?'Enter your PIN to switch it on.':'Set your PIN once — after that, this phone knows you.'))+'</p>';
@@ -1258,7 +1449,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     html+='<div id="adminMsg" style="min-height:20px;color:#ffd968;font-size:14px;margin-bottom:6px">'+(msg||'')+'</div>';
     if(on){
       html+='<h4 style="margin:10px 0 4px;color:#f4d68d">💰 YOUR MONEY</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Wallet <strong style="color:#ffd968">'+money(bank)+'</strong> · Stack at the table <strong style="color:#ffd968">'+money(stacks[0])+'</strong>. If you bust, creator refill is AUTOMATIC — and this button tops you up anytime:</p><button class="gp-btn" id="adminRefill" type="button" style="margin-bottom:6px">💰 REFILL ME — WALLET +250,000 · STACK TO 25,000</button>';
-      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">🎟️ GENERATE A GIFT CODE</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Pick the gift, tap GENERATE, send them the code. They redeem it in their profile or the Coin Store.</p>';
+      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">🎟️ GENERATE A GIFT CODE</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">These are your giveaway codes — free gifts you hand out: gold coins, pops, dice sets and gifts (#11–#29 are the dice sets and gifts). Tap GENERATE next to an item and this panel makes a one-time code for it. Send the code to the player — they type it into REDEEM A CODE in their profile or the Coin Store and the item lands in their account. Codes you make are listed under this section so you can copy them again.</p>';
       CATALOG.forEach(function(c){html+='<div class="admin-row"><span>#'+c[0]+' — '+c[3]+'</span><button class="gp-btn gen-btn" data-no="'+c[0]+'" type="button">GENERATE</button></div>'});
       html+='<div id="genOut" style="margin-top:10px"></div>';
       var mine=[];try{mine=JSON.parse(localStorage.getItem('nikkiflixs_my_codes')||'[]')}catch(e){}
