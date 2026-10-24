@@ -113,6 +113,18 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -149,6 +161,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   <p class="shakesline" id="shakesLine"></p>
   <p class="status" id="status"></p>
   <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn primary" id="shakeBtn" type="button">🎲 SHAKE</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
   </div>
@@ -525,6 +538,35 @@ window.__BARDICE = {
 };
 
 newMatch();
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — Bar Dice</h2>
+    <h3>The Object</h3>
+    <p>Beat Nikki, the bartender, to <b>5 rounds</b>. Each round you both take one turn shaking five dice — build a crew, and the two dice left over are your <b>Cargo</b>. High Cargo takes the round.</p>
+    <h3>How a Turn Plays</h3>
+    <ol>
+      <li>Tap <b>SHAKE</b>. The cup rattles, slams down on the bar, and lifts to show your five dice.</li>
+      <li>You need a crew, in this order: a <b>6</b> is the <b>Ship</b>, then a <b>5</b> is the <b>Captain</b>, then a <b>4</b> is the <b>Crew</b>. A die only counts once the ones before it are aboard — a 5 rolled before the Ship just goes back in the cup.</li>
+      <li>Dice that count move up into the crew slots. The rest go back under the cup and you shake again — up to <b>3 shakes</b> a turn.</li>
+      <li>The moment Ship, Captain and Crew are all aboard, your turn ends: the last two dice are your <b>Cargo</b>, and their total is your score. No crew in 3 shakes? Cargo is <b>0</b>.</li>
+    </ol>
+    <h3>Scoring &amp; Winning</h3>
+    <p>Nikki takes her turn by the same rules. The higher Cargo wins the round; equal Cargo is a <b>push</b> and nobody scores. First to <b>5 rounds</b> wins the match.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>

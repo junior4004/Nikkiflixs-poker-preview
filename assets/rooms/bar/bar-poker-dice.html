@@ -121,6 +121,18 @@ button.pd-die:disabled{cursor:default}
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -161,6 +173,7 @@ button.pd-die:disabled{cursor:default}
   <p class="shakesline" id="shakesLine"></p>
   <p class="status" id="status"></p>
   <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn primary" id="shakeBtn" type="button">🎲 SHAKE</button>
     <button class="btn" id="stopBtn" type="button">KEEP HAND</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
@@ -627,6 +640,47 @@ window.__POKERDICE = {
 };
 
 newMatch();
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — Poker Dice</h2>
+    <h3>The Object</h3>
+    <p>Build a better five-dice poker hand than Nikki. The better hand takes the round; first to <b>5 rounds</b> wins the match.</p>
+    <h3>The Dice Are Cards</h3>
+    <p><b>6 = Ace, 5 = King, 4 = Queen, 3 = Jack, 2 = Ten, 1 = Nine.</b> Each die wears its rank letter, so your hand reads like cards.</p>
+    <h3>Your Turn</h3>
+    <ol>
+      <li>Tap <b>SHAKE</b> — the cup rattles, slams, and lifts on five dice. You get up to <b>3 shakes</b> a turn.</li>
+      <li>Between shakes, tap a die to <b>hold</b> it out of the cup; tap a held die to toss it back in. Only the un-held dice go back under the cup.</li>
+      <li>Happy early? Tap <b>KEEP HAND</b> to end your turn and lock the hand in. Then Nikki takes her shakes.</li>
+    </ol>
+    <h3>Hands, Best to Worst</h3>
+    <ul>
+      <li><b>Five of a Kind</b></li>
+      <li><b>Four of a Kind</b></li>
+      <li><b>Full House</b> — three of a rank plus a pair</li>
+      <li><b>Straight</b> — A-K-Q-J-10 or K-Q-J-10-9</li>
+      <li><b>Three of a Kind</b></li>
+      <li><b>Two Pair</b></li>
+      <li><b>One Pair</b></li>
+      <li><b>Bust</b> — nothing at all; your highest die is all you've got</li>
+    </ul>
+    <h3>Ties</h3>
+    <p>Same hand on both sides? The ranks break it — a pair of Aces beats a pair of Kings, then the remaining dice are compared in order. A dead tie <b>pushes</b> the round, no point.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>

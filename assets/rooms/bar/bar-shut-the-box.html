@@ -109,6 +109,21 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
+/* shut runs tall at 390px: reclaim the px the extra control row costs so one-screen holds */
+.controls{margin-top:5px}
+.wrap{padding-bottom:10px}
 </style>
 </head>
 <body>
@@ -148,6 +163,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   </div>
   <p class="status" id="status"></p>
   <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn primary" id="shakeBtn" type="button">🎲 SHAKE</button>
     <button class="btn primary" id="flipBtn" type="button" disabled>FLIP</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
@@ -533,6 +549,35 @@ window.__SHUTBOX = {
 };
 
 newMatch();
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — Shut the Box</h2>
+    <h3>The Object</h3>
+    <p>You and Nikki each play a full run at a box of nine tiles, <b>1 through 9</b>. Your score is the total left standing when your run ends — <b>lower is better</b>. Low score takes the round; first to <b>5 rounds</b> wins the match.</p>
+    <h3>Your Run</h3>
+    <ol>
+      <li>Tap <b>SHAKE</b> — the cup rattles, slams, and lifts on <b>two dice</b>. Their total is your number.</li>
+      <li>Tap standing tiles that add up to <b>exactly</b> that total, then tap <b>FLIP</b> to lay them down. A selection that doesn't add up exactly can't flip.</li>
+      <li>Shake again and keep flipping. When the tiles still standing add up to <b>6 or less</b>, you roll <b>one die</b> from then on.</li>
+      <li>Your run ends when a roll comes up that no combination of standing tiles can make. Whatever is still up is your score. Flip all nine down and you've <b>SHUT THE BOX</b> — score <b>0</b>.</li>
+    </ol>
+    <h3>Rounds</h3>
+    <p>Nikki then plays her run at her own box, same rules. Lower score wins the round; a tie is a <b>push</b>, no point. First to <b>5 rounds</b> takes the match.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>

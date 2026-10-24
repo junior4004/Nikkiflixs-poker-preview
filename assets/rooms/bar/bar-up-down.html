@@ -82,6 +82,18 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -117,6 +129,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   </div>
   <p class="status" id="status"></p>
   <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
   </div>
   <p class="hint"><b>7 Up Down — call it: Up, Down, or right on Seven.</b> Call first, then Nikki shakes the cup and slams it down. <b>Up</b> wins on a total of 8–12, <b>Down</b> on 2–6, and <b>Seven</b> only on exactly 7 — the hard call, and the glory stat on the board. Call it right, the round is yours; wrong, and the house takes it. First to <b>5 rounds</b> takes the match.</p>
@@ -354,6 +367,34 @@ window.__UPDOWN = {
 };
 
 newMatch();
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — 7 Up Down</h2>
+    <h3>The Object</h3>
+    <p>Call where two dice land — <b>before</b> they're shaken. Call it right, the round is yours; first to <b>5 rounds</b> wins the match.</p>
+    <h3>Each Round</h3>
+    <ol>
+      <li><b>You call first:</b> <b>Down</b> — the two dice total <b>2 to 6</b>. <b>Seven</b> — <b>exactly 7</b>. <b>Up</b> — <b>8 to 12</b>.</li>
+      <li>Nikki shakes the house cup — rattle, slam, lift — and the two dice settle it.</li>
+      <li>Your call matches the total's band, you take the round. Miss, and the house takes it.</li>
+    </ol>
+    <h3>The Seven</h3>
+    <p>Seven is the hard call — only one total out of the whole range wins it. The board keeps a <b>glory count</b> of every Seven rolled all match. It doesn't change the score; it's bragging rights, counted out loud.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>

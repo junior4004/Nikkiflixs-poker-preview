@@ -37,6 +37,18 @@ canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px
 .overlay p{margin:0 0 16px;color:var(--muted)}
 .tray{display:flex;gap:6px;justify-content:center;margin-top:10px;min-height:22px}
 .tray .tb{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:800 10px/1 "Barlow Condensed",sans-serif;color:#fff;box-shadow:inset -2px -3px 5px #0007,1px 2px 4px #000a}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -58,7 +70,8 @@ canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px
   <p class="status" id="status">Pull back anywhere on the table to aim — release to shoot.</p>
   <div class="powerwrap"><span>POWER</span><div class="powerbar"><div class="powerfill" id="powerFill"></div></div></div>
   <p class="hint">Drag away from the cue ball like pulling back a cue stick. The gold line is your shot. Sink the cue ball and it spots back up — no charge, it's Nikki's house.</p>
-  <div class="controls"><button class="btn" id="rerackBtn" type="button">RE-RACK</button></div>
+  <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button><button class="btn" id="rerackBtn" type="button">RE-RACK</button></div>
 </div>
 <script>
 'use strict';
@@ -327,6 +340,35 @@ window.__POOL = {
 rack();
 requestAnimationFrame(loop);
 if (DEMO) { setTimeout(function () { shoot(1, 0.08, 0.72); }, 650); }
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — Pool</h2>
+    <h3>The Object</h3>
+    <p>Clear the table: sink all <b>8 balls</b> in <b>as few shots as you can</b>. It's solo — you against the table. The chip up top keeps count of <b>BALLS</b> sunk and <b>SHOTS</b> taken.</p>
+    <h3>Shooting</h3>
+    <ul>
+      <li>Press anywhere on the table and <b>drag back, away from the cue ball</b> — like pulling back a cue stick.</li>
+      <li>The <b>gold dashed line</b> is your shot: the cue ball travels along it. The longer the pull, the harder the shot — watch the <b>POWER</b> bar fill.</li>
+      <li><b>Release to shoot.</b> Balls that reach any of the six pockets drop, and sunk balls collect in the tray under the table.</li>
+      <li>No turns, no fouls, no opponent: sink one and shoot again from wherever the cue ball stops.</li>
+    </ul>
+    <h3>Scratch &amp; Finish</h3>
+    <p>Sink the cue ball and it <b>spots right back up</b> on the head spot, free — no charge, it's Nikki's house. <b>RE-RACK</b> starts a fresh table any time. Sink the 8th ball and the table is cleared: your shot count is your score — rack 'em again and try to beat it.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>

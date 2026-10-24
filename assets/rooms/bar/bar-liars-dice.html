@@ -110,6 +110,18 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
+
+.htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
+.htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
+.htp-overlay.show{display:grid}
+.htp-card{width:100%;max-width:440px;max-height:calc(100vh - 28px);overflow-y:auto;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f8,#140609fc);box-shadow:0 18px 55px #000c;padding:20px 20px 16px}
+.htp-card h2{margin:0 0 6px;font:800 26px/1.05 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.htp-card h3{margin:14px 0 4px;font:800 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.htp-card p{margin:0 0 8px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card ul,.htp-card ol{margin:0 0 8px;padding-left:20px;font-size:14px;line-height:1.5;color:var(--ink)}
+.htp-card li{margin-bottom:4px}
+.htp-card b{color:#ffe9bd}
+.htp-close{display:block;margin:14px auto 2px;min-height:46px;padding:11px 34px;border-radius:10px;border:1px solid var(--gold);background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font-weight:800;font-size:15px;letter-spacing:.05em;cursor:pointer;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -161,6 +173,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
   </div>
   <p class="status" id="status"></p>
   <div class="controls">
+    <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
   </div>
   <p class="hint"><b>Liar's Dice:</b> hold <b>PEEK</b> to see your dice — hers stay hidden. Bid the count of a face at the whole table (<b>ones wild</b>), raise it, or call <b>LIAR!</b>: both cups lift and the wrong call sheds a die. <b>Lose all five, lose the match.</b></p>
@@ -535,6 +548,35 @@ window.__LIARSDICE = {
 };
 
 newMatch();
+</script>
+<div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="htp-card">
+    <h2>How to Play — Liar's Dice</h2>
+    <h3>The Object</h3>
+    <p>Be the last one holding dice. You and Nikki each start with <b>five dice</b>, shaken in the cup and kept hidden.</p>
+    <h3>How a Round Plays</h3>
+    <ul>
+      <li>Both cups shake, slam down, and <b>stay down</b>. Hold <b>PEEK</b> to lift only your cup and look at your own dice — Nikki's stay covered, and she can't see yours.</li>
+      <li>Players take turns <b>bidding</b>. A bid names how many dice at the <b>whole table</b> — yours and hers together — show one face: "four 5s," say. <b>Ones are wild</b>: every 1 counts as the bid face too.</li>
+      <li>On your turn, either <b>raise</b> or call her out. A raise is more dice, or the same count with a higher face — the picker is already set to the lowest legal raise, so <b>PLACE BID</b> always raises legally.</li>
+      <li>Think her bid is more than the table really holds? Tap <b>LIAR!</b> Both cups lift and every die is counted, wild ones included.</li>
+    </ul>
+    <h3>Losing Dice</h3>
+    <p>If the table holds at least the bid, the bid was honest — the <b>caller</b> loses a die. If it falls short, the <b>bidder</b> loses a die. The loser opens the next round. Run out of dice and you lose the match; take all five of Nikki's and it's yours.</p>
+    <button class="htp-close" id="htpClose" type="button">CLOSE</button>
+  </div>
+</div>
+<script>
+(function () {
+  var ov = document.getElementById('htpOverlay');
+  if (!ov) return;
+  var open = function () { ov.classList.add('show'); };
+  var close = function () { ov.classList.remove('show'); };
+  document.getElementById('htpBtn').addEventListener('click', open);
+  document.getElementById('htpClose').addEventListener('click', close);
+  ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
 </script>
 </body>
 </html>
