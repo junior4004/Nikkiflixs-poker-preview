@@ -67,6 +67,15 @@ button{cursor:pointer;font:inherit}
     radial-gradient(circle,#c0272d 0 9%,#1d7a3a 9% 20%,transparent 20%),
     repeating-conic-gradient(#191919 0deg 9deg,#e8dcc0 9deg 18deg,#191919 18deg 27deg,#e8dcc0 27deg 36deg)}
 .board::after{content:"20";position:absolute;left:50%;top:-19px;transform:translateX(-50%);font:800 13px/1 "Barlow Condensed",sans-serif;color:#f6dc96}
+/* ---- bar dice art: two CSS dice on a felt tray ---- */
+.dice-art{background:radial-gradient(ellipse at 50% -10%,#3a2312 0%,transparent 55%),radial-gradient(ellipse at 50% 118%,#20794c,#0c4a2b 78%)}
+.mini-die{position:absolute;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;border-radius:12px;
+  box-shadow:0 10px 18px #000b,inset 0 2px 3px #fff7,inset 0 -4px 6px #0004}
+.mini-die i{width:78%;height:78%;margin:auto;border-radius:50%}
+.mini-die.yel{width:62px;height:62px;left:50%;top:50%;transform:translate(-88%,-54%) rotate(-11deg);background:linear-gradient(145deg,#ffe066,#f5b921);border:1px solid #a86e00}
+.mini-die.yel i{background:#20242c;box-shadow:inset 0 1px 2px #000a}
+.mini-die.blk{width:52px;height:52px;left:50%;top:50%;transform:translate(8%,-36%) rotate(13deg);background:linear-gradient(145deg,#2a2a30,#070708);border:1px solid #c9a227}
+.mini-die.blk i{background:#f3c95c;box-shadow:inset 0 1px 2px #000a}
 .note{margin-top:26px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#170a0ecc;color:var(--muted);font-size:13px;line-height:1.5}
 .note b{color:var(--gold)}
 @media(max-width:560px){.stations{grid-template-columns:1fr}.station .art{height:150px}.host img{width:54px;height:54px}}
@@ -117,6 +126,15 @@ button{cursor:pointer;font:inherit}
     <button class="station" data-href="darts.html" type="button">
       <div class="art dart-art" aria-hidden="true"><div class="board"></div></div>
       <div class="body"><h2>Darts</h2><p>301 against the house. Three darts a turn, doubles and trebles count — first to exactly zero wins.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="bar-dice.html" type="button">
+      <div class="art dice-art" aria-hidden="true">
+        <span class="mini-die yel"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:2/2"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i></span>
+        <span class="mini-die blk"><i style="grid-area:1/1"></i><i style="grid-area:2/2"></i><i style="grid-area:3/3"></i></span>
+      </div>
+      <div class="body"><h2>Bar Dice</h2><p>Ship, Captain, Crew against Nikki herself. Shake the five dice, land your 6 · 5 · 4 in order, and haul the biggest cargo — first to 5 rounds takes the match.</p>
       <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
     </button>
   </div>
