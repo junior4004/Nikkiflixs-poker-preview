@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>App Store · Nikkiflixs</title>
+<title>Nikkiflixs Apps</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
 *{box-sizing:border-box}
@@ -26,6 +26,8 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .get{min-height:46px;padding:10px 26px;border-radius:12px;border:1px solid #e2b34f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
 .get:active{transform:translateY(1px)}
 .get.soon{background:#241c12;border-color:#5e452a;color:#8a7a5c}
+.copylink{min-height:38px;margin-top:10px;padding:8px 18px;border-radius:10px;border:1px solid #5e452a;background:transparent;color:#d8a94b;font:700 13px/1 "Source Sans 3",sans-serif;letter-spacing:.06em}
+.copylink.small{margin-top:8px;min-height:34px;padding:6px 12px;font-size:12px}
 .sect{font:800 19px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#ffe9bd;margin:6px 0 10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{background:#141009ee;border:1px solid #5e452a;border-radius:12px;padding:14px 10px;text-align:center;position:relative;display:flex;flex-direction:column}
@@ -34,9 +36,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .card .ds{font-size:12.5px;color:#c9bba5;line-height:1.4;min-height:52px;margin-bottom:6px}
 .card .cat{display:inline-block;font:700 10px/1 "Source Sans 3",sans-serif;letter-spacing:.14em;color:#d8a94b;text-transform:uppercase;margin-bottom:10px}
 .card .get{margin-top:auto;min-height:42px;font-size:14px}
+.mono{display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin:0 auto;border-radius:12px;background:linear-gradient(135deg,#b8872d,#654216);color:#fff;font:800 20px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.fart .mono{width:84px;height:84px;font-size:30px;border-radius:16px}
 .badge{position:absolute;top:8px;right:8px;font:800 10px/1 "Source Sans 3",sans-serif;letter-spacing:.1em;padding:5px 8px;border-radius:6px}
 .badge.new{background:#2f8f57;color:#fff}
-.badge.soon{background:#3a2f1a;color:#d8a94b;border:1px solid #5e452a}
 .empty{text-align:center;color:#8a7a5c;padding:30px 0;font-size:15px}
 .foot{text-align:center;color:#6e6250;font-size:12px;margin-top:26px;line-height:1.6}
 </style>
@@ -44,52 +47,82 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <body>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Poker Club</button>
-  <h1>📱 App Store</h1>
+  <h1>Nikkiflixs Apps</h1>
 </div>
 <div class="wrap">
   <input class="search" id="q" type="search" placeholder="Search apps…" autocomplete="off">
   <div class="chips" id="chips"></div>
   <div class="feature" id="feature"></div>
-  <div class="sect">All Apps</div>
+  <div class="sect" id="sect">All Apps</div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none">No apps match your search.</div>
   <p class="foot">Every app installs straight from its own page — no app store account, no fees, no waiting.<br>More apps are on the way.</p>
 </div>
 <script>
 /* ============================================================
-   NIKKIFLIXS APP STORE — app catalog.
+   NIKKIFLIXS APPS — app catalog.
    To add an app, add one entry:
-     {name, desc, icon, url, cat, badge}
-   icon: emoji string or image URL. url: "" = coming soon.
-   cat: "Games" | "Tools" | "AI". badge: "NEW" | "SOON" | "".
+     {slug, name, desc, icon, url, cat, badge}
+   slug: the ?app= value that features this app (its commercial link).
+   icon: image path, or "mono:XX" for a letter tile (no emoji icons).
+   url: "" = finished app whose public link arrives with its commercial.
+   cat: "Games" | "Tools" | "AI". badge: "NEW" | "".
+   FEATURED LINK: /apps?app=<slug> puts that app big on top and
+   the rest below. Plain /apps shows the full store.
    ============================================================ */
 var APPS=[
-  {name:"Nikkiflixs Poker Club",desc:"The main event. Slots, poker, craps, blackjack and more.",icon:"app-icon-poker-club.webp",url:"./index.html",cat:"Games",badge:""},
-  {name:"Habla Translator",desc:"Spanish ↔ English voice translator. Talk, it translates.",icon:"app-icon-habla-translator.webp",url:"https://chipper-khapse-26fe06.netlify.app",cat:"Tools",badge:"NEW"},
-  {name:"Grim's Gourmet",desc:"Order ahead from Grim’s kitchen. Food ready on arrival.",icon:"app-icon-grims-gourmet.webp",url:"https://shimmering-jelly-431ffe.netlify.app",cat:"Tools",badge:"NEW"},
-  {name:"Card Value Scanner",desc:"Snap the front and back of a card — it tells you what that card really sold for on eBay.",icon:"🃏",url:"",cat:"Tools",badge:"SOON"},
-  {name:"ShortStack Studio",desc:"Turn long videos into captioned shorts. Type the times — it does the cutting.",icon:"🎬",url:"",cat:"AI",badge:"SOON"},
-  {name:"Checkmate",desc:"Your personal AI. Ask anything, get answers with a voice.",icon:"../../checkmate-avatar.png",url:"",cat:"AI",badge:"SOON"},
-  {name:"Riddle Battle",desc:"Out-riddle your friends in a battle of wits.",icon:"app-icon-riddle-battle.webp",url:"",cat:"Games",badge:"SOON"},
-  {name:"Video Editor",desc:"Cut, caption and polish your videos on your phone.",icon:"app-icon-video-editor.webp",url:"",cat:"Tools",badge:"SOON"},
-  {name:"Book Helper",desc:"Your co-writer. Outlines, chapters and ideas, together.",icon:"app-icon-book-helper.webp",url:"",cat:"Tools",badge:"SOON"}
+  {slug:"poker-club",name:"Nikkiflixs Poker Club",desc:"The main event. Slots, poker, craps, blackjack and more.",icon:"app-icon-poker-club.webp",url:"./index.html",cat:"Games",badge:""},
+  {slug:"talk-to-text",name:"Talk to Text",desc:"Talk instead of type. Numbered lines, emotion carried into the words, proofread by line, fix it by voice.",icon:"mono:TT",url:"",cat:"Tools",badge:"NEW"},
+  {slug:"checkmate",name:"Checkmate",desc:"Ask anything. It goes out, grabs the answer live, and brings it back — answer first, sources underneath.",icon:"../../checkmate-avatar.png",url:"",cat:"AI",badge:"NEW"},
+  {slug:"card-value-scanner",name:"Card Value Scanner",desc:"Snap the front and back of a card — it tells you what that card really sold for on eBay.",icon:"mono:CV",url:"",cat:"Tools",badge:""},
+  {slug:"shortstack-studio",name:"ShortStack Studio",desc:"Turn long videos into captioned shorts. Type the times — it does the cutting.",icon:"mono:SS",url:"",cat:"AI",badge:""},
+  {slug:"habla-translator",name:"Habla Translator",desc:"Spanish ↔ English voice translator. Talk, it translates.",icon:"app-icon-habla-translator.webp",url:"https://chipper-khapse-26fe06.netlify.app",cat:"Tools",badge:""},
+  {slug:"grims-gourmet",name:"Grim's Gourmet",desc:"Order ahead from Grim’s kitchen. Food ready on arrival.",icon:"app-icon-grims-gourmet.webp",url:"https://shimmering-jelly-431ffe.netlify.app",cat:"Tools",badge:""}
 ];
 var CATS=["All","Games","Tools","AI"];
 var curCat="All", curQ="";
 
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 function iconHtml(a){
+  if(a.icon.indexOf("mono:")===0) return '<div class="mono">'+esc(a.icon.slice(5))+'</div>';
   if(/^https?:/.test(a.icon)||/\.(png|jpg|jpeg|webp|gif)$/i.test(a.icon)) return '<img src="'+esc(a.icon)+'" alt="" style="width:52px;height:52px;border-radius:12px;object-fit:cover">';
   return esc(a.icon);
 }
 function badgeHtml(a){
   if(a.badge==="NEW") return '<span class="badge new">NEW</span>';
-  if(a.badge==="SOON") return '<span class="badge soon">SOON</span>';
   return "";
 }
+function appLink(a){
+  var origin=(location.origin && location.origin!=="null") ? location.origin : "";
+  return origin + "/apps?app=" + a.slug;
+}
 function btnHtml(a){
-  if(!a.url) return '<button class="get soon" type="button" disabled>SOON</button>';
+  if(!a.url) return '<button class="get soon" type="button" disabled>LINK WITH COMMERCIAL</button>';
   return '<button class="get" type="button" data-open="'+esc(a.url)+'">GET</button>';
+}
+function copyBtnHtml(a, small){
+  return '<button class="copylink'+(small?" small":"")+'" type="button" data-copy="'+esc(appLink(a))+'">COPY LINK</button>';
+}
+/* Featured-app resolution: ?app=<slug> wins, #<slug> also works.
+   Unknown or missing slug = default feature (first live app). */
+function linkedApp(){
+  var wanted="";
+  try{
+    wanted=(new URLSearchParams(location.search).get("app")||"").toLowerCase();
+  }catch(e){ wanted=""; }
+  if(!wanted && location.hash){
+    wanted=location.hash.replace(/^#app=/,"").replace(/^#/,"").toLowerCase();
+  }
+  wanted=wanted.replace(/[^a-z0-9-]/g,"");
+  if(!wanted) return null;
+  for(var i=0;i<APPS.length;i++){ if(APPS[i].slug===wanted) return APPS[i]; }
+  return null;
+}
+var LINKED=linkedApp();
+function featureApp(){
+  if(LINKED) return LINKED;
+  var live=APPS.filter(function(a){return a.url;});
+  return live[0]||APPS[0];
 }
 function filtered(){
   var q=curQ.trim().toLowerCase();
@@ -100,14 +133,14 @@ function filtered(){
   });
 }
 function renderFeature(){
-  var live=APPS.filter(function(a){return a.url;});
-  var f=live[0]||APPS[0];
+  var f=featureApp();
   document.getElementById("feature").innerHTML=
     '<div class="fart">'+iconHtml(f)+'</div>'+
     '<div class="fbody"><div class="fname">'+esc(f.name)+'</div>'+
     '<div class="fdesc">'+esc(f.desc)+'</div>'+
     (f.url?'<button class="get" type="button" data-open="'+esc(f.url)+'">GET THE APP</button>'
-          :'<button class="get soon" type="button" disabled>COMING SOON</button>')+'</div>';
+          :'<button class="get soon" type="button" disabled>LINK COMES WITH ITS COMMERCIAL</button>')+
+    '<br>'+copyBtnHtml(f,false)+'</div>';
 }
 function renderChips(){
   document.getElementById("chips").innerHTML=CATS.map(function(c){
@@ -115,7 +148,12 @@ function renderChips(){
   }).join("");
 }
 function renderGrid(){
-  var list=filtered(), g=document.getElementById("grid");
+  var f=featureApp();
+  var list=filtered();
+  /* Linked view: the featured app sits big on top, the grid is the rest. */
+  if(LINKED) list=list.filter(function(a){return a!==f;});
+  var g=document.getElementById("grid");
+  document.getElementById("sect").textContent=LINKED?"More Apps":"All Apps";
   document.getElementById("empty").style.display=list.length?"none":"block";
   g.innerHTML=list.map(function(a){
     return '<div class="card">'+badgeHtml(a)+
@@ -123,7 +161,7 @@ function renderGrid(){
       '<div class="nm">'+esc(a.name)+'</div>'+
       '<div class="ds">'+esc(a.desc)+'</div>'+
       '<div class="cat">'+esc(a.cat)+'</div>'+
-      btnHtml(a)+'</div>';
+      btnHtml(a)+copyBtnHtml(a,true)+'</div>';
   }).join("");
 }
 function render(){renderFeature();renderChips();renderGrid();}
@@ -138,6 +176,24 @@ function openApp(e){
   var b=e.target.closest("[data-open]"); if(!b) return;
   window.open(b.getAttribute("data-open"),"_blank","noopener");
 }
+document.body.addEventListener("click",function(e){
+  var b=e.target.closest("[data-copy]"); if(!b) return;
+  var link=b.getAttribute("data-copy"), old=b.textContent;
+  function done(){
+    b.textContent="LINK COPIED";
+    setTimeout(function(){ b.textContent=old; },2000);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(done,function(){ fallbackCopy(link); done(); });
+  } else { fallbackCopy(link); done(); }
+  function fallbackCopy(t){
+    var ta=document.createElement("textarea");
+    ta.value=t; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); }catch(err){}
+    document.body.removeChild(ta);
+  }
+});
 document.getElementById("q").addEventListener("input",function(e){
   curQ=e.target.value; renderGrid();
 });
