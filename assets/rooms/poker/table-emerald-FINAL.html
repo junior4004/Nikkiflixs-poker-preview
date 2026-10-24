@@ -393,9 +393,9 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
    alt text — it simply cannot fail to load now. */
 .brand-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .brand-svg text{fill:url(#brandGold);font-family:"Great Vibes Local",cursive;paint-order:stroke;stroke:rgba(24,2,10,.38);stroke-width:1px}
-.brand-svg .brand-l1{font-size:126px}
-.brand-svg .brand-l2{font-size:43px}
-.brand-svg .brand-l3{font-size:32px}
+.brand-svg .brand-l1{font-size:126px;letter-spacing:7px}
+.brand-svg .brand-l2{font-size:43px;letter-spacing:3.5px}
+.brand-svg .brand-l3{font-size:32px;letter-spacing:3px}
 </style>
 <style>
 /* BUILD 232 — LITTLE-THINGS PASS group 2 (owner 2026-10-23, item 4 as
@@ -583,14 +583,14 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
    class gets no mark at all: it hits and bounces away (bounceOff). The
    shoe's signature is a CSS footprint — ball, sole and heel in dark
    translucent brown, stamped at a boot angle — that fades with the effect. */
-.splat-mark{position:absolute;width:58px;height:52px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;transition:opacity .5s ease}
+.splat-mark{position:absolute;width:88px;height:80px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;transition:opacity .5s ease}
 .splat-mark.fade{opacity:0}
 .splat-mark .blob{position:absolute;inset:0;border-radius:58% 42% 55% 45%/48% 56% 44% 52%;opacity:.94;box-shadow:0 2px 6px rgba(0,0,0,.5),inset 0 -4px 8px rgba(0,0,0,.25)}
 .splat-mark .dot{position:absolute;border-radius:50%;opacity:.94}
 .splat-mark .dot.d1{width:13px;height:11px;left:-9px;top:8px}
 .splat-mark .dot.d2{width:9px;height:8px;right:-7px;bottom:10px}
-.splat-mark img{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
-.splat-mark .gly{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:24px}
+.splat-mark img{position:absolute;left:50%;top:50%;width:40px;height:40px;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+.splat-mark .gly{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:30px}
 .shoe-print{position:absolute;width:17px;height:32px;transform:translate(-50%,-50%) rotate(18deg);z-index:8;pointer-events:none;opacity:.85;filter:blur(.4px);transition:opacity .6s ease;background:radial-gradient(ellipse 48% 26% at 50% 13%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 56% 38% at 50% 56%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 42% 15% at 50% 92%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 75%)}
 .shoe-print.fade{opacity:0}
 </style>
@@ -670,6 +670,26 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 #playerModal .p-actions{margin:6px 0 0}
 #playerModal .p-actions button{padding:7px 4px}
 #pcClose{padding:8px}
+</style>
+<style>
+/* BUILD 266 — THROW FLOW REDESIGN (owner's tap-test orders 2026-10-23
+   21:57 MDT). The picker moved into the hero's OWN card: tap your seat,
+   pick an item (the grid scrolls INSIDE the one-screen card if it must),
+   the card closes and the item is ARMED — a chip floats over your seat
+   naming it — then you tap the player and WATCH it fly. Opponents' cards
+   are view-only. The chip is pointer-transparent and sits over the hero
+   seat only, never the table center. */
+#pcThrowSec{min-height:0;display:flex;flex-direction:column}
+#pcThrowGrid{min-height:0;overflow-y:auto}
+#armChip{position:fixed;z-index:96;transform:translate(-50%,-100%);display:none;align-items:center;gap:7px;max-width:92vw;padding:6px 12px;border-radius:999px;background:rgba(9,6,7,.94);border:1px solid #f0c75d;color:#ffe9a8;font:800 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.03em;box-shadow:0 6px 16px rgba(0,0,0,.8);pointer-events:none;white-space:nowrap}
+#armChip.show{display:flex}
+#armChip .ac-art{font-size:16px;line-height:1;display:flex}
+#armChip .ac-art img{width:22px;height:22px;object-fit:contain;display:block}
+/* BUILD 266 — HARD-impact flash: a bright star burst at the hit point, so
+   a hard item's HIT reads as a hit (then it bounces — see bounceOff). */
+.hit-flash{position:fixed;z-index:95;width:66px;height:66px;margin:-33px 0 0 -33px;pointer-events:none;background:radial-gradient(circle,#fffbe8 0 16%,#ffe066 34%,rgba(255,160,40,.85) 52%,rgba(255,120,20,0) 72%);clip-path:polygon(50% 0%,59% 33%,98% 25%,68% 47%,100% 62%,64% 62%,79% 100%,50% 71%,21% 100%,36% 62%,0% 62%,32% 47%,2% 25%,41% 33%);filter:drop-shadow(0 0 6px rgba(255,170,40,.9))}
+/* BUILD 266 — splat droplets thrown past the mark's rim as it spreads. */
+.splat-mark .drop{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;opacity:.95;z-index:2}
 </style>
 </head>
 <body>
@@ -1201,7 +1221,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function postBlinds(){
     var sb=smallBlindIndex(),bb=bigBlindIndex(),sbPaid=commitChips(sb,activeConfig.sb,'small blind'),bbPaid=commitChips(bb,activeConfig.bb,'big blind');logEvent('blinds-posted',{smallBlind:sb,bigBlind:bb,smallBlindPaid:sbPaid,bigBlindPaid:bbPaid});postRoundBet(sb,sbPaid,'SMALL BLIND',false);later(180,function(){postRoundBet(bb,bbPaid,'BIG BLIND',false)});later(1050,function(){playHand(sbPaid,bbPaid)})
   }
-  function shuffleAndDeal(){clearTimers();prepareNextHand();handRunning=true;addButton.disabled=true;randomizeHands();resetVisuals();setBlinds();deck.className='deck show shuffle';logEvent('shuffle',{dealer:dealerIndex(),smallBlind:smallBlindIndex(),bigBlind:bigBlindIndex(),firstCard:smallBlindIndex()});later(2050,function(){deck.className='deck';deal()})}
+  function shuffleAndDeal(){clearTimers();disarmAll();prepareNextHand();handRunning=true;addButton.disabled=true;randomizeHands();resetVisuals();setBlinds();deck.className='deck show shuffle';logEvent('shuffle',{dealer:dealerIndex(),smallBlind:smallBlindIndex(),bigBlind:bigBlindIndex(),firstCard:smallBlindIndex()});later(2050,function(){deck.className='deck';deal()})}
   function actionOrder(){var bb=bigBlindIndex(),start=(bb+1)%8,order=[];for(var i=0;i<8;i++)order.push((start+i)%8);return order}
   function runRound(label,policy,done,opening){
     var order=actionOrder(),contributions=opening||[0,0,0,0,0,0,0,0],currentBet=Math.max.apply(Math,contributions),bigBlindAmount=activeConfig.bb,lastFullRaise=bigBlindAmount,acted={},cursor=0,trail=[];
@@ -1341,22 +1361,31 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     if(error&&error.name==='NotFoundError')return 'No microphone was found. Connect or enable a microphone, then tap TALK again.';
     return 'Microphone is blocked. Tap the lock or tune icon by the address bar, open Permissions, allow Microphone, then tap TALK again.'
   }
+  function micLiveEvent(){try{window.dispatchEvent(new CustomEvent('nikkiflixs:mic-live',{detail:{stream:micStream}}))}catch(ignore){}}
+  function micStopEvent(){try{window.dispatchEvent(new CustomEvent('nikkiflixs:mic-stop'))}catch(ignore){}}
   function stopTalk(){
     talkHeld=false;
     if(micRequestPending){talk.textContent='ALLOW MIC';return}
-    if(micStream){micStream.getTracks().forEach(function(track){track.stop()});micStream=null}
+    if(micStream){micStream.getTracks().forEach(function(track){track.stop()});micStream=null;micStopEvent()}
     talk.classList.remove('talking');talk.removeAttribute('aria-busy');talk.textContent='HOLD TO TALK'
   }
   function startTalk(event){
     event.preventDefault();talkHeld=true;
     if(event.pointerId!==undefined&&talk.setPointerCapture){try{talk.setPointerCapture(event.pointerId)}catch(ignore){}}
-    if(micStream){talk.classList.add('talking');talk.textContent='TALKING';return}
+    if(micStream){talk.classList.add('talking');talk.textContent='TALKING';micLiveEvent();return}
+    /* BUILD 269 (mic-leak fix): a second press while a permission request
+       is still pending must NOT start a second getUserMedia — two streams
+       resolving together orphaned one LIVE mic after release. */
+    if(micRequestPending){return}
     micRequestCount++;logEvent('microphone-requested',{request:micRequestCount,userGesture:true,secureContext:window.isSecureContext});
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){talkHeld=false;logEvent('microphone-unavailable',{secureContext:window.isSecureContext});say(microphoneHelp(),9000);return}
     micRequestPending=true;talk.setAttribute('aria-busy','true');talk.textContent='ALLOW MIC';
     navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false}).then(function(stream){
+      /* BUILD 269: if a stream already won the race, stop this one instead
+         of overwriting micStream and leaking the first stream live. */
+      if(micStream){stream.getTracks().forEach(function(track){track.stop()});micRequestPending=false;talk.removeAttribute('aria-busy');return}
       micRequestPending=false;talk.removeAttribute('aria-busy');micStream=stream;logEvent('microphone-allowed',{request:micRequestCount,tracks:stream.getAudioTracks().length});
-      if(talkHeld){talk.classList.add('talking');talk.textContent='TALKING';say('Microphone on while held')}
+      if(talkHeld){talk.classList.add('talking');talk.textContent='TALKING';micLiveEvent();say('Microphone on while held')}
       else{stream.getTracks().forEach(function(track){track.stop()});micStream=null;talk.textContent='HOLD TO TALK';say('Microphone allowed. Hold TALK when speaking.',4200)}
     }).catch(function(error){
       micRequestPending=false;talkHeld=false;micStream=null;talk.removeAttribute('aria-busy');talk.classList.remove('talking');talk.textContent='HOLD TO TALK';logEvent('microphone-denied',{request:micRequestCount,name:error&&error.name?error.name:'Error'});say(microphoneHelp(error),9000)
@@ -1431,8 +1460,8 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var casinoRoom=document.getElementById('casinoTableRoom'),blackjackGame=document.getElementById('blackjackGame'),crapsGame=document.getElementById('crapsGame'),blackjackActions=document.getElementById('blackjackActions'),crapsActions=document.getElementById('crapsActions'),crapsBetChoices=document.getElementById('crapsBetChoices'),crapsChipButtons=Array.prototype.slice.call(document.querySelectorAll('.craps-denom')),casinoBalance=document.getElementById('casinoBalance');
   var casinoWallet=500,casinoGame='blackjack',casinoMinBet=10,casinoMaxBet=100,bjDeck=[],bjPlayer=[],bjDealer=[],bjBet=0,bjSideBet=0,bjPlacedBet=0,bjPlacedSide=0,bjSelectedChip=1,bjRound=false,bjDealerHidden=true,crapsPoint=0,crapsBetType='pass',crapsBetNumber=0,crapsBetPoint=0,crapsSelectedChip=1,crapsActiveBet=0,crapsRolling=false,crapsBetElement=null,crapsSettlementTimer=null;
   var casinoTalk=document.getElementById('casinoTalk'),casinoTalkHeld=false;
-  function stopCasinoTalk(){casinoTalkHeld=false;if(micStream){micStream.getTracks().forEach(function(track){track.stop()});micStream=null}casinoTalk.classList.remove('talking');casinoTalk.removeAttribute('aria-busy');casinoTalk.textContent='HOLD TO TALK'}
-  function startCasinoTalk(event){event.preventDefault();casinoTalkHeld=true;if(micStream){casinoTalk.classList.add('talking');casinoTalk.textContent='TALKING';return}if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){casinoTalkHeld=false;say(microphoneHelp(),9000);return}casinoTalk.setAttribute('aria-busy','true');casinoTalk.textContent='ALLOW MIC';navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false}).then(function(stream){casinoTalk.removeAttribute('aria-busy');micStream=stream;if(casinoTalkHeld){casinoTalk.classList.add('talking');casinoTalk.textContent='TALKING'}else stopCasinoTalk()}).catch(function(error){casinoTalkHeld=false;casinoTalk.removeAttribute('aria-busy');casinoTalk.textContent='HOLD TO TALK';say(microphoneHelp(error),9000)})}
+  function stopCasinoTalk(){casinoTalkHeld=false;if(micStream){micStream.getTracks().forEach(function(track){track.stop()});micStream=null;micStopEvent()}casinoTalk.classList.remove('talking');casinoTalk.removeAttribute('aria-busy');casinoTalk.textContent='HOLD TO TALK'}
+  function startCasinoTalk(event){event.preventDefault();casinoTalkHeld=true;if(micStream){casinoTalk.classList.add('talking');casinoTalk.textContent='TALKING';micLiveEvent();return}/* BUILD 269: same pending guard as the main TALK button — no second getUserMedia while one is in flight, and never overwrite a live micStream */if(micRequestPending){return}if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){casinoTalkHeld=false;say(microphoneHelp(),9000);return}micRequestPending=true;casinoTalk.setAttribute('aria-busy','true');casinoTalk.textContent='ALLOW MIC';navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false}).then(function(stream){micRequestPending=false;casinoTalk.removeAttribute('aria-busy');if(micStream){stream.getTracks().forEach(function(track){track.stop()});return}micStream=stream;if(casinoTalkHeld){casinoTalk.classList.add('talking');casinoTalk.textContent='TALKING';micLiveEvent()}else stopCasinoTalk()}).catch(function(error){micRequestPending=false;casinoTalkHeld=false;casinoTalk.removeAttribute('aria-busy');casinoTalk.textContent='HOLD TO TALK';say(microphoneHelp(error),9000)})}
   casinoTalk.addEventListener('pointerdown',startCasinoTalk);casinoTalk.addEventListener('pointerup',stopCasinoTalk);casinoTalk.addEventListener('pointercancel',stopCasinoTalk);casinoTalk.addEventListener('pointerleave',function(){if(casinoTalkHeld)stopCasinoTalk()});
   function paintCasinoWallet(){casinoBalance.textContent=money(casinoWallet);var tray=document.getElementById('crapsTrayBalance');if(tray)tray.textContent=money(casinoWallet)}
   function buildCardDeck(){var ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'],suits=['♣','♦','♥','♠'],cards=[];ranks.forEach(function(rank){suits.forEach(function(suit){cards.push([rank,suit])})});for(var i=cards.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),swap=cards[i];cards[i]=cards[j];cards[j]=swap}return cards}
@@ -1512,7 +1541,16 @@ grantCheck();
   function randomFlag(){return COUNTRIES[Math.floor(Math.random()*COUNTRIES.length)].glyph}
   seats.forEach(function(seat,index){if(index!==0&&Math.random()<.75)setSeatFlag(index,randomFlag())});
   var origSeatNewBot=seatNewBot;seatNewBot=function(index){origSeatNewBot(index);if(Math.random()<.75)setSeatFlag(index,randomFlag());else setSeatFlag(index,null)};
-  function disarmAll(){throwArm=null;popArm=null;document.body.classList.remove('targeting');if(window.__armTimer){clearTimeout(window.__armTimer);window.__armTimer=null}}
+  /* BUILD 266: the ARMED state made visible — a chip over your own seat
+     names the loaded item until you tap a target, tap your own seat
+     (which reopens your card), or the hand ends (shuffleAndDeal disarms). */
+  var armedItem=null,armChip=document.createElement('div');armChip.id='armChip';armChip.innerHTML='<span class="ac-art"></span><span class="ac-txt"></span>';document.body.appendChild(armChip);
+  function positionArmChip(){var wrap=seats[0].querySelector('.portrait-wrap');if(!wrap)return;var r=wrap.getBoundingClientRect();armChip.style.left=(r.left+r.width/2)+'px';armChip.style.top=(r.top-6)+'px'}
+  function showArmChip(it){armChip.querySelector('.ac-art').innerHTML=it.glyph||'';armChip.querySelector('.ac-txt').textContent=it.label+' — tap a player to throw';positionArmChip();armChip.classList.add('show')}
+  function hideArmChip(){armChip.classList.remove('show')}
+  window.addEventListener('resize',function(){if(armChip.classList.contains('show'))positionArmChip()});
+  function armThrowItem(it){disarmAll();throwArm=it.raw;armedItem=it;document.body.classList.add('targeting');showArmChip(it);say(it.label+' ready — tap a player to throw it!',2400)}
+  function disarmAll(){throwArm=null;popArm=null;armedItem=null;hideArmChip();document.body.classList.remove('targeting');if(window.__armTimer){clearTimeout(window.__armTimer);window.__armTimer=null}}
   function armExpire(){if(window.__armTimer)clearTimeout(window.__armTimer);window.__armTimer=setTimeout(function(){if(throwArm||popArm){disarmAll();say('Cancelled — tap THROW or POP again when you are ready',1600)}},30000)}
   document.getElementById('backRoom').addEventListener('click',function(){disarmAll();if(seatFlags[0])setSeatFlag(0,null)});
   var giftModal=document.createElement('div');giftModal.className='gift-modal';giftModal.id='giftModal';
@@ -1532,7 +1570,7 @@ grantCheck();
   function showAmmoPopup(kind){var s=AMMO_SHOP[kind];if(!s)return;apAnchor=s.anchor;document.getElementById('apGlyph').innerHTML=s.art?itemGlyphHTML(s.art,''):'<span style="font-size:42px;line-height:1">'+s.gly+'</span>';document.getElementById('apHead').textContent=s.head;document.getElementById('apBody').textContent='You are out of '+s.what+' — purchase more at the Coin Store and keep firing.';document.getElementById('apPack').textContent=s.pack+' · bigger packs up to $10';document.getElementById('apBuy').textContent='BUY '+s.what.toUpperCase()+' — $1.00';ammoPop.classList.add('open')}
   function openGift(title,sub,items,onPick){document.getElementById('giftTitle').textContent=title;document.getElementById('giftSub').textContent=sub||'';var grid=document.getElementById('giftGrid');grid.innerHTML='';items.forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){giftModal.classList.remove('open');onPick(it)});grid.appendChild(b)});giftModal.classList.add('open')}
   function seatCenter(index){var r=seats[index].querySelector('.portrait-wrap').getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2}}
-  function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=(item[0]==='flame'?FLAME_URI:ITEM_ART+f);im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1)'},{transform:'translate('+(dx*.5)+'px,'+(dy-135)+'px) rotate(240deg) scale(1.22)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg) scale(1)'}],{duration:760,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
+  function flyItem(item,fromIndex,toIndex,done){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=(item[0]==='flame'?FLAME_URI:ITEM_ART+f);im.alt='';el.appendChild(im);el.style.left=(a.x-27)+'px';el.style.top=(a.y-27)+'px'}else{el.textContent=item[2];el.style.left=(a.x-15)+'px';el.style.top=(a.y-15)+'px'}document.body.appendChild(el);var dx=b.x-a.x,dy=b.y-a.y;if(!el.animate){el.remove();if(done)done();return}var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1)'},{transform:'translate('+(dx*.5)+'px,'+(dy-135)+'px) rotate(240deg) scale(1.22)',offset:.55},{transform:'translate('+dx+'px,'+dy+'px) rotate(430deg) scale(1)'}],{duration:640,easing:'cubic-bezier(.2,.7,.4,1)'});anim.onfinish=function(){el.remove();if(done)done()}}
   function splat(index,glyph){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var s=document.createElement('span');s.className='splat-badge';s.textContent=glyph;wrap.appendChild(s);setTimeout(function(){s.remove()},2800)}
   /* BUILD 247 (SPEC v3): the classic throwables split by WHAT THEY DO on
      impact. SPLAT class = soft / wet / food (pie, tomato, egg, cake...) in
@@ -1540,9 +1578,10 @@ grantCheck();
      glove, coconut...) and bounces off via bounceOff(). */
   var SPLAT_ITEMS={pie:1,tomato:1,egg:1,cake:1,donut:1,burger:1,banana:1,melon:1,lemon:1,paint:1,spray:1,snowball:1,balloon:1};
   var SPLAT_COLORS={pie:'#f0dcb0',tomato:'#d92b1f',egg:'#f7b731',cake:'#ff9ecb',donut:'#e08a4c',burger:'#c97b2d',banana:'#f5d90a',melon:'#ff5a76',lemon:'#efe13a',paint:'#7a4fd0',spray:'#59b7ff',snowball:'#eaf6ff',balloon:'#39c2ff'};
-  function splatMark(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('splat');var col=SPLAT_COLORS[item[0]]||'#e33';var m=document.createElement('div');m.className='splat-mark';m.style.left=(30+Math.random()*40)+'%';m.style.top=(24+Math.random()*36)+'%';m.innerHTML='<span class="blob" style="background:'+col+'"></span><span class="dot d1" style="background:'+col+'"></span><span class="dot d2" style="background:'+col+'"></span>'+(artFile(item[0])?'<img style="clip-path:circle(46% at 50% 50%)" src="'+ITEM_ART+artFile(item[0])+'" alt="">':'<span class="gly">'+item[2]+'</span>');wrap.appendChild(m);setTimeout(function(){m.classList.add('fade')},3200);setTimeout(function(){m.remove()},3900)}
+  function splatMark(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('splat');var col=SPLAT_COLORS[item[0]]||'#e33';var m=document.createElement('div');m.className='splat-mark';m.style.left=(30+Math.random()*40)+'%';m.style.top=(24+Math.random()*36)+'%';var drops='';for(var di=0;di<6;di++)drops+='<span class="drop" style="background:'+col+'"></span>';m.innerHTML='<span class="blob" style="background:'+col+'"></span>'+drops+'<span class="dot d1" style="background:'+col+'"></span><span class="dot d2" style="background:'+col+'"></span>'+(artFile(item[0])?'<img style="clip-path:circle(46% at 50% 50%)" src="'+ITEM_ART+artFile(item[0])+'" alt="">':'<span class="gly">'+item[2]+'</span>');wrap.appendChild(m);/* BUILD 266: a splat SPREADS — it lands small, bursts outward past full size and settles, flinging droplets beyond its rim; the mark then lingers and fades on the old timing */if(m.animate){m.animate([{transform:'translate(-50%,-50%) scale(.22)'},{transform:'translate(-50%,-50%) scale(1.12)',offset:.62},{transform:'translate(-50%,-50%) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.8,.3,1)'});m.querySelectorAll('.drop').forEach(function(dr,di2){var ang=(di2/6)*Math.PI*2+Math.random()*.7,dist=32+Math.random()*22;dr.animate([{transform:'translate(0,0) scale(1)',opacity:'1'},{transform:'translate('+(Math.cos(ang)*dist).toFixed(1)+'px,'+(Math.sin(ang)*dist).toFixed(1)+'px) scale(.55)',opacity:'.92'}],{duration:430+Math.random()*140,easing:'cubic-bezier(.1,.7,.3,1)'})})}setTimeout(function(){m.classList.add('fade')},3200);setTimeout(function(){m.remove()},3900)}
   function shoePrint(index){var wrap=seats[index].querySelector('.portrait-wrap');var p=document.createElement('span');p.className='shoe-print';p.style.left=(38+Math.random()*24)+'%';p.style.top=(30+Math.random()*22)+'%';wrap.appendChild(p);setTimeout(function(){p.classList.add('fade')},3000);setTimeout(function(){p.remove()},3700)}
-  function bounceOff(item,toIndex){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('thud');setTimeout(function(){throwSnd('thud')},470);if(item[0]==='shoe'||item[0]==='boot')shoePrint(toIndex);var b=seatCenter(toIndex);var el=document.createElement('div');el.className='thrown-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(b.x-27)+'px';el.style.top=(b.y-27)+'px'}else{el.textContent=item[2];el.style.left=(b.x-15)+'px';el.style.top=(b.y-15)+'px'}document.body.appendChild(el);if(!el.animate){setTimeout(function(){el.remove()},60);return}var dir=b.x<window.innerWidth/2?-1:1;var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1.12)'},{transform:'translate('+(dir*16)+'px,-32px) rotate(130deg) scale(1)',offset:.34},{transform:'translate('+(dir*34)+'px,8px) rotate(235deg) scale(.95)',offset:.58},{transform:'translate('+(dir*48)+'px,-15px) rotate(315deg) scale(.9)',offset:.8},{transform:'translate('+(dir*64)+'px,20px) rotate(395deg) scale(.85)',opacity:'0'}],{duration:820,easing:'ease-out'});anim.onfinish=function(){el.remove()}}
+  function hitFlash(x,y){var fl=document.createElement('div');fl.className='hit-flash';fl.style.left=x+'px';fl.style.top=y+'px';document.body.appendChild(fl);if(fl.animate){var fa=fl.animate([{transform:'scale(.35) rotate(0deg)',opacity:'1'},{transform:'scale(1.15) rotate(24deg)',opacity:'0'}],{duration:230,easing:'ease-out'});fa.onfinish=function(){fl.remove()}}else setTimeout(function(){fl.remove()},230)}
+  function bounceOff(item,toIndex){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('thud');setTimeout(function(){throwSnd('thud')},470);if(item[0]==='shoe'||item[0]==='boot')shoePrint(toIndex);var b=seatCenter(toIndex);hitFlash(b.x,b.y);var el=document.createElement('div');el.className='thrown-item bounce-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(b.x-27)+'px';el.style.top=(b.y-27)+'px'}else{el.textContent=item[2];el.style.left=(b.x-15)+'px';el.style.top=(b.y-15)+'px'}document.body.appendChild(el);if(!el.animate){setTimeout(function(){el.remove()},60);return}var dir=b.x<window.innerWidth/2?-1:1;var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1.12,1.12)'},{transform:'translate('+(dir*30)+'px,-50px) rotate(140deg) scale(1,1)',offset:.3},{transform:'translate('+(dir*58)+'px,12px) rotate(235deg) scale(1.06,.8)',offset:.52},{transform:'translate('+(dir*84)+'px,-24px) rotate(315deg) scale(.95,.95)',offset:.74},{transform:'translate('+(dir*110)+'px,22px) rotate(400deg) scale(.82,.82)',opacity:'0'}],{duration:860,easing:'ease-out'});anim.onfinish=function(){el.remove()}}
   function flameThrow(fromIndex,toIndex){var a=seatCenter(fromIndex),b=seatCenter(toIndex);var dx=b.x-a.x,dy=b.y-a.y;var len=Math.max(60,Math.sqrt(dx*dx+dy*dy));var ang=Math.atan2(dy,dx)*180/Math.PI;var st=document.createElement('div');st.className='flame-stream';st.style.left=a.x+'px';st.style.top=(a.y-23)+'px';st.style.width=len+'px';st.style.transform='rotate('+ang+'deg)';st.innerHTML='<i></i><i></i><i></i>';document.body.appendChild(st);flameRoar(1500);setTimeout(function(){st.classList.add('on')},30);var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var ov=document.createElement('div');ov.className='flame-overlay';wrap.appendChild(ov);var img=seats[toIndex].querySelector('.portrait');setTimeout(function(){st.classList.add('off');ov.classList.add('fade');if(img){img.style.transition='filter .45s ease,opacity .45s ease,transform .45s ease';img.classList.add('charred')}},1500);setTimeout(function(){st.remove();ov.remove()},1900);setTimeout(function(){/* BUILD 245 (SPEC v3): the burn must end in ASH — the charred bust crumbles into a grey, flaking ash state that holds a beat, then the avatar returns */if(img){img.classList.remove('charred');img.classList.add('ashed')}var ash=document.createElement('div');ash.className='ash-layer';wrap.appendChild(ash);setTimeout(function(){ash.classList.add('fade')},900);setTimeout(function(){ash.remove();if(img){img.classList.remove('ashed');img.style.transition=''}},1500)},2050)}
 function bulletHole(wrap,big){var h=document.createElement('span');h.className='bullet-hole'+(big?' big':'');/* BUILD 239: holes land in the FACE zone (they were scattered over hair/shoulders/backdrop) */if(big){h.style.left=(30+Math.random()*38)+'%';h.style.top=(12+Math.random()*32)+'%'}else{h.style.left=(24+Math.random()*52)+'%';h.style.top=(8+Math.random()*44)+'%'}wrap.appendChild(h);setTimeout(function(){h.classList.add('fade')},3200);setTimeout(function(){h.remove()},3900)}
 function plateHole(plate){var h=document.createElement('span');h.className='bullet-hole big';h.style.left=(10+Math.random()*76)+'%';h.style.top='50%';plate.appendChild(h);setTimeout(function(){h.classList.add('fade')},3200);setTimeout(function(){h.remove()},3900)}
@@ -1579,10 +1618,10 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   document.getElementById('adminBtn').addEventListener('click',function(){openAdmin()});
   document.getElementById('storeBtn').addEventListener('click',function(){openStoreChooser()});
   
-  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 6 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){showAmmoPopup(it.id==='taunt'?'pop-taunt':'pop-mad');return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');armExpire();say('Tap a player to POP them!',2600)})});
+  document.getElementById('popBtn').addEventListener('click',function(){if(popArm){disarmAll();say('Pop cancelled',1000);return}openGift('Pop a Player 💥','Pops blow up their picture with a funny line. Sold in the Coin Store — 6 for $1.',[{id:'taunt',label:'Loser-Taunt Pop',glyph:'😂',sub:'You have '+popsGet('nikkiflixs_pops_taunt')},{id:'mad',label:'Mad Pop (I lost!)',glyph:'😤',sub:'You have '+popsGet('nikkiflixs_pops_mad')}],function(it){var key=it.id==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(popsGet(key)<=0&&!creatorOn()){showAmmoPopup(it.id==='taunt'?'pop-taunt':'pop-mad');return}popArm=it.id;throwArm=null;document.body.classList.add('targeting');showArmChip({label:it.label,glyph:it.glyph});armExpire();say('Tap a player to POP them!',2600)})});
   document.getElementById('flagBtn').addEventListener('click',function(){openGift('Pick Your Flag','GC 5 for this table sitting. Your flag rides by your seat — and leaves when you do.',COUNTRIES.map(function(c){return{id:c.code,label:c.name,glyph:c.glyph,raw:c}}),function(it){var charged=!seatFlags[0]&&!creatorOn();if(charged){if(bank<5){say('You need GC 5 for a flag — the Coin Store has you',2800);return}bank-=5;walletSave();paintAccountState()}setSeatFlag(0,it.raw.glyph);say(it.raw.name+' rides with you at this table',2400);logEvent('flag-picked',{country:it.raw.name,charged:charged})})});
   var playerModal=document.createElement('div');playerModal.className='gift-modal';playerModal.id='playerModal';
-  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:44px;height:44px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one, it fires at them</div><div class="gift-grid" id="pcThrowGrid"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
+  playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:44px;height:44px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one to arm it, then tap the player</div><div class="gift-grid" id="pcThrowGrid"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
   document.body.appendChild(playerModal);
   var pcTarget=null;
   function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';var self=index===0,S=ps(index);
@@ -1599,7 +1638,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     +'<span>Biggest pot won</span><b>'+money(BP)+'</b></div>'
     +(self?'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">Your lifetime record on this phone — it saves and keeps growing.</p>':'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">This session at the tables.</p>');
     document.getElementById('pcStats').innerHTML=rows;
-    document.getElementById('pcThrowSec').style.display=self?'none':'';if(!self)renderPcThrow();document.getElementById('pcPopT').style.display=self?'none':'';document.getElementById('pcPopM').style.display=self?'none':'';
+    document.getElementById('pcThrowSec').style.display=self?'':'none';if(self)renderPcThrow();document.getElementById('pcPopT').style.display=self?'':'none';document.getElementById('pcPopM').style.display=self?'':'none';
     document.getElementById('pcPopT').textContent='😂 TAUNT POP ('+popsGet('nikkiflixs_pops_taunt')+')';document.getElementById('pcPopM').textContent='😤 MAD POP ('+popsGet('nikkiflixs_pops_mad')+')';playerModal.classList.add('open')}
   playerModal.addEventListener('click',function(e){if(e.target===playerModal)playerModal.classList.remove('open')});
   playerModal.querySelector('#pcClose').addEventListener('click',function(){playerModal.classList.remove('open')});
@@ -1607,11 +1646,14 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
      THROW button is gone at the owner's order): tap a person once, tap a
      throwable, it fires at that person immediately — the same gates and
      the same doThrow the card's old THROW button used, no arm step. */
-  function renderPcThrow(){var grid=document.getElementById('pcThrowGrid');grid.innerHTML='';throwPickerItems().forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t===null)return;if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;setTimeout(function(){doThrow(0,t,it.raw)},320)});grid.appendChild(b)})}
-  playerModal.querySelector('#pcPopT').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)setTimeout(function(){doPop(0,t,'taunt')},320)});
-  playerModal.querySelector('#pcPopM').addEventListener('click',function(){var t=pcTarget;playerModal.classList.remove('open');if(t!==null)setTimeout(function(){doPop(0,t,'mad')},320)});
+  function renderPcThrow(){var grid=document.getElementById('pcThrowGrid');grid.innerHTML='';throwPickerItems().forEach(function(it){if(it.header){var hd=document.createElement('div');hd.className='gift-header';hd.textContent=it.header;grid.appendChild(hd);return}var b=document.createElement('button');b.type='button';b.className='gift-item';b.innerHTML='<span class="g">'+it.glyph+'</span>'+it.label+(it.sub?'<br><span style="opacity:.7">'+it.sub+'</span>':'');if(it.disabled)b.disabled=true;b.addEventListener('click',function(){playerModal.classList.remove('open');if(it.ammo&&!ammoGate(it))return;if(it.unlock&&!unlockGate(it))return;armThrowItem(it)});grid.appendChild(b)})}
+  /* BUILD 266: the card's pop buttons arm a pop from YOUR card, same as
+     the picker — nothing fires until you tap the player. */
+  function armPopFromCard(flavor){playerModal.classList.remove('open');var key=flavor==='taunt'?'nikkiflixs_pops_taunt':'nikkiflixs_pops_mad';if(!creatorOn()&&popsGet(key)<=0){showAmmoPopup(flavor==='taunt'?'pop-taunt':'pop-mad');return}disarmAll();popArm=flavor;document.body.classList.add('targeting');showArmChip({label:flavor==='taunt'?'Taunt Pop':'Mad Pop',glyph:flavor==='taunt'?'😂':'😤'});say('Tap a player to POP them!',2600)}
+  playerModal.querySelector('#pcPopT').addEventListener('click',function(){armPopFromCard('taunt')});
+  playerModal.querySelector('#pcPopM').addEventListener('click',function(){armPopFromCard('mad')});
   seats.forEach(function(seat,index){seat.addEventListener('click',function(e){
-    if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();say('Cancelled',1200);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
+    if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();if(!sittingOut[0])openPlayerCard(0);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
     if(index!==0&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(index); /* BUILD 241: the whole pod is the tap target — taps landing on the nameplate, the felt cards or the flag used to miss .portrait-wrap and never open the card (owner: sometimes 1 tap, sometimes 4-5) */
     if(index===0&&!sittingOut[0]&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(0);
     if(index===0&&sittingOut[0]&&stacks[0]>0&&!pendingJoinNextHand&&!(e.target.closest&&e.target.closest('#sitIn'))){e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are back in — cards on the next hand',2600)}
@@ -1803,6 +1845,276 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
       } catch(e) {}
     }, 2500);
   })();
+</script>
+<script>window.__NIKKIFLIXS_TABLE_CONFIG__={table:'emerald',sb:2,bb:5};</script>
+<script>
+/* BUILD 269 — LIVE TABLE WIRE: real multiplayer + table voice for the red
+   table. A bootstrap that builds the adapter the table's own
+   attachLiveServer seam was designed for (it used to be test-faked):
+   Socket.IO to the poker server, session token from the site's existing
+   login (localStorage nikkiflixs_session), join the flagship 'red' table,
+   server 'room' states translated into the client's authoritative
+   snapshots, UI actions sent back as socket game events. Voice rides the
+   same socket: seat-addressed WebRTC signaling relayed by the server;
+   HOLD TO TALK attaches the table's mic stream to every peer, release
+   detaches it (mic law: not holding = nobody hears you; no stream ever
+   leaves the device except while TALK is held). If there is no session
+   or the server is unreachable, this script does nothing and the table
+   runs solo-vs-bots exactly as before. Table identity comes from
+   window.__NIKKIFLIXS_TABLE_CONFIG__ ({table, sb, bb}) set by the page
+   before this script; it defaults to the flagship red table (1/2). */
+(function(){
+  'use strict';
+  var DEFAULT_SERVER='https://nikkiflixs-poker-server.onrender.com';
+  var SERVER=(window.__NIKKIFLIXS_SERVER_URL__||'')||(function(){try{return localStorage.getItem('nikkiflixs_live_server')||''}catch(e){return ''}})()||DEFAULT_SERVER;
+  var CFG=window.__NIKKIFLIXS_TABLE_CONFIG__||{};
+  var TABLE_ID=CFG.table||'red',SB=CFG.sb||1,BB=CFG.bb||2,PROTOCOL_V=1;
+  var state={status:'boot',server:SERVER,mySeat:-1,joined:false,attached:false,revision:0,accountOk:false,lastError:null,lastRoom:null,signalLog:[]};
+  window.__NIKKIFLIXS_LIVE__=state;
+  var token='';try{token=localStorage.getItem('nikkiflixs_session')||''}catch(e){}
+  var myName='Player';
+  try{var acct=JSON.parse(localStorage.getItem('nikkiflixs_account')||'null');if(acct&&acct.username)myName=String(acct.username)}catch(e){}
+  if(!token){state.status='no-session';return}
+  var handler=null,socket=null;
+  function emit_(type,payload){if(socket&&socket.connected){socket.emit(type,payload||{});if(type.indexOf('voice:')===0&&state.signalLog.length<200)state.signalLog.push({t:'out',kind:type,toSeat:payload&&payload.toSeat,at:Date.now()})}}
+
+  /* ---------- server room state -> client authoritative snapshot ------ */
+  var SUIT_GLYPH={s:'\u2660',h:'\u2665',d:'\u2666',c:'\u2663'};
+  function convCard(cs){if(!cs||cs.length<2)return null;var r=cs.charAt(0);if(r==='T')r='10';var s=SUIT_GLYPH[cs.charAt(cs.length-1).toLowerCase()];if(!s)return null;return[r,s]}
+  function translate(st){
+    if(!st||st.yourSeat==null||st.yourSeat<0)return null;
+    if(st.state==='waiting')return null;
+    var me=st.seats[st.yourSeat];
+    if(!me||!me.hole||me.hole.length!==2)return null;
+    var players=[];
+    st.seats.forEach(function(s){if(s&&!s.empty)players.push({seat:s.seat,displayName:String(s.name||('Seat '+(s.seat+1))).slice(0,24),stack:Math.max(0,Math.floor(Number(s.stack)||0)),folded:!!s.folded,allIn:!!s.allIn,sittingOut:!!s.sittingOut})});
+    if(players.length<2)return null;
+    var localCards=me.hole.map(convCard);if(localCards.some(function(c){return !c}))return null;
+    var board=(st.board||[]).map(convCard);if(board.some(function(c){return !c}))return null;
+    var bets=[];for(var i=0;i<8;i++){var s2=st.seats[i];bets.push(s2&&!s2.empty?Math.max(0,Math.floor(Number(s2.bet)||0)):0)}
+    var dealerSeat=0;st.seats.forEach(function(s){if(s&&s.dealer)dealerSeat=s.seat});
+    var snap={authoritative:true,serverRevision:++state.revision,game:'holdem',maxSeats:8,smallBlind:SB,bigBlind:BB,localSeat:st.yourSeat,handNumber:Math.max(0,Math.floor(Number(st.hand)||0)),dealerSeat:dealerSeat,pot:Math.max(0,Math.floor(Number(st.pot)||0)),handRunning:true,localCards:localCards,board:board,bets:bets,players:players,freeTable:false};
+    var actingSeat=-1;st.seats.forEach(function(s){if(s&&s.acting)actingSeat=s.seat});
+    if(actingSeat>=0)snap.activeTurn={seat:actingSeat,toCall:Math.max(0,Math.floor(Number(st.currentBet)||0)-Math.floor(Number(me.bet)||0)),secondsRemaining:35,currentBet:Math.max(0,Math.floor(Number(st.currentBet)||0)),contribution:Math.max(0,Math.floor(Number(me.bet)||0)),lastFullRaise:BB};
+    return snap;
+  }
+
+  /* ------------------------- voice (WebRTC mesh) ---------------------- */
+  var peers={};
+  var micStreamLive=null;
+  window.addEventListener('nikkiflixs:mic-live',function(ev){micStreamLive=(ev.detail&&ev.detail.stream)||null;applyMicToPeers()});
+  window.addEventListener('nikkiflixs:mic-stop',function(){micStreamLive=null;applyMicToPeers()});
+  function applyMic(P){
+    var sender=P.transceiver&&P.transceiver.sender;if(!sender)return;
+    var track=micStreamLive?micStreamLive.getAudioTracks()[0]:null;
+    if(track){try{P.transceiver.direction='sendrecv'}catch(ignore){}sender.replaceTrack(track).catch(function(){})}
+    else{sender.replaceTrack(null).catch(function(){});try{P.transceiver.direction='recvonly'}catch(ignore){}}
+  }
+  function applyMicToPeers(){Object.keys(peers).forEach(function(k){applyMic(peers[k])})}
+  function negotiate(P,seat){
+    /* Offers only: if we owe an answer (have-remote-offer) the offer path
+       owns it — a competing setLocalDescription here used to emit an
+       answer mislabeled as an offer, which the far side then rejected,
+       stranding this peer in have-local-offer with no retry. */
+    if(P.makingOffer)return;
+    if(P.pc.signalingState==='have-remote-offer')return;
+    P.makingOffer=true;
+    P.pc.setLocalDescription().then(function(){
+      /* Label by what was actually created, never assume offer. */
+      var desc=P.pc.localDescription;
+      emit_(desc&&desc.type==='answer'?'voice:answer':'voice:offer',{toSeat:seat,sdp:desc});
+      P.makingOffer=false;
+      armOfferWatchdog(P,seat);
+    }).catch(function(){P.makingOffer=false});
+  }
+  function armOfferWatchdog(P,seat){
+    /* Sender-side stall guard: an offer that gets no answer (lost message
+       or a far-side chain that died silently) used to strand the peer
+       forever, because nothing re-fires negotiation. One bounded retry
+       per stall, max 3 per peer, reset when the pair stabilizes. */
+    var sentAt=Date.now();
+    setTimeout(function(){
+      if(!peers[seat]||peers[seat]!==P)return;
+      if(P.pc.signalingState==='stable'){P.offerRetries=0;return}
+      if(P.pc.signalingState==='have-local-offer'&&(P.lastAnswerAt||0)<sentAt&&(P.offerRetries||0)<3){
+        P.offerRetries=(P.offerRetries||0)+1;
+        negotiate(P,seat);
+      }
+    },4000);
+  }
+  function ensurePeer(seat){
+    if(seat===state.mySeat)return null;
+    var P=peers[seat];if(P)return P;
+    var pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    var audio=document.createElement('audio');audio.autoplay=true;audio.style.display='none';document.body.appendChild(audio);
+    P=peers[seat]={pc:pc,audio:audio,polite:state.mySeat>seat,makingOffer:false,pendingCand:[],remoteStream:null,transceiver:null};
+    P.transceiver=pc.addTransceiver('audio',{direction:'recvonly'});
+    pc.onicecandidate=function(e){if(e.candidate)emit_('voice:candidate',{toSeat:seat,candidate:e.candidate})};
+    pc.ontrack=function(e){
+      if(!P.remoteStream)P.remoteStream=new MediaStream();
+      if(!P.remoteStream.getTracks().some(function(t){return t.id===e.track.id})){try{P.remoteStream.addTrack(e.track)}catch(ignore){}}
+      audio.srcObject=P.remoteStream;if(audio.play)audio.play().catch(function(){});
+    };
+    pc.onnegotiationneeded=function(){negotiate(P,seat)};
+    if(micStreamLive)applyMic(P);
+    return P;
+  }
+  function closePeer(seat){
+    var P=peers[seat];if(!P)return;
+    try{P.pc.close()}catch(ignore){}
+    if(P.audio&&P.audio.parentNode)P.audio.parentNode.removeChild(P.audio);
+    delete peers[seat];
+  }
+  function syncPeers(st){
+    if(!st||st.yourSeat==null||st.yourSeat<0)return;
+    var occupied={};
+    st.seats.forEach(function(s){if(s&&!s.empty)occupied[s.seat]=true});
+    Object.keys(occupied).forEach(function(k){if(Number(k)!==st.yourSeat)ensurePeer(Number(k))});
+    Object.keys(peers).forEach(function(k){if(!occupied[k])closePeer(Number(k))});
+  }
+  function flushCand(P){var c=P.pendingCand.splice(0);c.forEach(function(x){P.pc.addIceCandidate(x).catch(function(){})})}
+  function onVoiceOffer(fromSeat,sdp){
+    var P=ensurePeer(fromSeat);if(!P)return;
+    /* An answer mislabeled by an older peer build arrives here: treat it
+       as an answer, never as an offer to setRemote in stable state. */
+    if(sdp&&sdp.type==='answer'){onVoiceAnswer(fromSeat,sdp);return}
+    var collision=P.makingOffer||P.pc.signalingState!=='stable';
+    if(collision&&!P.polite)return;
+    var chain=Promise.resolve();
+    if(collision)chain=chain.then(function(){return P.pc.setLocalDescription({type:'rollback'})}).catch(function(){});
+    chain.then(function(){return P.pc.setRemoteDescription(sdp)}).then(function(){flushCand(P);return P.pc.setLocalDescription()}).then(function(){emit_('voice:answer',{toSeat:fromSeat,sdp:P.pc.localDescription})}).catch(function(){
+      /* Glare-race guard: if a rollback/setRemote step failed mid-chain the
+         peer can strand in have-local-offer with nothing left to re-fire
+         negotiation. One bounded retry unblocks it; the guards make it a
+         no-op if the pair has since stabilized or the peer is gone. */
+      setTimeout(function(){
+        if(!peers[fromSeat]||peers[fromSeat]!==P)return;
+        if(P.pc.signalingState==='have-local-offer')negotiate(P,fromSeat);
+        else if(P.pc.signalingState==='have-remote-offer')P.pc.setLocalDescription().then(function(){emit_('voice:answer',{toSeat:fromSeat,sdp:P.pc.localDescription})}).catch(function(){});
+      },1500);
+    });
+  }
+  function onVoiceAnswer(fromSeat,sdp){
+    var P=peers[fromSeat];if(!P)return;
+    /* Route by real SDP type: a stale or duplicate answer arriving when
+       we are already stable is ignored, never an exception. */
+    if(sdp&&sdp.type&&sdp.type!=='answer')return;
+    if(P.pc.signalingState!=='have-local-offer')return;
+    P.lastAnswerAt=Date.now();P.offerRetries=0;
+    P.pc.setRemoteDescription(sdp).then(function(){flushCand(P)}).catch(function(){});
+  }
+  function onVoiceCandidate(fromSeat,cand){
+    var P=peers[fromSeat];if(!P)return;
+    if(P.pc.remoteDescription&&P.pc.remoteDescription.type)P.pc.addIceCandidate(cand).catch(function(){});
+    else P.pendingCand.push(cand);
+  }
+  state.peerInfo=function(){return Object.keys(peers).map(function(k){var P=peers[k];var rcv=null;try{var r0=P.pc.getReceivers()[0];if(r0)rcv={muted:r0.track.muted,readyState:r0.track.readyState}}catch(e){}return{seat:Number(k),connectionState:P.pc.connectionState,iceState:P.pc.iceConnectionState,signalingState:P.pc.signalingState,localSender:P.transceiver&&P.transceiver.sender?{hasTrack:!!P.transceiver.sender.track,direction:P.transceiver.direction}:null,receiver:rcv,remoteTracks:P.remoteStream?P.remoteStream.getAudioTracks().map(function(t){return{muted:t.muted,readyState:t.readyState,enabled:t.enabled}}):[]}})};
+  state.peerStats=function(seat){
+    var P=peers[seat];if(!P)return Promise.resolve(null);
+    return P.pc.getStats().then(function(rep){var out={};rep.forEach(function(r){if(r.type==='inbound-rtp'&&r.kind==='audio'){out.audioLevel=r.audioLevel;out.packetsReceived=r.packetsReceived}if(r.type==='outbound-rtp'&&r.kind==='audio'){out.packetsSent=r.packetsSent;out.outAudioLevel=r.audioLevel}});return out}).catch(function(){return null});
+  };
+
+  /* ------------------------------ adapter ----------------------------- */
+  var adapter={
+    authenticated:true,
+    subscribe:function(fn){handler=fn},
+    requestResume:function(){
+      if(state.joined)emit_('resume',{v:PROTOCOL_V,table:TABLE_ID,token:token});
+      else emit_('join',{v:PROTOCOL_V,table:TABLE_ID,token:token,name:myName,buyIn:1000});
+    },
+    requestAccount:function(){
+      try{fetch(SERVER+'/api/me',{headers:{'Authorization':'Bearer '+token}}).then(function(r){state.accountOk=r.ok}).catch(function(){})}catch(e){}
+    },
+    sendAction:function(choice){
+      if(typeof choice==='string'){emit_(choice);return}
+      if(choice&&choice.action==='raise'){emit_('raise',{amount:Math.floor(Number(choice.to)||0)});return}
+      if(choice&&choice.action)emit_(choice.action);
+    }
+  };
+  state.adapter=adapter;
+
+  function init(){
+    if(typeof window.io!=='function'){state.status='no-socketio';return}
+    socket=window.io(SERVER,{reconnection:true,auth:{token:token}});
+    state.socket=socket;
+    socket.on('connect',function(){
+      state.status='connected';
+      if(!state.attached){
+        state.attached=true;window.__NIKKIFLIXS_MULTIPLAYER__=adapter;
+        try{window.dispatchEvent(new CustomEvent('nikkiflixs:multiplayer-ready',{detail:adapter}))}
+        catch(e){if(window.NikkiflixsPoker)window.NikkiflixsPoker.attachLiveServer(adapter)}
+      }else if(state.joined){emit_('resume',{v:PROTOCOL_V,table:TABLE_ID,token:token})}
+    });
+    socket.on('disconnect',function(){if(handler)handler({type:'disconnect',reason:'live server connection lost'})});
+    socket.on('joined',function(msg){state.joined=true;state.mySeat=msg.seat});
+    socket.on('resumeFailed',function(){state.joined=false;emit_('join',{v:PROTOCOL_V,table:TABLE_ID,token:token,name:myName,buyIn:1000})});
+    socket.on('room',function(st){state.lastRoom=st;syncPeers(st);var snap=translate(st);if(snap&&handler)handler({type:'snapshot',snapshot:snap})});
+    socket.on('error',function(err){state.lastError=err});
+    socket.on('voice:offer',function(m){if(m){if(state.signalLog.length<200)state.signalLog.push({t:'in',kind:'voice:offer',fromSeat:m.fromSeat,at:Date.now()});onVoiceOffer(m.fromSeat,m.sdp)}});
+    socket.on('voice:answer',function(m){if(m){if(state.signalLog.length<200)state.signalLog.push({t:'in',kind:'voice:answer',fromSeat:m.fromSeat,at:Date.now()});onVoiceAnswer(m.fromSeat,m.sdp)}});
+    socket.on('voice:candidate',function(m){if(m)onVoiceCandidate(m.fromSeat,m.candidate)});
+  }
+  var sc=document.createElement('script');
+  sc.src=SERVER+'/socket.io/socket.io.js';
+  sc.onload=init;
+  sc.onerror=function(){state.status='socketio-load-failed'};
+  document.head.appendChild(sc);
+})();
+</script>
+<script>/* BUILD 269 — SHARE button: one tap sends a friend to THIS table.
+   Native share sheet when available, clipboard copy otherwise.
+   Fixed circle mirroring the TALK button (top-right), hidden while the
+   casino-room overlay is open so it never covers that toolbar. */
+(function(){
+  'use strict';
+  var cfg = window.__NIKKIFLIXS_TABLE_CONFIG__ || {};
+  var isEmerald = cfg.table === 'emerald';
+  var url = isEmerald ? 'https://nikkiflixs.com/assets/rooms/poker/table-emerald-FINAL.html' : 'https://nikkiflixs.com/table';
+  var title = isEmerald ? 'Nikkiflixs — The Emerald Table' : 'Nikkiflixs — The Red Table';
+  function toast(msg){
+    var old = document.getElementById('nikkiflixsShareToast');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var t = document.createElement('div');
+    t.id = 'nikkiflixsShareToast';
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:200;padding:10px 16px;border-radius:999px;border:1px solid #d7a44d;background:#17120d;color:#ffe7ad;font:800 12px/1.3 sans-serif;box-shadow:0 7px 18px #000d;max-width:calc(100% - 32px);text-align:center';
+    document.body.appendChild(t);
+    setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 2600);
+  }
+  function fallbackCopy(){
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function(){ toast('Table link copied — send it to your friend'); }).catch(function(){ toast(url); });
+    } else { toast(url); }
+  }
+  var btn = document.createElement('button');
+  btn.id = 'nikkiflixsShare';
+  btn.type = 'button';
+  btn.textContent = 'SHARE';
+  btn.setAttribute('aria-label', 'Share this table with a friend');
+  btn.style.cssText = 'position:fixed;right:12px;top:max(4px,env(safe-area-inset-top));z-index:46;width:54px;height:54px;border-radius:50%;border:1px solid #d7a44d;background:#17120d;color:#ffe7ad;font:800 9px/1 sans-serif;cursor:pointer;box-shadow:0 7px 18px #000d';
+  btn.addEventListener('click', function(){
+    var data = { title: title, text: 'Come sit at the table with me on Nikkiflixs.', url: url };
+    if (navigator.share) {
+      navigator.share(data).catch(function(err){
+        if (err && err.name !== 'AbortError') fallbackCopy();
+      });
+    } else { fallbackCopy(); }
+  });
+  document.body.appendChild(btn);
+  function syncVisibility(){
+    /* Hide only when the casino room is the visible view: when the poker
+       room is open it sits above the casino room, so the button stays. */
+    var casinoOpen = !!document.querySelector('.casino-table-room:not(.is-hidden)');
+    var pokerRoom = document.getElementById('tableRoom');
+    var pokerHidden = !pokerRoom || pokerRoom.classList.contains('is-hidden');
+    btn.style.display = (casinoOpen && pokerHidden) ? 'none' : '';
+  }
+  syncVisibility();
+  if (window.MutationObserver) {
+    var obs = new MutationObserver(syncVisibility);
+    obs.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
+  }
+})();
 </script>
 </body>
 </html>
