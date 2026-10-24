@@ -19,19 +19,19 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
 .score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
 .score b{color:#fff}
-.wrap{max-width:520px;margin:0 auto;padding:12px 10px 20px}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 16px}
 .duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
-.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:8px 12px;background:#0007;text-align:center}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:7px 12px;background:#0007;text-align:center}
 .duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
 .duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
 .duel .side.on .nm{color:var(--gold)}
 .duel .rem{font:800 30px/1.05 "Barlow Condensed",sans-serif;color:#fff}
 .duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
 .duel .cgo b{color:#ffe9bd}
-.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:10px 4px 2px;color:#ffe9bd}
-.bd-stage{position:relative;max-width:440px;margin:6px auto 0;border-radius:16px;padding:10px;
+.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:6px 4px 2px;color:#ffe9bd}
+.bd-stage{position:relative;max-width:440px;margin:4px auto 0;border-radius:16px;padding:8px;
   background:linear-gradient(145deg,#5d3a1e,#2a1709);box-shadow:0 24px 60px #000d,inset 0 2px 6px #ffdf9e33}
-.bd-keep{display:flex;align-items:center;gap:10px;background:#0d0508d9;border:1px solid var(--gold2);border-radius:12px;padding:8px 10px;margin-bottom:10px}
+.bd-keep{display:flex;align-items:center;gap:10px;background:#0d0508d9;border:1px solid var(--gold2);border-radius:12px;padding:6px 10px;margin-bottom:6px}
 .bd-keep .kt{font:800 11px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;max-width:64px}
 .bd-slots{display:flex;gap:8px;flex:1;justify-content:center}
 .bd-slot{display:flex;flex-direction:column;align-items:center;gap:3px}
@@ -43,8 +43,29 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .bd-cargo b{display:block;font-size:24px;color:#fff}
 .bd-cargo.hot{color:var(--gold)}
 .bd-felt{border-radius:12px;background:radial-gradient(ellipse at 50% 28%,#20794c,#0c4a2b 72%);
-  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:16px 10px 10px}
-.bd-row{display:flex;gap:10px;justify-content:center;align-items:center;min-height:60px}
+  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:8px 10px}
+.bd-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:10px;justify-content:center;align-items:center;min-height:60px}
+/* ---- the cup ritual: cup covers the dice, shakes, slams, lifts ---- */
+.bd-cupzone{position:relative;height:178px}
+.bd-cup{position:absolute;left:50%;bottom:0;width:min(330px,94%);height:104px;z-index:6;pointer-events:none;transform-origin:88% 92%;
+  transform:translate(-50%,0);transition:transform .45s cubic-bezier(.25,.8,.3,1);
+  background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);
+  clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);filter:drop-shadow(0 12px 14px #000b)}
+.bd-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:20px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,#57101b,#a12330 78%)}
+.bd-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:16px;
+  display:grid;place-items:center;box-shadow:0 2px 6px #0008}
+.bd-cup .bd-cupband{position:absolute;left:0;right:0;bottom:10px;height:7px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
+.bd-cup.house{background:linear-gradient(100deg,#15151a,#2c2c33 45%,#060607)}
+.bd-cup.house:before{background:radial-gradient(ellipse at 50% 40%,#000,#3a3a42 78%)}
+#cupzone[data-cup="lifted"] .bd-cup,#cupzone[data-cup="lifting"] .bd-cup{transform:translate(-50%,-72px) rotate(-7deg)}
+#cupzone[data-cup="covering"] .bd-cup{transition:transform .26s ease-in}
+#cupzone[data-cup="shaking"] .bd-cup{animation:bdCupShake .11s linear infinite}
+#cupzone[data-cup="slamming"] .bd-cup{transition:transform .09s ease-in;transform:translate(-50%,4px) scale(1.01,.99);animation:none}
+@keyframes bdCupShake{0%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}25%{transform:translate(calc(-50% + 3px),2px) rotate(1.6deg)}50%{transform:translate(calc(-50% - 3px),-4px) rotate(-1.4deg)}75%{transform:translate(calc(-50% + 4px),1px) rotate(2.2deg)}100%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}}
+.bd-stage.shudder{animation:bdShud .18s linear}
+@keyframes bdShud{0%{transform:translateY(0)}30%{transform:translateY(2px)}65%{transform:translateY(-1px)}100%{transform:translateY(0)}}
 .bd-whose{margin-top:10px;text-align:center;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:#ffe9bb99;text-transform:uppercase}
 /* ---- dice: Farkle's CSS-pip dice, ported under .bd- scope ---- */
 .bd-die{position:relative;width:56px;height:56px;flex:none;border-radius:12px;padding:6px;border:1px solid #888;display:block;background:#ddd;
@@ -75,14 +96,15 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .bd-die.set-blackgold{--pip:#f3c95c;background:linear-gradient(145deg,#2a2a30,#070708);border-color:#c9a227;box-shadow:0 6px 10px #0009,inset 0 0 0 2px #c9a22755,inset 0 2px 3px #ffe9a077}
 .bd-die.set-leather{--pip:#f0bd82;background:radial-gradient(circle at 35% 30%,#96683c,#5d3a1e 72%);border-color:#38220f}
 .bd-die.set-leather .bd-face{border:1.5px dashed #dcb98a9e;border-radius:7px;padding:2px}
+.bd-die.set-ice{--pip:#0d6ea8;background:linear-gradient(145deg,#eefdff,#a9ddf3 55%,#79c1e5);border-color:#57a7cf;box-shadow:0 6px 10px #0009,inset 0 0 13px #ffffffd9,inset 0 2px 4px #fff}
 .bd-die.set-skull{--pip:#e9ddba;background:linear-gradient(145deg,#2f4f92,#152a52);border-color:#0a1830}
 .bd-die.set-skull .pip{background:transparent;box-shadow:none;border-radius:0;color:#e9ddba;font-size:13px;line-height:1;display:grid;place-items:center}
-.shakesline{text-align:center;color:var(--muted);font-size:13px;min-height:19px;margin:10px 4px 0;letter-spacing:.3em}
+.shakesline{text-align:center;color:var(--muted);font-size:13px;min-height:19px;margin:6px 4px 0;letter-spacing:.3em}
 .shakesline b{color:#ffe9bd;letter-spacing:.05em;font-size:12px}
 .status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:6px 4px 6px;color:#ffe9bd}
 .hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px;line-height:1.45}
 .hint b{color:#ffe9bd}
-.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:2px}
 .btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
 .btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
 .btn:disabled{opacity:.45;cursor:default}
@@ -112,7 +134,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <div class="bd-cargo" id="cargoLamp">CARGO<b>—</b></div>
     </div>
     <div class="bd-felt">
-      <div class="bd-row" id="bdRow"></div>
+      <div class="bd-cupzone" id="cupzone" data-cup="down">
+        <div class="bd-row" id="bdRow"></div>
+        <div class="bd-cup" id="cupEl" aria-hidden="true"><span class="bd-cupband"></span></div>
+      </div>
       <div class="bd-whose" id="whoseLine"></div>
     </div>
     <div class="overlay" id="overlay"><div class="card">
@@ -204,8 +229,105 @@ function sccDone(t) { return t.kept.ship && t.kept.captain && t.kept.crew; }
 function activeSet() { return S.turn === 'you' ? HUMAN_SET : NIKKI_SET; }
 function later(fn, ms) { var tok = timerToken; setTimeout(function () { if (tok === timerToken) fn(); }, ms); }
 
+/* ----- CupAudio: synthesized bar sounds (no files). Dice rattling in a
+   cup = bursts of short band-passed noise clicks; the slam = a low sine
+   thump plus a hard low-passed smack; the lift = a soft scrape sweep.
+   Created lazily on the first user gesture; silent if audio is blocked. */
+var CupAudio = (function () {
+  var ctx = null, master = null, nbuf = null;
+  var stats = { rattles: 0, clicks: 0, slams: 0, scrapes: 0 };
+  function ensure() {
+    if (ctx) { if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} } return ctx; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+    return ctx;
+  }
+  function noise() {
+    if (nbuf) return nbuf;
+    var len = Math.floor(ctx.sampleRate * 0.12);
+    nbuf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = nbuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return nbuf;
+  }
+  function click(when, freq, gain, dur) {
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 5;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(gain, when); g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(when); src.stop(when + dur + 0.03); stats.clicks++;
+  }
+  function rattle(durMs) {
+    if (!ensure()) return;
+    var t0 = ctx.currentTime + 0.01, n = 14 + Math.floor(Math.random() * 8);
+    for (var i = 0; i < n; i++) {
+      click(t0 + Math.random() * (durMs / 1000), 1500 + Math.random() * 1900, 0.10 + Math.random() * 0.16, 0.025 + Math.random() * 0.03);
+    }
+    stats.rattles++;
+  }
+  function slam() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
+    g.gain.setValueAtTime(0.65, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.25);
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 850;
+    var g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.5, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    src.connect(lp); lp.connect(g2); g2.connect(master); src.start(t); src.stop(t + 0.12);
+    stats.slams++;
+  }
+  function scrape() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var src = ctx.createBufferSource(); src.buffer = noise(); src.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 2.2;
+    bp.frequency.setValueAtTime(2600, t); bp.frequency.exponentialRampToValueAtTime(700, t + 0.3);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.10, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.36);
+    stats.scrapes++;
+  }
+  return { ensure: ensure, rattle: rattle, slam: slam, scrape: scrape, stats: stats,
+           state: function () { return ctx ? ctx.state : 'none'; } };
+})();
+
+/* ----- the cup ritual: cover -> shake (rattle) -> SLAM -> beat -> lift.
+   One pacing everywhere; FAST (?fast=1) compresses the clock only. */
+var cupPhase = 'down', cupLog = ['down'], revealed = false;
+function setCup(ph) {
+  cupPhase = ph;
+  if (cupLog[cupLog.length - 1] !== ph) cupLog.push(ph);
+  var z = document.getElementById('cupzone'); if (z) z.setAttribute('data-cup', ph);
+  var c = document.getElementById('cupEl');
+  if (c) c.classList.toggle('house', !!(S && S.turn === 'nikki'));
+}
+function cupRitual(done) {
+  if (cupPhase === 'lifted') { setCup('covering'); later(beginShake, FAST ? 50 : 270); }
+  else beginShake();
+  function beginShake() {
+    setCup('shaking'); CupAudio.rattle(FAST ? 130 : 700);
+    later(function () {
+      setCup('slamming'); CupAudio.slam();
+      var st = document.querySelector('.bd-stage');
+      if (st) { st.classList.remove('shudder'); void st.offsetWidth; st.classList.add('shudder'); }
+      later(function () {
+        setCup('rest');
+        later(function () { setCup('lifting'); CupAudio.scrape(); done(); }, FAST ? 40 : 250);
+      }, FAST ? 60 : 170);
+    }, FAST ? 140 : 720);
+  }
+}
+
 function newMatch() {
-  timerToken++; stopFaces();
+  timerToken++; stopFaces(); revealed = false; setCup('down');
   S = {
     round: 1, wins: { you: 0, nikki: 0 }, turn: 'you',
     turns: { you: freshTurn(), nikki: freshTurn() },
@@ -216,7 +338,7 @@ function newMatch() {
   render();
 }
 function startTurn(who) {
-  S.turn = who; S.turns[who] = freshTurn(); S.phase = 'shake'; S.rolling = false;
+  S.turn = who; S.turns[who] = freshTurn(); S.phase = 'shake'; S.rolling = false; revealed = false; setCup('down');
   S.msg = who === 'you' ? 'Your shake — land a 6 for the Ship, then a 5, then a 4.'
                         : 'Nikki wipes her hands, picks up the cup…';
   render();
@@ -229,18 +351,19 @@ function scheduleBot() {
   }, FAST ? 180 : 850);
 }
 
-/* ----- the shake ----- */
+/* ----- the shake: the un-kept dice go back under the cup, the cup
+   shakes with a rattle, SLAMS down on the felt, then lifts to reveal -- */
 function shakeDice(forced) {
   if (!S || S.matchOver || S.rolling || S.phase !== 'shake') return false;
   var t = cur();
   if (t.shakes >= 3) return false;
-  t.shakes++; S.rolling = true;
+  t.shakes++; S.rolling = true; revealed = false;
   var n = 5 - keptCount(t), vals = [], i;
   if (forced && forced.length >= n) { for (i = 0; i < n; i++) vals.push(forced[i]); }
   else for (i = 0; i < n; i++) vals.push(1 + Math.floor(Math.random() * 6));
+  CupAudio.ensure();
   render();
-  startFaces();
-  later(function () { stopFaces(); landDice(vals); }, forced ? 30 : (FAST ? 160 : 900));
+  cupRitual(function () { landDice(vals); });
   return true;
 }
 function startFaces() {
@@ -265,7 +388,14 @@ function needText(t) {
   return '';
 }
 function landDice(vals) {
-  var t = cur(); S.rolling = false; t.rolled = true; t.pool = vals.slice();
+  /* the cup is lifting: the roll is revealed on the felt, then the
+     crew dice are set aside into their slots a beat later */
+  var t = cur(); t.rolled = true; t.pool = vals.slice(); revealed = true;
+  render();
+  later(function () { setCup('lifted'); settleDice(); }, FAST ? 60 : 480);
+}
+function settleDice() {
+  var t = cur(); S.rolling = false;
   var got = [];
   if (!t.kept.ship && takeDie(t, 6, 'ship')) got.push('the Ship (6)');
   if (t.kept.ship && !t.kept.captain && takeDie(t, 5, 'captain')) got.push('the Captain (5)');
@@ -335,15 +465,19 @@ function render() {
   var lamp = document.getElementById('cargoLamp');
   if (t.cargo !== null) { lamp.innerHTML = 'CARGO<b>' + t.cargo + '</b>'; lamp.classList.add('hot'); }
   else { lamp.innerHTML = 'CARGO<b>—</b>'; lamp.classList.remove('hot'); }
+  var ce = document.getElementById('cupEl');
+  if (ce) ce.classList.toggle('house', S.turn === 'nikki');
   var row = '', i, v;
-  if (!t.rolled && !S.rolling) {
+  if (S.rolling && !revealed) {
+    /* mid-ritual: the dice are under the cup, faces hidden */
+    var nd = 5 - keptCount(t);
+    for (i = 0; i < nd; i++) row += bdDieHTML(0, set, 'ghost');
+  } else if (!t.rolled) {
     for (i = 0; i < 5; i++) row += bdDieHTML(0, set, 'ghost');
   } else {
-    var dice = t.rolled ? t.pool : [];
-    var count = S.rolling && !t.rolled ? 5 - keptCount(t) : dice.length;
-    for (i = 0; i < count; i++) {
-      v = dice[i] || 0;
-      var cls = (S.rolling ? 'tumbling' : '') + (S.phase === 'pause' && sccDone(t) ? ' cargo' : '');
+    for (i = 0; i < t.pool.length; i++) {
+      v = t.pool[i];
+      var cls = (S.phase === 'pause' && sccDone(t) ? ' cargo' : '');
       var rot = ((i * 37 + (v || 3) * 11 + t.shakes * 7) % 25) - 12;
       row += bdDieHTML(v, set, cls, rot);
     }
@@ -383,6 +517,9 @@ window.__BARDICE = {
   shake: function () { return S && S.turn === 'you' ? shakeDice(null) : false; },
   forceShake: function (vals) { return shakeDice(vals ? vals.slice() : null); },
   newMatch: newMatch,
+  cupShake: function () { return cupPhase; },
+  cupLog: function () { return cupLog.slice(); },
+  audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
   sets: { human: HUMAN_SET, nikki: NIKKI_SET },
   equippedId: function () { return HUMAN_SET.id; }
 };

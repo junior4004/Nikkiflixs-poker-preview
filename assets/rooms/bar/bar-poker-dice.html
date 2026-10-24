@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Poker Dice · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+[hidden]{display:none!important}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 16px}
+.duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:7px 12px;background:#0007;text-align:center}
+.duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
+.duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.duel .side.on .nm{color:var(--gold)}
+.duel .rem{font:800 30px/1.05 "Barlow Condensed",sans-serif;color:#fff}
+.duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
+.duel .cgo b{color:#ffe9bd}
+.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:6px 4px 2px;color:#ffe9bd}
+.pd-stage{position:relative;max-width:440px;margin:4px auto 0;border-radius:16px;padding:8px;
+  background:linear-gradient(145deg,#5d3a1e,#2a1709);box-shadow:0 24px 60px #000d,inset 0 2px 6px #ffdf9e33}
+.pd-stage.shudder{animation:pdShud .18s linear}
+@keyframes pdShud{0%{transform:translateY(0)}30%{transform:translateY(2px)}65%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+.pd-keep{display:flex;align-items:center;gap:10px;background:#0d0508d9;border:1px solid var(--gold2);border-radius:12px;padding:6px 10px;margin-bottom:6px;min-height:66px}
+.pd-keep .kt{font:800 11px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;max-width:64px}
+.pd-heldrow{display:flex;gap:7px;flex:1;justify-content:center;align-items:center;min-height:46px}
+.pd-heldnone{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+.pd-hand{font:800 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--muted);text-align:center;min-width:86px}
+.pd-hand b{display:block;font-size:15px;color:#fff}
+.pd-felt{border-radius:12px;background:radial-gradient(ellipse at 50% 28%,#20794c,#0c4a2b 72%);
+  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:8px 10px}
+.pd-cupzone{position:relative;height:178px}
+.pd-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:10px;justify-content:center;align-items:center;min-height:60px}
+.pd-whose{margin-top:8px;text-align:center;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:#ffe9bb99;text-transform:uppercase}
+/* ---- the cup ritual ---- */
+.pd-cup{position:absolute;left:50%;bottom:0;width:min(330px,94%);height:104px;z-index:6;pointer-events:none;transform-origin:88% 92%;
+  transform:translate(-50%,0);transition:transform .45s cubic-bezier(.25,.8,.3,1);
+  background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);
+  clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);filter:drop-shadow(0 12px 14px #000b)}
+.pd-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:20px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,#57101b,#a12330 78%)}
+.pd-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:16px;
+  display:grid;place-items:center;box-shadow:0 2px 6px #0008}
+.pd-cup .pd-cupband{position:absolute;left:0;right:0;bottom:10px;height:7px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
+.pd-cup.house{background:linear-gradient(100deg,#15151a,#2c2c33 45%,#060607)}
+.pd-cup.house:before{background:radial-gradient(ellipse at 50% 40%,#000,#3a3a42 78%)}
+#cupzone[data-cup="lifted"] .pd-cup,#cupzone[data-cup="lifting"] .pd-cup{transform:translate(-50%,-72px) rotate(-7deg)}
+#cupzone[data-cup="covering"] .pd-cup{transition:transform .26s ease-in}
+#cupzone[data-cup="shaking"] .pd-cup{animation:pdCupShake .11s linear infinite}
+#cupzone[data-cup="slamming"] .pd-cup{transition:transform .09s ease-in;transform:translate(-50%,4px) scale(1.01,.99);animation:none}
+@keyframes pdCupShake{0%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}25%{transform:translate(calc(-50% + 3px),2px) rotate(1.6deg)}50%{transform:translate(calc(-50% - 3px),-4px) rotate(-1.4deg)}75%{transform:translate(calc(-50% + 4px),1px) rotate(2.2deg)}100%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}}
+/* ---- dice: Farkle's CSS-pip dice + rank badge, .pd- scope ---- */
+.pd-die{position:relative;width:56px;height:56px;flex:none;border-radius:12px;padding:6px;border:1px solid #888;display:block;background:#ddd;
+  box-shadow:0 6px 10px #0009,inset 0 2px 3px #fff7,inset 0 -4px 6px #0004;transform:rotate(var(--rot,0deg))}
+.pd-face{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%}
+.pd-die .pip{width:80%;height:80%;margin:auto;border-radius:50%;background:var(--pip,#1c1c22);box-shadow:inset 0 1px 2px #000a}
+.pd-rank{position:absolute;right:-5px;bottom:-5px;min-width:19px;height:19px;padding:0 3px;border-radius:6px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#ffe9a0,#c9a227 75%);color:#3d2b02;font:800 11px/1 "Barlow Condensed",sans-serif;
+  border:1px solid #6e5510;box-shadow:0 2px 4px #0009;z-index:2}
+.pd-die.ghost{opacity:.3}
+.pd-die.mini{width:44px;height:44px;border-radius:10px;padding:4px}
+.pd-die.mini .pd-rank{min-width:16px;height:16px;font-size:9px;right:-4px;bottom:-4px}
+.pd-die.showd{width:44px;height:44px;border-radius:10px;padding:4px}
+.pd-die.showd .pd-rank{min-width:16px;height:16px;font-size:9px;right:-4px;bottom:-4px}
+button.pd-die:not(:disabled){cursor:pointer}
+button.pd-die:disabled{cursor:default}
+.pd-die.set-yellow{--pip:#20242c;background:linear-gradient(145deg,#ffe066,#f5b921);border-color:#a86e00}
+.pd-die.set-white{--pip:#23262d;background:linear-gradient(145deg,#ffffff,#dde2e8);border-color:#98a2ad}
+.pd-die.set-orange{--pip:#26221e;background:linear-gradient(145deg,#ffb154,#ef7d12);border-color:#9c4d00}
+.pd-die.set-red{--pip:#fff1f1;background:linear-gradient(145deg,#e83838,#a31212);border-color:#5f0606}
+.pd-die.set-blue{--pip:#eef5ff;background:linear-gradient(145deg,#3f8fe8,#1756a8);border-color:#0b2f5e}
+.pd-die.set-green{--pip:#eafff1;background:linear-gradient(145deg,#37b268,#146c38);border-color:#073d1e}
+.pd-die.set-black{--pip:#e8e8e8;background:linear-gradient(145deg,#2b2b31,#0a0a0d);border-color:#000}
+.pd-die.set-purple{--pip:#f6eaff;background:linear-gradient(145deg,#9a55d6,#5e279e);border-color:#341158}
+.pd-die.set-pink{--pip:#5e1030;background:linear-gradient(145deg,#ffb1d4,#f06ba8);border-color:#a12d63}
+.pd-die.set-pipsred{--pip:#d21f2c;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.pd-die.set-pipsblue{--pip:#1f5fd2;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.pd-die.set-pipsgreen{--pip:#1d9e4b;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.pd-die.set-clearred{--pip:#ffffff;background:linear-gradient(145deg,#ff7070cc,#c21313cc);border-color:#ff9c9c;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.pd-die.set-clearblue{--pip:#ffffff;background:linear-gradient(145deg,#6fc2ffcc,#1663b8cc);border-color:#a8dcff;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.pd-die.set-clearblack{--pip:#f2f2f2;background:linear-gradient(145deg,#4a4a52cc,#0c0c10cc);border-color:#8a8a96;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff66,inset 0 2px 5px #fff9}
+.pd-die.set-blackgold{--pip:#f3c95c;background:linear-gradient(145deg,#2a2a30,#070708);border-color:#c9a227;box-shadow:0 6px 10px #0009,inset 0 0 0 2px #c9a22755,inset 0 2px 3px #ffe9a077}
+.pd-die.set-leather{--pip:#f0bd82;background:radial-gradient(circle at 35% 30%,#96683c,#5d3a1e 72%);border-color:#38220f}
+.pd-die.set-leather .pd-face{border:1.5px dashed #dcb98a9e;border-radius:7px;padding:2px}
+.pd-die.set-skull{--pip:#e9ddba;background:linear-gradient(145deg,#2f4f92,#152a52);border-color:#0a1830}
+.pd-die.set-skull .pip{background:transparent;box-shadow:none;border-radius:0;color:#e9ddba;font-size:13px;line-height:1;display:grid;place-items:center}
+.pd-die.set-ice{--pip:#0d6ea8;background:linear-gradient(145deg,#eefdff,#a9ddf3 55%,#79c1e5);border-color:#57a7cf;box-shadow:0 6px 10px #0009,inset 0 0 13px #ffffffd9,inset 0 2px 4px #fff}
+/* ---- showdown ---- */
+.pd-show{border-radius:12px;background:#0d0508d9;border:1px solid var(--gold2);padding:12px 10px}
+.pd-showrow{display:flex;align-items:center;gap:8px;padding:6px 0}
+.pd-showrow + .pd-showrow{border-top:1px solid #6e452a55}
+.pd-showrow.win .pd-showhand{color:#ffe9bd}
+.pd-showlab{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--gold);width:44px;flex:none}
+.pd-showdice{display:flex;gap:6px;flex:none;justify-content:center}
+.pd-showhand{font:800 12px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--muted);flex:1;min-width:0;text-align:right;text-transform:uppercase}
+.shakesline{text-align:center;color:var(--muted);font-size:13px;min-height:19px;margin:6px 4px 0;letter-spacing:.3em}
+.shakesline b{color:#ffe9bd;letter-spacing:.05em;font-size:12px}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:6px 4px 6px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px;line-height:1.45}
+.hint b{color:#ffe9bd}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:2px}
+.btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
+.btn:disabled{opacity:.45;cursor:default}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#060203b8;border-radius:16px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Poker Dice<small>FIVE DICE · BEST HAND WINS</small></h1>
+  <div class="score" id="scoreBox">YOU <b>0</b> · NIKKI <b>0</b></div>
+</div>
+<div class="wrap">
+  <div class="duel">
+    <div class="side on" id="sideYou"><div class="nm">YOU</div><div class="rem" id="winsYou">0</div><span class="cgo" id="handYou">ROUNDS WON</span></div>
+    <div class="side" id="sideNikki"><div class="nm">NIKKI</div><div class="rem" id="winsNikki">0</div><span class="cgo" id="handNikki">ROUNDS WON</span></div>
+  </div>
+  <p class="turnline" id="turnline">Round 1 · Your shake</p>
+  <div class="pd-stage" id="stage">
+    <div class="pd-keep" id="keepBar">
+      <div class="kt" id="keepTitle">Your Holds</div>
+      <div class="pd-heldrow" id="heldRow"></div>
+      <div class="pd-hand" id="handLamp">HAND<b>—</b></div>
+    </div>
+    <div class="pd-felt" id="feltBox">
+      <div class="pd-cupzone" id="cupzone" data-cup="down">
+        <div class="pd-row" id="pdRow"></div>
+        <div class="pd-cup" id="cupEl" aria-hidden="true"><span class="pd-cupband"></span></div>
+      </div>
+      <div class="pd-whose" id="whoseLine"></div>
+    </div>
+    <div class="pd-show" id="showBox" hidden>
+      <div class="pd-showrow" id="showRowYou"><span class="pd-showlab">YOU</span><div class="pd-showdice" id="showYou"></div><span class="pd-showhand" id="showHandYou"></span></div>
+      <div class="pd-showrow" id="showRowNikki"><span class="pd-showlab">NIKKI</span><div class="pd-showdice" id="showNikki"></div><span class="pd-showhand" id="showHandNikki"></span></div>
+    </div>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">You Win the Match!</h2>
+      <p id="ovText"></p>
+      <button class="btn primary" id="againBtn" type="button">PLAY AGAIN</button>
+    </div></div>
+  </div>
+  <p class="shakesline" id="shakesLine"></p>
+  <p class="status" id="status"></p>
+  <div class="controls">
+    <button class="btn primary" id="shakeBtn" type="button">🎲 SHAKE</button>
+    <button class="btn" id="stopBtn" type="button">KEEP HAND</button>
+    <button class="btn" id="newBtn" type="button">NEW MATCH</button>
+  </div>
+  <p class="hint"><b>Poker Dice:</b> the dice are card ranks — <b>6 is the Ace</b>, then King, Queen, Jack, Ten, and the 9. You get up to <b>3 shakes</b>; between shakes, tap a die to <b>hold</b> it out of the cup (tap a held die to toss it back in), or <b>keep your hand</b> early. Five of a Kind beats Four, then Full House, Straight (A-K-Q-J-10 or K-Q-J-10-9), Three of a Kind, Two Pair, One Pair. High dice break ties. First to <b>5 rounds</b> takes the match.</p>
+</div>
+<script>
+'use strict';
+/* ============ POKER DICE — Nikki's Bar (free play) ============
+   Five dice as card ranks: 6=Ace, 5=King, 4=Queen, 3=Jack, 2=Ten,
+   1=Nine. Up to 3 shakes a turn; between shakes tap dice to HOLD
+   them out of the cup — only the un-held dice go back under it. The
+   cup does the full ritual every shake: cover, rattle, SLAM, lift.
+   Best poker hand wins the round; first to 5 rounds takes the
+   match. Free play — no wallet; the page only READS your equipped
+   Farkle dice set. Nikki shakes the house set and plays honest
+   hold logic: pairs and trips stay, four to a straight stays. */
+var FAST = /[?&]fast=1/.test(location.search);
+var TARGET = 5;
+var RANK = { 6: 'A', 5: 'K', 4: 'Q', 3: 'J', 2: '10', 1: '9' };
+
+/* ----- dice wardrobe: Farkle's sets, ported read-only ----- */
+var PD_PIPS = { 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
+var PD_SETS = [
+  { id: 'yellow', cls: 'set-yellow' }, { id: 'white', cls: 'set-white' }, { id: 'orange', cls: 'set-orange' },
+  { id: 'red', cls: 'set-red' }, { id: 'blue', cls: 'set-blue' }, { id: 'green', cls: 'set-green' },
+  { id: 'black', cls: 'set-black' }, { id: 'purple', cls: 'set-purple' }, { id: 'pink', cls: 'set-pink' },
+  { id: 'pipsred', cls: 'set-pipsred' }, { id: 'pipsblue', cls: 'set-pipsblue' }, { id: 'pipsgreen', cls: 'set-pipsgreen' },
+  { id: 'clearred', cls: 'set-clearred' }, { id: 'clearblue', cls: 'set-clearblue' }, { id: 'clearblack', cls: 'set-clearblack' },
+  { id: 'blackgold', cls: 'set-blackgold', name: 'Black & Gold' }, { id: 'leather', cls: 'set-leather' },
+  { id: 'skull', cls: 'set-skull', glyph: '☠' }, { id: 'ice', cls: 'set-ice' }
+];
+var PD_SET_BY_ID = {};
+PD_SETS.forEach(function (s) { PD_SET_BY_ID[s.id] = s; });
+PD_SET_BY_ID.yellow.name = 'Plain Yellow';
+var PD_FREE_SETS = ['yellow', 'white', 'orange'];
+function pdOwnedSets() {
+  var owned = PD_FREE_SETS.slice();
+  try {
+    var a = JSON.parse(localStorage.getItem('nikkiflixs_dice_sets') || '[]');
+    if (Array.isArray(a)) a.forEach(function (id) { if (PD_SET_BY_ID[id] && owned.indexOf(id) < 0) owned.push(id); });
+  } catch (e) {}
+  return owned;
+}
+function pdEquippedSet() {
+  var id = 'yellow';
+  try { id = localStorage.getItem('nikkiflixs_dice_equipped') || 'yellow'; } catch (e) {}
+  return PD_SET_BY_ID[pdOwnedSets().indexOf(id) >= 0 ? id : 'yellow'];
+}
+var HUMAN_SET = pdEquippedSet();
+var NIKKI_SET = PD_SET_BY_ID.blackgold;
+
+function pdPipsHTML(value, glyph) {
+  var cells = PD_PIPS[value]; if (!cells) return '';
+  var pips = '';
+  for (var p = 1; p <= 9; p++) {
+    var row = Math.ceil(p / 3), col = (p - 1) % 3 + 1;
+    if (cells.indexOf(p) >= 0) pips += '<span class="pip" style="grid-area:' + row + '/' + col + '">' + (glyph || '') + '</span>';
+  }
+  return pips;
+}
+function pdDieHTML(v, set, cls, rot, btn) {
+  var badge = v ? '<span class="pd-rank">' + RANK[v] + '</span>' : '';
+  var inner = '<span class="pd-face">' + pdPipsHTML(v, set.glyph) + '</span>' + badge;
+  var attrs = ' class="pd-die ' + set.cls + (cls ? ' ' + cls : '') + '"' +
+    (rot != null ? ' style="--rot:' + rot + 'deg"' : '');
+  if (btn) return '<button type="button"' + attrs + ' aria-label="Die showing ' + (v ? RANK[v] : 'nothing') + '">' + inner + '</button>';
+  return '<div' + attrs + ' role="img" aria-label="' + (v ? 'Die showing ' + RANK[v] : 'Die not yet rolled') + '">' + inner + '</div>';
+}
+
+/* ----- CupAudio: synthesized bar sounds (no files) — same kit as Bar Dice ----- */
+var CupAudio = (function () {
+  var ctx = null, master = null, nbuf = null;
+  var stats = { rattles: 0, clicks: 0, slams: 0, scrapes: 0 };
+  function ensure() {
+    if (ctx) { if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} } return ctx; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+    return ctx;
+  }
+  function noise() {
+    if (nbuf) return nbuf;
+    var len = Math.floor(ctx.sampleRate * 0.12);
+    nbuf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = nbuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return nbuf;
+  }
+  function click(when, freq, gain, dur) {
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 5;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(gain, when); g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(when); src.stop(when + dur + 0.03); stats.clicks++;
+  }
+  function rattle(durMs) {
+    if (!ensure()) return;
+    var t0 = ctx.currentTime + 0.01, n = 14 + Math.floor(Math.random() * 8);
+    for (var i = 0; i < n; i++) {
+      click(t0 + Math.random() * (durMs / 1000), 1500 + Math.random() * 1900, 0.10 + Math.random() * 0.16, 0.025 + Math.random() * 0.03);
+    }
+    stats.rattles++;
+  }
+  function slam() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
+    g.gain.setValueAtTime(0.65, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.25);
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 850;
+    var g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.5, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    src.connect(lp); lp.connect(g2); g2.connect(master); src.start(t); src.stop(t + 0.12);
+    stats.slams++;
+  }
+  function scrape() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var src = ctx.createBufferSource(); src.buffer = noise(); src.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 2.2;
+    bp.frequency.setValueAtTime(2600, t); bp.frequency.exponentialRampToValueAtTime(700, t + 0.3);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.10, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.36);
+    stats.scrapes++;
+  }
+  return { ensure: ensure, rattle: rattle, slam: slam, scrape: scrape, stats: stats,
+           state: function () { return ctx ? ctx.state : 'none'; } };
+})();
+
+/* ----- the cup ritual: cover -> shake (rattle) -> SLAM -> beat -> lift ----- */
+var S = null, timerToken = 0, cupPhase = 'down', cupLog = ['down'], revealed = false;
+function later(fn, ms) { var tok = timerToken; setTimeout(function () { if (tok === timerToken) fn(); }, ms); }
+function setCup(ph) {
+  cupPhase = ph;
+  if (cupLog[cupLog.length - 1] !== ph) cupLog.push(ph);
+  var z = document.getElementById('cupzone'); if (z) z.setAttribute('data-cup', ph);
+  var c = document.getElementById('cupEl');
+  if (c) c.classList.toggle('house', !!(S && S.turn === 'nikki'));
+}
+function cupRitual(done) {
+  if (cupPhase === 'lifted') { setCup('covering'); later(begin, FAST ? 50 : 270); }
+  else begin();
+  function begin() {
+    setCup('shaking'); CupAudio.rattle(FAST ? 130 : 700);
+    later(function () {
+      setCup('slamming'); CupAudio.slam();
+      var st = document.getElementById('stage');
+      if (st) { st.classList.remove('shudder'); void st.offsetWidth; st.classList.add('shudder'); }
+      later(function () {
+        setCup('rest');
+        later(function () { setCup('lifting'); CupAudio.scrape(); done(); }, FAST ? 40 : 250);
+      }, FAST ? 60 : 170);
+    }, FAST ? 140 : 720);
+  }
+}
+
+/* ----- hand evaluation: category + tiebreak vector ----- */
+function pdEvaluate(vals) {
+  var counts = {}, i;
+  vals.forEach(function (v) { counts[v] = (counts[v] || 0) + 1; });
+  var groups = Object.keys(counts).map(function (v) { return { v: +v, c: counts[v] }; })
+    .sort(function (a, b) { return b.c - a.c || b.v - a.v; });
+  var desc = vals.slice().sort(function (a, b) { return b - a; });
+  var uniq = desc.filter(function (v, ix) { return desc.indexOf(v) === ix; });
+  var straight = uniq.length === 5 && uniq[0] - uniq[4] === 4;
+  var kickers = function (from) { return groups.slice(from).map(function (g) { return g.v; }).sort(function (a, b) { return b - a; }); };
+  var cat, tb, name;
+  if (groups[0].c === 5) { cat = 8; tb = [groups[0].v]; name = 'Five of a Kind'; }
+  else if (groups[0].c === 4) { cat = 7; tb = [groups[0].v, groups[1].v]; name = 'Four of a Kind'; }
+  else if (groups[0].c === 3 && groups[1].c === 2) { cat = 6; tb = [groups[0].v, groups[1].v]; name = 'Full House'; }
+  else if (straight) { cat = 5; tb = [uniq[0]]; name = 'Straight'; }
+  else if (groups[0].c === 3) { cat = 4; tb = [groups[0].v].concat(kickers(1)); name = 'Three of a Kind'; }
+  else if (groups[0].c === 2 && groups[1].c === 2) {
+    cat = 3;
+    var pr = groups.slice(0, 2).map(function (g) { return g.v; }).sort(function (a, b) { return b - a; });
+    tb = pr.concat([groups[2].v]); name = 'Two Pair';
+  }
+  else if (groups[0].c === 2) { cat = 2; tb = [groups[0].v].concat(kickers(1)); name = 'One Pair'; }
+  else { cat = 1; tb = desc; name = 'Bust'; }
+  var PLURAL = { 6: 'Aces', 5: 'Kings', 4: 'Queens', 3: 'Jacks', 2: 'Tens', 1: 'Nines' };
+  var label = name;
+  if (cat === 5) label = 'Straight · ' + RANK[uniq[0]] + ' High';
+  else if (cat === 1) label = 'Bust · ' + RANK[desc[0]] + ' High';
+  else if (cat === 8 || cat === 7 || cat === 4 || cat === 2) label = name + ' · ' + PLURAL[groups[0].v];
+  else if (cat === 6) label = 'Full House · ' + PLURAL[groups[0].v] + ' Full';
+  else if (cat === 3) label = 'Two Pair · ' + PLURAL[pr[0]] + ' & ' + PLURAL[pr[1]];
+  return { cat: cat, tb: tb, name: name, label: label };
+}
+function pdCompare(a, b) {
+  if (a.cat !== b.cat) return a.cat - b.cat;
+  var n = Math.max(a.tb.length, b.tb.length);
+  for (var i = 0; i < n; i++) { var d = (a.tb[i] || 0) - (b.tb[i] || 0); if (d) return d; }
+  return 0;
+}
+/* Nikki's hold logic: made hands stay whole; trips/pairs stay;
+   four to a straight stays; otherwise the best single die stays. */
+function pdBotHolds(vals) {
+  var ev = pdEvaluate(vals);
+  if (ev.cat >= 5) return [true, true, true, true, true];
+  var counts = {};
+  vals.forEach(function (v) { counts[v] = (counts[v] || 0) + 1; });
+  var mask = [false, false, false, false, false], i, v;
+  var bestVal = 0, bestCount = 0;
+  for (v in counts) if (counts[v] > bestCount || (counts[v] === bestCount && +v > bestVal)) { bestCount = counts[v]; bestVal = +v; }
+  if (bestCount >= 2) {
+    for (i = 0; i < 5; i++) if (vals[i] === bestVal) mask[i] = true;
+    if (bestCount === 2) {
+      /* second pair also stays */
+      var second = 0;
+      for (v in counts) if (+v !== bestVal && counts[v] === 2 && +v > second) second = +v;
+      if (second) for (i = 0; i < 5; i++) if (vals[i] === second) mask[i] = true;
+    }
+    return mask;
+  }
+  /* no pair: four distinct values inside a 5-window = straight draw */
+  var uniq = vals.filter(function (x, ix) { return vals.indexOf(x) === ix; }).sort(function (a, b) { return a - b; });
+  for (var lo = 1; lo <= 2; lo++) {
+    var inWin = uniq.filter(function (x) { return x >= lo && x <= lo + 4; });
+    if (inWin.length >= 4) {
+      for (i = 0; i < 5; i++) if (inWin.indexOf(vals[i]) >= 0 && !mask[i]) {
+        if (inWin.filter(function (x) { return x === vals[i]; }).length) mask[i] = true;
+      }
+      /* hold only one die per draw value */
+      var seen = {};
+      for (i = 0; i < 5; i++) if (mask[i]) { if (seen[vals[i]]) mask[i] = false; else seen[vals[i]] = true; }
+      return mask;
+    }
+  }
+  var top = Math.max.apply(null, vals);
+  mask[vals.indexOf(top)] = true;
+  return mask;
+}
+
+/* ----- game flow ----- */
+function freshTurn() { return { shakes: 0, dice: [0, 0, 0, 0, 0], held: [false, false, false, false, false], rolled: false }; }
+function cur() { return S.turns[S.turn]; }
+function activeSet() { return S.turn === 'you' ? HUMAN_SET : NIKKI_SET; }
+function heldCount(t) { return t.held.filter(Boolean).length; }
+
+function newMatch() {
+  timerToken++; revealed = false; setCup('down');
+  S = {
+    round: 1, wins: { you: 0, nikki: 0 }, turn: 'you',
+    turns: { you: freshTurn(), nikki: freshTurn() },
+    final: { you: null, nikki: null },
+    rolling: false, phase: 'shake', matchOver: false, winner: null,
+    msg: 'Your shake — three shakes max, hold what you like between them.'
+  };
+  render();
+}
+function startTurn(who) {
+  S.turn = who; S.turns[who] = freshTurn(); S.phase = 'shake'; S.rolling = false; revealed = false; setCup('down');
+  S.msg = who === 'you' ? 'Your shake — three shakes max, hold what you like between them.'
+                        : 'Nikki takes the cup — watch her holds…';
+  render();
+  if (who === 'nikki') later(function () { botShake(); }, FAST ? 150 : 850);
+}
+function shakeDice(forced) {
+  if (!S || S.matchOver || S.rolling || (S.phase !== 'shake' && S.phase !== 'decide')) return false;
+  var t = cur();
+  if (t.shakes >= 3) return false;
+  var open = [];
+  t.held.forEach(function (h, i) { if (!h) open.push(i); });
+  if (!open.length) return false;
+  t.shakes++; S.rolling = true; revealed = false;
+  var vals = [];
+  if (forced && forced.length >= open.length) { for (var k = 0; k < open.length; k++) vals.push(forced[k]); }
+  else for (var j = 0; j < open.length; j++) vals.push(1 + Math.floor(Math.random() * 6));
+  CupAudio.ensure();
+  render();
+  cupRitual(function () {
+    open.forEach(function (ix, k2) { t.dice[ix] = vals[k2]; });
+    t.rolled = true; revealed = true;
+    render();
+    later(function () {
+      setCup('lifted'); S.rolling = false;
+      if (t.shakes >= 3) { finalizeTurn(); return; }
+      S.phase = 'decide';
+      var ev = pdEvaluate(t.dice);
+      S.msg = (S.turn === 'you' ? 'Your hand so far: ' : 'Nikki’s hand so far: ') + ev.label +
+        (S.turn === 'you' ? ' — tap dice to hold, shake again, or keep it.' : ' — she’s deciding…');
+      render();
+      if (S.turn === 'nikki') later(function () { botDecide(); }, FAST ? 120 : 800);
+    }, FAST ? 60 : 480);
+  });
+  return true;
+}
+function toggleHold(i) {
+  if (!S || S.matchOver || S.rolling || S.phase !== 'decide' || S.turn !== 'you') return false;
+  var t = cur();
+  if (!t.rolled) return false;
+  t.held[i] = !t.held[i];
+  render();
+  return true;
+}
+function stopTurn() {
+  if (!S || S.matchOver || S.rolling || S.turn !== 'you') return false;
+  var t = cur();
+  if (!t.rolled || (S.phase !== 'decide' && S.phase !== 'shake')) return false;
+  finalizeTurn();
+  return true;
+}
+function finalizeTurn() {
+  var t = cur();
+  S.final[S.turn] = { dice: t.dice.slice(), ev: pdEvaluate(t.dice) };
+  S.phase = 'pause';
+  S.msg = (S.turn === 'you' ? 'You keep ' : 'Nikki keeps ') + S.final[S.turn].ev.label + '.';
+  render();
+  later(function () {
+    if (S.turn === 'you') startTurn('nikki'); else showdown();
+  }, FAST ? 200 : 1250);
+}
+function botShake() {
+  if (!S || S.matchOver || S.turn !== 'nikki' || S.rolling) return;
+  if (S.phase !== 'shake' && S.phase !== 'decide') return;
+  shakeDice(null);
+}
+function botDecide() {
+  if (!S || S.matchOver || S.turn !== 'nikki' || S.phase !== 'decide' || S.rolling) return;
+  var t = cur();
+  var ev = pdEvaluate(t.dice);
+  if (ev.cat >= 5 || t.shakes >= 3) { t.held = [true, true, true, true, true]; finalizeTurn(); return; }
+  t.held = pdBotHolds(t.dice);
+  render();
+  later(function () { botShake(); }, FAST ? 120 : 800);
+}
+function showdown() {
+  S.phase = 'showdown';
+  var y = S.final.you.ev, n = S.final.nikki.ev, c = pdCompare(y, n), line;
+  if (c > 0) { S.wins.you++; line = 'You take round ' + S.round + ' — ' + y.label + ' beats ' + n.label + '.'; }
+  else if (c < 0) { S.wins.nikki++; line = 'Nikki takes round ' + S.round + ' — ' + n.label + ' beats ' + y.label + '.'; }
+  else line = 'Round ' + S.round + ' is a push — identical hands, no point.';
+  S.msg = line;
+  render();
+  if (S.wins.you >= TARGET || S.wins.nikki >= TARGET) {
+    later(function () {
+      S.matchOver = true; S.winner = S.wins.you >= TARGET ? 'you' : 'nikki'; S.phase = 'over'; render();
+    }, FAST ? 150 : 600);
+    return;
+  }
+  later(function () {
+    S.round++; S.final = { you: null, nikki: null };
+    startTurn('you');
+  }, FAST ? 300 : 2200);
+}
+
+/* ----- rendering ----- */
+function render() {
+  var t = cur(), set = activeSet();
+  var ce = document.getElementById('cupEl');
+  if (ce) ce.classList.toggle('house', S.turn === 'nikki');
+  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.wins.you + '</b> · NIKKI <b>' + S.wins.nikki + '</b>';
+  document.getElementById('winsYou').textContent = S.wins.you;
+  document.getElementById('winsNikki').textContent = S.wins.nikki;
+  document.getElementById('handYou').innerHTML = S.final.you ? 'HAND <b>' + S.final.you.ev.label.toUpperCase() + '</b>' : 'ROUNDS WON';
+  document.getElementById('handNikki').innerHTML = S.final.nikki ? 'HAND <b>' + S.final.nikki.ev.label.toUpperCase() + '</b>' : 'ROUNDS WON';
+  document.getElementById('sideYou').classList.toggle('on', S.turn === 'you' && !S.matchOver);
+  document.getElementById('sideNikki').classList.toggle('on', S.turn === 'nikki' && !S.matchOver);
+  var tt;
+  if (S.matchOver) tt = 'Match over · First to ' + TARGET;
+  else if (S.phase === 'showdown' || S.phase === 'over') tt = 'Round ' + S.round + ' · Showdown';
+  else if (S.phase === 'pause') tt = 'Round ' + S.round + ' · Hand kept';
+  else tt = 'Round ' + S.round + ' · ' + (S.turn === 'you' ? 'Your shake' : 'Nikki is shaking');
+  document.getElementById('turnline').textContent = tt;
+  var inShow = S.phase === 'showdown' || S.phase === 'over';
+  document.getElementById('keepBar').hidden = inShow;
+  document.getElementById('feltBox').hidden = inShow;
+  document.getElementById('showBox').hidden = !inShow;
+  if (inShow && S.final.you && S.final.nikki) {
+    var sy = '', sn = '', i;
+    for (i = 0; i < 5; i++) sy += pdDieHTML(S.final.you.dice[i], HUMAN_SET, 'showd');
+    for (i = 0; i < 5; i++) sn += pdDieHTML(S.final.nikki.dice[i], NIKKI_SET, 'showd');
+    document.getElementById('showYou').innerHTML = sy;
+    document.getElementById('showNikki').innerHTML = sn;
+    document.getElementById('showHandYou').textContent = S.final.you.ev.label;
+    document.getElementById('showHandNikki').textContent = S.final.nikki.ev.label;
+    var c2 = pdCompare(S.final.you.ev, S.final.nikki.ev);
+    document.getElementById('showRowYou').classList.toggle('win', c2 > 0);
+    document.getElementById('showRowNikki').classList.toggle('win', c2 < 0);
+  }
+  document.getElementById('keepTitle').textContent = S.turn === 'you' ? 'Your Holds' : 'Nikki’s Holds';
+  var held = '', anyHeld = false;
+  t.dice.forEach(function (v, i) {
+    if (!t.held[i]) return;
+    anyHeld = true;
+    var canTap = S.turn === 'you' && S.phase === 'decide' && !S.rolling;
+    held += pdDieHTML(v, set, 'mini', null, canTap).replace('<button', '<button data-die="' + i + '"');
+  });
+  document.getElementById('heldRow').innerHTML = anyHeld ? held : '<span class="pd-heldnone">NO DICE HELD</span>';
+  document.querySelectorAll('#heldRow .pd-die').forEach(function (b) {
+    b.addEventListener('click', function () { toggleHold(+b.getAttribute('data-die')); });
+  });
+  var lamp = document.getElementById('handLamp');
+  lamp.innerHTML = 'HAND<b>' + (t.rolled ? pdEvaluate(t.dice).label.toUpperCase() : '—') + '</b>';
+  var row = '', i2;
+  if (S.rolling && !revealed) {
+    var openN = 5 - heldCount(t);
+    for (i2 = 0; i2 < openN; i2++) row += pdDieHTML(0, set, 'ghost');
+  } else if (!t.rolled) {
+    for (i2 = 0; i2 < 5 - heldCount(t); i2++) row += pdDieHTML(0, set, 'ghost');
+  } else {
+    t.dice.forEach(function (v, i) {
+      if (t.held[i]) return;
+      var canTap2 = S.turn === 'you' && S.phase === 'decide' && !S.rolling;
+      var rot = ((i * 37 + v * 11 + t.shakes * 7) % 25) - 12;
+      row += pdDieHTML(v, set, '', rot, canTap2).replace('<button', '<button data-die="' + i + '"');
+    });
+  }
+  document.getElementById('pdRow').innerHTML = row;
+  document.querySelectorAll('#pdRow .pd-die').forEach(function (b) {
+    b.addEventListener('click', function () { toggleHold(+b.getAttribute('data-die')); });
+  });
+  document.getElementById('whoseLine').textContent =
+    (S.turn === 'you' ? 'Your dice · ' : 'Nikki’s dice · ') + (set.name || set.id) +
+    (S.phase === 'decide' && S.turn === 'you' ? ' · tap a die to hold it' : '');
+  document.getElementById('shakesLine').innerHTML =
+    '<b>SHAKES</b> ' + '●'.repeat(t.shakes) + '○'.repeat(3 - t.shakes);
+  document.getElementById('status').textContent = S.msg;
+  var sb = document.getElementById('shakeBtn');
+  sb.disabled = !(S.turn === 'you' && (S.phase === 'shake' || S.phase === 'decide') && !S.rolling && !S.matchOver && heldCount(t) < 5);
+  sb.textContent = S.rolling ? 'SHAKING…' : (t.shakes === 0 ? '🎲 SHAKE' : '🎲 SHAKE AGAIN');
+  document.getElementById('stopBtn').disabled = !(S.turn === 'you' && S.phase === 'decide' && !S.rolling && !S.matchOver);
+  var ov = document.getElementById('overlay');
+  if (S.matchOver) {
+    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : 'Nikki Takes the Match';
+    document.getElementById('ovText').textContent = S.winner === 'you'
+      ? 'First to ' + TARGET + ' rounds — you out-drew the house at her own bar game.'
+      : 'Nikki got to ' + TARGET + ' rounds first. She holds a pair like it owes her money — run it back.';
+    ov.classList.add('show');
+  } else ov.classList.remove('show');
+}
+
+document.getElementById('shakeBtn').addEventListener('click', function () { if (S && S.turn === 'you') shakeDice(null); });
+document.getElementById('stopBtn').addEventListener('click', function () { stopTurn(); });
+document.getElementById('newBtn').addEventListener('click', newMatch);
+document.getElementById('againBtn').addEventListener('click', newMatch);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (bar sims drive the page through these) ---------- */
+window.__POKERDICE = {
+  get state() { return S; },
+  shake: function () { return S && S.turn === 'you' ? shakeDice(null) : false; },
+  forceShake: function (vals) { return shakeDice(vals ? vals.slice() : null); },
+  hold: function (i) { return toggleHold(i); },
+  stop: function () { return stopTurn(); },
+  newMatch: newMatch,
+  evaluate: function (vals) { return pdEvaluate(vals.slice()); },
+  compare: function (a, b) { return pdCompare(pdEvaluate(a.slice()), pdEvaluate(b.slice())); },
+  cupLog: function () { return cupLog.slice(); },
+  audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
+  sets: { human: HUMAN_SET, nikki: NIKKI_SET },
+  equippedId: function () { return HUMAN_SET.id; }
+};
+
+newMatch();
+</script>
+</body>
+</html>

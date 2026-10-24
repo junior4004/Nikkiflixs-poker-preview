@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Shut the Box · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 20px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 16px}
+.duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:4px 10px;background:#0007;text-align:center}
+.duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
+.duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.duel .side.on .nm{color:var(--gold)}
+.duel .rem{font:800 24px/1.05 "Barlow Condensed",sans-serif;color:#fff}
+.duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
+.duel .cgo b{color:#ffe9bd}
+.turnline{min-height:20px;text-align:center;font-weight:700;font-size:14px;margin:6px 4px 2px;color:#ffe9bd}
+.sb-stage{position:relative;max-width:440px;margin:4px auto 0;border-radius:16px;padding:8px;
+  background:linear-gradient(145deg,#5d3a1e,#2a1709);box-shadow:0 24px 60px #000d,inset 0 2px 6px #ffdf9e33}
+.sb-stage.shudder{animation:sbShud .18s linear}
+@keyframes sbShud{0%{transform:translateY(0)}30%{transform:translateY(2px)}65%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+.sb-plabel{display:flex;justify-content:space-between;align-items:baseline;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin:2px 2px 5px}
+.sb-plabel .sc{color:#ffe9bd;letter-spacing:.08em}
+.sb-rack{display:flex;gap:4px;justify-content:center;background:#0d0508d9;border:1px solid var(--gold2);border-radius:10px;padding:6px}
+.sb-tile{flex:1;max-width:44px;height:44px;border-radius:7px;border:1px solid #a97c46;display:grid;place-items:center;
+  font:800 20px/1 "Barlow Condensed",sans-serif;color:#ffe9bd;
+  background:linear-gradient(180deg,#a06a35,#6e452a);box-shadow:inset 0 2px 3px #ffdf9e55,0 3px 5px #0008;transition:transform .18s,background .18s}
+.sb-tile.down{background:linear-gradient(180deg,#3a2412,#241204);color:#8a6a44;transform:translateY(5px);box-shadow:inset 0 2px 5px #000a}
+.sb-tile.sel{outline:3px solid var(--gold);outline-offset:-1px;filter:brightness(1.25)}
+.sb-tile:disabled{cursor:default}
+.sb-rack.mini .sb-tile{max-width:32px;height:32px;font-size:15px;border-radius:6px}
+.sb-zone{position:relative;border-radius:12px;background:radial-gradient(ellipse at 50% 28%,#20794c,#0c4a2b 72%);
+  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;margin-top:6px}
+.sb-cupzone{position:relative;height:128px}
+.sb-cupzone.mini{height:100px}
+.sb-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:10px;justify-content:center;align-items:center;min-height:54px}
+.sb-cupzone.mini .sb-row{bottom:5px;min-height:38px}
+.sb-cup{position:absolute;left:50%;bottom:0;width:min(240px,80%);height:100px;z-index:6;pointer-events:none;transform-origin:88% 92%;
+  transform:translate(-50%,0);transition:transform .45s cubic-bezier(.25,.8,.3,1);
+  background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);
+  clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);filter:drop-shadow(0 10px 12px #000b)}
+.sb-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:17px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,#57101b,#a12330 78%)}
+.sb-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:38px;height:38px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:14px;
+  display:grid;place-items:center;box-shadow:0 2px 6px #0008}
+.sb-cup .sb-cupband{position:absolute;left:0;right:0;bottom:9px;height:6px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
+.sb-cup.house{background:linear-gradient(100deg,#15151a,#2c2c33 45%,#060607)}
+.sb-cup.house:before{background:radial-gradient(ellipse at 50% 40%,#000,#3a3a42 78%)}
+.sb-cupzone.mini .sb-cup{height:78px;width:min(170px,70%)}
+.sb-cupzone.mini .sb-cup:after{width:28px;height:28px;font-size:11px}
+.sb-cupzone[data-cup="lifted"] .sb-cup,.sb-cupzone[data-cup="lifting"] .sb-cup{transform:translate(-50%,-66px) rotate(-7deg)}
+.sb-cupzone.mini[data-cup="lifted"] .sb-cup,.sb-cupzone.mini[data-cup="lifting"] .sb-cup{transform:translate(-50%,-46px) rotate(-7deg)}
+.sb-cupzone[data-cup="covering"] .sb-cup{transition:transform .26s ease-in}
+.sb-cupzone[data-cup="shaking"] .sb-cup{animation:sbCupShake .11s linear infinite}
+.sb-cupzone[data-cup="slamming"] .sb-cup{transition:transform .09s ease-in;transform:translate(-50%,4px) scale(1.01,.99);animation:none}
+@keyframes sbCupShake{0%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}25%{transform:translate(calc(-50% + 3px),2px) rotate(1.6deg)}50%{transform:translate(calc(-50% - 3px),-4px) rotate(-1.4deg)}75%{transform:translate(calc(-50% + 4px),1px) rotate(2.2deg)}100%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}}
+/* ---- dice: Farkle's CSS-pip dice, ported under .sb- scope ---- */
+.sb-die{position:relative;width:52px;height:52px;flex:none;border-radius:11px;padding:6px;border:1px solid #888;display:block;background:#ddd;
+  box-shadow:0 6px 10px #0009,inset 0 2px 3px #fff7,inset 0 -4px 6px #0004;transform:rotate(var(--rot,0deg))}
+.sb-die.small{width:36px;height:36px;border-radius:9px;padding:4px}
+.sb-face{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%}
+.sb-die .pip{width:80%;height:80%;margin:auto;border-radius:50%;background:var(--pip,#1c1c22);box-shadow:inset 0 1px 2px #000a}
+.sb-die.ghost{opacity:.3}
+.sb-die.set-yellow{--pip:#20242c;background:linear-gradient(145deg,#ffe066,#f5b921);border-color:#a86e00}
+.sb-die.set-white{--pip:#23262d;background:linear-gradient(145deg,#ffffff,#dde2e8);border-color:#98a2ad}
+.sb-die.set-orange{--pip:#26221e;background:linear-gradient(145deg,#ffb154,#ef7d12);border-color:#9c4d00}
+.sb-die.set-red{--pip:#fff1f1;background:linear-gradient(145deg,#e83838,#a31212);border-color:#5f0606}
+.sb-die.set-blue{--pip:#eef5ff;background:linear-gradient(145deg,#3f8fe8,#1756a8);border-color:#0b2f5e}
+.sb-die.set-green{--pip:#eafff1;background:linear-gradient(145deg,#37b268,#146c38);border-color:#073d1e}
+.sb-die.set-black{--pip:#e8e8e8;background:linear-gradient(145deg,#2b2b31,#0a0a0d);border-color:#000}
+.sb-die.set-purple{--pip:#f6eaff;background:linear-gradient(145deg,#9a55d6,#5e279e);border-color:#341158}
+.sb-die.set-pink{--pip:#5e1030;background:linear-gradient(145deg,#ffb1d4,#f06ba8);border-color:#a12d63}
+.sb-die.set-pipsred{--pip:#d21f2c;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.sb-die.set-pipsblue{--pip:#1f5fd2;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.sb-die.set-pipsgreen{--pip:#1d9e4b;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.sb-die.set-clearred{--pip:#ffffff;background:linear-gradient(145deg,#ff7070cc,#c21313cc);border-color:#ff9c9c;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.sb-die.set-clearblue{--pip:#ffffff;background:linear-gradient(145deg,#6fc2ffcc,#1663b8cc);border-color:#a8dcff;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.sb-die.set-clearblack{--pip:#f2f2f2;background:linear-gradient(145deg,#4a4a52cc,#0c0c10cc);border-color:#8a8a96;box-shadow:0 6px 10px #0009,inset 0 0 14px #ffffff66,inset 0 2px 5px #fff9}
+.sb-die.set-blackgold{--pip:#f3c95c;background:linear-gradient(145deg,#2a2a30,#070708);border-color:#c9a227;box-shadow:0 6px 10px #0009,inset 0 0 0 2px #c9a22755,inset 0 2px 3px #ffe9a077}
+.sb-die.set-leather{--pip:#f0bd82;background:radial-gradient(circle at 35% 30%,#96683c,#5d3a1e 72%);border-color:#38220f}
+.sb-die.set-leather .sb-face{border:1.5px dashed #dcb98a9e;border-radius:7px;padding:2px}
+.sb-die.set-skull{--pip:#e9ddba;background:linear-gradient(145deg,#2f4f92,#152a52);border-color:#0a1830}
+.sb-die.set-skull .pip{background:transparent;box-shadow:none;border-radius:0;color:#e9ddba;font-size:12px;line-height:1;display:grid;place-items:center}
+.sb-die.set-ice{--pip:#0d6ea8;background:linear-gradient(145deg,#eefdff,#a9ddf3 55%,#79c1e5);border-color:#57a7cf;box-shadow:0 6px 10px #0009,inset 0 0 13px #ffffffd9,inset 0 2px 4px #fff}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:8px 4px 6px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px;line-height:1.45}
+.hint b{color:#ffe9bd}
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.btn{min-height:48px;padding:10px 13px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
+.btn:disabled{opacity:.45;cursor:default}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#060203b8;border-radius:16px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Shut the Box<small>FLIP 'EM ALL DOWN</small></h1>
+  <div class="score" id="scoreBox">YOU <b>0</b> · NIKKI <b>0</b></div>
+</div>
+<div class="wrap">
+  <div class="duel">
+    <div class="side on" id="sideYou"><div class="nm">YOU</div><div class="rem" id="winsYou">0</div><span class="cgo" id="runYou">ROUNDS WON</span></div>
+    <div class="side" id="sideNikki"><div class="nm">NIKKI</div><div class="rem" id="winsNikki">0</div><span class="cgo" id="runNikki">ROUNDS WON</span></div>
+  </div>
+  <p class="turnline" id="turnline">Round 1 · Your box</p>
+  <div class="sb-stage" id="stage">
+    <div class="sb-plabel"><span>NIKKI'S BOX</span><span class="sc" id="nScore"></span></div>
+    <div class="sb-rack mini" id="rackN"></div>
+    <div class="sb-zone">
+      <div class="sb-cupzone mini" id="cupzoneN" data-cup="down">
+        <div class="sb-row" id="rowN"></div>
+        <div class="sb-cup house" id="cupN" aria-hidden="true"><span class="sb-cupband"></span></div>
+      </div>
+    </div>
+    <div class="sb-plabel" style="margin-top:10px"><span>YOUR BOX</span><span class="sc" id="yScore"></span></div>
+    <div class="sb-rack" id="rackY"></div>
+    <div class="sb-zone">
+      <div class="sb-cupzone" id="cupzoneY" data-cup="down">
+        <div class="sb-row" id="rowY"></div>
+        <div class="sb-cup" id="cupY" aria-hidden="true"><span class="sb-cupband"></span></div>
+      </div>
+    </div>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">You Win the Match!</h2>
+      <p id="ovText"></p>
+      <button class="btn primary" id="againBtn" type="button">PLAY AGAIN</button>
+    </div></div>
+  </div>
+  <p class="status" id="status"></p>
+  <div class="controls">
+    <button class="btn primary" id="shakeBtn" type="button">🎲 SHAKE</button>
+    <button class="btn primary" id="flipBtn" type="button" disabled>FLIP</button>
+    <button class="btn" id="newBtn" type="button">NEW MATCH</button>
+  </div>
+  <p class="hint"><b>Shut the Box:</b> shake the cup, flip down tiles adding up <b>exactly</b> to the roll; tiles standing at <b>6 or less</b> mean one die. Your score is what's left up — <b>lower wins the round</b>. Then Nikki plays her box. First to <b>5 rounds</b> takes the match.</p>
+</div>
+<script>
+'use strict';
+/* ============ SHUT THE BOX — Nikki's Bar (free play) ============
+   You play your box, then Nikki plays hers, low score takes the
+   round, first to 5 rounds takes the match. Every shake is the full
+   bar ritual: dice under the cup, rattle, SLAM, lift, reveal. Tile
+   and scoring logic ported from the game-room build. Free play —
+   no wallet; the page only READS your equipped Farkle dice set. */
+var FAST = /[?&]fast=1/.test(location.search);
+var TARGET = 5;
+
+/* ----- dice wardrobe: Farkle's sets, ported read-only ----- */
+var SB_PIPS = { 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
+var SB_SETS = [
+  { id: 'yellow', cls: 'set-yellow' }, { id: 'white', cls: 'set-white' }, { id: 'orange', cls: 'set-orange' },
+  { id: 'red', cls: 'set-red' }, { id: 'blue', cls: 'set-blue' }, { id: 'green', cls: 'set-green' },
+  { id: 'black', cls: 'set-black' }, { id: 'purple', cls: 'set-purple' }, { id: 'pink', cls: 'set-pink' },
+  { id: 'pipsred', cls: 'set-pipsred' }, { id: 'pipsblue', cls: 'set-pipsblue' }, { id: 'pipsgreen', cls: 'set-pipsgreen' },
+  { id: 'clearred', cls: 'set-clearred' }, { id: 'clearblue', cls: 'set-clearblue' }, { id: 'clearblack', cls: 'set-clearblack' },
+  { id: 'blackgold', cls: 'set-blackgold', name: 'Black & Gold' }, { id: 'leather', cls: 'set-leather' },
+  { id: 'skull', cls: 'set-skull', glyph: '☠' }, { id: 'ice', cls: 'set-ice' }
+];
+var SB_SET_BY_ID = {};
+SB_SETS.forEach(function (s) { SB_SET_BY_ID[s.id] = s; });
+SB_SET_BY_ID.yellow.name = 'Plain Yellow';
+var SB_FREE_SETS = ['yellow', 'white', 'orange'];
+function sbOwnedSets() {
+  var owned = SB_FREE_SETS.slice();
+  try {
+    var a = JSON.parse(localStorage.getItem('nikkiflixs_dice_sets') || '[]');
+    if (Array.isArray(a)) a.forEach(function (id) { if (SB_SET_BY_ID[id] && owned.indexOf(id) < 0) owned.push(id); });
+  } catch (e) {}
+  return owned;
+}
+function sbEquippedSet() {
+  var id = 'yellow';
+  try { id = localStorage.getItem('nikkiflixs_dice_equipped') || 'yellow'; } catch (e) {}
+  return SB_SET_BY_ID[sbOwnedSets().indexOf(id) >= 0 ? id : 'yellow'];
+}
+var HUMAN_SET = sbEquippedSet();
+var NIKKI_SET = SB_SET_BY_ID.blackgold;
+
+function sbPipsHTML(value, glyph) {
+  var cells = SB_PIPS[value]; if (!cells) return '';
+  var pips = '';
+  for (var p = 1; p <= 9; p++) {
+    var row = Math.ceil(p / 3), col = (p - 1) % 3 + 1;
+    if (cells.indexOf(p) >= 0) pips += '<span class="pip" style="grid-area:' + row + '/' + col + '">' + (glyph || '') + '</span>';
+  }
+  return pips;
+}
+function sbDieHTML(v, set, cls, rot) {
+  return '<div class="sb-die ' + set.cls + (cls ? ' ' + cls : '') + '" role="img" aria-label="' +
+    (v ? 'Die showing ' + v : 'Die not yet rolled') + '"' +
+    (rot != null ? ' style="--rot:' + rot + 'deg"' : '') +
+    '><span class="sb-face">' + sbPipsHTML(v, set.glyph) + '</span></div>';
+}
+
+/* ----- CupAudio: synthesized bar sounds (no files) — same kit as Bar Dice ----- */
+var CupAudio = (function () {
+  var ctx = null, master = null, nbuf = null;
+  var stats = { rattles: 0, clicks: 0, slams: 0, scrapes: 0 };
+  function ensure() {
+    if (ctx) { if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} } return ctx; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+    return ctx;
+  }
+  function noise() {
+    if (nbuf) return nbuf;
+    var len = Math.floor(ctx.sampleRate * 0.12);
+    nbuf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = nbuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return nbuf;
+  }
+  function click(when, freq, gain, dur) {
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 5;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(gain, when); g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(when); src.stop(when + dur + 0.03); stats.clicks++;
+  }
+  function rattle(durMs) {
+    if (!ensure()) return;
+    var t0 = ctx.currentTime + 0.01, n = 14 + Math.floor(Math.random() * 8);
+    for (var i = 0; i < n; i++) {
+      click(t0 + Math.random() * (durMs / 1000), 1500 + Math.random() * 1900, 0.10 + Math.random() * 0.16, 0.025 + Math.random() * 0.03);
+    }
+    stats.rattles++;
+  }
+  function slam() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
+    g.gain.setValueAtTime(0.65, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.25);
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 850;
+    var g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.5, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    src.connect(lp); lp.connect(g2); g2.connect(master); src.start(t); src.stop(t + 0.12);
+    stats.slams++;
+  }
+  function scrape() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var src = ctx.createBufferSource(); src.buffer = noise(); src.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 2.2;
+    bp.frequency.setValueAtTime(2600, t); bp.frequency.exponentialRampToValueAtTime(700, t + 0.3);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.10, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.36);
+    stats.scrapes++;
+  }
+  return { ensure: ensure, rattle: rattle, slam: slam, scrape: scrape, stats: stats,
+           state: function () { return ctx ? ctx.state : 'none'; } };
+})();
+
+/* ----- the cup ritual: cover -> shake (rattle) -> SLAM -> beat -> lift ----- */
+var S = null, timerToken = 0;
+function later(fn, ms) { var tok = timerToken; setTimeout(function () { if (tok === timerToken) fn(); }, ms); }
+function makeCup(zoneId) {
+  return { zone: document.getElementById(zoneId), phase: 'down', log: ['down'],
+    set: function (ph) {
+      this.phase = ph;
+      if (this.log[this.log.length - 1] !== ph) this.log.push(ph);
+      this.zone.setAttribute('data-cup', ph);
+    } };
+}
+var cupYou = makeCup('cupzoneY'), cupNikki = makeCup('cupzoneN');
+function cupFor(who) { return who === 'you' ? cupYou : cupNikki; }
+function shudder() {
+  var st = document.getElementById('stage');
+  if (st) { st.classList.remove('shudder'); void st.offsetWidth; st.classList.add('shudder'); }
+}
+function cupRitual(cup, done) {
+  if (cup.phase === 'lifted') { cup.set('covering'); later(begin, FAST ? 50 : 270); }
+  else begin();
+  function begin() {
+    cup.set('shaking'); CupAudio.rattle(FAST ? 130 : 700);
+    later(function () {
+      cup.set('slamming'); CupAudio.slam(); shudder();
+      later(function () {
+        cup.set('rest');
+        later(function () { cup.set('lifting'); CupAudio.scrape(); if (done) done(); }, FAST ? 40 : 250);
+      }, FAST ? 60 : 170);
+    }, FAST ? 140 : 720);
+  }
+}
+
+/* ----- rules core (ported from the game-room build) ----- */
+function freshRun() { return { tiles: [true, true, true, true, true, true, true, true, true], dice: [], sel: [], score: null, rolling: false, shakes: 0 }; }
+function cur() { return S.runs[S.turn]; }
+function upSum(run) { var s = 0; run.tiles.forEach(function (up, i) { if (up) s += i + 1; }); return s; }
+function combosFor(run, total) {
+  var up = [];
+  run.tiles.forEach(function (u, i) { if (u) up.push(i + 1); });
+  var out = [];
+  (function rec(ix, left, acc) {
+    if (left === 0) { out.push(acc.slice()); return; }
+    if (ix >= up.length || left < 0) return;
+    acc.push(up[ix]); rec(ix + 1, left - up[ix], acc); acc.pop();
+    rec(ix + 1, left, acc);
+  })(0, total, []);
+  return out;
+}
+function diceTotal(run) { return run.dice.reduce(function (a, b) { return a + b; }, 0); }
+function selSum(run) { return run.sel.reduce(function (a, b) { return a + b; }, 0); }
+
+function newMatch() {
+  timerToken++;
+  S = {
+    round: 1, wins: { you: 0, nikki: 0 }, turn: 'you', phase: 'roll',
+    runs: { you: freshRun(), nikki: freshRun() },
+    matchOver: false, winner: null, msg: ''
+  };
+  startRound();
+}
+function startRound() {
+  S.runs.you = freshRun(); S.runs.nikki = freshRun();
+  S.turn = 'you'; S.phase = 'roll';
+  cupYou.set('down'); cupNikki.set('down');
+  S.msg = 'Your box, round ' + S.round + ' — shake the cup and start flipping.';
+  render();
+}
+function shakeRun(forced) {
+  if (!S || S.matchOver || S.phase !== 'roll') return false;
+  var run = cur();
+  if (run.rolling) return false;
+  var n = upSum(run) <= 6 ? 1 : 2, vals = [], i;
+  if (forced && forced.length >= n) { for (i = 0; i < n; i++) vals.push(forced[i]); }
+  else for (i = 0; i < n; i++) vals.push(1 + Math.floor(Math.random() * 6));
+  run.rolling = true; run.shakes++;
+  CupAudio.ensure();
+  render();
+  var cup = cupFor(S.turn), who = S.turn;
+  cupRitual(cup, function () {
+    run.dice = vals; run.sel = []; run.rolling = false;
+    cup.set('lifted');
+    var total = diceTotal(run);
+    if (!combosFor(run, total).length) {
+      S.msg = (who === 'you' ? 'You rolled ' : 'Nikki rolled ') + total + ' — no standing tiles add up to ' + total + '.';
+      S.phase = 'pause'; render();
+      later(function () { endRun(who); }, FAST ? 150 : 900);
+      return;
+    }
+    S.phase = 'pick';
+    S.msg = (who === 'you' ? 'Rolled ' : 'Nikki rolled ') + total + (who === 'you' ? ' — tap tiles that add up to ' + total + ', then FLIP.' : ' — she’s eyeing her tiles…');
+    render();
+    if (who === 'nikki') later(function () { botFlip(); }, FAST ? 120 : 750);
+  });
+  return true;
+}
+function toggleTile(n) {
+  if (!S || S.turn !== 'you' || S.phase !== 'pick') return;
+  var run = cur();
+  if (!run.tiles[n - 1]) return;
+  var ix = run.sel.indexOf(n);
+  if (ix >= 0) { run.sel.splice(ix, 1); render(); return; }
+  if (selSum(run) + n > diceTotal(run)) { S.msg = 'That passes ' + diceTotal(run) + ' — the flipped tiles must add up to exactly ' + diceTotal(run) + '.'; render(); return; }
+  run.sel.push(n); render();
+}
+function flip() {
+  if (!S || S.phase !== 'pick') return false;
+  var run = cur(), total = diceTotal(run);
+  if (!run.sel.length || selSum(run) !== total) return false;
+  run.sel.forEach(function (n) { run.tiles[n - 1] = false; });
+  run.sel = [];
+  if (upSum(run) === 0) {
+    run.score = 0; S.phase = 'pause';
+    S.msg = (S.turn === 'you' ? 'You SHUT THE BOX! ' : 'Nikki SHUT THE BOX! ') + 'Every tile down — score 0.';
+    render();
+    var who = S.turn;
+    later(function () { endRun(who); }, FAST ? 150 : 1000);
+    return true;
+  }
+  S.phase = 'roll';
+  S.msg = (S.turn === 'you' ? 'Flipped. Shake again.' : 'Nikki flips and shakes again…');
+  render();
+  if (S.turn === 'nikki') scheduleBotShake();
+  return true;
+}
+function botFlip() {
+  if (!S || S.matchOver || S.turn !== 'nikki' || S.phase !== 'pick') return;
+  var run = cur(), combos = combosFor(run, diceTotal(run));
+  if (!combos.length) return;
+  combos.sort(function (a, b) {
+    if (b.length !== a.length) return b.length - a.length;
+    return Math.max.apply(null, b) - Math.max.apply(null, a);
+  });
+  run.sel = combos[0].slice();
+  render();
+  later(function () { flip(); }, FAST ? 80 : 450);
+}
+function scheduleBotShake() {
+  later(function () {
+    if (!S || S.matchOver || S.turn !== 'nikki' || S.phase !== 'roll') return;
+    shakeRun(null);
+  }, FAST ? 150 : 800);
+}
+function endRun(who) {
+  var run = S.runs[who];
+  if (run.score === null) run.score = upSum(run);
+  if (who === 'you') {
+    S.turn = 'nikki'; S.phase = 'roll';
+    S.msg = 'Your score: ' + run.score + '. Nikki takes her box…';
+    render();
+    scheduleBotShake();
+    return;
+  }
+  resolveRound();
+}
+function resolveRound() {
+  var y = S.runs.you.score, n = S.runs.nikki.score, line;
+  if (y < n) { S.wins.you++; line = 'You take round ' + S.round + ' — ' + y + ' beats ' + n + '.'; }
+  else if (n < y) { S.wins.nikki++; line = 'Nikki takes round ' + S.round + ' — ' + n + ' beats ' + y + '.'; }
+  else line = 'Round ' + S.round + ' is a push — ' + y + ' apiece, no point.';
+  if (S.wins.you >= TARGET || S.wins.nikki >= TARGET) {
+    S.matchOver = true; S.winner = S.wins.you >= TARGET ? 'you' : 'nikki'; S.phase = 'over';
+    S.msg = line; render(); return;
+  }
+  S.msg = line; S.phase = 'roundpause'; render();
+  later(function () { S.round++; startRound(); }, FAST ? 250 : 1500);
+}
+
+/* ----- rendering ----- */
+function rackHTML(run, mine) {
+  var h = '';
+  for (var i = 1; i <= 9; i++) {
+    var up = run.tiles[i - 1], sel = run.sel.indexOf(i) >= 0;
+    if (mine) {
+      h += '<button type="button" class="sb-tile' + (up ? '' : ' down') + (sel ? ' sel' : '') + '" data-tile="' + i + '"' +
+        (S.phase === 'pick' && S.turn === 'you' && up ? '' : ' disabled') + ' aria-label="Tile ' + i + (up ? ', standing' : ', flipped down') + '">' + i + '</button>';
+    } else {
+      h += '<div class="sb-tile' + (up ? '' : ' down') + (sel ? ' sel' : '') + '">' + i + '</div>';
+    }
+  }
+  return h;
+}
+function diceRowHTML(run, set, small) {
+  var h = '', n = upSum(run) <= 6 ? 1 : 2, i;
+  if (run.rolling) {
+    for (i = 0; i < n; i++) h += sbDieHTML(0, set, 'ghost' + (small ? ' small' : ''));
+  } else if (!run.dice.length) {
+    for (i = 0; i < 2; i++) h += sbDieHTML(0, set, 'ghost' + (small ? ' small' : ''));
+  } else {
+    for (i = 0; i < run.dice.length; i++) {
+      h += sbDieHTML(run.dice[i], set, small ? 'small' : '', ((i * 37 + run.dice[i] * 11 + run.shakes * 7) % 25) - 12);
+    }
+  }
+  return h;
+}
+function render() {
+  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.wins.you + '</b> · NIKKI <b>' + S.wins.nikki + '</b>';
+  document.getElementById('winsYou').textContent = S.wins.you;
+  document.getElementById('winsNikki').textContent = S.wins.nikki;
+  document.getElementById('runYou').innerHTML = S.runs.you.score === null ? 'ROUNDS WON' : 'RUN SCORE <b>' + S.runs.you.score + '</b>';
+  document.getElementById('runNikki').innerHTML = S.runs.nikki.score === null ? 'ROUNDS WON' : 'RUN SCORE <b>' + S.runs.nikki.score + '</b>';
+  document.getElementById('sideYou').classList.toggle('on', S.turn === 'you' && !S.matchOver);
+  document.getElementById('sideNikki').classList.toggle('on', S.turn === 'nikki' && !S.matchOver);
+  document.getElementById('turnline').textContent = S.matchOver ? 'Match over · First to ' + TARGET :
+    'Round ' + S.round + ' · ' + (S.turn === 'you' ? 'Your box' : 'Nikki’s box');
+  document.getElementById('yScore').textContent = 'STANDING ' + upSum(S.runs.you) + (S.runs.you.score !== null ? ' · FINAL ' + S.runs.you.score : '');
+  document.getElementById('nScore').textContent = 'STANDING ' + upSum(S.runs.nikki) + (S.runs.nikki.score !== null ? ' · FINAL ' + S.runs.nikki.score : '');
+  document.getElementById('rackY').innerHTML = rackHTML(S.runs.you, true);
+  document.getElementById('rackN').innerHTML = rackHTML(S.runs.nikki, false);
+  document.querySelectorAll('#rackY .sb-tile').forEach(function (b) {
+    b.addEventListener('click', function () { toggleTile(+b.getAttribute('data-tile')); });
+  });
+  document.getElementById('rowY').innerHTML = diceRowHTML(S.runs.you, HUMAN_SET, false);
+  document.getElementById('rowN').innerHTML = diceRowHTML(S.runs.nikki, NIKKI_SET, true);
+  document.getElementById('status').textContent = S.msg;
+  var run = cur();
+  document.getElementById('shakeBtn').disabled = !(S.turn === 'you' && S.phase === 'roll' && !run.rolling && !S.matchOver);
+  var fb = document.getElementById('flipBtn');
+  fb.disabled = !(S.turn === 'you' && S.phase === 'pick' && run.sel.length && selSum(run) === diceTotal(run));
+  fb.textContent = run.sel.length ? 'FLIP ' + run.sel.slice().sort(function (a, b) { return a - b; }).join(' + ') + ' = ' + diceTotal(run) : 'FLIP';
+  var ov = document.getElementById('overlay');
+  if (S.matchOver) {
+    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : 'Nikki Takes the Match';
+    document.getElementById('ovText').textContent = S.winner === 'you'
+      ? 'First to ' + TARGET + ' rounds — your box game is too strong. Nikki racks the tiles for the next challenger.'
+      : 'Nikki got to ' + TARGET + ' rounds first. She flips those tiles like she deals cards — run it back.';
+    ov.classList.add('show');
+  } else ov.classList.remove('show');
+}
+
+document.getElementById('shakeBtn').addEventListener('click', function () { if (S && S.turn === 'you') shakeRun(null); });
+document.getElementById('flipBtn').addEventListener('click', function () { flip(); });
+document.getElementById('newBtn').addEventListener('click', newMatch);
+document.getElementById('againBtn').addEventListener('click', newMatch);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (bar sims drive the page through these) ---------- */
+window.__SHUTBOX = {
+  get state() { return S; },
+  shake: function (forced) { return S && S.turn === 'you' ? shakeRun(forced ? forced.slice() : null) : false; },
+  forceShake: function (forced) { return shakeRun(forced ? forced.slice() : null); },
+  toggle: function (n) { toggleTile(n); },
+  flip: function () { return flip(); },
+  newMatch: newMatch,
+  combos: function (who) { var r = S.runs[who || S.turn]; return combosFor(r, diceTotal(r)); },
+  cupLog: function () { return { you: cupYou.log.slice(), nikki: cupNikki.log.slice() }; },
+  audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
+  sets: { human: HUMAN_SET, nikki: NIKKI_SET },
+  equippedId: function () { return HUMAN_SET.id; }
+};
+
+newMatch();
+</script>
+</body>
+</html>

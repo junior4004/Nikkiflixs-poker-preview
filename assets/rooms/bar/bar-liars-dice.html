@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Liar's Dice · Nikki's Bar · Nikkiflixs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700;800&display=swap');
+:root{--ink:#f8f2df;--muted:#cdbfa6;--bg:#120609;--panel:#1d1013;--gold:#ddb866;--gold2:#8e672f;--line:#6e452a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
+body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
+.topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
+.topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score b{color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 10px}
+.duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:4px 10px;background:#0007;text-align:center}
+.duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
+.duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
+.duel .side.on .nm{color:var(--gold)}
+.duel .rem{font:800 24px/1.05 "Barlow Condensed",sans-serif;color:#fff}
+.duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
+.turnline{min-height:20px;text-align:center;font-weight:700;font-size:14px;margin:3px 4px 0;color:#ffe9bd}
+.ld-stage{position:relative;max-width:440px;margin:2px auto 0;border-radius:16px;padding:6px;
+  background:linear-gradient(145deg,#5d3a1e,#2a1709);box-shadow:0 24px 60px #000d,inset 0 2px 6px #ffdf9e33}
+.ld-stage.shudder{animation:ldShud .18s linear}
+@keyframes ldShud{0%{transform:translateY(0)}30%{transform:translateY(2px)}65%{transform:translateY(-1px)}100%{transform:translateY(0)}}
+.ld-zone{border-radius:12px;background:radial-gradient(ellipse at 50% 28%,#20794c,#0c4a2b 72%);
+  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:6px 10px 8px}
+.ld-zone + .ld-zone{margin-top:0}
+.ld-zlabel{display:flex;align-items:center;justify-content:space-between;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:#ffe9bb99;text-transform:uppercase;min-height:22px}
+.ld-peek{min-height:26px;padding:3px 12px;border-radius:6px;border:1px solid var(--gold2);background:#0009;color:var(--gold);font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em}
+.ld-peek:disabled{opacity:.4;cursor:default}
+.ld-cupzone{position:relative;height:94px}
+.ld-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:8px;justify-content:center;align-items:center;min-height:46px}
+.ld-cup{position:absolute;left:50%;bottom:0;width:min(300px,94%);height:74px;z-index:6;pointer-events:none;transform-origin:88% 92%;
+  transform:translate(-50%,0);transition:transform .45s cubic-bezier(.25,.8,.3,1);
+  background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);
+  clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);filter:drop-shadow(0 10px 12px #000b)}
+.ld-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:16px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 40%,#57101b,#a12330 78%)}
+.ld-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:13px;
+  display:grid;place-items:center;box-shadow:0 2px 6px #0008}
+.ld-cup .ld-cupband{position:absolute;left:0;right:0;bottom:8px;height:6px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
+.ld-cup.house{background:linear-gradient(100deg,#15151a,#2c2c33 45%,#060607)}
+.ld-cup.house:before{background:radial-gradient(ellipse at 50% 40%,#000,#3a3a42 78%)}
+.ld-cupzone[data-cup="lifted"] .ld-cup,.ld-cupzone[data-cup="lifting"] .ld-cup{transform:translate(-50%,-44px) rotate(-6deg)}
+.ld-cupzone[data-cup="covering"] .ld-cup{transition:transform .26s ease-in}
+.ld-cupzone[data-cup="shaking"] .ld-cup{animation:ldCupShake .11s linear infinite}
+.ld-cupzone[data-cup="slamming"] .ld-cup{transition:transform .09s ease-in;transform:translate(-50%,4px) scale(1.01,.99);animation:none}
+@keyframes ldCupShake{0%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}25%{transform:translate(calc(-50% + 3px),2px) rotate(1.6deg)}50%{transform:translate(calc(-50% - 3px),-4px) rotate(-1.4deg)}75%{transform:translate(calc(-50% + 4px),1px) rotate(2.2deg)}100%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}}
+.ld-bidbar{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0;min-height:38px;border:1px solid var(--gold2);border-radius:10px;background:#0d0508d9;padding:4px 10px;font-size:14px;font-weight:700;color:#ffe9bd;text-align:center}
+.ld-bidbar .who{color:var(--muted);font-weight:600}
+/* ---- dice: Farkle's CSS-pip dice, ported under .ld- scope ---- */
+.ld-die{position:relative;width:42px;height:42px;flex:none;border-radius:10px;padding:5px;border:1px solid #888;display:block;background:#ddd;
+  box-shadow:0 5px 8px #0009,inset 0 2px 3px #fff7,inset 0 -4px 6px #0004;transform:rotate(var(--rot,0deg))}
+.ld-face{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%}
+.ld-die .pip{width:80%;height:80%;margin:auto;border-radius:50%;background:var(--pip,#1c1c22);box-shadow:inset 0 1px 2px #000a}
+.ld-die.mini{width:30px;height:30px;border-radius:8px;padding:4px}
+.ld-die.set-yellow{--pip:#20242c;background:linear-gradient(145deg,#ffe066,#f5b921);border-color:#a86e00}
+.ld-die.set-white{--pip:#23262d;background:linear-gradient(145deg,#ffffff,#dde2e8);border-color:#98a2ad}
+.ld-die.set-orange{--pip:#26221e;background:linear-gradient(145deg,#ffb154,#ef7d12);border-color:#9c4d00}
+.ld-die.set-red{--pip:#fff1f1;background:linear-gradient(145deg,#e83838,#a31212);border-color:#5f0606}
+.ld-die.set-blue{--pip:#eef5ff;background:linear-gradient(145deg,#3f8fe8,#1756a8);border-color:#0b2f5e}
+.ld-die.set-green{--pip:#eafff1;background:linear-gradient(145deg,#37b268,#146c38);border-color:#073d1e}
+.ld-die.set-black{--pip:#e8e8e8;background:linear-gradient(145deg,#2b2b31,#0a0a0d);border-color:#000}
+.ld-die.set-purple{--pip:#f6eaff;background:linear-gradient(145deg,#9a55d6,#5e279e);border-color:#341158}
+.ld-die.set-pink{--pip:#5e1030;background:linear-gradient(145deg,#ffb1d4,#f06ba8);border-color:#a12d63}
+.ld-die.set-pipsred{--pip:#d21f2c;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.ld-die.set-pipsblue{--pip:#1f5fd2;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.ld-die.set-pipsgreen{--pip:#1d9e4b;background:linear-gradient(145deg,#ffffff,#dfe3e8);border-color:#98a2ad}
+.ld-die.set-clearred{--pip:#ffffff;background:linear-gradient(145deg,#ff7070cc,#c21313cc);border-color:#ff9c9c;box-shadow:0 5px 8px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.ld-die.set-clearblue{--pip:#ffffff;background:linear-gradient(145deg,#6fc2ffcc,#1663b8cc);border-color:#a8dcff;box-shadow:0 5px 8px #0009,inset 0 0 14px #ffffff88,inset 0 2px 5px #fff}
+.ld-die.set-clearblack{--pip:#f2f2f2;background:linear-gradient(145deg,#4a4a52cc,#0c0c10cc);border-color:#8a8a96;box-shadow:0 5px 8px #0009,inset 0 0 14px #ffffff66,inset 0 2px 5px #fff9}
+.ld-die.set-blackgold{--pip:#f3c95c;background:linear-gradient(145deg,#2a2a30,#070708);border-color:#c9a227;box-shadow:0 5px 8px #0009,inset 0 0 0 2px #c9a22755,inset 0 2px 3px #ffe9a077}
+.ld-die.set-leather{--pip:#f0bd82;background:radial-gradient(circle at 35% 30%,#96683c,#5d3a1e 72%);border-color:#38220f}
+.ld-die.set-leather .ld-face{border:1.5px dashed #dcb98a9e;border-radius:6px;padding:2px}
+.ld-die.set-skull{--pip:#e9ddba;background:linear-gradient(145deg,#2f4f92,#152a52);border-color:#0a1830}
+.ld-die.set-skull .pip{background:transparent;box-shadow:none;border-radius:0;color:#e9ddba;font-size:11px;line-height:1;display:grid;place-items:center}
+.ld-die.set-ice{--pip:#0d6ea8;background:linear-gradient(145deg,#eefdff,#a9ddf3 55%,#79c1e5);border-color:#57a7cf;box-shadow:0 5px 8px #0009,inset 0 0 13px #ffffffd9,inset 0 2px 4px #fff}
+/* ---- bid controls ---- */
+.ld-controls{max-width:440px;margin:4px auto 0;visibility:hidden}
+.ld-controls.show{visibility:visible}
+.ld-picker{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.ld-step{width:36px;height:36px;border-radius:9px;border:1px solid var(--gold2);background:var(--panel);color:#ffe9bd;font-size:20px;font-weight:800;line-height:1}
+.ld-qty{font:800 24px/1 "Barlow Condensed",sans-serif;color:#fff;min-width:30px;text-align:center}
+.ld-hint2{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-right:4px}
+.ld-facebtn{padding:0;border:2px solid transparent;border-radius:9px;background:transparent;line-height:0}
+.ld-facebtn.sel{border-color:var(--gold);box-shadow:0 0 10px #ddb86666}
+.ld-facebtn .ld-die{width:30px;height:30px;padding:4px;border-radius:8px}
+.ld-btnrow{display:flex;gap:10px;justify-content:center;margin-top:5px}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:6px 4px 4px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px;line-height:1.45}
+.hint b{color:#ffe9bd}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:2px}
+.btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
+.btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
+.btn.danger{background:linear-gradient(180deg,#a02333,#5e1220);border-color:#e0566e;color:#fff;font-size:17px}
+.btn:disabled{opacity:.45;cursor:default}
+.overlay{position:absolute;inset:0;display:none;place-items:center;background:#060203b8;border-radius:16px;z-index:5}
+.overlay.show{display:grid}
+.overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
+.overlay h2{margin:0 0 6px;font:800 32px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
+.overlay p{margin:0 0 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" id="backBtn" type="button">← Bar</button>
+  <h1>Liar's Dice<small>BID · BLUFF · CALL HER OUT</small></h1>
+  <div class="score" id="scoreBox">YOU <b>5</b> · NIKKI <b>5</b></div>
+</div>
+<div class="wrap">
+  <div class="duel">
+    <div class="side on" id="sideYou"><div class="nm">YOUR DICE</div><div class="rem" id="diceYou">5</div><span class="cgo">IN YOUR CUP</span></div>
+    <div class="side" id="sideNikki"><div class="nm">NIKKI'S DICE</div><div class="rem" id="diceNikki">5</div><span class="cgo">IN HER CUP</span></div>
+  </div>
+  <p class="turnline" id="turnline">Round 1</p>
+  <div class="ld-stage" id="stage">
+    <div class="ld-zone">
+      <div class="ld-zlabel"><span>NIKKI · HER CUP STAYS DOWN</span><span id="nCount"></span></div>
+      <div class="ld-cupzone" id="cupzoneN" data-cup="down">
+        <div class="ld-row" id="rowN"></div>
+        <div class="ld-cup house" id="cupN" aria-hidden="true"><span class="ld-cupband"></span></div>
+      </div>
+    </div>
+    <div class="ld-bidbar" id="bidbar">No bid yet</div>
+    <div class="ld-zone">
+      <div class="ld-zlabel"><span>YOU · YOUR CUP</span><button class="ld-peek" id="peekBtn" type="button">👁 PEEK</button></div>
+      <div class="ld-cupzone" id="cupzoneY" data-cup="down">
+        <div class="ld-row" id="rowY"></div>
+        <div class="ld-cup" id="cupY" aria-hidden="true"><span class="ld-cupband"></span></div>
+      </div>
+    </div>
+    <div class="overlay" id="overlay"><div class="card">
+      <h2 id="ovTitle">You Win the Match!</h2>
+      <p id="ovText"></p>
+      <button class="btn primary" id="againBtn" type="button">PLAY AGAIN</button>
+    </div></div>
+  </div>
+  <div class="ld-controls" id="bidControls">
+    <div class="ld-picker">
+      <button class="ld-step" id="qDown" type="button" aria-label="Bid fewer dice">−</button>
+      <span class="ld-qty" id="qVal">1</span>
+      <button class="ld-step" id="qUp" type="button" aria-label="Bid more dice">+</button>
+      <span class="ld-hint2">dice showing</span>
+      <span id="faceRow"></span>
+    </div>
+    <div class="ld-btnrow">
+      <button class="btn primary" id="bidBtn" type="button">PLACE BID</button>
+      <button class="btn danger" id="liarBtn" type="button">LIAR!</button>
+    </div>
+  </div>
+  <p class="status" id="status"></p>
+  <div class="controls">
+    <button class="btn" id="newBtn" type="button">NEW MATCH</button>
+  </div>
+  <p class="hint"><b>Liar's Dice:</b> hold <b>PEEK</b> to see your dice — hers stay hidden. Bid the count of a face at the whole table (<b>ones wild</b>), raise it, or call <b>LIAR!</b>: both cups lift and the wrong call sheds a die. <b>Lose all five, lose the match.</b></p>
+</div>
+<script>
+'use strict';
+/* ============ LIAR'S DICE — Nikki's Bar (free play) ============
+   One-on-one against Nikki. Five dice each, shaken in the cup: the
+   cups shake, slam down on the bar, and STAY down. You see only your
+   own dice (hold PEEK to lift only your cup); Nikki's stay covered.
+   Bid how many dice at the whole table show a face — ones are wild.
+   A raise is more dice, or the same count with a higher face. Call
+   LIAR! and both cups lift: if the table really holds the bid, the
+   caller loses a die; if not, the bidder does. First to lose all
+   five dice loses the match. Free play — no wallet; the page only
+   READS your equipped Farkle dice set, exactly like Bar Dice. */
+var FAST = /[?&]fast=1/.test(location.search);
+
+/* ----- dice wardrobe: Farkle's sets, ported read-only ----- */
+var LD_PIPS = { 1: [5], 2: [1, 9], 3: [1, 5, 9], 4: [1, 3, 7, 9], 5: [1, 3, 5, 7, 9], 6: [1, 3, 4, 6, 7, 9] };
+var LD_SETS = [
+  { id: 'yellow', cls: 'set-yellow' }, { id: 'white', cls: 'set-white' }, { id: 'orange', cls: 'set-orange' },
+  { id: 'red', cls: 'set-red' }, { id: 'blue', cls: 'set-blue' }, { id: 'green', cls: 'set-green' },
+  { id: 'black', cls: 'set-black' }, { id: 'purple', cls: 'set-purple' }, { id: 'pink', cls: 'set-pink' },
+  { id: 'pipsred', cls: 'set-pipsred' }, { id: 'pipsblue', cls: 'set-pipsblue' }, { id: 'pipsgreen', cls: 'set-pipsgreen' },
+  { id: 'clearred', cls: 'set-clearred' }, { id: 'clearblue', cls: 'set-clearblue' }, { id: 'clearblack', cls: 'set-clearblack' },
+  { id: 'blackgold', cls: 'set-blackgold', name: 'Black & Gold' }, { id: 'leather', cls: 'set-leather' },
+  { id: 'skull', cls: 'set-skull', glyph: '☠' }, { id: 'ice', cls: 'set-ice' }
+];
+var LD_SET_BY_ID = {};
+LD_SETS.forEach(function (s) { LD_SET_BY_ID[s.id] = s; });
+LD_SET_BY_ID.yellow.name = 'Plain Yellow';
+var LD_FREE_SETS = ['yellow', 'white', 'orange'];
+function ldOwnedSets() {
+  var owned = LD_FREE_SETS.slice();
+  try {
+    var a = JSON.parse(localStorage.getItem('nikkiflixs_dice_sets') || '[]');
+    if (Array.isArray(a)) a.forEach(function (id) { if (LD_SET_BY_ID[id] && owned.indexOf(id) < 0) owned.push(id); });
+  } catch (e) {}
+  return owned;
+}
+function ldEquippedSet() {
+  var id = 'yellow';
+  try { id = localStorage.getItem('nikkiflixs_dice_equipped') || 'yellow'; } catch (e) {}
+  return LD_SET_BY_ID[ldOwnedSets().indexOf(id) >= 0 ? id : 'yellow'];
+}
+var HUMAN_SET = ldEquippedSet();
+var NIKKI_SET = LD_SET_BY_ID.blackgold;
+
+function ldPipsHTML(value, glyph) {
+  var cells = LD_PIPS[value]; if (!cells) return '';
+  var pips = '';
+  for (var p = 1; p <= 9; p++) {
+    var row = Math.ceil(p / 3), col = (p - 1) % 3 + 1;
+    if (cells.indexOf(p) >= 0) pips += '<span class="pip" style="grid-area:' + row + '/' + col + '">' + (glyph || '') + '</span>';
+  }
+  return pips;
+}
+function ldDieHTML(v, set, cls, rot) {
+  return '<div class="ld-die ' + set.cls + (cls ? ' ' + cls : '') + '" role="img" aria-label="Die showing ' + v + '"' +
+    (rot != null ? ' style="--rot:' + rot + 'deg"' : '') +
+    '><span class="ld-face">' + ldPipsHTML(v, set.glyph) + '</span></div>';
+}
+
+/* ----- CupAudio: synthesized bar sounds (no files) — same kit as Bar Dice ----- */
+var CupAudio = (function () {
+  var ctx = null, master = null, nbuf = null;
+  var stats = { rattles: 0, clicks: 0, slams: 0, scrapes: 0 };
+  function ensure() {
+    if (ctx) { if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} } return ctx; }
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
+      ctx = new AC(); master = ctx.createGain(); master.gain.value = 0.5; master.connect(ctx.destination);
+    } catch (e) { ctx = null; }
+    return ctx;
+  }
+  function noise() {
+    if (nbuf) return nbuf;
+    var len = Math.floor(ctx.sampleRate * 0.12);
+    nbuf = ctx.createBuffer(1, len, ctx.sampleRate);
+    var d = nbuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    return nbuf;
+  }
+  function click(when, freq, gain, dur) {
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 5;
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(gain, when); g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    src.connect(bp); bp.connect(g); g.connect(master);
+    src.start(when); src.stop(when + dur + 0.03); stats.clicks++;
+  }
+  function rattle(durMs) {
+    if (!ensure()) return;
+    var t0 = ctx.currentTime + 0.01, n = 14 + Math.floor(Math.random() * 8);
+    for (var i = 0; i < n; i++) {
+      click(t0 + Math.random() * (durMs / 1000), 1500 + Math.random() * 1900, 0.10 + Math.random() * 0.16, 0.025 + Math.random() * 0.03);
+    }
+    stats.rattles++;
+  }
+  function slam() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.16);
+    g.gain.setValueAtTime(0.65, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.25);
+    var src = ctx.createBufferSource(); src.buffer = noise();
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 850;
+    var g2 = ctx.createGain();
+    g2.gain.setValueAtTime(0.5, t); g2.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    src.connect(lp); lp.connect(g2); g2.connect(master); src.start(t); src.stop(t + 0.12);
+    stats.slams++;
+  }
+  function scrape() {
+    if (!ensure()) return;
+    var t = ctx.currentTime + 0.01;
+    var src = ctx.createBufferSource(); src.buffer = noise(); src.loop = true;
+    var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 2.2;
+    bp.frequency.setValueAtTime(2600, t); bp.frequency.exponentialRampToValueAtTime(700, t + 0.3);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.10, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.32);
+    src.connect(bp); bp.connect(g); g.connect(master); src.start(t); src.stop(t + 0.36);
+    stats.scrapes++;
+  }
+  return { ensure: ensure, rattle: rattle, slam: slam, scrape: scrape, stats: stats,
+           state: function () { return ctx ? ctx.state : 'none'; } };
+})();
+
+/* ----- cups: one per player. In Liar's Dice the ritual shakes and
+   slams, then the cup STAYS DOWN (lift=false); the lift is only for
+   a challenge reveal or your private peek. ----- */
+var S = null, timerToken = 0;
+function later(fn, ms) { var tok = timerToken; setTimeout(function () { if (tok === timerToken) fn(); }, ms); }
+function makeCup(zoneId) {
+  return { zone: document.getElementById(zoneId), phase: 'down', log: ['down'],
+    set: function (ph) {
+      this.phase = ph;
+      if (this.log[this.log.length - 1] !== ph) this.log.push(ph);
+      this.zone.setAttribute('data-cup', ph);
+    } };
+}
+var cupYou = makeCup('cupzoneY'), cupNikki = makeCup('cupzoneN');
+function shudder() {
+  var st = document.getElementById('stage');
+  if (st) { st.classList.remove('shudder'); void st.offsetWidth; st.classList.add('shudder'); }
+}
+function cupRitual(cup, lift, done) {
+  if (cup.phase === 'lifted') { cup.set('covering'); later(begin, FAST ? 50 : 270); }
+  else begin();
+  function begin() {
+    cup.set('shaking'); CupAudio.rattle(FAST ? 130 : 700);
+    later(function () {
+      cup.set('slamming'); CupAudio.slam(); shudder();
+      later(function () {
+        cup.set('rest');
+        later(function () {
+          if (lift) { cup.set('lifting'); CupAudio.scrape(); }
+          else cup.set('down');
+          if (done) done();
+        }, FAST ? 40 : 250);
+      }, FAST ? 60 : 170);
+    }, FAST ? 140 : 720);
+  }
+}
+
+/* ----- game state + rules (ported from the game-room build) ----- */
+function rollHand(n) { var a = []; for (var i = 0; i < n; i++) a.push(1 + Math.floor(Math.random() * 6)); return a; }
+function totalDice() { return S.counts.you + S.counts.nikki; }
+function countFace(face) {
+  var n = 0;
+  ['you', 'nikki'].forEach(function (p) {
+    S.hands[p].forEach(function (v) { if (v === face || (face !== 1 && v === 1)) n++; });
+  });
+  return n;
+}
+function legalBid(q, f) {
+  if (q < 1 || q > totalDice() || f < 1 || f > 6) return false;
+  if (!S.bid) return true;
+  return q > S.bid.qty || (q === S.bid.qty && f > S.bid.face);
+}
+function minRaise() {
+  var b = S.bid;
+  if (!b) return { qty: 1, face: 2 };
+  if (b.face < 6) return { qty: b.qty, face: b.face + 1 };
+  return { qty: b.qty + 1, face: b.face };
+}
+function estimate(p, face) {
+  var own = S.hands[p], tot = totalDice(), m = 0;
+  own.forEach(function (v) { if (v === face || (face !== 1 && v === 1)) m++; });
+  return m + (tot - own.length) * (face === 1 ? 1 / 6 : 1 / 3);
+}
+
+function newMatch() {
+  timerToken++;
+  S = {
+    round: 1, counts: { you: 5, nikki: 5 }, hands: { you: [], nikki: [] },
+    bid: null, bidder: null, turn: 'you', phase: 'start', rolling: false,
+    peek: false, matchOver: false, winner: null,
+    pickQty: 1, pickFace: 2, msg: ''
+  };
+  newRound('you');
+}
+function newRound(starter) {
+  S.hands.you = rollHand(S.counts.you);
+  S.hands.nikki = rollHand(S.counts.nikki);
+  S.bid = null; S.bidder = null; S.turn = starter; S.phase = 'rolling'; S.rolling = true; S.peek = false;
+  S.msg = 'Cups up — shake ’em, slam ’em, and keep ’em down…';
+  render();
+  var done = 0;
+  function fin() {
+    if (++done < 2) return;
+    S.rolling = false; S.phase = 'bid';
+    S.msg = starter === 'you' ? 'Your call — open the bidding, or peek at your dice first.' : 'Nikki’s cups are down. She opens the bidding…';
+    render();
+    if (starter === 'nikki') scheduleBot();
+  }
+  cupRitual(cupYou, false, fin);
+  cupRitual(cupNikki, false, fin);
+}
+function scheduleBot() {
+  later(function () {
+    if (!S || S.matchOver || S.phase !== 'bid' || S.turn !== 'nikki' || S.rolling) return;
+    botStep();
+  }, FAST ? 200 : 950);
+}
+function botStep() {
+  if (S.bid && S.bid.qty > estimate('nikki', S.bid.face) + 1.15 + Math.random() * 0.6) return doChallenge('nikki');
+  var bestFace = 2, bestEst = -1, f, e;
+  for (f = 1; f <= 6; f++) { e = estimate('nikki', f); if (e > bestEst) { bestEst = e; bestFace = f; } }
+  var qty, face, tot = totalDice();
+  if (!S.bid) { qty = Math.max(1, Math.min(tot, Math.floor(bestEst))); face = bestFace; }
+  else if (bestFace > S.bid.face && bestEst >= S.bid.qty - 0.5) { qty = S.bid.qty; face = bestFace; }
+  else if (estimate('nikki', S.bid.face) >= S.bid.qty + 0.5) { qty = S.bid.qty + 1; face = S.bid.face; }
+  else { qty = S.bid.qty + 1; face = bestFace; }
+  if (!legalBid(qty, face)) { if (S.bid) return doChallenge('nikki'); qty = 1; face = bestFace; }
+  placeBid('nikki', qty, face);
+}
+function placeBid(who, qty, face) {
+  S.bid = { qty: qty, face: face }; S.bidder = who;
+  S.msg = (who === 'you' ? 'You bid ' : 'Nikki bids ') + qty + ' × ' + face + (who === 'you' ? '. Her call…' : '. Your call — raise it or call her out.');
+  S.turn = who === 'you' ? 'nikki' : 'you';
+  S.pickQty = qty; S.pickFace = face;
+  render();
+  if (S.turn === 'nikki') scheduleBot();
+}
+function humanBid() {
+  if (!S || S.phase !== 'bid' || S.turn !== 'you' || S.rolling || S.matchOver) return;
+  CupAudio.ensure();
+  if (!legalBid(S.pickQty, S.pickFace)) {
+    var m = minRaise(); S.pickQty = m.qty; S.pickFace = m.face;
+    S.msg = 'That’s not a raise — the picker is set to the lowest legal raise.';
+    render(); return;
+  }
+  placeBid('you', S.pickQty, S.pickFace);
+}
+function doChallenge(who) {
+  if (!S || S.phase !== 'bid' || !S.bid || S.rolling) return;
+  S.phase = 'reveal'; S.peek = false;
+  var challenger = who, bidder = S.bidder;
+  var actual = countFace(S.bid.face), good = actual >= S.bid.qty, loser = good ? challenger : bidder;
+  S.msg = (who === 'you' ? 'You call' : 'Nikki calls') + ' LIAR! Both cups lift — the table holds ' + actual +
+    ' × ' + S.bid.face + ' (ones wild). The bid ' + (good ? 'stands' : 'fails') + ', so ' +
+    (loser === 'you' ? 'you lose' : 'Nikki loses') + ' a die.';
+  render();
+  cupYou.set('lifting'); cupNikki.set('lifting'); CupAudio.scrape();
+  later(function () { cupYou.set('lifted'); cupNikki.set('lifted'); }, FAST ? 60 : 480);
+  later(function () {
+    S.counts[loser]--;
+    if (S.counts[loser] <= 0) {
+      S.matchOver = true; S.winner = loser === 'you' ? 'nikki' : 'you'; S.phase = 'over';
+      render(); return;
+    }
+    S.round++; render();
+    later(function () { newRound(loser); }, FAST ? 200 : 750);
+  }, FAST ? 550 : 2600);
+}
+function setPeek(on) {
+  if (!S || S.phase !== 'bid' || S.rolling || S.matchOver) on = false;
+  S.peek = !!on;
+  if (on) cupYou.set('lifted');
+  else if (cupYou.phase === 'lifted' && S.phase === 'bid') cupYou.set('down');
+}
+
+/* ----- rendering ----- */
+function render() {
+  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.counts.you + '</b> · NIKKI <b>' + S.counts.nikki + '</b>';
+  document.getElementById('diceYou').textContent = S.counts.you;
+  document.getElementById('diceNikki').textContent = S.counts.nikki;
+  document.getElementById('sideYou').classList.toggle('on', S.turn === 'you' && !S.matchOver);
+  document.getElementById('sideNikki').classList.toggle('on', S.turn === 'nikki' && !S.matchOver);
+  document.getElementById('turnline').textContent = S.matchOver ? 'Match over' :
+    'Round ' + S.round + ' · ' + totalDice() + ' dice in play · ones are wild';
+  document.getElementById('nCount').textContent = S.counts.nikki + (S.counts.nikki === 1 ? ' DIE' : ' DICE') + ' UNDER IT';
+  var ry = '', rn = '', i;
+  for (i = 0; i < S.hands.you.length; i++) ry += ldDieHTML(S.hands.you[i], HUMAN_SET, '', ((i * 31 + S.hands.you[i] * 7) % 17) - 8);
+  for (i = 0; i < S.hands.nikki.length; i++) rn += ldDieHTML(S.hands.nikki[i], NIKKI_SET, '', ((i * 41 + S.hands.nikki[i] * 5) % 17) - 8);
+  document.getElementById('rowY').innerHTML = ry;
+  document.getElementById('rowN').innerHTML = rn;
+  var bb = document.getElementById('bidbar');
+  if (S.bid) {
+    bb.innerHTML = '<span class="who">' + (S.bidder === 'you' ? 'You bid' : 'Nikki bids') + '</span><b>' +
+      S.bid.qty + ' ×</b>' + ldDieHTML(S.bid.face, S.bidder === 'you' ? HUMAN_SET : NIKKI_SET, 'mini');
+  } else {
+    bb.innerHTML = '<span class="who">Round ' + S.round + ' — no bid yet</span>';
+  }
+  if (S.phase === 'bid' && S.turn === 'you' && !legalBid(S.pickQty, S.pickFace)) {
+    var m = minRaise(); S.pickQty = m.qty; S.pickFace = m.face;
+  }
+  S.pickQty = Math.max(1, Math.min(S.pickQty, Math.max(1, totalDice())));
+  document.getElementById('qVal').textContent = S.pickQty;
+  var fr = '';
+  for (i = 1; i <= 6; i++) {
+    fr += '<button type="button" class="ld-facebtn' + (S.pickFace === i ? ' sel' : '') + '" data-face="' + i +
+      '" aria-label="Bid the face ' + i + '">' + ldDieHTML(i, HUMAN_SET, 'mini') + '</button>';
+  }
+  document.getElementById('faceRow').innerHTML = fr;
+  document.querySelectorAll('.ld-facebtn').forEach(function (b) {
+    b.addEventListener('click', function () { S.pickFace = +b.getAttribute('data-face'); render(); });
+  });
+  var showCtl = S.phase === 'bid' && S.turn === 'you' && !S.rolling && !S.matchOver;
+  document.getElementById('bidControls').classList.toggle('show', showCtl);
+  document.getElementById('bidBtn').textContent = 'PLACE BID · ' + S.pickQty + ' × ' + S.pickFace;
+  document.getElementById('liarBtn').disabled = !S.bid;
+  document.getElementById('peekBtn').disabled = !(S.phase === 'bid' && !S.rolling && !S.matchOver);
+  document.getElementById('status').textContent = S.msg;
+  var ov = document.getElementById('overlay');
+  if (S.matchOver) {
+    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : 'Nikki Takes the Match';
+    document.getElementById('ovText').textContent = S.winner === 'you'
+      ? 'Nikki’s cup is empty — you called her bluffs and kept your dice. The bar’s yours tonight.'
+      : 'Your cup is empty. Nikki reads a bluff like a drink order — run it back and take her dice.';
+    ov.classList.add('show');
+  } else ov.classList.remove('show');
+}
+
+document.getElementById('qDown').addEventListener('click', function () { S.pickQty = Math.max(1, S.pickQty - 1); render(); });
+document.getElementById('qUp').addEventListener('click', function () { S.pickQty = Math.min(Math.max(1, totalDice()), S.pickQty + 1); render(); });
+document.getElementById('bidBtn').addEventListener('click', humanBid);
+document.getElementById('liarBtn').addEventListener('click', function () { if (S && S.turn === 'you') { CupAudio.ensure(); doChallenge('you'); } });
+var peekBtn = document.getElementById('peekBtn');
+peekBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); CupAudio.ensure(); setPeek(true); });
+['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) {
+  peekBtn.addEventListener(ev, function () { setPeek(false); });
+});
+document.getElementById('newBtn').addEventListener('click', newMatch);
+document.getElementById('againBtn').addEventListener('click', newMatch);
+document.getElementById('backBtn').addEventListener('click', function () {
+  try { if (window.parent && window.parent !== window && window.parent.postMessage) window.parent.postMessage({ type: 'nikkiflixs-leave-room' }, '*'); } catch (e) {}
+  window.location.href = 'index.html';
+});
+
+/* ---------- test hooks (bar sims drive the page through these) ---------- */
+window.__LIARSDICE = {
+  get state() { return S; },
+  bid: function (q, f) { if (q != null) { S.pickQty = q; S.pickFace = f; } humanBid(); },
+  liar: function () { if (S && S.turn === 'you') doChallenge('you'); },
+  peek: function (on) { setPeek(!!on); },
+  forceHands: function (y, n) {
+    if (!S || S.phase !== 'bid') return false;
+    if (y) S.hands.you = y.slice(0, S.counts.you);
+    if (n) S.hands.nikki = n.slice(0, S.counts.nikki);
+    render(); return true;
+  },
+  newMatch: newMatch,
+  cupLog: function () { return { you: cupYou.log.slice(), nikki: cupNikki.log.slice() }; },
+  audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
+  sets: { human: HUMAN_SET, nikki: NIKKI_SET },
+  equippedId: function () { return HUMAN_SET.id; }
+};
+
+newMatch();
+</script>
+</body>
+</html>

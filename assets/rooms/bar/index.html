@@ -76,6 +76,30 @@ button{cursor:pointer;font:inherit}
 .mini-die.yel i{background:#20242c;box-shadow:inset 0 1px 2px #000a}
 .mini-die.blk{width:52px;height:52px;left:50%;top:50%;transform:translate(8%,-36%) rotate(13deg);background:linear-gradient(145deg,#2a2a30,#070708);border:1px solid #c9a227}
 .mini-die.blk i{background:#f3c95c;box-shadow:inset 0 1px 2px #000a}
+/* ---- liar's dice art: the cup, tipped by its dice ---- */
+.liar-art{background:radial-gradient(ellipse at 50% -10%,#3a2312 0%,transparent 55%),radial-gradient(ellipse at 50% 118%,#20794c,#0c4a2b 78%)}
+.art-cup{position:absolute;left:50%;top:50%;width:88px;height:98px;transform:translate(-76%,-52%) rotate(-7deg);z-index:2;
+  background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);
+  filter:drop-shadow(0 10px 12px #000b)}
+.art-cup::after{content:"NF";position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);width:33px;height:33px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font:900 11px/33px "Source Sans 3",sans-serif;text-align:center}
+/* ---- shut the box art ---- */
+.box-art{background:radial-gradient(ellipse at 50% -20%,#40260f 0%,transparent 55%),linear-gradient(#241204,#170a03)}
+.art-box{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-1deg);width:84%;padding:12px;border-radius:10px;
+  background:linear-gradient(145deg,#7a4a26,#3c2412);box-shadow:0 14px 30px #000c,inset 0 2px 6px #ffdf9e44}
+.art-tiles{display:flex;gap:4px}
+.art-tiles i{flex:1;height:46px;border-radius:5px;display:grid;place-items:center;font:800 15px/1 "Barlow Condensed",sans-serif;font-style:normal;color:#ffe9bd;
+  background:linear-gradient(180deg,#a06a35,#6e452a);box-shadow:inset 0 2px 3px #ffdf9e55}
+.art-tiles i.dn{background:linear-gradient(180deg,#3a2412,#241204);color:#8a6a44;transform:translateY(4px)}
+/* ---- poker dice art ---- */
+.poker-art{background:radial-gradient(ellipse at 50% -10%,#3a2312 0%,transparent 55%),radial-gradient(ellipse at 50% 118%,#20794c,#0c4a2b 78%)}
+.mini-die .rk{position:absolute;right:-6px;bottom:-6px;min-width:18px;height:18px;padding:0 3px;border-radius:5px;display:grid;place-items:center;z-index:2;
+  background:linear-gradient(145deg,#ffe9a0,#c9a227 75%);color:#3d2b02;font:800 11px/1 "Barlow Condensed",sans-serif;border:1px solid #6e5510}
+/* ---- 7 up down art ---- */
+.updown-art{background:radial-gradient(ellipse at 50% -10%,#3a2312 0%,transparent 55%),radial-gradient(ellipse at 50% 118%,#5a1224,#2a0d16 78%)}
+.tri{position:absolute;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent}
+.tri.up{border-bottom:26px solid #f3c95c;left:19%;top:22%;filter:drop-shadow(0 4px 6px #000a)}
+.tri.dn{border-top:26px solid #e0566e;right:19%;bottom:22%;filter:drop-shadow(0 4px 6px #000a)}
 .note{margin-top:26px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#170a0ecc;color:var(--muted);font-size:13px;line-height:1.5}
 .note b{color:var(--gold)}
 @media(max-width:560px){.stations{grid-template-columns:1fr}.station .art{height:150px}.host img{width:54px;height:54px}}
@@ -135,6 +159,43 @@ button{cursor:pointer;font:inherit}
         <span class="mini-die blk"><i style="grid-area:1/1"></i><i style="grid-area:2/2"></i><i style="grid-area:3/3"></i></span>
       </div>
       <div class="body"><h2>Bar Dice</h2><p>Ship, Captain, Crew against Nikki herself. Shake the five dice, land your 6 · 5 · 4 in order, and haul the biggest cargo — first to 5 rounds takes the match.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="bar-liars-dice.html" type="button">
+      <div class="art liar-art" aria-hidden="true">
+        <span class="mini-die yel"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:2/2"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i></span>
+        <span class="mini-die blk"><i style="grid-area:1/1"></i><i style="grid-area:2/2"></i><i style="grid-area:3/3"></i></span>
+        <span class="art-cup"></span>
+      </div>
+      <div class="body"><h2>Liar's Dice</h2><p>Five dice each under the cups — you peek only yours, hers stay down. Bid the table, bluff, or call LIAR! and both cups lift. First to lose all five dice loses the match.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="bar-shut-the-box.html" type="button">
+      <div class="art box-art" aria-hidden="true"><div class="art-box"><div class="art-tiles">
+        <i>1</i><i>2</i><i class="dn">3</i><i>4</i><i>5</i><i class="dn">6</i><i>7</i><i>8</i><i>9</i>
+      </div></div></div>
+      <div class="body"><h2>Shut the Box</h2><p>Nine tiles, two dice, one cup. Flip down any tiles that add up to the roll — lowest score left standing wins the round, and a shut box is pure glory.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="bar-poker-dice.html" type="button">
+      <div class="art poker-art" aria-hidden="true">
+        <span class="mini-die yel"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:2/1"></i><i style="grid-area:2/3"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i><b class="rk">A</b></span>
+        <span class="mini-die blk"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:2/2"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i><b class="rk">K</b></span>
+      </div>
+      <div class="body"><h2>Poker Dice</h2><p>Five dice wearing card ranks, Ace high. Three shakes from the cup, hold what you like between them — best poker hand at the table takes the round.</p>
+      <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
+    </button>
+
+    <button class="station" data-href="bar-up-down.html" type="button">
+      <div class="art updown-art" aria-hidden="true">
+        <span class="tri up"></span><span class="tri dn"></span>
+        <span class="mini-die blk" style="left:50%;top:50%;transform:translate(-50%,-50%) rotate(-6deg)"><i style="grid-area:1/1"></i><i style="grid-area:1/3"></i><i style="grid-area:3/1"></i><i style="grid-area:3/3"></i></span>
+        <span class="mini-die yel" style="width:46px;height:46px;left:auto;right:16%;top:auto;bottom:14%;transform:rotate(11deg)"><i style="grid-area:1/3"></i><i style="grid-area:2/2"></i><i style="grid-area:3/1"></i></span>
+      </div>
+      <div class="body"><h2>7 Up Down</h2><p>Call it first — Up, Down, or right on Seven — then Nikki slams the cup and the two dice decide. Right call takes the round, and sevens go on the glory board.</p>
       <div class="meta"><span class="free">FREE PLAY</span><span class="go">PLAY →</span></div></div>
     </button>
   </div>
