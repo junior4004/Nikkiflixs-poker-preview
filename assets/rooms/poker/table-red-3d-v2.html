@@ -1794,6 +1794,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
       .then(function(x){
         if(!x.ok){paintAccount2((x.j&&x.j.error)||'Something went wrong.');return}
         acctSet(x.j.token,{username:x.j.username,role:x.j.role});
+        try{if(window.__NIKKIFLIXS_START_LIVE__)window.__NIKKIFLIXS_START_LIVE__()}catch(e){}
         applyAccountRole(x.j);
         acctTyped={u:'',p:''};
         paintAccount2(mode==='signup'?'Account created \u2014 you are signed in.':'Welcome back \u2014 you are signed in.');
@@ -1863,7 +1864,9 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
    runs solo-vs-bots exactly as before. Table identity comes from
    window.__NIKKIFLIXS_TABLE_CONFIG__ ({table, sb, bb}) set by the page
    before this script; it defaults to the flagship red table (1/2). */
-(function(){
+window.__NIKKIFLIXS_START_LIVE__=(function(){
+  var wireStarted=false;
+  return function(){
   'use strict';
   var DEFAULT_SERVER='https://nikkiflixs-poker-server.onrender.com';
   var SERVER=(window.__NIKKIFLIXS_SERVER_URL__||'')||(function(){try{return localStorage.getItem('nikkiflixs_live_server')||''}catch(e){return ''}})()||DEFAULT_SERVER;
@@ -1875,6 +1878,7 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
   var myName='Player';
   try{var acct=JSON.parse(localStorage.getItem('nikkiflixs_account')||'null');if(acct&&acct.username)myName=String(acct.username)}catch(e){}
   if(!token){state.status='no-session';return}
+  if(wireStarted)return;wireStarted=true;
   var handler=null,socket=null;
   function emit_(type,payload){if(socket&&socket.connected){socket.emit(type,payload||{});if(type.indexOf('voice:')===0&&state.signalLog.length<200)state.signalLog.push({t:'out',kind:type,toSeat:payload&&payload.toSeat,at:Date.now()})}}
 
@@ -2059,7 +2063,9 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
   sc.onload=init;
   sc.onerror=function(){state.status='socketio-load-failed'};
   document.head.appendChild(sc);
+  };
 })();
+window.__NIKKIFLIXS_START_LIVE__();
 </script>
 <script>/* BUILD 269 — SHARE button: one tap sends a friend to THIS table.
    Native share sheet when available, clipboard copy otherwise.
@@ -2114,6 +2120,101 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
     var obs = new MutationObserver(syncVisibility);
     obs.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
   }
+})();
+</script>
+<script>/* BUILD 270 — SOLO-vs-LIVE clarity: the silent solo fallback is a
+   trap (two friends opening the same link land on DIFFERENT bot tables
+   with nothing saying so). When the live wire cannot attach, say so ON
+   THE TABLE in plain words: a banner for no-session (sign in to play
+   live) and for any other attach failure (server unreachable, or still
+   connecting after 45s), with a Sign-in button that opens the existing
+   account flow (Profile -> ACCOUNT), a dismiss that keeps solo play,
+   and a persistent LIVE badge once attached so a live table is visibly
+   distinct from a solo one. Solo play is never blocked: dismiss (or a
+   down server) leaves the table running exactly as before. Fixed
+   elements only — one-screen untouched. */
+(function(){
+  'use strict';
+  var style=document.createElement('style');
+  style.textContent=
+    '#nfLiveSoloBanner{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:205;width:min(440px,calc(100% - 24px));display:none;padding:12px 14px 13px;border:2px solid #f0c75d;border-radius:12px;background:linear-gradient(180deg,#2a1216,#12090b);box-shadow:0 10px 30px #000d;text-align:center}'+
+    '#nfLiveSoloBanner.show{display:block}'+
+    '#nfLiveSoloBanner strong{display:block;color:#ffe9a8;font:800 17px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.04em}'+
+    '#nfLiveSoloBanner p{margin:6px 0 10px;color:#e8ddc4;font-size:13px;line-height:1.4}'+
+    '#nfLiveSoloBanner .nf-row{display:flex;gap:8px;justify-content:center}'+
+    '#nfLiveSoloBanner button{min-height:40px;padding:0 16px;border-radius:8px;border:1px solid #e8bf5b;background:linear-gradient(180deg,#b8872d,#654216);color:#fff3c5;font:800 13px/1 sans-serif;cursor:pointer}'+
+    '#nfLiveSoloBanner button.nf-ghost{background:#22242a;border-color:#ffffff35;color:#e8ddc4}'+
+    '#nfLiveBadge{position:fixed;left:12px;top:12px;z-index:205;display:none;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid #7ddb8a;background:rgba(8,52,22,.94);color:#d8ffd8;font:800 11px/1 sans-serif;letter-spacing:.08em;box-shadow:0 4px 14px #000c}'+
+    '#nfLiveBadge.show{display:flex}'+
+    '#nfLiveBadge i{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:nfLivePulse 1.6s ease-in-out infinite}'+
+    '@keyframes nfLivePulse{0%,100%{opacity:1}50%{opacity:.35}}';
+  document.head.appendChild(style);
+  var banner=document.createElement('div');
+  banner.id='nfLiveSoloBanner';
+  banner.setAttribute('role','status');
+  banner.innerHTML='<strong id="nfLiveSoloTitle"></strong><p id="nfLiveSoloSub"></p><div class="nf-row"><button type="button" id="nfLiveSoloPrimary"></button><button type="button" class="nf-ghost" id="nfLiveSoloDismiss">Keep playing solo</button></div>';
+  document.body.appendChild(banner);
+  var badge=document.createElement('div');
+  badge.id='nfLiveBadge';
+  badge.innerHTML='<i></i>LIVE';
+  badge.title='Live table — real players';
+  document.body.appendChild(badge);
+  var titleEl=document.getElementById('nfLiveSoloTitle');
+  var subEl=document.getElementById('nfLiveSoloSub');
+  var primaryBtn=document.getElementById('nfLiveSoloPrimary');
+  var dismissBtn=document.getElementById('nfLiveSoloDismiss');
+  var bootAt=Date.now();
+  var currentVariant=null;
+  function dismissed(v){try{return sessionStorage.getItem('nf_live_banner_dismissed:'+v)==='1'}catch(e){return false}}
+  function dismiss(v){try{sessionStorage.setItem('nf_live_banner_dismissed:'+v,'1')}catch(e){}}
+  function hideBanner(){banner.classList.remove('show')}
+  function hasSession(){try{return !!localStorage.getItem('nikkiflixs_session')}catch(e){return false}}
+  function openAccount(){
+    var b=document.getElementById('profileAccount');
+    var m=document.getElementById('accountModal');
+    if(m){try{m.style.zIndex='300'}catch(e){}}
+    if(b){hideBanner();b.click()}
+  }
+  primaryBtn.addEventListener('click',function(){
+    if(currentVariant==='nosession')openAccount();
+    else if(currentVariant==='unreachable')location.reload();
+  });
+  dismissBtn.addEventListener('click',function(){if(currentVariant)dismiss(currentVariant);hideBanner()});
+  function tick(){
+    var live=null;try{live=window.__NIKKIFLIXS_LIVE__}catch(e){}
+    if(document.querySelector('.modal.open, .gift-modal.open')){hideBanner();badge.classList.remove('show');return}
+    var attached=!!(live&&live.attached);
+    var socketLive=!!(live&&live.socket&&live.socket.connected);
+    if(attached&&socketLive){hideBanner();badge.classList.add('show');return}
+    badge.classList.remove('show');
+    if(attached&&!socketLive){hideBanner();return}
+    if(!live)return;
+    var variant=null;
+    if(live.status==='no-session')variant='nosession';
+    else if(live.status==='socketio-load-failed'||live.status==='no-socketio'||live.lastError)variant='unreachable';
+    else if(hasSession()&&Date.now()-bootAt>45000)variant='connecting';
+    if(!variant){hideBanner();return}
+    if(dismissed(variant)){hideBanner();return}
+    currentVariant=variant;
+    if(variant==='nosession'){
+      titleEl.textContent='You\u2019re playing SOLO vs bots';
+      subEl.textContent='Sign in to play live with real players at this table.';
+      primaryBtn.textContent='Sign in / Sign up';
+      primaryBtn.style.display='';
+    }else if(variant==='unreachable'){
+      titleEl.textContent='Live tables aren\u2019t reachable right now';
+      subEl.textContent='You\u2019re on the solo table until the connection comes back.';
+      primaryBtn.textContent='Reload & retry';
+      primaryBtn.style.display='';
+    }else{
+      titleEl.textContent='Still connecting to the live tables\u2026';
+      subEl.textContent='You\u2019re on the solo table for now \u2014 this clears itself the moment you\u2019re live.';
+      primaryBtn.style.display='none';
+    }
+    banner.classList.add('show');
+  }
+  setInterval(tick,500);
+  tick();
 })();
 </script>
 </body>
