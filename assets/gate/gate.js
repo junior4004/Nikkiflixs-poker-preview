@@ -1,7 +1,6 @@
 /* NIKKIFLIXS LOGIN GATE — Build 272 (Jerry's order 2026-10-24).
    Nobody gets into anything without passing it, in this order:
-   18-or-older warning → username + password (NO complexity rules — the
-   server only requires 6+ characters, and that is all we ask) →
+   18-or-older warning → username + password (NO rules at all — any password, any length) →
    location ON (hard block until granted; no VPN check is possible from
    the browser, so none is claimed) → avatar pick (chosen + stuck) → in.
    Shared module: included by index.html and both Hold'em table files.
@@ -110,7 +109,7 @@
       body.innerHTML =
         '<h2>YOUR ACCOUNT</h2>' +
         '<p>One account for everything — your coins, pops, dice and gifts follow <strong>you</strong>, not the phone. New here? Pick a username and a password and tap SIGN UP.</p>' +
-        '<p class="nk-small">Any password you want — 6 or more characters, no other rules. If you make it too easy, that is your business.</p>' +
+        '<p class="nk-small">Any password you want — no rules at all. If you make it too easy, that is your business.</p>' +
         '<input id="nkUser" type="text" placeholder="Username" autocapitalize="none" autocomplete="username">' +
         '<input id="nkPass" type="password" placeholder="Password" autocomplete="current-password">' +
         '<button class="nk-btn" id="nkSignup" type="button">SIGN UP</button>' +
@@ -120,7 +119,7 @@
         var u = (document.getElementById('nkUser').value || '').trim();
         var p = document.getElementById('nkPass').value || '';
         var msg = document.getElementById('nkLoginMsg');
-        if (!u || p.length < 6) { msg.textContent = 'Username + a password of 6 or more characters.'; return; }
+        if (!u || !p) { msg.textContent = 'Username + a password.'; return; }
         msg.textContent = 'Talking to the server…';
         fetch(API_BASE + '/api/' + mode, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) })
           .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
