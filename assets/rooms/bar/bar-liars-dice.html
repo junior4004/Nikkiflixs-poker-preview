@@ -13,43 +13,44 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
 body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
 button{font:inherit;cursor:pointer;touch-action:manipulation}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
 .topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
 .topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
 .topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.16em;color:var(--muted)}
-.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:5px 9px;font-size:12px;font-weight:700;color:var(--gold);text-align:center;line-height:1.35}
 .score b{color:#fff}
-.wrap{max-width:520px;margin:0 auto;padding:8px 10px 10px}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 2px}
 .duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
-.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:4px 10px;background:#0007;text-align:center}
+.duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:3px 8px;background:#0007;text-align:center}
 .duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
 .duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
 .duel .side.on .nm{color:var(--gold)}
-.duel .rem{font:800 24px/1.05 "Barlow Condensed",sans-serif;color:#fff}
+.duel .pava{width:22px;height:22px;border-radius:6px;object-fit:cover;vertical-align:-5px;margin-right:4px}
+.duel .rem{font:800 20px/1.05 "Barlow Condensed",sans-serif;color:#fff}
 .duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
-.turnline{min-height:20px;text-align:center;font-weight:700;font-size:14px;margin:3px 4px 0;color:#ffe9bd}
-.ld-stage{position:relative;max-width:440px;margin:2px auto 0;border-radius:16px;padding:6px;
+.turnline{min-height:20px;text-align:center;font-weight:700;font-size:14px;margin:2px 4px 0;color:#ffe9bd}
+.ld-stage{position:relative;max-width:440px;margin:2px auto 0;border-radius:16px;padding:4px;
   background:linear-gradient(145deg,#5d3a1e,#2a1709);box-shadow:0 24px 60px #000d,inset 0 2px 6px #ffdf9e33}
 .ld-stage.shudder{animation:ldShud .18s linear}
 @keyframes ldShud{0%{transform:translateY(0)}30%{transform:translateY(2px)}65%{transform:translateY(-1px)}100%{transform:translateY(0)}}
 .ld-zone{border-radius:12px;background:radial-gradient(ellipse at 50% 28%,#20794c,#0c4a2b 72%);
-  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:6px 10px 8px}
+  box-shadow:inset 0 0 0 3px #ffffff12,inset 0 12px 34px #0007;padding:3px 10px 4px}
 .ld-zone + .ld-zone{margin-top:0}
-.ld-zlabel{display:flex;align-items:center;justify-content:space-between;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:#ffe9bb99;text-transform:uppercase;min-height:22px}
+.ld-zlabel{display:flex;align-items:center;justify-content:space-between;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.22em;color:#ffe9bb99;text-transform:uppercase;min-height:18px}
 .ld-peek{min-height:26px;padding:3px 12px;border-radius:6px;border:1px solid var(--gold2);background:#0009;color:var(--gold);font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em}
 .ld-peek:disabled{opacity:.4;cursor:default}
-.ld-cupzone{position:relative;height:94px}
-.ld-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:8px;justify-content:center;align-items:center;min-height:46px}
-.ld-cup{position:absolute;left:50%;bottom:0;width:min(300px,94%);height:74px;z-index:6;pointer-events:none;transform-origin:88% 92%;
+.ld-cupzone{position:relative;height:72px}
+.ld-row{position:absolute;left:0;right:0;bottom:6px;display:flex;gap:8px;justify-content:center;align-items:center;min-height:44px}
+.ld-cup{position:absolute;left:50%;bottom:0;width:min(300px,94%);height:58px;z-index:6;pointer-events:none;transform-origin:88% 92%;
   transform:translate(-50%,0);transition:transform .45s cubic-bezier(.25,.8,.3,1);
   background:linear-gradient(100deg,#7e1420,#b32233 45%,#680f1a);
   clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);filter:drop-shadow(0 10px 12px #000b)}
-.ld-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:16px;border-radius:50%;
+.ld-cup:before{content:"";position:absolute;top:0;left:6%;right:6%;height:14px;border-radius:50%;
   background:radial-gradient(ellipse at 50% 40%,#57101b,#a12330 78%)}
-.ld-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;
-  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:13px;
+.ld-cup:after{content:"NF";position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,#ffe9a0,#c9a227 70%);color:#5e4303;font-weight:900;font-size:12px;
   display:grid;place-items:center;box-shadow:0 2px 6px #0008}
-.ld-cup .ld-cupband{position:absolute;left:0;right:0;bottom:8px;height:6px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
+.ld-cup .ld-cupband{position:absolute;left:0;right:0;bottom:6px;height:5px;background:linear-gradient(90deg,#8e672f,#f3c95c,#8e672f);opacity:.85}
 .ld-cup.house{background:linear-gradient(100deg,#15151a,#2c2c33 45%,#060607)}
 .ld-cup.house:before{background:radial-gradient(ellipse at 50% 40%,#000,#3a3a42 78%)}
 .ld-cupzone[data-cup="lifted"] .ld-cup,.ld-cupzone[data-cup="lifting"] .ld-cup{transform:translate(-50%,-44px) rotate(-6deg)}
@@ -57,10 +58,10 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .ld-cupzone[data-cup="shaking"] .ld-cup{animation:ldCupShake .11s linear infinite}
 .ld-cupzone[data-cup="slamming"] .ld-cup{transition:transform .09s ease-in;transform:translate(-50%,4px) scale(1.01,.99);animation:none}
 @keyframes ldCupShake{0%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}25%{transform:translate(calc(-50% + 3px),2px) rotate(1.6deg)}50%{transform:translate(calc(-50% - 3px),-4px) rotate(-1.4deg)}75%{transform:translate(calc(-50% + 4px),1px) rotate(2.2deg)}100%{transform:translate(calc(-50% - 4px),-2px) rotate(-2.2deg)}}
-.ld-bidbar{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0;min-height:38px;border:1px solid var(--gold2);border-radius:10px;background:#0d0508d9;padding:4px 10px;font-size:14px;font-weight:700;color:#ffe9bd;text-align:center}
+.ld-bidbar{display:flex;align-items:center;justify-content:center;gap:8px;margin:3px 0;min-height:32px;border:1px solid var(--gold2);border-radius:10px;background:#0d0508d9;padding:3px 10px;font-size:14px;font-weight:700;color:#ffe9bd;text-align:center}
 .ld-bidbar .who{color:var(--muted);font-weight:600}
 /* ---- dice: Farkle's CSS-pip dice, ported under .ld- scope ---- */
-.ld-die{position:relative;width:42px;height:42px;flex:none;border-radius:10px;padding:5px;border:1px solid #888;display:block;background:#ddd;
+.ld-die{position:relative;width:40px;height:40px;flex:none;border-radius:10px;padding:4px;border:1px solid #888;display:block;background:#ddd;
   box-shadow:0 5px 8px #0009,inset 0 2px 3px #fff7,inset 0 -4px 6px #0004;transform:rotate(var(--rot,0deg))}
 .ld-face{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%}
 .ld-die .pip{width:80%;height:80%;margin:auto;border-radius:50%;background:var(--pip,#1c1c22);box-shadow:inset 0 1px 2px #000a}
@@ -87,21 +88,21 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .ld-die.set-skull .pip{background:transparent;box-shadow:none;border-radius:0;color:#e9ddba;font-size:11px;line-height:1;display:grid;place-items:center}
 .ld-die.set-ice{--pip:#0d6ea8;background:linear-gradient(145deg,#eefdff,#a9ddf3 55%,#79c1e5);border-color:#57a7cf;box-shadow:0 5px 8px #0009,inset 0 0 13px #ffffffd9,inset 0 2px 4px #fff}
 /* ---- bid controls ---- */
-.ld-controls{max-width:440px;margin:4px auto 0;visibility:hidden}
+.ld-controls{max-width:440px;margin:2px auto 0;visibility:hidden}
 .ld-controls.show{visibility:visible}
 .ld-picker{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
-.ld-step{width:36px;height:36px;border-radius:9px;border:1px solid var(--gold2);background:var(--panel);color:#ffe9bd;font-size:20px;font-weight:800;line-height:1}
+.ld-step{width:32px;height:32px;border-radius:9px;border:1px solid var(--gold2);background:var(--panel);color:#ffe9bd;font-size:20px;font-weight:800;line-height:1}
 .ld-qty{font:800 24px/1 "Barlow Condensed",sans-serif;color:#fff;min-width:30px;text-align:center}
 .ld-hint2{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-right:4px}
 .ld-facebtn{padding:0;border:2px solid transparent;border-radius:9px;background:transparent;line-height:0}
 .ld-facebtn.sel{border-color:var(--gold);box-shadow:0 0 10px #ddb86666}
 .ld-facebtn .ld-die{width:30px;height:30px;padding:4px;border-radius:8px}
-.ld-btnrow{display:flex;gap:10px;justify-content:center;margin-top:5px}
-.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:6px 4px 4px;color:#ffe9bd}
-.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px;line-height:1.45}
+.ld-btnrow{display:flex;gap:10px;justify-content:center;margin-top:3px}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:4px 4px 2px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 6px;line-height:1.45}
 .hint b{color:#ffe9bd}
 .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:2px}
-.btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
+.btn{min-height:48px;padding:11px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
 .btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
 .btn.danger{background:linear-gradient(180deg,#a02333,#5e1220);border-color:#e0566e;color:#fff;font-size:17px}
 .btn:disabled{opacity:.45;cursor:default}
@@ -128,12 +129,13 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Bar</button>
   <h1>Liar's Dice<small>BID · BLUFF · CALL HER OUT</small></h1>
-  <div class="score" id="scoreBox">YOU <b>5</b> · NIKKI <b>5</b></div>
+  <div class="score" id="scoreBox">YOU <b>5</b> · NIKKI <b>5</b><br>PROMISE <b>5</b></div>
 </div>
 <div class="wrap">
   <div class="duel">
-    <div class="side on" id="sideYou"><div class="nm">YOUR DICE</div><div class="rem" id="diceYou">5</div><span class="cgo">IN YOUR CUP</span></div>
-    <div class="side" id="sideNikki"><div class="nm">NIKKI'S DICE</div><div class="rem" id="diceNikki">5</div><span class="cgo">IN HER CUP</span></div>
+    <div class="side" id="sideYou"><div class="nm">YOUR DICE</div><div class="rem" id="diceYou">5</div><span class="cgo" id="cgoYou">IN YOUR CUP</span></div>
+    <div class="side" id="sideNikki"><div class="nm">NIKKI'S DICE</div><div class="rem" id="diceNikki">5</div><span class="cgo" id="cgoNikki">IN HER CUP</span></div>
+    <div class="side" id="sidePromise"><div class="nm"><img class="pava" src="../casino/assets/promise-avatar.webp" alt="">PROMISE'S</div><div class="rem" id="dicePromise">5</div><span class="cgo" id="cgoPromise">IN HER CUP</span></div>
   </div>
   <p class="turnline" id="turnline">Round 1</p>
   <div class="ld-stage" id="stage">
@@ -142,6 +144,13 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <div class="ld-cupzone" id="cupzoneN" data-cup="down">
         <div class="ld-row" id="rowN"></div>
         <div class="ld-cup house" id="cupN" aria-hidden="true"><span class="ld-cupband"></span></div>
+      </div>
+    </div>
+    <div class="ld-zone">
+      <div class="ld-zlabel"><span>PROMISE · HER CUP STAYS DOWN</span><span id="pCount"></span></div>
+      <div class="ld-cupzone" id="cupzoneP" data-cup="down">
+        <div class="ld-row" id="rowP"></div>
+        <div class="ld-cup house" id="cupP" aria-hidden="true"><span class="ld-cupband"></span></div>
       </div>
     </div>
     <div class="ld-bidbar" id="bidbar">No bid yet</div>
@@ -176,7 +185,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
     <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
     <button class="btn" id="newBtn" type="button">NEW MATCH</button>
   </div>
-  <p class="hint"><b>Liar's Dice:</b> hold <b>PEEK</b> to see your dice — hers stay hidden. Bid the count of a face at the whole table (<b>ones wild</b>), raise it, or call <b>LIAR!</b>: both cups lift and the wrong call sheds a die. <b>Lose all five, lose the match.</b></p>
+  <p class="hint"><b>Liar's Dice:</b> hold <b>PEEK</b> to see your dice — theirs stay hidden. Bid the count of a face at the whole table (<b>ones wild</b>), raise it, or call <b>LIAR!</b>: all three cups lift and the wrong call sheds a die. <b>Lose all five and you're out — last cup standing wins.</b></p>
 </div>
 <script>
 'use strict';
@@ -222,6 +231,7 @@ function ldEquippedSet() {
 }
 var HUMAN_SET = ldEquippedSet();
 var NIKKI_SET = LD_SET_BY_ID.blackgold;
+var PROMISE_SET = LD_SET_BY_ID.pink;
 
 function ldPipsHTML(value, glyph) {
   var cells = LD_PIPS[value]; if (!cells) return '';
@@ -318,7 +328,13 @@ function makeCup(zoneId) {
       this.zone.setAttribute('data-cup', ph);
     } };
 }
-var cupYou = makeCup('cupzoneY'), cupNikki = makeCup('cupzoneN');
+var cupYou = makeCup('cupzoneY'), cupNikki = makeCup('cupzoneN'), cupPromise = makeCup('cupzoneP');
+function dispName(w) { return w === 'you' ? 'You' : w === 'nikki' ? 'Nikki' : 'Promise'; }
+function loseName(w) { return w === 'you' ? 'you lose' : w === 'nikki' ? 'Nikki loses' : 'Promise loses'; }
+function callName(w) { return w === 'you' ? 'You call' : w === 'nikki' ? 'Nikki calls' : 'Promise calls'; }
+function bidVerb(w) { return w === 'you' ? 'You bid' : w === 'nikki' ? 'Nikki bids' : 'Promise bids'; }
+function setOf(w) { return w === 'you' ? HUMAN_SET : w === 'nikki' ? NIKKI_SET : PROMISE_SET; }
+function nextAlive(who) { var o = ['you', 'nikki', 'promise'], i = o.indexOf(who), k; for (k = 1; k <= 3; k++) { var c = o[(i + k) % 3]; if (S.counts[c] > 0) return c; } return null; }
 function shudder() {
   var st = document.getElementById('stage');
   if (st) { st.classList.remove('shudder'); void st.offsetWidth; st.classList.add('shudder'); }
@@ -344,10 +360,10 @@ function cupRitual(cup, lift, done) {
 
 /* ----- game state + rules (ported from the game-room build) ----- */
 function rollHand(n) { var a = []; for (var i = 0; i < n; i++) a.push(1 + Math.floor(Math.random() * 6)); return a; }
-function totalDice() { return S.counts.you + S.counts.nikki; }
+function totalDice() { return S.counts.you + S.counts.nikki + S.counts.promise; }
 function countFace(face) {
   var n = 0;
-  ['you', 'nikki'].forEach(function (p) {
+  ['you', 'nikki', 'promise'].forEach(function (p) {
     S.hands[p].forEach(function (v) { if (v === face || (face !== 1 && v === 1)) n++; });
   });
   return n;
@@ -372,7 +388,7 @@ function estimate(p, face) {
 function newMatch() {
   timerToken++;
   S = {
-    round: 1, counts: { you: 5, nikki: 5 }, hands: { you: [], nikki: [] },
+    round: 1, counts: { you: 5, nikki: 5, promise: 5 }, hands: { you: [], nikki: [], promise: [] },
     bid: null, bidder: null, turn: 'you', phase: 'start', rolling: false,
     peek: false, matchOver: false, winner: null,
     pickQty: 1, pickFace: 2, msg: ''
@@ -382,45 +398,47 @@ function newMatch() {
 function newRound(starter) {
   S.hands.you = rollHand(S.counts.you);
   S.hands.nikki = rollHand(S.counts.nikki);
+  S.hands.promise = rollHand(S.counts.promise);
   S.bid = null; S.bidder = null; S.turn = starter; S.phase = 'rolling'; S.rolling = true; S.peek = false;
   S.msg = 'Cups up — shake ’em, slam ’em, and keep ’em down…';
   render();
   var done = 0;
   function fin() {
-    if (++done < 2) return;
+    if (++done < 3) return;
     S.rolling = false; S.phase = 'bid';
-    S.msg = starter === 'you' ? 'Your call — open the bidding, or peek at your dice first.' : 'Nikki’s cups are down. She opens the bidding…';
+    S.msg = starter === 'you' ? 'Your call — open the bidding, or peek at your dice first.' : starter === 'nikki' ? 'Nikki’s cups are down. She opens the bidding…' : 'Promise’s cups are down. She opens the bidding…';
     render();
-    if (starter === 'nikki') scheduleBot();
+    if (starter !== 'you') scheduleBot();
   }
   cupRitual(cupYou, false, fin);
   cupRitual(cupNikki, false, fin);
+  cupRitual(cupPromise, false, fin);
 }
 function scheduleBot() {
   later(function () {
-    if (!S || S.matchOver || S.phase !== 'bid' || S.turn !== 'nikki' || S.rolling) return;
-    botStep();
+    if (!S || S.matchOver || S.phase !== 'bid' || S.turn === 'you' || S.rolling) return;
+    botStep(S.turn);
   }, FAST ? 200 : 950);
 }
-function botStep() {
-  if (S.bid && S.bid.qty > estimate('nikki', S.bid.face) + 1.15 + Math.random() * 0.6) return doChallenge('nikki');
+function botStep(who) {
+  if (S.bid && S.bid.qty > estimate(who, S.bid.face) + 1.15 + Math.random() * 0.6) return doChallenge(who);
   var bestFace = 2, bestEst = -1, f, e;
-  for (f = 1; f <= 6; f++) { e = estimate('nikki', f); if (e > bestEst) { bestEst = e; bestFace = f; } }
+  for (f = 1; f <= 6; f++) { e = estimate(who, f); if (e > bestEst) { bestEst = e; bestFace = f; } }
   var qty, face, tot = totalDice();
   if (!S.bid) { qty = Math.max(1, Math.min(tot, Math.floor(bestEst))); face = bestFace; }
   else if (bestFace > S.bid.face && bestEst >= S.bid.qty - 0.5) { qty = S.bid.qty; face = bestFace; }
-  else if (estimate('nikki', S.bid.face) >= S.bid.qty + 0.5) { qty = S.bid.qty + 1; face = S.bid.face; }
+  else if (estimate(who, S.bid.face) >= S.bid.qty + 0.5) { qty = S.bid.qty + 1; face = S.bid.face; }
   else { qty = S.bid.qty + 1; face = bestFace; }
-  if (!legalBid(qty, face)) { if (S.bid) return doChallenge('nikki'); qty = 1; face = bestFace; }
-  placeBid('nikki', qty, face);
+  if (!legalBid(qty, face)) { if (S.bid) return doChallenge(who); qty = 1; face = bestFace; }
+  placeBid(who, qty, face);
 }
 function placeBid(who, qty, face) {
   S.bid = { qty: qty, face: face }; S.bidder = who;
-  S.msg = (who === 'you' ? 'You bid ' : 'Nikki bids ') + qty + ' × ' + face + (who === 'you' ? '. Her call…' : '. Your call — raise it or call her out.');
-  S.turn = who === 'you' ? 'nikki' : 'you';
+  S.msg = bidVerb(who) + ' ' + qty + ' × ' + face + (who === 'you' ? '. Their call…' : '. Your call — raise it or call her out.');
+  S.turn = nextAlive(who);
   S.pickQty = qty; S.pickFace = face;
   render();
-  if (S.turn === 'nikki') scheduleBot();
+  if (S.turn !== 'you') scheduleBot();
 }
 function humanBid() {
   if (!S || S.phase !== 'bid' || S.turn !== 'you' || S.rolling || S.matchOver) return;
@@ -437,17 +455,23 @@ function doChallenge(who) {
   S.phase = 'reveal'; S.peek = false;
   var challenger = who, bidder = S.bidder;
   var actual = countFace(S.bid.face), good = actual >= S.bid.qty, loser = good ? challenger : bidder;
-  S.msg = (who === 'you' ? 'You call' : 'Nikki calls') + ' LIAR! Both cups lift — the table holds ' + actual +
+  S.msg = callName(who) + ' LIAR! All three cups lift — the table holds ' + actual +
     ' × ' + S.bid.face + ' (ones wild). The bid ' + (good ? 'stands' : 'fails') + ', so ' +
-    (loser === 'you' ? 'you lose' : 'Nikki loses') + ' a die.';
+    loseName(loser) + ' a die.';
   render();
-  cupYou.set('lifting'); cupNikki.set('lifting'); CupAudio.scrape();
-  later(function () { cupYou.set('lifted'); cupNikki.set('lifted'); }, FAST ? 60 : 480);
+  cupYou.set('lifting'); cupNikki.set('lifting'); cupPromise.set('lifting'); CupAudio.scrape();
+  later(function () { cupYou.set('lifted'); cupNikki.set('lifted'); cupPromise.set('lifted'); }, FAST ? 60 : 480);
   later(function () {
     S.counts[loser]--;
     if (S.counts[loser] <= 0) {
-      S.matchOver = true; S.winner = loser === 'you' ? 'nikki' : 'you'; S.phase = 'over';
-      render(); return;
+      var still = ['you', 'nikki', 'promise'].filter(function (p) { return S.counts[p] > 0; });
+      if (still.length <= 1) {
+        S.matchOver = true; S.winner = still[0] || null; S.phase = 'over';
+        render(); return;
+      }
+      S.round++; render();
+      later(function () { newRound(nextAlive(loser)); }, FAST ? 200 : 750);
+      return;
     }
     S.round++; render();
     later(function () { newRound(loser); }, FAST ? 200 : 750);
@@ -462,23 +486,31 @@ function setPeek(on) {
 
 /* ----- rendering ----- */
 function render() {
-  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.counts.you + '</b> · NIKKI <b>' + S.counts.nikki + '</b>';
+  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.counts.you + '</b> · NIKKI <b>' + S.counts.nikki + '</b><br>PROMISE <b>' + S.counts.promise + '</b>';
   document.getElementById('diceYou').textContent = S.counts.you;
   document.getElementById('diceNikki').textContent = S.counts.nikki;
+  document.getElementById('dicePromise').textContent = S.counts.promise;
+  document.getElementById('cgoYou').textContent = S.counts.you > 0 ? 'IN YOUR CUP' : 'OUT';
+  document.getElementById('cgoNikki').textContent = S.counts.nikki > 0 ? 'IN HER CUP' : 'OUT';
+  document.getElementById('cgoPromise').textContent = S.counts.promise > 0 ? 'IN HER CUP' : 'OUT';
   document.getElementById('sideYou').classList.toggle('on', S.turn === 'you' && !S.matchOver);
   document.getElementById('sideNikki').classList.toggle('on', S.turn === 'nikki' && !S.matchOver);
+  document.getElementById('sidePromise').classList.toggle('on', S.turn === 'promise' && !S.matchOver);
   document.getElementById('turnline').textContent = S.matchOver ? 'Match over' :
     'Round ' + S.round + ' · ' + totalDice() + ' dice in play · ones are wild';
   document.getElementById('nCount').textContent = S.counts.nikki + (S.counts.nikki === 1 ? ' DIE' : ' DICE') + ' UNDER IT';
-  var ry = '', rn = '', i;
+  document.getElementById('pCount').textContent = S.counts.promise + (S.counts.promise === 1 ? ' DIE' : ' DICE') + ' UNDER IT';
+  var ry = '', rn = '', rp = '', i;
   for (i = 0; i < S.hands.you.length; i++) ry += ldDieHTML(S.hands.you[i], HUMAN_SET, '', ((i * 31 + S.hands.you[i] * 7) % 17) - 8);
   for (i = 0; i < S.hands.nikki.length; i++) rn += ldDieHTML(S.hands.nikki[i], NIKKI_SET, '', ((i * 41 + S.hands.nikki[i] * 5) % 17) - 8);
+  for (i = 0; i < S.hands.promise.length; i++) rp += ldDieHTML(S.hands.promise[i], PROMISE_SET, '', ((i * 53 + S.hands.promise[i] * 3) % 17) - 8);
   document.getElementById('rowY').innerHTML = ry;
   document.getElementById('rowN').innerHTML = rn;
+  document.getElementById('rowP').innerHTML = rp;
   var bb = document.getElementById('bidbar');
   if (S.bid) {
-    bb.innerHTML = '<span class="who">' + (S.bidder === 'you' ? 'You bid' : 'Nikki bids') + '</span><b>' +
-      S.bid.qty + ' ×</b>' + ldDieHTML(S.bid.face, S.bidder === 'you' ? HUMAN_SET : NIKKI_SET, 'mini');
+    bb.innerHTML = '<span class="who">' + bidVerb(S.bidder) + '</span><b>' +
+      S.bid.qty + ' ×</b>' + ldDieHTML(S.bid.face, setOf(S.bidder), 'mini');
   } else {
     bb.innerHTML = '<span class="who">Round ' + S.round + ' — no bid yet</span>';
   }
@@ -504,10 +536,10 @@ function render() {
   document.getElementById('status').textContent = S.msg;
   var ov = document.getElementById('overlay');
   if (S.matchOver) {
-    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : 'Nikki Takes the Match';
+    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : dispName(S.winner) + ' Takes the Match';
     document.getElementById('ovText').textContent = S.winner === 'you'
-      ? 'Nikki’s cup is empty — you called her bluffs and kept your dice. The bar’s yours tonight.'
-      : 'Your cup is empty. Nikki reads a bluff like a drink order — run it back and take her dice.';
+      ? 'You outlasted them both — the bar’s yours tonight.'
+      : dispName(S.winner) + ' takes the match — the last cup standing. Run it back and take her dice.';
     ov.classList.add('show');
   } else ov.classList.remove('show');
 }
@@ -534,16 +566,17 @@ window.__LIARSDICE = {
   bid: function (q, f) { if (q != null) { S.pickQty = q; S.pickFace = f; } humanBid(); },
   liar: function () { if (S && S.turn === 'you') doChallenge('you'); },
   peek: function (on) { setPeek(!!on); },
-  forceHands: function (y, n) {
+  forceHands: function (y, n, p) {
     if (!S || S.phase !== 'bid') return false;
     if (y) S.hands.you = y.slice(0, S.counts.you);
     if (n) S.hands.nikki = n.slice(0, S.counts.nikki);
+    if (p) S.hands.promise = p.slice(0, S.counts.promise);
     render(); return true;
   },
   newMatch: newMatch,
-  cupLog: function () { return { you: cupYou.log.slice(), nikki: cupNikki.log.slice() }; },
+  cupLog: function () { return { you: cupYou.log.slice(), nikki: cupNikki.log.slice(), promise: cupPromise.log.slice() }; },
   audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
-  sets: { human: HUMAN_SET, nikki: NIKKI_SET },
+  sets: { human: HUMAN_SET, nikki: NIKKI_SET, promise: PROMISE_SET },
   equippedId: function () { return HUMAN_SET.id; }
 };
 
@@ -553,16 +586,16 @@ newMatch();
   <div class="htp-card">
     <h2>How to Play — Liar's Dice</h2>
     <h3>The Object</h3>
-    <p>Be the last one holding dice. You and Nikki each start with <b>five dice</b>, shaken in the cup and kept hidden.</p>
+    <p>Be the last one holding dice. You, Nikki, and Promise each start with <b>five dice</b>, shaken in the cup and kept hidden.</p>
     <h3>How a Round Plays</h3>
     <ul>
-      <li>Both cups shake, slam down, and <b>stay down</b>. Hold <b>PEEK</b> to lift only your cup and look at your own dice — Nikki's stay covered, and she can't see yours.</li>
+      <li>All three cups shake, slam down, and <b>stay down</b>. Hold <b>PEEK</b> to lift only your cup and look at your own dice — theirs stay covered, and they can't see yours.</li>
       <li>Players take turns <b>bidding</b>. A bid names how many dice at the <b>whole table</b> — yours and hers together — show one face: "four 5s," say. <b>Ones are wild</b>: every 1 counts as the bid face too.</li>
       <li>On your turn, either <b>raise</b> or call her out. A raise is more dice, or the same count with a higher face — the picker is already set to the lowest legal raise, so <b>PLACE BID</b> always raises legally.</li>
-      <li>Think her bid is more than the table really holds? Tap <b>LIAR!</b> Both cups lift and every die is counted, wild ones included.</li>
+      <li>Think their bid is more than the table really holds? Tap <b>LIAR!</b> All three cups lift and every die is counted, wild ones included.</li>
     </ul>
     <h3>Losing Dice</h3>
-    <p>If the table holds at least the bid, the bid was honest — the <b>caller</b> loses a die. If it falls short, the <b>bidder</b> loses a die. The loser opens the next round. Run out of dice and you lose the match; take all five of Nikki's and it's yours.</p>
+    <p>If the table holds at least the bid, the bid was honest — the <b>caller</b> loses a die. If it falls short, the <b>bidder</b> loses a die. The loser opens the next round. Lose all your dice and you're out; the last player holding dice takes the match.</p>
     <button class="htp-close" id="htpClose" type="button">CLOSE</button>
   </div>
 </div>

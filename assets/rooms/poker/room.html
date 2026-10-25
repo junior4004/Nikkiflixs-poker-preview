@@ -11,12 +11,12 @@
 body{background:#070304;background-image:radial-gradient(ellipse 130% 55% at 50% -8%,#4a1016 0%,#1c0709 46%,#070304 78%),radial-gradient(ellipse 90% 40% at 50% 112%,#2a0d10 0%,transparent 70%);color:#f5e6c8;font-family:"Source Sans 3",system-ui,sans-serif;padding:22px 16px 38px;max-width:800px;margin:0 auto;min-height:100vh}
 h1{text-align:center;color:#f2c76f;margin:16px 0 5px;font:800 35px/1.04 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;text-shadow:0 3px 16px #000,0 0 34px #f2c76f30}
 h1 .suit{display:inline-block;color:#e8b74a;text-shadow:0 2px 10px #000,0 0 18px #f2c76f55;transform:translateY(-2px)}
-.room-sub{text-align:center;color:#cdb088;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;margin:0 auto 10px;padding-bottom:14px;max-width:520px;border-bottom:1px solid #f2c76f2e;box-shadow:0 1px 0 #00000080}
+.room-sub{text-align:center;color:#e5ba53;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;margin:0 auto 10px;padding-bottom:14px;max-width:520px;border-bottom:1px solid #f2c76f2e;box-shadow:0 1px 0 #00000080}
 h2{color:#f2c76f;margin:34px 0 15px;font:700 20px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.045em;text-transform:uppercase;border-bottom:1px solid #f2c76f44;padding-bottom:9px;text-shadow:0 2px 8px #000}
 h2::before{content:"♠";color:#e8b74a;margin-right:9px;text-shadow:0 0 12px #f2c76f4d}
 .table-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:560px){.table-grid{grid-template-columns:1fr}}
-.table-card{display:block;text-decoration:none;color:#f5e6c8;-webkit-tap-highlight-color:transparent;background:linear-gradient(165deg,#1d1108,#110905 72%);border:1px solid #8a6a34;border-radius:16px;overflow:hidden;box-shadow:0 16px 36px #000d,0 3px 10px #0009,inset 0 1px 0 #f2c76f38,inset 0 -1px 0 #00000090;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+.table-card{display:block;text-decoration:none;color:#f5e6c8;-webkit-tap-highlight-color:transparent;background:linear-gradient(165deg,#5c1220,#260008 72%);border:1px solid #c9a24d;border-radius:16px;overflow:hidden;box-shadow:0 16px 36px #000d,0 3px 10px #0009,inset 0 1px 0 #f2c76f38,inset 0 -1px 0 #00000090;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
 .table-card.green{background:linear-gradient(165deg,#14231a,#0e0a06 74%)}
 .table-card.red{background:linear-gradient(165deg,#2b1216,#100806 74%)}
 .table-card:hover,.table-card:active{transform:translateY(-3px);border-color:#f2c76f;box-shadow:0 22px 46px #000e,0 4px 12px #0009,inset 0 1px 0 #f2c76f4d}
@@ -34,20 +34,26 @@ h2::before{content:"♠";color:#e8b74a;margin-right:9px;text-shadow:0 0 12px #f2
 .table-card .occ{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
 .table-card .dots{display:inline-flex;gap:4px;padding:5px 8px;border-radius:999px;background:#00000059;box-shadow:inset 0 1px 3px #000c,inset 0 0 0 1px #f2c76f1f}
 .table-card .dots i{width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffedb0,#d9a83c 68%,#8a5f16);box-shadow:0 1px 4px #000a,0 0 6px #f2c76f40,inset 0 0 0 1px #f2c76f66}
-.table-card .dots i.off{background:radial-gradient(circle at 50% 42%,#2b1a0c,#170d05);box-shadow:inset 0 0 0 2px #77592c,inset 0 2px 3px #000d}
+.table-card .dots i.off{background:radial-gradient(circle at 50% 42%,#5c1220,#260008);box-shadow:inset 0 0 0 2px #8e2434,inset 0 2px 3px #000d}
 .table-card .pill{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;padding:7px 11px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 7px #0008,inset 0 1px 0 #ffffff24}
 .table-card .pill.open{color:#a9f7c0;background:linear-gradient(180deg,#12502a,#0c3a1d);border:1px solid #2f9e57}
 .table-card .pill.full{color:#ffc9c9;background:linear-gradient(180deg,#57161b,#3d0f13);border:1px solid #b03333}
 .table-card .meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px}
-.table-card .mchip{flex:1 1 auto;text-align:center;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;color:#ecd39c;background:linear-gradient(180deg,#221407,#180e05);border:1px solid #77592c;border-radius:6px;padding:8px 9px;text-transform:uppercase;box-shadow:inset 0 1px 0 #f2c76f24,0 1px 3px #0007}
+.table-card .mchip{flex:1 1 auto;text-align:center;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;color:#ecd39c;background:linear-gradient(180deg,#5c1220,#260008);border:1px solid #8e2434;border-radius:6px;padding:8px 9px;text-transform:uppercase;box-shadow:inset 0 1px 0 #f2c76f24,0 1px 3px #0007}
 .table-card .play{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:9px;font:800 17px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#221100;background:linear-gradient(180deg,#ffedb0 0%,#eec25e 48%,#d29a2e 52%,#b97c1c 100%);box-shadow:0 7px 18px #000b,0 2px 5px #0008,inset 0 1px 0 #fffbe8,inset 0 -2px 4px #7a4d0d66;text-shadow:0 1px 0 #ffeec280;transition:filter .12s ease}
 .table-card:active .play{filter:brightness(1.07)}
-.table-card .play.view{color:#f2c76f;background:linear-gradient(180deg,#241708,#170e05);border:1px solid #a37c33;box-shadow:inset 0 1px 0 #f2c76f30,0 3px 9px #0008;text-shadow:0 1px 4px #000}
-.foot{text-align:center;margin:36px 0 0;padding-top:18px;border-top:1px solid #f2c76f24;color:#937c50;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase}
-.build-stamp{position:fixed;left:10px;bottom:10px;z-index:50;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#f2c76f;background:#140b06d9;border:1px solid #77592c;border-radius:6px;padding:6px 9px;box-shadow:0 4px 12px #000a}
+.table-card .play.view{color:#f2c76f;background:linear-gradient(180deg,#5c1220,#260008);border:1px solid #c9a24d;box-shadow:inset 0 1px 0 #f2c76f30,0 3px 9px #0008;text-shadow:0 1px 4px #000}
+.foot{text-align:center;margin:36px 0 0;padding-top:18px;border-top:1px solid #f2c76f24;color:#c9a24d;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase}
+.build-stamp{position:fixed;left:10px;bottom:10px;z-index:50;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#f2c76f;background:#260008d9;border:1px solid #8e2434;border-radius:6px;padding:6px 9px;box-shadow:0 4px 12px #000a}
+/* Poker-room fix item 1: a REAL lobby button. Plain same-site link to the
+   lobby page — never history.back (which can close the app when there is
+   no history) and never a dead URL. Sits at the TOP of the page, clear of
+   the Android gesture bar. */
+.lobby-back{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid #f2c76f;border-radius:9px;background:#260008;color:#f2c76f;font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-decoration:none}
 </style>
 </head>
 <body>
+<a class="lobby-back" href="../../../index.html" aria-label="Back to the lobby">← LOBBY</a>
 <h1><span class="suit">♠</span> Nikkiflixs Poker Room</h1>
 <p class="room-sub">Theater and Poker Room · Est. 2026</p>
 

@@ -91,7 +91,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 /* v35-FUN: throwables + emotes + gifts live on a separate tap layer — gameplay untouched */
 .fun-targetable{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .fun-targetable.fun-target{box-shadow:0 0 0 3px #ff6b6b,0 0 22px #ff6b6bcc;border-radius:12px}
-.fun-targetable.fun-target::after{content:"🎯";position:absolute;right:4px;top:-16px;font-size:22px;filter:drop-shadow(0 2px 3px #000);pointer-events:none;z-index:5}
+.fun-targetable.fun-target::after{content:"";position:absolute;right:2px;top:-9px;width:15px;height:15px;border-radius:50%;background:radial-gradient(circle,#fff6d8 0 26%,#e53226 27% 55%,#f8f2df 56% 74%,#e53226 75%);border:2px solid #ffe9a8;box-shadow:0 2px 4px #000c;pointer-events:none;z-index:5}
 .funbtn{min-height:42px;padding:8px 12px;border-radius:8px;font-weight:700;border:1px solid #8a6a2f;background:#1a1510;color:#ffe9bd;white-space:nowrap}
 .tipbtn{min-height:42px;padding:8px 12px;border-radius:8px;font-weight:700;border:1px solid #e3b85f;background:#2b1a0d;color:#ffe9bd;white-space:nowrap}
 .tip-modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;background:#000a}
@@ -237,17 +237,98 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 .bj-seat::after{content:"";position:absolute;left:50%;bottom:-4px;width:74px;height:17px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
 .bj-seat .bj-sname{z-index:3}
 </style>
+<style>
+/* BUILD 268: BLACKJACK SEAT + CENTERING FIX (Jerry's live screenshots,
+   2026-10-23 ~22:31 MDT — "get all these fixed and working centered
+   properly"). Presentation only — no JS, ids, hooks, logic or payouts.
+   1) PHOTO SQUARES GONE: the seat/dealer figures were photo-portrait
+      webps with a bar scene baked in; the Build 201/205 dissolve mask
+      could only fade their edges, so the square still read on the felt.
+      The figures now use the TRUE ALPHA CUTOUTS of the same people
+      (assets/avatars/standing/* for the four companions, Nikki's
+      poker-real cutout for the dealer): the person, transparent
+      background, nothing behind them. The dissolve mask retires.
+      Framed head-and-shoulders (object-fit cover, top-anchored) and
+      seated in the Build 205 pod socket/lip, scaled up with the window.
+   2) DEALER CENTERED + WHOLE: Nikki was a 62px head clipped in the
+      top notch. She is now a 92x100 bust straddling the top rail at
+      dead center in a widened notch, with a pod socket + lip like the
+      seats and ONE label (her NIKKI tag; the zone label stays hidden).
+   3) SEATS ON THE TABLE: busts grow 62x64 -> 80x88 (negative margins
+      re-center each seat on its Build 205 anchor point) and the arc
+      pulls in off the felt edge (l1/r1 2.5% -> 4.5%, l2/r2 .5% -> 3%),
+      so no figure hangs off the felt and nameplates clear the rail.
+   4) TIP/FUN buttons are text-only now (markup) — no emoji icons. */
+.bj-notch{width:212px;height:24px}
+.bj-dealer{width:92px;height:100px;top:-34px;z-index:0}
+.bj-dealer img{object-fit:cover;object-position:50% 6%;transform:none;-webkit-mask-image:none;mask-image:none}
+.bj-dealer::before{content:"";position:absolute;left:50%;top:58px;width:110px;height:34px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 8px 9px rgba(0,0,0,.8),inset 0 -5px 7px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 9px 12px rgba(0,0,0,.5)}
+.bj-dealer::after{content:"";position:absolute;left:50%;bottom:-5px;width:100px;height:20px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
+.bj-dealer .bj-dname{z-index:3;bottom:0}
+.bj-seat{width:80px;height:88px}
+.bj-seat.seat-l{margin:-19px 0 0 -15px}
+.bj-seat.seat-r{margin:-19px -15px 0 0}
+.bj-seat img{object-fit:cover;object-position:50% 0%;transform:none;-webkit-mask-image:none;mask-image:none}
+.bj-seat::before{top:56px;width:100px;height:32px}
+.bj-seat::after{width:94px;height:19px}
+.bj-seat.seat-l1{left:4.5%}
+.bj-seat.seat-l2{left:3%}
+.bj-seat.seat-r1{right:4.5%}
+.bj-seat.seat-r2{right:3%}
+/* top bar: the title stays on ONE line (18px, Build 201's 150px
+   min-width restored by not overriding it), and TIP + FUN take a
+   40%-basis flex each — too wide for row 1's remainder, so the pair
+   wraps together onto its own full row instead of TIP squeezing onto
+   row 1 and stranding FUN alone underneath. */
+.topbar h1{white-space:nowrap;font-size:18px}
+.tipbtn,.funbtn{flex:1 1 40%}
+</style>
+<style>
+/* BUILD 274 (queue item 4): NIKKI + CARDS + BET POT.
+   1) NIKKI BIGGER: dealer bust 92x100 -> 110x120 (+20%), socket + lip
+      scaled with it, same top:-34px rail anchor and dead-center seat —
+      her face stays clear of the dealer cards (cards already paint over
+      her lower torso at baseline; the growth extends that zone only).
+      SOLID + DARKER: opacity already 1 with no mask fade, and the darker
+      contrast/saturate/brightness filter already rides the base img rule
+      (Build 170) — kept, not re-applied.
+   2) CARDS +10%: base 58x80/32 -> 64x88/35, suit 24 -> 26; split-hand
+      small cards 44x62/24 -> 48x68/26, suit 18 -> 20. Hand min-height
+      follows (76 -> 88); split rows keep their own 68px min-height.
+   3) BET POT +10%: bet-spot 120 -> 132 wide (inline min-height 44 -> 48
+      in the markup below), bet-chip stack 64 wide with 48x22 chips
+      (was 44x20). The pot sits in the bottom player zone; the felt
+      payout line stays clear (measured 0 overlap at both viewports).
+   4) HORIZONTAL OVERFLOW FIX (measured baseline defect, 390px scrollW
+      392): the right/left companion pod sockets (100px) poke 2px past
+      the viewport. .bj-deco clips horizontally only — the dealer bust's
+      vertical rail straddle is untouched, and the 2px clip is invisible
+      dark-on-dark. Seat anchors untouched. */
+.bj-dealer{width:110px;height:120px}
+.bj-dealer::before{top:70px;width:132px;height:41px}
+.bj-dealer::after{width:120px;height:24px}
+.card{width:64px;height:88px;font-size:35px;padding:8px 7px}
+.card .suit{font-size:26px}
+.card.small{width:48px;height:68px;font-size:26px;padding:6px 5px}
+.card.small .suit{font-size:20px}
+.hand{min-height:88px}
+.split-hands .hand{min-height:68px}
+.bet-spot{width:132px}
+.bet-chips{width:70px}
+.bet-chips .bstack{width:48px;height:22px}
+.bj-deco{overflow-x:clip}
+</style>
 </head>
 <body>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Tables</button>
   <h1 id="tableTitle">Blackjack</h1>
   <div class="bal"><small>BALANCE</small><strong id="balance">10,000</strong></div>
-  <button class="tipbtn" id="tipBtn" type="button">💰 TIP</button>
-  <button class="funbtn" id="funBtn" type="button">🎯 FUN</button>
+  <button class="tipbtn" id="tipBtn" type="button">TIP</button>
+  <button class="funbtn" id="funBtn" type="button">FUN</button>
 </div>
 <div class="table-wrap">
-  <div class="table" id="bjTable"><div class="felt"></div><div class="bj-deco" aria-hidden="true"><div class="bj-notch"></div><div class="bj-dealer"><img src="../../nikki-avatar.webp" alt="" draggable="false"><span class="bj-dname">NIKKI</span></div><div class="bj-seat seat-l seat-l1"><img src="../../avatars/bots/player-14.webp" alt="" draggable="false"><span class="bj-sname">POPS</span><i class="bj-ring"></i></div><div class="bj-seat seat-l seat-l2"><img src="../../avatars/bots/player-07.webp" alt="" draggable="false"><span class="bj-sname">GRANDMA</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r1"><img src="../../avatars/bots/player-05.webp" alt="" draggable="false"><span class="bj-sname">SCARLET</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r2"><img src="../../avatars/bots/player-16.webp" alt="" draggable="false"><span class="bj-sname">EL JEFE</span><i class="bj-ring"></i></div></div><div class="motion" id="motion"></div>
+  <div class="table" id="bjTable"><div class="felt"></div><div class="bj-deco" aria-hidden="true"><div class="bj-notch"></div><div class="bj-dealer"><img src="../poker/assets/poker-real/nikki-cutout-display.webp" alt="" draggable="false"><span class="bj-dname">NIKKI</span></div><div class="bj-seat seat-l seat-l1"><img src="../../avatars/standing/pops.webp" alt="" draggable="false"><span class="bj-sname">POPS</span><i class="bj-ring"></i></div><div class="bj-seat seat-l seat-l2"><img src="../../avatars/standing/grandma.webp" alt="" draggable="false"><span class="bj-sname">GRANDMA</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r1"><img src="../../avatars/standing/red-dress.webp" alt="" draggable="false"><span class="bj-sname">SCARLET</span><i class="bj-ring"></i></div><div class="bj-seat seat-r seat-r2"><img src="../../avatars/standing/el-jefe.webp" alt="" draggable="false"><span class="bj-sname">EL JEFE</span><i class="bj-ring"></i></div></div><div class="motion" id="motion"></div>
     <div class="felt-text"><span class="wm">Nikkiflixs</span><br><span class="big">Blackjack pays 3 to 2</span><br>dealer stands on 17</div>
     <div class="dealer-zone">
       <div class="zone-label">Dealer</div>
@@ -255,7 +336,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
       <div><span class="hand-total" id="dealerTotal" style="visibility:hidden">0</span></div>
     </div>
     <div class="player-zone">
-      <div class="bet-spot" id="betSpot" style="height:auto;min-height:44px;padding:6px 8px"><div class="bet-chips" id="betChips" style="display:none"></div><span id="betAmt">TAP CHIPS TO BET</span></div>
+      <div class="bet-spot" id="betSpot" style="height:auto;min-height:48px;padding:6px 8px"><div class="bet-chips" id="betChips" style="display:none"></div><span id="betAmt">TAP CHIPS TO BET</span></div>
       <div id="playerHands"><div class="hand" id="playerHand"></div></div>
       <div><span class="hand-total" id="playerTotal" style="visibility:hidden">0</span></div>
       <div class="zone-label" style="margin-top:6px">You</div>
@@ -288,7 +369,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
 <div class="emote-picker" id="emotePicker" aria-label="Pick an emote"></div>
 <div class="gift-picker" id="giftPicker" aria-label="Pick a gift to send"></div>
 <div class="tip-modal" id="tipModal"><div class="tip-box">
-  <h3>💰 Tip the Dealer</h3><p>Show some love — it comes out of your balance.</p>
+  <h3>Tip the Dealer</h3><p>Show some love — it comes out of your balance.</p>
   <div class="tip-amounts">
     <button class="tip-amt" data-v="50" type="button">50</button>
     <button class="tip-amt" data-v="100" type="button">100</button>
@@ -298,7 +379,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
   <div class="tip-custom"><input id="tipCustom" type="number" min="1" placeholder="Custom amount"><button id="tipCustomBtn" type="button">TIP</button></div>
   <button class="tip-cancel" id="tipCancel" type="button">Cancel</button>
 </div></div>
-<div class="tip-thanks" id="tipThanks">Thanks! 🃏</div>
+<div class="tip-thanks" id="tipThanks">Thanks!</div>
 <script>
 (function(){
 "use strict";
@@ -316,7 +397,7 @@ var FUN_ECO={
 var FUN_CONTAINER=document.querySelector('#bjTable');
 var FUN_MOTION=document.getElementById('motion');
 var FUN_SHAKE_EL=document.querySelector('#bjTable');
-var FUN_TARGET_HINT='Tap the dealer to target them — tap YOU for emotes. 🎯 then 🎁 to send gifts.';
+var FUN_TARGET_HINT='Tap the dealer to target them — tap YOU for emotes. Use the gift button to send gifts.';
 var FUN_TARGET_NAME='the dealer';
 var funTarget=-1,funCooldownUntil=0,funAudioCtx=null,giftArm=null;
 var THROWABLES={
@@ -726,7 +807,7 @@ function openGiftPicker(){
       var g2=FUN_ECO.getGifts(),n=g2[key]||0;
       if(n<=0){setMsg('No '+GIFTS[key].label+' yet — grab one in the Gift Shop 🛍️.');return;}
       giftArm=key;closeGiftPicker();clearFunTarget();
-      setMsg('Tap '+FUN_TARGET_NAME+' to send your '+GIFTS[key].label+' 🎁');
+      setMsg('Tap '+FUN_TARGET_NAME+' to send your '+GIFTS[key].label+'.');
     });
   });
   document.getElementById('emotePicker').classList.remove('open');
@@ -880,7 +961,7 @@ function updateBal(){saveWallet();balanceEl.textContent=fmt(balance);}
     balance-=amt;updateBal();modal.classList.remove('open');
     try{document.getElementById('tipCustom').value='';}catch(e){}
     sfx('chip-slide',.5);
-    thanks.textContent='Thanks! 🃏 +'+fmt(amt);
+    thanks.textContent='Thanks! +'+fmt(amt);
     thanks.classList.add('show');
     setTimeout(function(){thanks.classList.remove('show');},1800);
     setMsg('You tipped the dealer '+fmt(amt)+'.');

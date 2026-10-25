@@ -13,18 +13,19 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overscroll-behavior:none}
 body{background:radial-gradient(ellipse at 50% -12%,#5a1224 0%,transparent 55%),linear-gradient(#1a070d,#0d0407)}
 button{font:inherit;cursor:pointer;touch-action:manipulation}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:8px 12px;background:#0d0508f5;border-bottom:1px solid var(--line)}
 .topbar .back{min-height:42px;padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;font-weight:700}
 .topbar h1{margin:0;font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;color:#f4d68d;flex:1;text-align:center;min-width:0;overflow:hidden}
 .topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
-.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
+.score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:5px 9px;font-size:12px;font-weight:700;color:var(--gold);text-align:center;line-height:1.35}
 .score b{color:#fff}
-.wrap{max-width:520px;margin:0 auto;padding:8px 10px 16px}
+.wrap{max-width:520px;margin:0 auto;padding:8px 10px 12px}
 .duel{display:flex;gap:8px;max-width:440px;margin:0 auto}
 .duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:7px 12px;background:#0007;text-align:center}
 .duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
 .duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
 .duel .side.on .nm{color:var(--gold)}
+.duel .pava{width:22px;height:22px;border-radius:6px;object-fit:cover;vertical-align:-5px;margin-right:4px}
 .duel .rem{font:800 30px/1.05 "Barlow Condensed",sans-serif;color:#fff}
 .duel .cgo{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);min-height:14px}
 .duel .cgo b{color:#ffe9bd}
@@ -131,12 +132,13 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Bar</button>
   <h1>Bar Dice<small>SHIP · CAPTAIN · CREW</small></h1>
-  <div class="score" id="scoreBox">YOU <b>0</b> · NIKKI <b>0</b></div>
+  <div class="score" id="scoreBox">YOU <b>0</b> · NIKKI <b>0</b><br>PROMISE <b>0</b></div>
 </div>
 <div class="wrap">
   <div class="duel">
     <div class="side on" id="sideYou"><div class="nm">YOU</div><div class="rem" id="winsYou">0</div><span class="cgo" id="cargoYou">ROUNDS WON</span></div>
     <div class="side" id="sideNikki"><div class="nm">NIKKI</div><div class="rem" id="winsNikki">0</div><span class="cgo" id="cargoNikki">ROUNDS WON</span></div>
+    <div class="side" id="sidePromise"><div class="nm"><img class="pava" src="../casino/assets/promise-avatar.webp" alt="">PROMISE</div><div class="rem" id="winsPromise">0</div><span class="cgo" id="cargoPromise">ROUNDS WON</span></div>
   </div>
   <p class="turnline" id="turnline">Round 1 · Your shake</p>
   <div class="bd-stage">
@@ -215,6 +217,7 @@ function bdEquippedSet() {
 }
 var HUMAN_SET = bdEquippedSet();
 var NIKKI_SET = BD_SET_BY_ID.blackgold;
+var PROMISE_SET = BD_SET_BY_ID.pink;
 
 /* ----- dice rendering (Farkle's pip grid, .bd- scoped) ----- */
 function bdPipsHTML(value, glyph) {
@@ -239,7 +242,10 @@ function freshTurn() { return { shakes: 0, kept: { ship: false, captain: false, 
 function cur() { return S.turns[S.turn]; }
 function keptCount(t) { return (t.kept.ship ? 1 : 0) + (t.kept.captain ? 1 : 0) + (t.kept.crew ? 1 : 0); }
 function sccDone(t) { return t.kept.ship && t.kept.captain && t.kept.crew; }
-function activeSet() { return S.turn === 'you' ? HUMAN_SET : NIKKI_SET; }
+function activeSet() { return S.turn === 'you' ? HUMAN_SET : S.turn === 'nikki' ? NIKKI_SET : PROMISE_SET; }
+function dispName(w) { return w === 'you' ? 'You' : w === 'nikki' ? 'Nikki' : 'Promise'; }
+function possName(w) { return w === 'you' ? 'Your' : w === 'nikki' ? 'Nikki’s' : 'Promise’s'; }
+function verbTake(w) { return w === 'you' ? 'take' : 'takes'; }
 function later(fn, ms) { var tok = timerToken; setTimeout(function () { if (tok === timerToken) fn(); }, ms); }
 
 /* ----- CupAudio: synthesized bar sounds (no files). Dice rattling in a
@@ -320,7 +326,7 @@ function setCup(ph) {
   if (cupLog[cupLog.length - 1] !== ph) cupLog.push(ph);
   var z = document.getElementById('cupzone'); if (z) z.setAttribute('data-cup', ph);
   var c = document.getElementById('cupEl');
-  if (c) c.classList.toggle('house', !!(S && S.turn === 'nikki'));
+  if (c) c.classList.toggle('house', !!(S && S.turn !== 'you'));
 }
 function cupRitual(done) {
   if (cupPhase === 'lifted') { setCup('covering'); later(beginShake, FAST ? 50 : 270); }
@@ -342,9 +348,9 @@ function cupRitual(done) {
 function newMatch() {
   timerToken++; stopFaces(); revealed = false; setCup('down');
   S = {
-    round: 1, wins: { you: 0, nikki: 0 }, turn: 'you',
-    turns: { you: freshTurn(), nikki: freshTurn() },
-    cargo: { you: null, nikki: null },
+    round: 1, wins: { you: 0, nikki: 0, promise: 0 }, turn: 'you',
+    turns: { you: freshTurn(), nikki: freshTurn(), promise: freshTurn() },
+    cargo: { you: null, nikki: null, promise: null },
     rolling: false, phase: 'shake', matchOver: false, winner: null,
     msg: 'Your shake — land a 6 for the Ship, then a 5, then a 4.'
   };
@@ -353,13 +359,14 @@ function newMatch() {
 function startTurn(who) {
   S.turn = who; S.turns[who] = freshTurn(); S.phase = 'shake'; S.rolling = false; revealed = false; setCup('down');
   S.msg = who === 'you' ? 'Your shake — land a 6 for the Ship, then a 5, then a 4.'
-                        : 'Nikki wipes her hands, picks up the cup…';
+                        : who === 'nikki' ? 'Nikki wipes her hands, picks up the cup…'
+                        : 'Promise picks up the cup…';
   render();
-  if (who === 'nikki') scheduleBot();
+  if (who !== 'you') scheduleBot();
 }
 function scheduleBot() {
   later(function () {
-    if (S.matchOver || S.turn !== 'nikki' || S.phase !== 'shake' || S.rolling) return;
+    if (S.matchOver || S.turn === 'you' || S.phase !== 'shake' || S.rolling) return;
     shakeDice(null);
   }, FAST ? 180 : 850);
 }
@@ -420,30 +427,38 @@ function settleDice() {
   else S.msg = 'Nothing new aboard — still need ' + needText(t) + ' · ' + left + (left === 1 ? ' shake' : ' shakes') + ' left.';
   S.phase = 'shake';
   render();
-  if (S.turn === 'nikki') scheduleBot();
+  if (S.turn !== 'you') scheduleBot();
 }
 function finishTurn() {
   S.phase = 'pause';
   var t = cur();
-  if (sccDone(t)) S.msg = (S.turn === 'you' ? 'Your' : 'Nikki’s') + ' crew is aboard — cargo ' + t.cargo + '.';
-  else S.msg = (S.turn === 'you' ? 'You' : 'Nikki') + ' never got the crew together — cargo 0.';
+  if (sccDone(t)) S.msg = possName(S.turn) + ' crew is aboard — cargo ' + t.cargo + '.';
+  else S.msg = dispName(S.turn) + ' never got the crew together — cargo 0.';
   render();
   later(function () {
-    if (S.turn === 'you') startTurn('nikki'); else resolveRound();
+    if (S.turn === 'you') startTurn('nikki');
+    else if (S.turn === 'nikki') startTurn('promise');
+    else resolveRound();
   }, FAST ? 200 : 1250);
 }
 function resolveRound() {
-  var y = S.cargo.you, n = S.cargo.nikki, line;
-  if (y > n) { S.wins.you++; line = 'You take round ' + S.round + ' — cargo ' + y + ' to ' + n + '.'; }
-  else if (n > y) { S.wins.nikki++; line = 'Nikki takes round ' + S.round + ' — cargo ' + n + ' to ' + y + '.'; }
-  else line = 'Round ' + S.round + ' is a push — cargo ' + y + ' apiece, no point.';
-  if (S.wins.you >= TARGET || S.wins.nikki >= TARGET) {
-    S.matchOver = true; S.winner = S.wins.you >= TARGET ? 'you' : 'nikki'; S.phase = 'over';
+  var y = S.cargo.you, n = S.cargo.nikki, p = S.cargo.promise, line, win = null;
+  var top = Math.max(y, n, p), leaders = [];
+  if (y === top) leaders.push('you');
+  if (n === top) leaders.push('nikki');
+  if (p === top) leaders.push('promise');
+  if (leaders.length === 1) {
+    win = leaders[0]; S.wins[win]++;
+    line = dispName(win) + ' ' + verbTake(win) + ' round ' + S.round + ' — cargo ' + y + ' to ' + n + ' to ' + p + '.';
+  } else line = 'Round ' + S.round + ' is a push — top cargo ' + top + ', no point.';
+  if (S.wins.you >= TARGET || S.wins.nikki >= TARGET || S.wins.promise >= TARGET) {
+    S.matchOver = true;
+    S.winner = S.wins.you >= TARGET ? 'you' : S.wins.nikki >= TARGET ? 'nikki' : 'promise'; S.phase = 'over';
     S.msg = line; render(); return;
   }
   S.msg = line; S.phase = 'roundpause'; render();
   later(function () {
-    S.round++; S.cargo = { you: null, nikki: null };
+    S.round++; S.cargo = { you: null, nikki: null, promise: null };
     startTurn('you');
   }, FAST ? 250 : 1500);
 }
@@ -460,26 +475,29 @@ function slotHTML(t, set) {
 }
 function render() {
   var t = cur(), set = activeSet();
-  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.wins.you + '</b> · NIKKI <b>' + S.wins.nikki + '</b>';
+  document.getElementById('scoreBox').innerHTML = 'YOU <b>' + S.wins.you + '</b> · NIKKI <b>' + S.wins.nikki + '</b><br>PROMISE <b>' + S.wins.promise + '</b>';
   document.getElementById('winsYou').textContent = S.wins.you;
   document.getElementById('winsNikki').textContent = S.wins.nikki;
+  document.getElementById('winsPromise').textContent = S.wins.promise;
   document.getElementById('cargoYou').innerHTML = S.cargo.you === null ? 'ROUNDS WON' : 'CARGO <b>' + S.cargo.you + '</b>';
   document.getElementById('cargoNikki').innerHTML = S.cargo.nikki === null ? 'ROUNDS WON' : 'CARGO <b>' + S.cargo.nikki + '</b>';
+  document.getElementById('cargoPromise').innerHTML = S.cargo.promise === null ? 'ROUNDS WON' : 'CARGO <b>' + S.cargo.promise + '</b>';
   document.getElementById('sideYou').classList.toggle('on', S.turn === 'you' && !S.matchOver);
   document.getElementById('sideNikki').classList.toggle('on', S.turn === 'nikki' && !S.matchOver);
+  document.getElementById('sidePromise').classList.toggle('on', S.turn === 'promise' && !S.matchOver);
   var tt;
   if (S.matchOver) tt = 'Match over · First to ' + TARGET;
-  else if (S.phase === 'pause') tt = 'Round ' + S.round + ' · ' + (S.turn === 'you' ? 'Your cargo is set' : 'Nikki’s cargo is set');
+  else if (S.phase === 'pause') tt = 'Round ' + S.round + ' · ' + possName(S.turn) + ' cargo is set';
   else if (S.phase === 'roundpause') tt = 'Round ' + S.round + ' · In the books';
-  else tt = 'Round ' + S.round + ' · ' + (S.turn === 'you' ? 'Your shake' : 'Nikki is shaking');
+  else tt = 'Round ' + S.round + ' · ' + (S.turn === 'you' ? 'Your shake' : dispName(S.turn) + ' is shaking');
   document.getElementById('turnline').textContent = tt;
-  document.getElementById('crewTitle').textContent = S.turn === 'you' ? 'Your Crew' : 'Nikki’s Crew';
+  document.getElementById('crewTitle').textContent = possName(S.turn) + ' Crew';
   document.getElementById('slots').innerHTML = slotHTML(t, set);
   var lamp = document.getElementById('cargoLamp');
   if (t.cargo !== null) { lamp.innerHTML = 'CARGO<b>' + t.cargo + '</b>'; lamp.classList.add('hot'); }
   else { lamp.innerHTML = 'CARGO<b>—</b>'; lamp.classList.remove('hot'); }
   var ce = document.getElementById('cupEl');
-  if (ce) ce.classList.toggle('house', S.turn === 'nikki');
+  if (ce) ce.classList.toggle('house', S.turn !== 'you');
   var row = '', i, v;
   if (S.rolling && !revealed) {
     /* mid-ritual: the dice are under the cup, faces hidden */
@@ -497,7 +515,7 @@ function render() {
   }
   document.getElementById('bdRow').innerHTML = row;
   document.getElementById('whoseLine').textContent =
-    (S.turn === 'you' ? 'Your dice · ' : 'Nikki’s dice · ') + (set.name || set.id);
+    (possName(S.turn) + ' dice · ') + (set.name || set.id);
   document.getElementById('shakesLine').innerHTML =
     '<b>SHAKES</b> ' + '●'.repeat(t.shakes) + '○'.repeat(3 - t.shakes);
   document.getElementById('status').textContent = S.msg;
@@ -506,10 +524,10 @@ function render() {
   sb.textContent = S.rolling ? 'SHAKING…' : (t.shakes === 0 ? '🎲 SHAKE' : '🎲 SHAKE AGAIN');
   var ov = document.getElementById('overlay');
   if (S.matchOver) {
-    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : 'Nikki Takes the Match';
+    document.getElementById('ovTitle').textContent = S.winner === 'you' ? 'You Win the Match!' : dispName(S.winner) + ' Takes the Match';
     document.getElementById('ovText').textContent = S.winner === 'you'
       ? 'First to ' + TARGET + ' rounds — the bar’s yours tonight. Nikki pours you a free one (everything here is free anyway).'
-      : 'Nikki got to ' + TARGET + ' rounds first. The house shakes a mean cup — run it back and take the match off her.';
+      : dispName(S.winner) + ' got to ' + TARGET + ' rounds first. The house shakes a mean cup — run it back and take the match off her.';
     ov.classList.add('show');
   } else ov.classList.remove('show');
 }
@@ -533,7 +551,7 @@ window.__BARDICE = {
   cupShake: function () { return cupPhase; },
   cupLog: function () { return cupLog.slice(); },
   audio: function () { return { stats: { rattles: CupAudio.stats.rattles, clicks: CupAudio.stats.clicks, slams: CupAudio.stats.slams, scrapes: CupAudio.stats.scrapes }, state: CupAudio.state() }; },
-  sets: { human: HUMAN_SET, nikki: NIKKI_SET },
+  sets: { human: HUMAN_SET, nikki: NIKKI_SET, promise: PROMISE_SET },
   equippedId: function () { return HUMAN_SET.id; }
 };
 
@@ -543,7 +561,7 @@ newMatch();
   <div class="htp-card">
     <h2>How to Play — Bar Dice</h2>
     <h3>The Object</h3>
-    <p>Beat Nikki, the bartender, to <b>5 rounds</b>. Each round you both take one turn shaking five dice — build a crew, and the two dice left over are your <b>Cargo</b>. High Cargo takes the round.</p>
+    <p>Beat Nikki and Promise to <b>5 rounds</b>. Each round all three of you take one turn shaking five dice — build a crew, and the two dice left over are your <b>Cargo</b>. High Cargo takes the round.</p>
     <h3>How a Turn Plays</h3>
     <ol>
       <li>Tap <b>SHAKE</b>. The cup rattles, slams down on the bar, and lifts to show your five dice.</li>
@@ -552,7 +570,7 @@ newMatch();
       <li>The moment Ship, Captain and Crew are all aboard, your turn ends: the last two dice are your <b>Cargo</b>, and their total is your score. No crew in 3 shakes? Cargo is <b>0</b>.</li>
     </ol>
     <h3>Scoring &amp; Winning</h3>
-    <p>Nikki takes her turn by the same rules. The higher Cargo wins the round; equal Cargo is a <b>push</b> and nobody scores. First to <b>5 rounds</b> wins the match.</p>
+    <p>Nikki and Promise take their turns by the same rules. The highest Cargo wins the round; a tie at the top is a <b>push</b> and nobody scores. First to <b>5 rounds</b> wins the match.</p>
     <button class="htp-close" id="htpClose" type="button">CLOSE</button>
   </div>
 </div>

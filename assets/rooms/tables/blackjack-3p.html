@@ -120,9 +120,103 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
 .seat3p .p-avatar::before{content:"";position:absolute;left:50%;top:36px;width:79px;height:27px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 8px 9px rgba(0,0,0,.8),inset 0 -5px 7px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 9px 12px rgba(0,0,0,.5)}
 .seat3p .p-avatar::after{content:"";position:absolute;left:50%;bottom:-4px;width:70px;height:16px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
 </style>
+<style>
+/* BUILD 268: BLACKJACK SEAT + CENTERING FIX (Jerry's live screenshots,
+   2026-10-23 ~22:31 MDT — "get all these fixed and working centered
+   properly"). Presentation only — no JS, ids, hooks, logic or payouts.
+   1) PHOTO SQUARES GONE: seat figures swap from the photo-portrait
+      webps (bar scene baked in; the Build 201/205 dissolve mask could
+      only fade the edges) to the TRUE ALPHA CUTOUTS of the same people
+      (assets/avatars/standing/*): the person, transparent background,
+      nothing behind them, framed head-and-shoulders in the Build 205
+      pod socket/lip, scaled up with the window (58x60 -> 76x82).
+   2) DEALER CENTERED + WHOLE + ONE LABEL: the tilted corner notch is
+      REMOVED (markup + its geometry); Nikki is now a full bust at top
+      CENTER under the wordmark, in the same pod furniture as the
+      seats, and the only dealer label is the zone label
+      ("Dealer · Nikki") — the notch's duplicate DEALER tag is gone.
+      The dealer zone drops to meet her (top 56px -> 22.5%).
+   3) SEATS COMPOSED: side seats pull in 2px -> 6px and drop
+      34% -> 36% so bust, hand and bet spot read as one seated unit
+      centered over the felt; the HERO seat gains the hero's own bust
+      (standing/you.webp) above its bet spot — no more floating YOU
+      label with nobody home. */
+.seat3p .p-avatar{width:76px;height:82px}
+.seat3p .p-avatar img{object-fit:cover;object-position:50% 0%;-webkit-mask-image:none;mask-image:none}
+.seat3p .p-avatar::before{top:52px;width:96px;height:30px}
+.seat3p .p-avatar::after{width:90px;height:18px}
+.dealer-bust{position:absolute;left:50%;top:44px;transform:translateX(-50%);width:78px;height:80px;z-index:2}
+.dealer-bust img{width:100%;height:100%;object-fit:cover;object-position:50% 6%;display:block}
+.dealer-bust::before{content:"";position:absolute;left:50%;top:50px;width:98px;height:30px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 8px 9px rgba(0,0,0,.8),inset 0 -5px 7px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 9px 12px rgba(0,0,0,.5)}
+.dealer-bust::after{content:"";position:absolute;left:50%;bottom:-4px;width:92px;height:18px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
+.dealer-zone{top:22.5%}
+.seat-left{left:6px;top:36%}
+.seat-right{right:6px;top:36%}
+.seat-hero .p-avatar{margin-bottom:2px}
+/* HERO BUST: the standing/you.webp figure is a slim full-body shot, so
+   framed like the others his head read small and the wide pod lip
+   dwarfed him. His window clips (overflow hidden) and the figure zooms
+   1.5x from the top, so head + shoulders fill the pod like the other
+   seats; his socket + lip move out to the seat itself (the avatar's
+   own pseudos retire) so the clip window cannot cut them. */
+.seat-hero .p-avatar{width:80px;height:86px;overflow:hidden}
+.seat-hero .p-avatar::before,.seat-hero .p-avatar::after{content:none}
+.seat-hero .p-avatar img{transform:scale(1.5);transform-origin:50% 0}
+.seat-hero::before{content:"";position:absolute;left:50%;top:52px;width:100px;height:32px;transform:translateX(-50%);border-radius:50%;z-index:-1;background:radial-gradient(ellipse at 50% 28%,#5a3d21 0%,#37230f 46%,#1c0f05 78%,#0e0602 100%);box-shadow:inset 0 8px 9px rgba(0,0,0,.8),inset 0 -5px 7px rgba(0,0,0,.55),inset 0 2px 3px rgba(240,205,109,.28),0 9px 12px rgba(0,0,0,.5)}
+.seat-hero::after{content:"";position:absolute;left:50%;top:80px;width:94px;height:19px;transform:translateX(-50%);border-radius:50%;z-index:2;background:radial-gradient(ellipse at 50% 16%,#644626 0%,#3d2712 52%,#211204 100%);box-shadow:inset 0 2px 4px rgba(240,205,109,.4),inset 0 -6px 8px rgba(0,0,0,.7),0 6px 9px rgba(0,0,0,.5)}
+/* SMALL PHONES (<=420 wide): the table runs ~70px shorter, so the
+   dealer + hero hands deal the small cards the side seats already use
+   and the felt rules line rides 1% higher — the hero's hair no longer
+   grazes "DEALER STANDS ON 17". */
+@media(max-width:420px){
+  .hand .card,.seat-hero .p-hand .card{width:44px;height:62px;font-size:24px;padding:5px 4px}
+  .hand .card .suit,.seat-hero .p-hand .card .suit{font-size:18px}
+  .hand{min-height:62px}
+  .seat-hero .p-hand{min-height:62px}
+  .seat-hero .p-avatar{height:80px;margin-bottom:0}
+  .seat-hero .p-bet{width:46px;height:46px}
+  .seat-hero .p-hand{margin-top:2px}
+  .felt-text{top:43.5%}
+}
+</style>
+<style>
+/* BUILD 274 (queue item 4): NIKKI + CARDS + BET POTS.
+   1) NIKKI BIGGER + DARKER: dealer bust 78x80 -> 94x88 (width +20%; height
+      +10% only — a full +20% height leaves a 1px gap to the dealer cards,
+      measured; the cover-cropped figure still renders ~20% bigger),
+      socket + lip scaled with it, same top:44px anchor and dead-center
+      seat. DARKER: the solo table's contrast/saturate/brightness filter
+      is added here (this table's Nikki had filter:none). Opacity already
+      1 with no mask fade — solid kept.
+   2) CARDS +~10% at phone widths: small cards 44x62/24 -> 48x68/26, suit
+      18 -> 20 (bot small cards + the <=420px dealer/hero rule); hand
+      min-heights 62 -> 68; bot overlap -24 -> -26px so 5-card hands stay
+      near their seats. Desktop base cards already 58x80 — untouched.
+   3) BET POTS +10%: bet circles 52 -> 57 (bots), hero small-phone circle
+      46 -> 51. Pots sit below the hands, far from the felt payout line
+      (measured 0 overlap at both viewports). Hero seat anchor
+      (left:50%, bottom:8px, width:220) untouched — the seat box grows
+      5px upward from its bottom anchor exactly by the pot growth. */
+.dealer-bust{width:94px;height:88px}
+.dealer-bust img{filter:contrast(1.07) saturate(1.1) brightness(.97)}
+.dealer-bust::before{top:60px;width:118px;height:36px}
+.dealer-bust::after{width:110px;height:22px}
+.card.small{width:48px;height:68px;font-size:26px;padding:6px 5px}
+.card.small .suit{font-size:20px}
+.seat3p .p-hand .card{margin-left:-26px}
+.seat3p .p-hand{min-height:68px}
+.seat3p .p-bet{width:57px;height:57px;font-size:14px}
+@media(max-width:420px){
+  .hand .card,.seat-hero .p-hand .card{width:48px;height:68px;font-size:26px;padding:6px 5px}
+  .hand .card .suit,.seat-hero .p-hand .card .suit{font-size:20px}
+  .hand{min-height:68px}
+  .seat-hero .p-hand{min-height:68px}
+  .seat-hero .p-bet{width:51px;height:51px}
+}
+</style>
 </head>
 <body>
-<div class="build-stamp">BUILD 205</div>
+<div class="build-stamp">BUILD 274</div>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Tables</button>
   <h1>Blackjack · 3-Player</h1>
@@ -131,7 +225,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
 <div class="stage">
   <div class="table" id="bjTable">
     <div class="brand"><span class="brand-name">Nikkiflixs</span></div>
-    <div class="dealer-notch" aria-hidden="true"><img src="../../nikki-avatar.webp" alt="" draggable="false"><span>DEALER</span></div>
+    <div class="dealer-bust" aria-hidden="true"><img src="../poker/assets/poker-real/nikki-cutout-display.webp" alt="" draggable="false"></div>
     <div class="dealer-zone">
       <div class="zone-label">Dealer · Nikki</div>
       <div class="hand" id="dealerHand"></div>
@@ -139,7 +233,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
     </div>
     <div class="felt-text">Blackjack pays 3 to 2<br>Dealer stands on 17</div>
     <div class="seat3p seat-left" id="seatL">
-      <div class="p-avatar"><img src="../../avatars/bots/player-14.webp" alt="" draggable="false"></div>
+      <div class="p-avatar"><img src="../../avatars/standing/pops.webp" alt="" draggable="false"></div>
       <div class="p-name">POPS</div>
       <div class="p-hand" id="handL"></div>
       <span class="hand-total" id="totalL">0</span>
@@ -147,7 +241,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
       <span class="p-status" id="statusL"></span>
     </div>
     <div class="seat3p seat-right" id="seatR">
-      <div class="p-avatar"><img src="../../avatars/bots/player-05.webp" alt="" draggable="false"></div>
+      <div class="p-avatar"><img src="../../avatars/standing/red-dress.webp" alt="" draggable="false"></div>
       <div class="p-name">SCARLET</div>
       <div class="p-hand" id="handR"></div>
       <span class="hand-total" id="totalR">0</span>
@@ -155,6 +249,7 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
       <span class="p-status" id="statusR"></span>
     </div>
     <div class="seat3p seat-hero" id="seatH">
+      <div class="p-avatar"><img src="../../avatars/standing/you.webp" alt="" draggable="false"></div>
       <div class="p-bet" id="betH">BET</div>
       <div class="p-hand" id="handH" style="margin-top:6px"></div>
       <span class="hand-total" id="totalH">0</span>

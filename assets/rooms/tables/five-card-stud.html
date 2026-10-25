@@ -33,11 +33,11 @@ button{cursor:pointer;font:inherit}
 .pot-pill{position:absolute;left:50%;top:55%;transform:translateX(-50%);z-index:3;padding:5px 18px;border-radius:999px;background:#070709f2;border:1px solid #e0a36a88;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#ffe9bd;box-shadow:0 4px 14px #000a;white-space:nowrap}
 .pot-pill b{color:#f5c65a}
 .seat{position:absolute;z-index:4;text-align:center;width:112px}
-.seat .p-avatar{width:44px;height:44px;margin:0 auto;border-radius:50%;overflow:hidden;border:2px solid #e8c883;background:radial-gradient(circle at 50% 35%,#2a1218,#0d0508 75%);box-shadow:0 4px 10px #000b}
+.seat .p-avatar{width:53px;height:53px;margin:0 auto;border:0;border-radius:0;overflow:hidden;background:transparent;box-shadow:none;-webkit-mask-image:radial-gradient(ellipse 70% 66% at 50% 41%,#000 58%,transparent 75%);mask-image:radial-gradient(ellipse 70% 66% at 50% 41%,#000 58%,transparent 75%)}
 .seat .p-avatar img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
 .seat .p-name{font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.18em;color:#ffe9bd;margin:3px 0 5px;text-shadow:0 2px 4px #000}
-.seat .p-hand{display:flex;justify-content:center;min-height:50px}
-.seat .p-hand .card{margin-left:-18px}.seat .p-hand .card:first-child{margin-left:0}
+.seat .p-hand{display:flex;justify-content:center;min-height:56px}
+.seat .p-hand .card{margin-left:-21px}.seat .p-hand .card:first-child{margin-left:0}
 .seat .p-bet{display:inline-block;min-width:44px;margin-top:5px;padding:3px 9px;border:2px dashed #f2ca7288;border-radius:999px;color:#ffe9bd;font:800 12px/1.2 "Barlow Condensed",sans-serif;background:#00000055}
 .seat .p-bet.on{border-style:solid;border-color:#f2ca72;background:#00000088;box-shadow:0 0 12px #f5c65a55}
 .p-status{display:block;margin-top:4px;font:800 11px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#c9c0a6;text-shadow:0 2px 4px #000;min-height:13px}
@@ -51,11 +51,11 @@ button{cursor:pointer;font:inherit}
 .hero-meta{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:5px}
 .hero-meta .p-bet{margin-top:0}
 .hero-meta .p-status{margin-top:0}
-.seat-hero .p-hand{min-height:78px}
-.seat-hero .p-hand .card{margin-left:-15px}.seat-hero .p-hand .card:first-child{margin-left:0}
+.seat-hero .p-hand{min-height:86px}
+.seat-hero .p-hand .card{margin-left:-17px}.seat-hero .p-hand .card:first-child{margin-left:0}
 .hero-hand-name{display:block;margin-top:5px;font:800 12px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#ffe9bd;text-shadow:0 2px 4px #000;min-height:15px}
-.card{width:54px;height:76px;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;position:relative;box-shadow:0 6px 10px #000c;flex:none;background-size:100% 100%;background-repeat:no-repeat}
-.card.small{width:34px;height:48px;border-radius:5px}
+.card{width:60px;height:84px;border-radius:7px;background:linear-gradient(145deg,#fff,#ece8df);border:1px solid #bbb3a7;position:relative;box-shadow:0 6px 10px #000c;flex:none;background-size:100% 100%;background-repeat:no-repeat}
+.card.small{width:38px;height:54px;border-radius:5px}
 .card.back{background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;background-size:auto}
 .card.holetag::after{content:"DOWN";position:absolute;left:50%;bottom:2px;transform:translateX(-50%);font:800 7.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.18em;color:#8a6d1f;background:#ffe9bdbb;padding:1px 4px;border-radius:3px}
 .card.dealt{animation:cardDeal .5s cubic-bezier(.2,.75,.3,1)}
@@ -82,7 +82,7 @@ button{cursor:pointer;font:inherit}
 </style>
 </head>
 <body>
-<div class="build-stamp">BUILD 185</div>
+<div class="build-stamp">BUILD 274</div>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Tables</button>
   <h1>Five-Card Stud</h1>

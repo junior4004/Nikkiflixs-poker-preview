@@ -756,7 +756,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
     <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
-  <div class="build-stamp" id="buildStamp">BUILD 273</div>
+  <div class="build-stamp" id="buildStamp">BUILD 274</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
@@ -1865,23 +1865,10 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
 })();
 
   
-  /* Auto-start default table if user hasn't picked one from the lobby.
-     Uses the lobby's own VIEW TABLE button (wired inside the game scope);
-     the previous version called a selectTable that isn't reachable from
-     here, threw on load, and no hand ever started. */
-  (function(){
-    setTimeout(function(){
-      try {
-        var lobby = document.getElementById('roomLobby');
-        /* If lobby is still visible (not hidden), user hasn't selected - auto-start the Starter table */
-        if (lobby && !lobby.classList.contains('hidden') && !window.__tableStarted) {
-          window.__tableStarted = true;
-          var btn = document.querySelector('#tableGrid .join-table[data-free-table="true"]') || document.querySelector('#tableGrid .join-table');
-          if (btn) btn.click();
-        }
-      } catch(e) {}
-    }, 2500);
-  })();
+  /* MANUAL SEATING ONLY (poker-room fix item 1): the old 2.5s auto-start
+     clicked the Starter table for the player with no tap. Removed — the
+     player picks a table explicitly; sitting is their tap only. The
+     join-table buttons above still wire to selectTable unchanged. */
 </script>
 <script>window.__NIKKIFLIXS_TABLE_CONFIG__={table:'emerald',sb:2,bb:5};</script>
 <script>
@@ -2173,7 +2160,7 @@ window.__NIKKIFLIXS_START_LIVE__();
   'use strict';
   var style=document.createElement('style');
   style.textContent=
-    '#nfLiveSoloBanner{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:205;width:min(440px,calc(100% - 24px));display:none;padding:12px 14px 13px;border:2px solid #f0c75d;border-radius:12px;background:linear-gradient(180deg,#2a1216,#12090b);box-shadow:0 10px 30px #000d;text-align:center}'+
+    '#nfLiveSoloBanner{position:fixed;left:50%;top:74px;transform:translateX(-50%);z-index:205;width:min(440px,calc(100% - 24px));display:none;padding:12px 14px 13px;border:2px solid #f0c75d;border-radius:12px;background:linear-gradient(180deg,#2a1216,#12090b);box-shadow:0 10px 30px #000d;text-align:center}'+
     '#nfLiveSoloBanner.show{display:block}'+
     '#nfLiveSoloBanner strong{display:block;color:#ffe9a8;font:800 17px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.04em}'+
     '#nfLiveSoloBanner p{margin:6px 0 10px;color:#e8ddc4;font-size:13px;line-height:1.4}'+
