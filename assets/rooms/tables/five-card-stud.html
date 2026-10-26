@@ -80,6 +80,24 @@ button{cursor:pointer;font:inherit}
 .abtn:active:not(:disabled){transform:translateY(1px)}
 @media(max-width:420px){.table{min-height:430px}.felt-text{left:20%;right:20%;top:27%}}
 </style>
+<style>
+/* FOUR-SEAT FIX 2026-10-26 (same defects as the square table: heads crowded
+   on the felt edge, 53px head-only crops). The bot photos ARE full busts
+   (head + shoulders + chest), so the avatar window grows to a bust crop
+   with a wide soft fade (no hard photo rectangle), the table narrows and
+   drops so the top bust clears the topbar, and all three bot seats pull
+   outward so busts straddle the wood rail instead of sitting deep in the
+   felt. Name gap under each bust grows to a clear chin gap. Dealer notch,
+   felt, cards, bets and all JS untouched. Hero has no avatar (YOU) — no
+   head to fix; hero cards stay on the felt where they belong. */
+.table{width:84%;margin:76px auto 0;min-height:420px}
+.seat .p-avatar{width:84px;height:100px;-webkit-mask-image:radial-gradient(ellipse 88% 80% at 50% 42%,#000 62%,transparent 80%);mask-image:radial-gradient(ellipse 88% 80% at 50% 42%,#000 62%,transparent 80%)}
+.seat .p-avatar img{object-position:50% 14%}
+.seat .p-name{margin:8px 0 5px}
+.seat-top{top:-78px}
+.seat-left{left:-44px;top:40px}
+.seat-right{right:-44px;top:40px}
+</style>
 </head>
 <body>
 <div class="build-stamp">BUILD 274</div>
@@ -290,6 +308,10 @@ var heroResolve=null;
 function heroTurn(p){
   return new Promise(function(resolve){
     heroResolve=resolve;
+    /* FOUR-SEAT FIX 2026-10-26: an all-in or broke hero never gets buttons —
+       the turn auto-passes (check, no chips move) and the action row stays
+       hidden until the next hand resets allIn. */
+    if(p.allIn||balance<=0){$('actRow').classList.add('hidden');['checkBtn','betBtn','callBtn','raiseBtn','foldBtn'].forEach(function(id){$(id).disabled=true;});resolve('check');heroResolve=null;return;}
     var toCall=currentBet-p.bet;
     var canRaise=raises<3&&balance>toCall;
     $('checkBtn').style.display=toCall===0?'':'none';

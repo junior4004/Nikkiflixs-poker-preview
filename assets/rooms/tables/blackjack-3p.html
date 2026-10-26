@@ -214,6 +214,24 @@ body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;padding-bo
   .seat-hero .p-bet{width:51px;height:51px}
 }
 </style>
+<style>
+/* FOUR-SEAT FIX 2026-10-26 (4-position table: 3 player seats + dealer).
+   Spacing only — blackjack has no fold and no poker invariants, so no
+   deal-flow logic changes. The square felt narrows, both side seats pull
+   outward, side busts shrink slightly (sockets/lips rescaled with them),
+   and name gaps grow to a clear chin gap. Dealer bust, felt, cards, bets
+   and all JS untouched. Side busts cannot fully clear a phone-width felt
+   without pushing cards off-screen, so the target here is rail-straddle
+   (busts pulled as far out as cards allow), measured after. */
+.table{margin-left:36px;margin-right:36px}
+.seat-left{left:-38px}
+.seat-right{right:-38px}
+.seat3p .p-avatar{width:68px;height:74px}
+.seat3p .p-avatar::before{top:44px;width:86px;height:28px}
+.seat3p .p-avatar::after{width:80px;height:17px}
+.seat3p .p-name{margin:8px 0 5px}
+.seat-hero .p-avatar{margin-bottom:8px}
+</style>
 </head>
 <body>
 <div class="build-stamp">BUILD 274</div>

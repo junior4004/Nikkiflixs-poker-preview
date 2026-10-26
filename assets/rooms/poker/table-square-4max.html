@@ -725,6 +725,28 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 .square-table .seat[data-view-slot] .seat-chips{left:var(--kx)!important}
 .square-table .seat.seat-open .seat-chips{display:none}
 </style>
+<style>
+/* FOUR-SEAT FIX 2026-10-26 (screenshot-1 defects: busts crowded on the felt
+   edge, nameplates overlapping bust chins by ~16px). Shrink the square felt
+   and pull all four pods outward, shrink busts slightly, and drop the
+   nameplates below the busts with a real chin gap. Plates stay centered
+   (pod-width plates under centered portrait-wraps). Dealer, board, pot,
+   deck, muck, bets, controls and all JS are untouched by this block. */
+.square-table .table{left:16%;top:18%;width:68%;height:62%}
+.square-table .seat[data-view-slot="4"][data-index]{--y:10.5%!important}
+.square-table .seat[data-view-slot="0"][data-index]{--y:91%!important}
+.square-table .seat[data-view-slot="2"][data-index]{--x:11.5%!important}
+.square-table .seat[data-view-slot="6"][data-index]{--x:88.5%!important}
+.square-table .portrait-wrap{width:120px;height:156px}
+.square-table .seat[data-view-slot="0"] .portrait-wrap{height:134px}
+.square-table .portrait-wrap::before{top:104px;width:156px;height:58px}
+.square-table .seat[data-view-slot="0"] .portrait-wrap::before{top:86px}
+.square-table .portrait-wrap::after{width:140px;height:32px}
+.square-table .nameplate{top:170px}
+.square-table .seat[data-view-slot="0"] .nameplate{top:148px}
+.square-table .pod{height:212px}
+.square-table .seat[data-view-slot="0"] .pod{height:190px}
+</style>
 </head>
 <body>
 
@@ -930,7 +952,7 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
   function setStack(index,value){stacks[index]=Math.max(0,Math.floor(value));seats[index].querySelector('.nameplate span').textContent=money(stacks[index]);seats[index].querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)}
-  function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);if(stacks[index]===0)handAllIn[index]=true;logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0)sfx('chips');return paid}
+  function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);if(stacks[index]===0){handAllIn[index]=true;if(index===localSeatAbsolute)disableActions();}logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0)sfx('chips');return paid}
   function refillCreator(src){
     var before=bank;bank=bank+250000;walletSave();
     if(stacks[0]<25000)setStack(0,25000);
@@ -1004,7 +1026,7 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
      in-house for this build (no third-party audio; see handoff SOURCES) — license-clean.
      Playback routes through the same alertsUnlocked gate as every other table sound. */
   var sfxFileCache={};
-  function sfxFile(name,vol){try{if(!alertsUnlocked)return false;var a=sfxFileCache[name];if(!a){a=new Audio('assets/sfx/'+name+'.mp3');a.preload='auto';sfxFileCache[name]=a}try{a.currentTime=0}catch(e){}a.volume=vol==null?.85:vol;var p=a.play();if(p&&p.catch)p.catch(function(){});return true}catch(e){return false}}
+  function sfxFile(name,vol){try{if(!alertsUnlocked)return false;var e=sfxFileCache[name];if(!e){var el=new Audio('assets/sfx/'+name+'.mp3');el.preload='auto';e={el:el,failed:false};el.addEventListener('error',function(){e.failed=true});sfxFileCache[name]=e}if(e.failed)return false;var a=e.el;try{a.currentTime=0}catch(err){}a.volume=vol==null?.85:vol;var pp=a.play();if(pp&&pp.catch)pp.catch(function(){});return true}catch(err2){return false}}
   function sfx(kind){
     if(!alertsUnlocked||!audio)return;
     try{
@@ -1012,8 +1034,10 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
       var now=audio.currentTime;
       if(kind==='card'){
         if(sfxLast.card&&now-sfxLast.card<.09)return;sfxLast.card=now;
-        if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var d0=sfxNoiseBuf.getChannelData(0);for(var i=0;i<d0.length;i++)d0[i]=(Math.random()*2-1)*(1-i/d0.length)}
-        var src=audio.createBufferSource();src.buffer=sfxNoiseBuf;var f=audio.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=.7;var g=audio.createGain();g.gain.value=.10;src.connect(f);f.connect(g);g.connect(audio.destination);src.start();
+        /* FOUR-SEAT FIX 2026-10-26: the old deal sound was a raw white-noise
+           burst (TV static on a phone speaker). Deal now plays the real
+           card-deal sample; on any load failure it stays silent — never noise. */
+        sfxFile('card-deal',.5);
       }else if(kind==='chips'){
         if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;if(sfxFile('chip-clack',.85))return;
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dc=sfxNoiseBuf.getChannelData(0);for(var j=0;j<dc.length;j++)dc[j]=(Math.random()*2-1)*(1-j/dc.length)}
@@ -1031,12 +1055,12 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
         if(sfxLast.knock&&now-sfxLast.knock<.15)return;sfxLast.knock=now;
         if(!sfxFile('wood-knock',.95)){[0,.165].forEach(function(off2){var o2=audio.createOscillator(),gk=audio.createGain();o2.type='sine';o2.frequency.setValueAtTime(172,now+off2);o2.frequency.exponentialRampToValueAtTime(88,now+off2+.12);gk.gain.setValueAtTime(.38,now+off2);gk.gain.exponentialRampToValueAtTime(.001,now+off2+.16);o2.connect(gk);gk.connect(audio.destination);o2.start(now+off2);o2.stop(now+off2+.17)})}
       }else if(kind==='muck'){
-        /* SOUND CHECK item 7: fold was silent — muck sound on fold (card-muck file, card-noise fallback). */
+        /* FOUR-SEAT FIX 2026-10-26: fold plays ONLY the verified card-muck
+           sample. The old white-noise fallback was the TV-static sound and
+           its trigger was dead code (sfxFile always returned true), so it
+           is removed: on any load failure fold stays silent — never static. */
         if(sfxLast.muck&&now-sfxLast.muck<.15)return;sfxLast.muck=now;
-        if(!sfxFile('card-muck',.6)){
-          if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dm=sfxNoiseBuf.getChannelData(0);for(var mi=0;mi<dm.length;mi++)dm[mi]=(Math.random()*2-1)*(1-mi/dm.length)}
-          var msrc=audio.createBufferSource();msrc.buffer=sfxNoiseBuf;var mf=audio.createBiquadFilter();mf.type='bandpass';mf.frequency.value=2400;mf.Q.value=.7;var mg=audio.createGain();mg.gain.value=.10;msrc.connect(mf);mf.connect(mg);mg.connect(audio.destination);msrc.start();
-        }
+        sfxFile('card-muck',.6);
       }
     }catch(e){}
   }
@@ -1115,7 +1139,7 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function placeMarker(id,absoluteIndex){var marker=document.getElementById(id),position=markerPositions[screenSlot(absoluteIndex)];marker.style.setProperty('--mx',position[0]);marker.style.setProperty('--my',position[1]);marker.setAttribute('data-seat',absoluteIndex);marker.setAttribute('data-view-slot',screenSlot(absoluteIndex))}
   function setBlinds(){seats.forEach(function(s){var m=s.querySelector('.blind');m.classList.remove('show');m.textContent='' });var dealer=dealerIndex(),sb=smallBlindIndex(),bb=bigBlindIndex(),first=sb,dealerMarker=document.getElementById('dealerMarker'),sbMarker=document.getElementById('sbMarker'),bbMarker=document.getElementById('bbMarker');if(dealerMarker&&sbMarker&&bbMarker){placeMarker('dealerMarker',dealer);placeMarker('sbMarker',sb);placeMarker('bbMarker',bb);dealerMarker.setAttribute('aria-label','Dealer button: '+names[dealer]);sbMarker.setAttribute('aria-label','Small blind: '+names[sb]);bbMarker.setAttribute('aria-label','Big blind: '+names[bb])};logEvent('markers-positioned',{dealer:dealer,smallBlind:sb,bigBlind:bb,firstCard:first,absoluteClockwiseOrder:[0,1,2,3,4,5,6,7]})}
   function disableActions(){buttons.forEach(function(b){b.disabled=true})}
-  function enableActions(toCall){var fold=document.querySelector('[data-action="fold"]'),check=document.querySelector('[data-action="check"]'),call=document.querySelector('[data-action="call"]'),raise=document.querySelector('[data-action="raise"]');if(stacks[localSeatAbsolute]<=0){disableActions();call.textContent='CALL';return}fold.disabled=false;raise.disabled=false;check.disabled=!!toCall;call.disabled=!toCall;call.textContent=toCall?'CALL '+money(Math.min(toCall,stacks[localSeatAbsolute])):'CALL'}
+  function enableActions(toCall){var fold=document.querySelector('[data-action="fold"]'),check=document.querySelector('[data-action="check"]'),call=document.querySelector('[data-action="call"]'),raise=document.querySelector('[data-action="raise"]');/* FOUR-SEAT FIX 2026-10-26: all-in / folded / sitting-out / stack-0 never get buttons, reconciled at every enable point (local flow + authoritative restore). */if(stacks[localSeatAbsolute]<=0||handAllIn[localSeatAbsolute]||handFolded[localSeatAbsolute]||sittingOut[localSeatAbsolute]){disableActions();call.textContent='CALL';return}fold.disabled=false;raise.disabled=false;check.disabled=!!toCall;call.disabled=!toCall;call.textContent=toCall?'CALL '+money(Math.min(toCall,stacks[localSeatAbsolute])):'CALL'}
   function closeRaiseModal(){document.getElementById('raiseModal').classList.remove('open');selectedRaiseTo=null;document.getElementById('confirmRaise').disabled=true}
   function clearTurn(){turnToken++;seats.forEach(function(s){s.classList.remove('active','warning','authoritative');s.style.removeProperty('--turn-green');s.style.removeProperty('--turn-red')});disableActions();closeRaiseModal();pendingRaiseState=null}
   function startTurn(index,label,toCall,onChoice,raiseState){
@@ -1388,17 +1412,25 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function requestAuthoritativeResume(){if(!liveTransport||typeof liveTransport.requestResume!=='function')return false;liveTransport.requestResume({lastServerRevision:lastServerRevision,table:{game:activeConfig.game,maxSeats:activeConfig.maxSeats,smallBlind:activeConfig.sb,bigBlind:activeConfig.bb}});return true}
   function markDisconnected(reason){reconnecting=true;accountConnected=false;dailyBonusPending=false;paintAccountState();clearTimers();clearTurn();showConnectionState('CONNECTION LOST · HOLDING YOUR SEAT',false);var requested=requestAuthoritativeResume();logEvent('multiplayer-disconnected',{reason:reason||'connection lost',hand:handNumber,seat:localSeatAbsolute,serverRevision:lastServerRevision,resumeRequested:requested});return{reconnecting:true,resumeRequested:requested}}
   function validCard(card){return Array.isArray(card)&&card.length===2&&['2','3','4','5','6','7','8','9','10','J','Q','K','A'].indexOf(String(card[0]))>-1&&['♣','♦','♥','♠'].indexOf(String(card[1]))>-1}
-  function restoreAuthoritativeTurn(turn){clearTurn();var index=Math.floor(Number(turn.seat)),seconds=Math.max(1,Math.floor(Number(turn.secondsRemaining)||30)),seat=seats[index],token=turnToken;if(!seat)return false;seat.classList.add('active','authoritative');seat.style.setProperty('--turn-green',Math.max(1,seconds-10)+'s');seat.style.setProperty('--turn-red',Math.min(10,seconds)+'s');statusMain.textContent='LIVE HAND · '+names[index]+' acts';if(seconds<=10)seat.classList.add('warning');else timers.push(setTimeout(function(){if(token===turnToken)seat.classList.add('warning')},(seconds-10)*1000));if(index===localSeatAbsolute){var alert=alertUserTurn(index,seconds<=10);alertCount++;toast.setAttribute('aria-label','Your turn alerts '+alertCount+'; loud beep '+(alert.beeped?'played':'blocked')+'; vibration '+(alert.buzzed?'sent':'unavailable'));pendingRaiseState=turn.raiseState||{currentBet:Number(turn.currentBet)||0,contribution:Number(turn.contribution)||0,bigBlind:activeConfig.bb,lastFullRaise:Number(turn.lastFullRaise)||activeConfig.bb};pendingUser=function(choice){if(liveTransport&&typeof liveTransport.sendAction==='function')liveTransport.sendAction(choice);disableActions()};enableActions(Math.max(0,Math.floor(Number(turn.toCall)||0)));timers.push(setTimeout(function(){if(token===turnToken&&pendingUser){var send=pendingUser;pendingUser=null;disableActions();send('fold')}},seconds*1000))}logEvent('authoritative-turn-restored',{seat:index,secondsRemaining:seconds,local:index===localSeatAbsolute});return true}
+  function restoreAuthoritativeTurn(turn){clearTurn();var index=Math.floor(Number(turn.seat)),seconds=Math.max(1,Math.floor(Number(turn.secondsRemaining)||30)),seat=seats[index],token=turnToken;if(!seat)return false;seat.classList.add('active','authoritative');seat.style.setProperty('--turn-green',Math.max(1,seconds-10)+'s');seat.style.setProperty('--turn-red',Math.min(10,seconds)+'s');statusMain.textContent='LIVE HAND · '+names[index]+' acts';if(seconds<=10)seat.classList.add('warning');else timers.push(setTimeout(function(){if(token===turnToken)seat.classList.add('warning')},(seconds-10)*1000));if(index===localSeatAbsolute){var alert=alertUserTurn(index,seconds<=10);alertCount++;toast.setAttribute('aria-label','Your turn alerts '+alertCount+'; loud beep '+(alert.beeped?'played':'blocked')+'; vibration '+(alert.buzzed?'sent':'unavailable'));/* FOUR-SEAT FIX 2026-10-26: an all-in / broke / folded / sitting-out local seat never gets a live turn: buttons stay dead and the auto-fold timer below can only hit a no-op, never a real fold. */if(handAllIn[localSeatAbsolute]||stacks[localSeatAbsolute]<=0||handFolded[localSeatAbsolute]||sittingOut[localSeatAbsolute]){pendingRaiseState=null;pendingUser=function(){disableActions()};disableActions();}else{pendingRaiseState=turn.raiseState||{currentBet:Number(turn.currentBet)||0,contribution:Number(turn.contribution)||0,bigBlind:activeConfig.bb,lastFullRaise:Number(turn.lastFullRaise)||activeConfig.bb};pendingUser=function(choice){if(liveTransport&&typeof liveTransport.sendAction==='function')liveTransport.sendAction(choice);disableActions()};enableActions(Math.max(0,Math.floor(Number(turn.toCall)||0)));}timers.push(setTimeout(function(){if(token===turnToken&&pendingUser){var send=pendingUser;pendingUser=null;disableActions();send('fold')}},seconds*1000))}logEvent('authoritative-turn-restored',{seat:index,secondsRemaining:seconds,local:index===localSeatAbsolute});return true}
   function restoreAuthoritativeSnapshot(snapshot){
     var maxSeats=Number(snapshot&&snapshot.maxSeats)===6?6:8;
     if(!snapshot||snapshot.authoritative!==true||!Number.isInteger(snapshot.serverRevision)||snapshot.serverRevision<=lastServerRevision||!Number.isInteger(snapshot.localSeat)||snapshot.localSeat<0||snapshot.localSeat>=maxSeats||!Array.isArray(snapshot.players)||snapshot.players.length<2){logEvent('reconnect-snapshot-rejected',{revision:snapshot&&snapshot.serverRevision,authoritative:!!(snapshot&&snapshot.authoritative)});return false}
     var game=snapshot.game==='omaha'?'omaha':'holdem',holeCount=game==='omaha'?4:2,localCards=Array.isArray(snapshot.localCards)?snapshot.localCards:[],board=Array.isArray(snapshot.board)?snapshot.board:[],bets=Array.isArray(snapshot.bets)?snapshot.bets:[];
     if(localCards.length!==holeCount||!localCards.every(validCard)||!board.every(validCard)){logEvent('reconnect-snapshot-rejected',{revision:snapshot.serverRevision,reason:'invalid cards'});return false}
+    /* FOUR-SEAT FIX 2026-10-26: same-hand snapshots must never switch dealt
+       cards. Capture what is already face-up; it is repainted after the
+       restore below, so a newer revision can move pot/bets/turn but never
+       change a visible card. A new hand number clears + repaints normally. */
+    var sameHandKeep=handRunning&&Number(snapshot.handNumber)===handNumber&&Number(snapshot.localSeat)===localSeatAbsolute;
+    var keepLocal=null,keepBoard=null;
+    if(sameHandKeep){var kn=seats[localSeatAbsolute].querySelectorAll('.hole');if(kn.length&&kn[0].style.opacity==='1'&&demoHands[localSeatAbsolute]&&demoHands[localSeatAbsolute].length)keepLocal=demoHands[localSeatAbsolute].map(function(c){return[c[0],c[1]]});keepBoard=[];document.querySelectorAll('.board-card').forEach(function(node,index){keepBoard[index]=(node.style.opacity==='1'&&boardCards[index])?[boardCards[index][0],boardCards[index][1]]:null;});}
     clearTimers();clearTurn();handRunning=false;activeConfig={game:game,maxSeats:maxSeats,sb:Math.max(1,Math.floor(Number(snapshot.smallBlind)||1)),bb:Math.max(2,Math.floor(Number(snapshot.bigBlind)||2)),holeCards:holeCount,freeTable:snapshot.freeTable===true};minimumBuyin=activeConfig.freeTable?0:Math.max(activeConfig.bb*40,Math.floor(Number(snapshot.minimumBuyin)||0));configureHoleCards(holeCount);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');resetVisuals();
     localSeatAbsolute=snapshot.localSeat;applyViewerPerspective(localSeatAbsolute);handNumber=Math.max(0,Math.floor(Number(snapshot.handNumber)||0));dealerButton=Math.max(0,Math.min(7,Math.floor(Number(snapshot.dealerSeat)||0)));pot=Math.max(0,Math.floor(Number(snapshot.pot)||0));handFolded={};handAllIn={};sittingOut={};roundBetTotals=[0,0,0,0,0,0,0,0];
     seats.forEach(function(seat,index){seat.style.display=index<maxSeats?'':'none';seat.classList.remove('you','empty-seat','folded','out-of-chips','active','warning','authoritative');seat.classList.toggle('you',index===localSeatAbsolute);var player=snapshot.players.filter(function(item){return Number(item.seat)===index})[0];if(!player){names[index]='OPEN SEAT';seat.querySelector('.nameplate strong').textContent=names[index];seat.setAttribute('aria-label',names[index]);sittingOut[index]=true;setStack(index,0);seat.classList.add('empty-seat');return}names[index]=String(player.displayName||('Seat '+(index+1))).slice(0,24);seat.querySelector('.nameplate strong').textContent=names[index];seat.querySelector('.portrait').alt=names[index];seat.setAttribute('aria-label',names[index]);setStack(index,Math.max(0,Math.floor(Number(player.stack)||0)));if(player.folded){handFolded[index]=true;seat.classList.add('folded')}if(player.allIn)handAllIn[index]=true;if(player.sittingOut)sittingOut[index]=true});
     demoHands[localSeatAbsolute]=localCards.map(function(card){return[String(card[0]),String(card[1])]});var localNodes=seats[localSeatAbsolute].querySelectorAll('.hole');demoHands[localSeatAbsolute].forEach(function(card,index){localNodes[index].className='hole'+(['♥','♦'].indexOf(card[1])>-1?' red':'');localNodes[index].textContent=card[0];localNodes[index].setAttribute('data-suit',card[1]);paintCardFace(localNodes[index],card[0],card[1]);localNodes[index].style.opacity='1'});seats[localSeatAbsolute].setAttribute('aria-label',names[localSeatAbsolute]+' holds '+demoHands[localSeatAbsolute].map(function(card){return card.join('')}).join(' and '));
     document.querySelectorAll('.board-card').forEach(function(node,index){if(board[index]){boardCards[index]=[String(board[index][0]),String(board[index][1])];node.textContent=boardCards[index][0];node.setAttribute('data-suit',boardCards[index][1]);node.className='board-card'+(['♥','♦'].indexOf(boardCards[index][1])>-1?' red':'');paintCardFace(node,boardCards[index][0],boardCards[index][1]);node.style.opacity='1'}else{node.style.opacity='0';node.className='board-card';node.textContent='';node.removeAttribute('data-suit');clearCardFace(node)}});
+    if(sameHandKeep){if(keepLocal){demoHands[localSeatAbsolute]=keepLocal.map(function(c){return[c[0],c[1]]});var kn2=seats[localSeatAbsolute].querySelectorAll('.hole');demoHands[localSeatAbsolute].forEach(function(card,index){if(kn2[index]){kn2[index].className='hole'+(['\u2665','\u2666'].indexOf(card[1])>-1?' red':'');kn2[index].textContent=card[0];kn2[index].setAttribute('data-suit',card[1]);paintCardFace(kn2[index],card[0],card[1]);kn2[index].style.opacity='1';}});seats[localSeatAbsolute].setAttribute('aria-label',names[localSeatAbsolute]+' holds '+demoHands[localSeatAbsolute].map(function(card){return card.join('')}).join(' and '));}if(keepBoard){document.querySelectorAll('.board-card').forEach(function(node,index){if(keepBoard[index]){boardCards[index]=[keepBoard[index][0],keepBoard[index][1]];node.textContent=boardCards[index][0];node.setAttribute('data-suit',boardCards[index][1]);node.className='board-card'+(['\u2665','\u2666'].indexOf(boardCards[index][1])>-1?' red':'');paintCardFace(node,boardCards[index][0],boardCards[index][1]);node.style.opacity='1';}});}logEvent('snapshot-same-hand-cards-preserved',{hand:handNumber,local:keepLocal?keepLocal.map(function(c){return c.join('')}):null});}
     potValueNode.textContent=money(pot);potChips.style.opacity=pot>0?'1':'0';Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(node){node.classList.remove('show','collecting')});bets.forEach(function(value,index){var amount=Math.max(0,Math.floor(Number(value)||0)),node=document.querySelector('.round-bet[data-seat="'+index+'"]');roundBetTotals[index]=amount;if(node&&amount){node.querySelector('.bet-amount').textContent=money(amount);node.classList.add('show')}});setBlinds();
     handRunning=snapshot.handRunning===true;pendingUser=null;pendingRaiseState=null;if(snapshot.activeTurn&&Number(snapshot.activeTurn.seat)>=0)restoreAuthoritativeTurn(snapshot.activeTurn);
     lastServerRevision=snapshot.serverRevision;reconnecting=false;showConnectionState('BACK AT TABLE · HAND '+handNumber+' RESTORED',true);logEvent('multiplayer-session-restored',{serverRevision:lastServerRevision,hand:handNumber,seat:localSeatAbsolute,pot:pot,stack:stacks[localSeatAbsolute],localCards:demoHands[localSeatAbsolute].map(function(card){return card.join('')}),bets:roundBetTotals.slice(),handRunning:handRunning});return true
