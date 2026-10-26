@@ -18,6 +18,7 @@ button{cursor:pointer;font:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:20px clamp(14px,4vw,44px) 60px}
 .head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
 .back{min-height:44px;padding:9px 16px;border:1px solid var(--line);background:#1d1013;color:var(--ink);border-radius:8px;font-weight:700}
+.back.lobby{background:linear-gradient(135deg,#fff0a8,#c67b1c);color:#1e1003;border-color:var(--gold)}
 .sign{flex:1;text-align:center}
 .sign h1{margin:0;font:800 clamp(38px,8vw,68px)/0.95 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#f6dc96;
   text-shadow:0 0 18px #ff5a3c66,0 0 42px #ddb86644,0 3px 0 #5e1220,0 6px 22px #000}
@@ -108,9 +109,9 @@ button{cursor:pointer;font:inherit}
 <body>
 <div class="wrap">
   <div class="head">
-    <button class="back" id="backBtn" type="button">← Lobby</button>
+    <button class="back" id="backBtn" type="button">← Back</button>
     <div class="sign"><h1>Nikki's Bar</h1><span class="est">EST. 2026 · NIKKIFLIXS</span></div>
-    <span style="width:86px" aria-hidden="true"></span>
+    <button class="back lobby" id="lobbyBtn" type="button" aria-label="Go to the lobby">LOBBY</button>
   </div>
 
   <div class="host">
@@ -210,6 +211,13 @@ button{cursor:pointer;font:inherit}
 document.getElementById('backBtn').addEventListener('click',function(){
   try{if(window.parent&&window.parent!==window&&window.parent.postMessage){window.parent.postMessage({type:'nikkiflixs-leave-room'},'*');}}catch(e){}
   try{window.history.back();}catch(e){}
+});
+/* Real lobby route: the site root showroom. NOT a relative index.html
+   (that resolves to the poker redirect stub) and NOT history.back()
+   (that bounces bar <-> game and never reaches the lobby). */
+document.getElementById('lobbyBtn').addEventListener('click',function(){
+  try{if(window.parent&&window.parent!==window&&window.parent.postMessage){window.parent.postMessage({type:'nikkiflixs-leave-room'},'*');}}catch(e){}
+  window.location.href='../../../index.html';
 });
 document.querySelectorAll('.station').forEach(function(c){
   c.addEventListener('click',function(){window.location.href=c.getAttribute('data-href');});

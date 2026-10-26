@@ -22,17 +22,17 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .wrap{max-width:520px;margin:0 auto;padding:12px 10px 34px}
 .stage{position:relative;width:min(94vw,440px);margin:0 auto}
 canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px 60px #000d;touch-action:manipulation;background:#241204}
-.duel{display:flex;gap:8px;max-width:440px;margin:12px auto 0}
+.duel{display:flex;gap:8px;max-width:440px;margin:8px auto 0}
 .duel .side{flex:1;border:1px solid var(--gold2);border-radius:10px;padding:8px 12px;background:#0007;text-align:center}
 .duel .side.on{border-color:var(--gold);box-shadow:0 0 14px #ddb86644}
 .duel .nm{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--muted)}
 .duel .rem{font:800 34px/1.05 "Barlow Condensed",sans-serif;color:#fff}
 .duel .side.on .nm{color:var(--gold)}
-.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:10px 4px 2px;color:#ffe9bd}
+.turnline{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin:8px 4px 2px;color:#ffe9bd}
 .dartsline{text-align:center;color:var(--muted);font-size:13px;min-height:19px;margin:0 4px 8px}
 .dartsline b{color:#fff}
-.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:8px 4px 6px;color:#ffe9bd}
-.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:6px 4px 4px;color:#ffe9bd}
+.hint{text-align:center;color:var(--muted);font-size:12px;margin:0 4px 6px}
 .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
 .btn{min-height:52px;padding:12px 26px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.05em}
 .btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff;font-size:17px}
@@ -59,7 +59,7 @@ canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px
 .scores{margin-top:5px}
 #cvwrap{margin-top:5px}
 .dartsline{margin-top:2px}
-.wrap{padding-bottom:6px}
+.wrap{padding-bottom:2px}
 </style>
 </head>
 <body>
@@ -70,7 +70,7 @@ canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px
 </div>
 <div class="wrap">
   <div class="stage">
-    <canvas id="cv" width="560" height="560" aria-label="Dartboard"></canvas>
+    <canvas id="cv" width="560" height="640" aria-label="Dartboard"></canvas>
     <div class="overlay" id="overlay"><div class="card">
       <h2 id="ovTitle">You Win the Leg!</h2>
       <p id="ovText"></p>
@@ -82,11 +82,11 @@ canvas{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 24px
     <div class="side" id="sideHouse"><div class="nm">HOUSE</div><div class="rem" id="remHouse">301</div></div>
   </div>
   <p class="turnline" id="turnline">Your throw — 3 darts</p>
-  <p class="dartsline" id="dartsline">The gold ring is your aim — it drifts. Tap THROW when it crosses your number.</p>
+  <p class="dartsline" id="dartsline">Aim ring drifts — tap THROW on your number.</p>
   <p class="status" id="status"></p>
   <div class="controls">
     <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button>
-    <button class="btn primary" id="throwBtn" type="button">🎯 THROW DART</button>
+    <button class="btn primary" id="throwBtn" type="button">THROW DART</button>
     <button class="btn" id="newBtn" type="button">NEW LEG</button>
   </div>
   <p class="hint">Straight 301: every dart counts, doubles and trebles multiply. Land on <b>exactly zero</b> to win — go under, or leave 1, and the whole turn is a bust and scores nothing.</p>
@@ -108,6 +108,8 @@ var ORDER = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12,
 
 var scores = { you: 301, house: 301 };
 var turn = 'you', turnStart = 301, dartsThrown = [], turnDarts = [], allDarts = [];
+var pendingDarts = [];   // darts mid-flight: {x0,y0,x1,y1,t0,who} — scoring already applied; visual only
+var handThrustT0 = 0;    // last throw time; drives the hand-thrust animation
 var state = 'aim';               // aim | botwait | over
 var t0 = performance.now(), botTimer = 0, lastTime = 0;
 
@@ -135,7 +137,10 @@ function gauss() {
 }
 function throwDart(x, y, who) {
   var hit = scoreFor(x, y);
-  allDarts.push({ x: x, y: y, who: who });
+  // The hand throws: dart flies from the hand to the board over ~280ms.
+  // Scoring applies now (unchanged logic); the dart lands visually on arrival.
+  pendingDarts.push({ x0: CX, y0: 505, x1: x, y1: y, t0: performance.now(), who: who });
+  handThrustT0 = performance.now();
   dartsThrown.push(hit);
   var rem = scores[who] - hit.pts;
   var line = document.getElementById('dartsline');
@@ -167,7 +172,7 @@ function endTurn(who, busted) {
     turn = 'you'; turnStart = scores.you; dartsThrown = [];
     state = 'aim';
     document.getElementById('turnline').textContent = 'Your throw — 3 darts';
-    document.getElementById('dartsline').textContent = 'Your aim ring is drifting — tap THROW on your number.';
+    document.getElementById('dartsline').textContent = 'Aim ring drifts — tap THROW on your number.';
     document.getElementById('throwBtn').disabled = false;
     setStatus('Your throw.');
   }
@@ -225,17 +230,84 @@ function updateSides() {
 function setStatus(t) { document.getElementById('status').textContent = t; }
 function newLeg() {
   scores = { you: 301, house: 301 };
-  turn = 'you'; turnStart = 301; dartsThrown = []; allDarts = [];
+  turn = 'you'; turnStart = 301; dartsThrown = []; allDarts = []; pendingDarts = [];
   state = 'aim'; t0 = performance.now();
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('throwBtn').disabled = false;
   document.getElementById('turnline').textContent = 'Your throw — 3 darts';
-  document.getElementById('dartsline').textContent = 'The gold ring is your aim — it drifts. Tap THROW when it crosses your number.';
+  document.getElementById('dartsline').textContent = 'Aim ring drifts — tap THROW on your number.';
   setStatus('');
   updateHUD(); updateSides(); draw();
 }
 
-/* ---------- drawing ---------- */
+/* ---------- the throwing hand ---------- */
+/* A hand at the bottom of the board that throws every dart: on a
+   throw it thrusts forward, and the dart flies from the hand to
+   the board. Drawn after the board so it reads in the foreground.
+   The hand never covers a landed dart (darts land at r <= 202,
+   the hand's top edge stays below y = 530). */
+function handThrust() {
+  if (!handThrustT0) return 0;
+  var e = performance.now() - handThrustT0;
+  if (e < 120) return e / 120;
+  if (e < 340) return Math.max(0, 1 - (e - 120) / 220);
+  return 0;
+}
+function drawHand() {
+  var th = handThrust();
+  var lift = th * 26;   // thrust toward the board
+  ctx.save();
+  ctx.translate(0, -lift);
+  // sleeve + cuff
+  ctx.fillStyle = '#2a1a12'; ctx.fillRect(232, 600, 96, 40);
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(232, 596, 96, 7);
+  // wrist
+  ctx.fillStyle = '#d9a077'; ctx.fillRect(250, 578, 60, 26);
+  // dart (point up, gripped) — drawn before palm/fingers so they wrap it
+  ctx.fillStyle = '#c0c0c0';
+  ctx.beginPath();
+  ctx.moveTo(280, 498); ctx.lineTo(284, 512); ctx.lineTo(276, 512); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(276, 512, 8, 30);
+  ctx.fillStyle = '#1c1c22'; ctx.fillRect(277, 540, 6, 45);
+  ctx.fillStyle = '#c0272d';
+  ctx.beginPath(); ctx.moveTo(280, 582); ctx.lineTo(270, 604); ctx.lineTo(280, 598); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(280, 582); ctx.lineTo(290, 604); ctx.lineTo(280, 598); ctx.closePath(); ctx.fill();
+  // palm
+  ctx.fillStyle = '#e8b48c';
+  ctx.beginPath(); ctx.ellipse(280, 562, 38, 30, 0, 0, 7); ctx.fill();
+  ctx.fillStyle = '#00000022';
+  ctx.beginPath(); ctx.ellipse(280, 572, 30, 18, 0, 0, 7); ctx.fill();
+  // curled fingers gripping the barrel
+  ctx.fillStyle = '#e8b48c';
+  [252, 268, 284, 298].forEach(function (fx, i) {
+    ctx.beginPath(); ctx.arc(fx, 540 + (i % 2) * 3, 10, 0, 7); ctx.fill();
+  });
+  ctx.strokeStyle = '#00000033'; ctx.lineWidth = 1.5;
+  [252, 268, 284, 298].forEach(function (fx, i) {
+    ctx.beginPath(); ctx.arc(fx, 540 + (i % 2) * 3, 10, Math.PI * 1.05, Math.PI * 1.95); ctx.stroke();
+  });
+  // thumb on the side
+  ctx.fillStyle = '#dfa878';
+  ctx.beginPath(); ctx.ellipse(244, 560, 12, 18, -0.5, 0, 7); ctx.fill();
+  ctx.restore();
+}
+function drawFlight(d, now) {
+  var t = Math.min(1, (now - d.t0) / 280);
+  var e = 1 - Math.pow(1 - t, 3);
+  var x = d.x0 + (d.x1 - d.x0) * e;
+  var y = d.y0 + (d.y1 - d.y0) * e - Math.sin(Math.PI * t) * 18;
+  var ang = Math.atan2(d.y1 - d.y0, d.x1 - d.x0);
+  var col = d.who === 'you' ? '#c0272d' : '#2456c8';
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(ang);
+  ctx.strokeStyle = '#1c1c22'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-26, 0); ctx.lineTo(2, 0); ctx.stroke();
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.moveTo(-26, 0); ctx.lineTo(-14, -7); ctx.lineTo(-14, 7); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#c0c0c0';
+  ctx.beginPath(); ctx.moveTo(2, 0); ctx.lineTo(8, 0); ctx.stroke();
+  ctx.restore();
+}
 function wedge(r0, r1, a0, a1, fill) {
   ctx.beginPath();
   ctx.arc(CX, CY, r1, a0, a1); ctx.arc(CX, CY, r0, a1, a0, true);
@@ -244,7 +316,7 @@ function wedge(r0, r1, a0, a1, fill) {
 function draw() {
   if (!ctx) return;
   // cabinet board surround
-  ctx.fillStyle = '#241204'; ctx.fillRect(0, 0, 560, 560);
+  ctx.fillStyle = '#241204'; ctx.fillRect(0, 0, 560, 640);
   var wg = ctx.createRadialGradient(CX, CY, 60, CX, CY, 300);
   wg.addColorStop(0, '#5d3a1e'); wg.addColorStop(1, '#2a1709');
   ctx.beginPath(); ctx.arc(CX, CY, 252, 0, 7); ctx.fillStyle = wg; ctx.fill();
@@ -282,6 +354,9 @@ function draw() {
     ctx.beginPath(); ctx.moveTo(d.x, d.y); ctx.lineTo(d.x + 9, d.y - 11);
     ctx.strokeStyle = d.who === 'you' ? '#c0272d' : '#2456c8'; ctx.lineWidth = 3; ctx.stroke();
   });
+  // darts mid-flight from the hand
+  var nowF = performance.now();
+  pendingDarts.forEach(function (d) { drawFlight(d, nowF); });
   // drifting aim ring (your turn only, leg live, no dart mid-flight)
   if (state === 'aim' && turn === 'you') {
     var a = aimAt(performance.now());
@@ -295,10 +370,22 @@ function draw() {
     ctx.moveTo(a.x, a.y + 7); ctx.lineTo(a.x, a.y + 20);
     ctx.strokeStyle = '#f3d999'; ctx.lineWidth = 2; ctx.stroke();
   }
+  // the throwing hand, foreground
+  drawHand();
 }
 function loop(ts) {
   if (!lastTime) lastTime = ts;
   var dt = Math.min(0.05, (ts - lastTime) / 1000); lastTime = ts;
+  // land finished flights
+  var now = performance.now();
+  for (var i = pendingDarts.length - 1; i >= 0; i--) {
+    if (now - pendingDarts[i].t0 >= 280) {
+      var d = pendingDarts[i];
+      allDarts.push({ x: d.x1, y: d.y1, who: d.who });
+      pendingDarts.splice(i, 1);
+    }
+  }
+  if (pendingDarts.length) draw();
   if (state === 'aim') draw();
   else if (state === 'botwait') {
     botTimer += dt;
@@ -325,6 +412,8 @@ window.__DARTS = {
   segPoint: segPoint, newLeg: newLeg, botDart: botDart, aimAt: aimAt,
   get scores() { return scores; }, get state() { return state; },
   get turn() { return turn; }, get dartsThrown() { return dartsThrown; },
+  get pendingCount() { return pendingDarts.length; },
+  get dartsLanded() { return allDarts.length; },
   setScores: function (y, h) { scores.you = y; scores.house = h; turnStart = (turn === 'you' ? y : h); }
 };
 

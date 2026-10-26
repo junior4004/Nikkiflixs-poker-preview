@@ -19,15 +19,20 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .topbar h1 small{display:block;font:600 10px/1.4 "Source Sans 3",sans-serif;letter-spacing:.28em;color:var(--muted)}
 .score{background:#070b0c;border:1px solid var(--gold2);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap;color:var(--gold)}
 .score b{color:#fff}
-.wrap{max-width:900px;margin:0 auto;padding:12px 10px 34px}
-.stage{position:relative;width:min(96vw,860px);margin:0 auto}
+.wrap{max-width:900px;margin:0 auto;padding:12px 10px 2px}
+.stage{position:relative;width:min(96vw,420px);margin:0 auto}
+.stage{width:min(96vw,420px,calc((100dvh - 292px)*0.62))}
 canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px 60px #000d;touch-action:none;background:#3c2412}
-.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:12px 4px 6px;color:#ffe9bd}
-.hint{text-align:center;color:var(--muted);font-size:13px;margin:0 4px 10px}
-.powerwrap{display:flex;align-items:center;gap:10px;max-width:420px;margin:0 auto 6px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--muted)}
+.status{min-height:24px;text-align:center;font-weight:700;font-size:15px;margin:8px 4px 2px;color:#ffe9bd}
+.tray{display:flex;gap:5px;justify-content:center;align-items:center;margin-top:6px;min-height:24px;flex-wrap:wrap}
+.traylab{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--muted);margin:0 2px}
+.tray .tb{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:800 11px/1 "Barlow Condensed",sans-serif;color:#fff;box-shadow:inset -2px -3px 5px #0007,1px 2px 4px #000a}
+.tray .tb.stripe{color:#17130f}
+.hint{text-align:center;color:var(--muted);font-size:13px;margin:4px 4px 6px}
+.powerwrap{display:flex;align-items:center;gap:10px;max-width:420px;margin:0 auto 4px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--muted)}
 .powerbar{flex:1;height:12px;border:1px solid var(--gold2);border-radius:999px;background:#0008;overflow:hidden}
 .powerfill{height:100%;width:0%;background:linear-gradient(90deg,#7dff8a,#f3d999 55%,#e5484d);transition:width .05s linear}
-.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
 .btn{min-height:48px;padding:11px 22px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--ink);font-weight:800;letter-spacing:.04em}
 .btn.primary{background:linear-gradient(180deg,#b8872d,#654216);border-color:var(--gold);color:#fff}
 .overlay{position:absolute;inset:0;display:none;place-items:center;background:#06020399;border-radius:18px;z-index:5}
@@ -35,9 +40,6 @@ canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px
 .overlay .card{text-align:center;padding:26px 30px;border:1px solid var(--gold);border-radius:14px;background:linear-gradient(145deg,#2a0e16f5,#140609fb);box-shadow:0 18px 55px #000c;max-width:86%}
 .overlay h2{margin:0 0 6px;font:800 34px/1 "Barlow Condensed",sans-serif;color:#f6dc96;text-transform:uppercase;letter-spacing:.04em}
 .overlay p{margin:0 0 16px;color:var(--muted)}
-.tray{display:flex;gap:6px;justify-content:center;margin-top:10px;min-height:22px}
-.tray .tb{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:800 10px/1 "Barlow Condensed",sans-serif;color:#fff;box-shadow:inset -2px -3px 5px #0007,1px 2px 4px #000a}
-
 .htp-btn{min-height:34px;margin:-2px 0;padding:7px 14px;border-radius:10px;border:1px solid var(--gold2);background:var(--panel);color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;touch-action:manipulation}
 .htp-overlay{position:fixed;inset:0;z-index:90;display:none;place-items:center;background:#060203c9;padding:14px}
 .htp-overlay.show{display:grid}
@@ -55,83 +57,144 @@ canvas{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Bar</button>
   <h1>Pool<small>NIKKI'S BAR · FREE PLAY</small></h1>
-  <div class="score" id="scoreBox">BALLS <b>0/8</b> · SHOTS <b>0</b></div>
+  <div class="score" id="scoreBox">TABLE OPEN</div>
 </div>
 <div class="wrap">
   <div class="stage">
-    <canvas id="cv" width="1000" height="560" aria-label="Pool table"></canvas>
+    <canvas id="cv" width="620" height="1000" aria-label="Pool table, north to south"></canvas>
     <div class="overlay" id="overlay"><div class="card">
-      <h2 id="ovTitle">Table Cleared!</h2>
-      <p id="ovText">You sank all 8 balls.</p>
+      <h2 id="ovTitle">You Win!</h2>
+      <p id="ovText"></p>
       <button class="btn primary" id="againBtn" type="button">RACK 'EM AGAIN</button>
     </div></div>
   </div>
+  <p class="status" id="status">Your break — pull back on the table and release.</p>
   <div class="tray" id="tray" aria-hidden="true"></div>
-  <p class="status" id="status">Pull back anywhere on the table to aim — release to shoot.</p>
   <div class="powerwrap"><span>POWER</span><div class="powerbar"><div class="powerfill" id="powerFill"></div></div></div>
-  <p class="hint">Drag away from the cue ball like pulling back a cue stick. The gold line is your shot. Sink the cue ball and it spots back up — no charge, it's Nikki's house.</p>
+  <p class="hint">Drag away from the cue ball like pulling back a cue stick. The gold line is your shot. You against the House — solids or stripes, then the 8.</p>
   <div class="controls">
     <button class="htp-btn" id="htpBtn" type="button" aria-haspopup="dialog">HOW TO PLAY</button><button class="btn" id="rerackBtn" type="button">RE-RACK</button></div>
 </div>
 <script>
 'use strict';
 /* ============ POOL — Nikki's Bar (free play) ============
-   Top-down table. Slingshot aim: drag back, release to shoot.
+   NORTH-SOUTH table (tall canvas, break from the south, rack at
+   the north). You vs the House: break, then the first group ball
+   pocketed on a non-break shot sets your group — solids 1-7 or
+   stripes 9-15, clearly different balls. Clear your group, then
+   the 8. Early 8 or scratch-on-8 loses. Turns alternate; pocket
+   your group and you shoot again. Scratch spots the cue ball
+   back on the head spot and passes the turn.
    Physics: fixed-substep integration, equal-mass elastic ball
    collisions, cushion bounce, pocket capture. No tunneling:
    top speed is capped so a ball moves < 1 radius per substep. */
 var FAST = /[?&](fast|demo)=1/.test(location.search);
 var DEMO = /[?&]demo=1/.test(location.search);
 var cv = document.getElementById('cv'), ctx = cv.getContext ? cv.getContext('2d') : null;
-var W = 1000, H = 560;
-var FELT = { x0: 56, y0: 56, x1: 944, y1: 504 };       // cushion nose rectangle
-var R = 13, PR = 25;                                     // ball radius, pocket radius
+var W = 620, H = 1000;
+var FELT = { x0: 54, y0: 54, x1: 566, y1: 946 };       // cushion nose rectangle
+var R = 19, PR = 30;                                     // ball radius, pocket radius
+var HEAD = { x: 310, y: 723 };                           // head spot (cue ball, south)
+var FOOT = { x: 310, y: 277 };                           // foot spot (rack apex, north)
 var POCKETS = [
-  { x: 52, y: 52 }, { x: 500, y: 44 }, { x: 948, y: 52 },
-  { x: 52, y: 508 }, { x: 500, y: 516 }, { x: 948, y: 508 }
+  { x: 54, y: 54 }, { x: 566, y: 54 },
+  { x: 54, y: 500 }, { x: 566, y: 500 },
+  { x: 54, y: 946 }, { x: 566, y: 946 }
 ];
 var COLORS = ['#f7c948', '#2456c8', '#d42b2b', '#6d28a8', '#ef7d1a', '#1d8a4e', '#8a2432', '#191919'];
 var MAXSPEED = 1500;
 
-var balls = [], shots = 0, pocketed = 0, state = 'aim';  // aim | rolling | over
+var balls = [], shots = 0, state = 'aim';  // aim | rolling | bot | over
+var turn = 'you', shooter = 'you';
+var groups = { you: null, house: null };   // null | 'solid' | 'stripe'
+var breakShot = true, pocketedThisShot = [];
 var aim = null;        // {sx,sy,cx,cy} pointer drag in canvas coords
-var lastTime = 0;
+var lastTime = 0, botTimerId = 0;
 
-function mkBall(x, y, color, num, cue) {
-  return { x: x, y: y, vx: 0, vy: 0, color: color, num: num, cue: !!cue, active: true };
+function other(w) { return w === 'you' ? 'house' : 'you'; }
+function groupOf(b) {
+  if (b.cue) return 'cue';
+  if (b.num === 8) return 'eight';
+  return b.num <= 7 ? 'solid' : 'stripe';
+}
+function groupColor(n) { return COLORS[n <= 8 ? n - 1 : n - 9]; }
+function mkBall(x, y, num, cue) {
+  return { x: x, y: y, vx: 0, vy: 0, num: num, cue: !!cue,
+    stripe: !cue && num >= 9 && num <= 15,
+    color: cue ? '#f5f1e6' : (num === 8 ? '#191919' : groupColor(num)),
+    active: true };
+}
+function groupRemaining(g) {
+  var n = 0;
+  balls.forEach(function (b) {
+    if (!b.cue && b.active && groupOf(b) === g) n++;
+  });
+  return n;
 }
 function rack() {
-  balls = [mkBall(250, 280, '#f5f1e6', 0, true)];
-  var order = [1, 2, 3, 8, 4, 5, 6, 7];
-  var rows = [1, 2, 3, 2], idx = 0, ax = 668, gap = R * 2 + 1.5;
+  balls = [mkBall(HEAD.x, HEAD.y, 0, true)];
+  var rows = [[1], [9, 2], [10, 8, 3], [11, 4, 14, 5], [12, 6, 15, 7, 13]];
+  var gap = R * 2 + 1.5;
   for (var r = 0; r < rows.length; r++) {
-    for (var k = 0; k < rows[r]; k++) {
-      var n = order[idx++];
-      var x = ax + r * gap * 0.88;
-      var y = 280 + (k - (rows[r] - 1) / 2) * gap;
-      balls.push(mkBall(x, y, COLORS[n - 1], n, false));
+    for (var k = 0; k < rows[r].length; k++) {
+      var x = FOOT.x + (k - (rows[r].length - 1) / 2) * gap;
+      var y = FOOT.y - r * gap * 0.88;
+      balls.push(mkBall(x, y, rows[r][k], false));
     }
   }
-  shots = 0; pocketed = 0; state = 'aim'; aim = null;
+  shots = 0; state = 'aim'; turn = 'you'; shooter = 'you';
+  groups = { you: null, house: null }; breakShot = true; pocketedThisShot = []; aim = null;
+  if (botTimerId) { clearTimeout(botTimerId); botTimerId = 0; }
   updateHUD(); draw();
-  setStatus('Pull back anywhere on the table to aim — release to shoot.');
+  setStatus('Your break — pull back on the table and release.');
   document.getElementById('overlay').classList.remove('show');
 }
 function setStatus(t) { document.getElementById('status').textContent = t; }
+function groupName(g) { return g === 'solid' ? 'SOLIDS' : g === 'stripe' ? 'STRIPES' : 'OPEN'; }
+function chip(b) {
+  var d = document.createElement('span');
+  d.className = 'tb' + (b.stripe ? ' stripe' : '');
+  if (b.stripe) { d.style.background = 'linear-gradient(180deg,#fffdf4 0 22%,' + b.color + ' 22% 78%,#fffdf4 78%)'; }
+  else { d.style.background = b.color; }
+  d.textContent = b.num;
+  return d;
+}
 function updateHUD() {
-  document.getElementById('scoreBox').innerHTML =
-    'BALLS <b>' + pocketed + '/8</b> · SHOTS <b>' + shots + '</b>';
+  var sb = document.getElementById('scoreBox');
+  if (!groups.you) { sb.innerHTML = 'TABLE OPEN'; }
+  else {
+    sb.innerHTML = 'YOU <b>' + groupName(groups.you) + ' · ' + groupRemaining(groups.you) + ' LEFT</b>' +
+      ' · HOUSE <b>' + groupName(groups.house) + ' · ' + groupRemaining(groups.house) + ' LEFT</b>';
+  }
   var tray = document.getElementById('tray'); tray.innerHTML = '';
-  balls.forEach(function (b) {
-    if (!b.cue && !b.active) {
-      var d = document.createElement('span'); d.className = 'tb';
-      d.style.background = b.color; d.textContent = b.num; tray.appendChild(d);
-    }
-  });
+  if (groups.you) {
+    var ly = document.createElement('span'); ly.className = 'traylab'; ly.textContent = 'YOU · ' + groupName(groups.you); tray.appendChild(ly);
+    balls.forEach(function (b) { if (!b.cue && b.active && groupOf(b) === groups.you) tray.appendChild(chip(b)); });
+    var lh = document.createElement('span'); lh.className = 'traylab'; lh.textContent = 'HOUSE · ' + groupName(groups.house); tray.appendChild(lh);
+    balls.forEach(function (b) { if (!b.cue && b.active && groupOf(b) === groups.house) tray.appendChild(chip(b)); });
+  }
 }
 function cueBall() { return balls[0]; }
+function ballByNum(n) {
+  for (var i = 0; i < balls.length; i++) if (balls[i].num === n) return balls[i];
+  return null;
+}
 function allStopped() {
   return balls.every(function (b) { return !b.active || (b.vx === 0 && b.vy === 0); });
+}
+function respot(b, x, y) {
+  b.active = true; b.x = x; b.y = y; b.vx = 0; b.vy = 0;
+  var guard = 0;
+  while (guard++ < 24) {
+    var clash = false;
+    for (var i = 0; i < balls.length; i++) {
+      var o = balls[i];
+      if (o !== b && o.active && Math.hypot(o.x - b.x, o.y - b.y) < 2 * R + 2) { clash = true; break; }
+    }
+    if (!clash) break;
+    b.y += 2 * R + 6;
+    if (b.y > FELT.y1 - R) { b.y = y; b.x += 2 * R + 6; }
+  }
 }
 
 /* ---------- physics ---------- */
@@ -151,7 +214,7 @@ function integrate(h) {
       var p = POCKETS[j], d = Math.hypot(b.x - p.x, b.y - p.y);
       if (d < PR - 3) {
         b.active = false; b.vx = 0; b.vy = 0;
-        if (!b.cue) { pocketed++; }
+        if (!b.cue) { pocketedThisShot.push(b.num); }
         break;
       }
     }
@@ -180,29 +243,75 @@ function integrate(h) {
     }
   }
 }
+function endGame(winner, text) {
+  state = 'over';
+  document.getElementById('ovTitle').textContent = winner === 'you' ? 'You Win!' : 'House Wins';
+  document.getElementById('ovText').textContent = text;
+  document.getElementById('overlay').classList.add('show');
+  setStatus(winner === 'you' ? 'You take the table!' : 'The House takes the table.');
+  updateHUD(); draw();
+}
+function scheduleBot() {
+  if (botTimerId) clearTimeout(botTimerId);
+  botTimerId = setTimeout(function () {
+    botTimerId = 0;
+    if (state === 'bot' && turn === 'house') botShot();
+  }, FAST ? 100 : 900);
+}
 function afterStop() {
   var cue = cueBall(), scratched = false;
-  if (!cue.active) {  // scratch — spot the cue ball back at the head spot
+  if (!cue.active) {  // scratch — spot the cue ball back on the head spot
     scratched = true;
-    cue.active = true; cue.x = 250; cue.y = 280; cue.vx = 0; cue.vy = 0;
-    // nudge off any ball sitting on the spot
-    for (var i = 1; i < balls.length; i++) {
-      var b = balls[i];
-      if (b.active && Math.hypot(b.x - cue.x, b.y - cue.y) < 2 * R + 2) cue.y += 2 * R + 6;
-    }
-    setStatus('Scratch! Cue ball spotted back up. Shoot again.');
+    respot(cue, HEAD.x, HEAD.y);
   }
+  var eightPocketed = pocketedThisShot.indexOf(8) !== -1;
+  if (eightPocketed) {
+    if (breakShot) {
+      respot(ballByNum(8), FOOT.x, FOOT.y);   // 8 on the break spots back up
+    } else {
+      var cleared = groups[shooter] && groupRemaining(groups[shooter]) === 0;
+      if (!scratched && cleared) {
+        endGame(shooter, shooter === 'you'
+          ? 'You cleared your group and sank the 8 in ' + shots + (shots === 1 ? ' shot.' : ' shots.')
+          : 'The House cleared its group and sank the 8.');
+        return;
+      }
+      endGame(other(shooter), shooter === 'you'
+        ? (scratched ? 'Scratch on the 8 — the House takes it.' : 'You sank the 8 too early. The House takes it.')
+        : (scratched ? 'The House scratched on the 8 — you take it!' : 'The House sank the 8 too early — you take it!'));
+      return;
+    }
+  }
+  // group assignment (first group ball pocketed on a non-break shot)
+  if (!breakShot && !groups[shooter]) {
+    for (var i = 0; i < pocketedThisShot.length; i++) {
+      var pb = ballByNum(pocketedThisShot[i]);
+      var g = pb && groupOf(pb);
+      if (g === 'solid' || g === 'stripe') {
+        groups[shooter] = g; groups[other(shooter)] = (g === 'solid' ? 'stripe' : 'solid');
+        setStatus((shooter === 'you' ? 'You are ' : 'House is ') + groupName(g) + '! Clear them, then the 8.');
+        break;
+      }
+    }
+  }
+  var pocketedOwn = false, pocketedAny = false;
+  pocketedThisShot.forEach(function (n) {
+    var b = ballByNum(n), g = b && groupOf(b);
+    if (g === 'solid' || g === 'stripe') pocketedAny = true;
+    if (groups[shooter] && g === groups[shooter]) pocketedOwn = true;
+  });
+  var cont = !scratched && (pocketedOwn || pocketedAny);
+  if (!cont) turn = other(shooter);
+  breakShot = false;
   updateHUD();
-  if (pocketed >= 8) {
-    state = 'over';
-    document.getElementById('ovText').textContent =
-      'You sank all 8 balls in ' + shots + (shots === 1 ? ' shot.' : ' shots.');
-    document.getElementById('overlay').classList.add('show');
-    setStatus('Table cleared. Nice shooting!');
-  } else {
+  if (turn === 'you') {
     state = 'aim';
-    if (scratched) setStatus('Scratch! Cue ball spotted back up — ' + (8 - pocketed) + ' to go.');
-    else setStatus('Your shot. ' + (8 - pocketed) + ' to go.');
+    setStatus(scratched ? 'Scratch! Cue ball spotted back up. Your shot.'
+      : (cont ? 'Nice — shoot again.' : 'House missed. Your shot.'));
+  } else {
+    state = 'bot';
+    setStatus(scratched ? 'Scratch! Cue ball spotted back up. House to shoot.' : 'House to shoot…');
+    scheduleBot();
   }
   draw();
 }
@@ -213,15 +322,50 @@ function step(dt) {
   if (allStopped() && state === 'rolling') afterStop();
 }
 function shoot(dx, dy, power) {
-  if (state !== 'aim') return false;
+  if (state !== 'aim' && state !== 'bot') return false;
   var len = Math.hypot(dx, dy); if (len < 0.001) return false;
   var cue = cueBall(); if (!cue.active) return false;
+  shooter = turn;
   var sp = 240 + Math.max(0, Math.min(1, power)) * (MAXSPEED - 240);
   cue.vx = dx / len * sp; cue.vy = dy / len * sp;
-  shots++; state = 'rolling'; aim = null;
+  shots++; pocketedThisShot = []; state = 'rolling'; aim = null;
   document.getElementById('powerFill').style.width = '0%';
-  updateHUD(); setStatus('Rolling…');
+  updateHUD(); setStatus(shooter === 'you' ? 'Rolling…' : 'House shoots…');
   return true;
+}
+function gauss() {
+  return (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+}
+function botShot() {
+  if (state !== 'bot') return false;
+  var cue = cueBall();
+  var targets = [];
+  balls.forEach(function (b) {
+    if (b.cue || !b.active) return;
+    if (groupOf(b) === 'eight') {
+      if (groups.house && groupRemaining(groups.house) === 0) targets.push(b);
+    } else if (!groups.house || groupOf(b) === groups.house) targets.push(b);
+  });
+  if (!targets.length) {  // no legal target: soft shot north
+    return shoot(0, -1, 0.25);
+  }
+  var best = null;
+  targets.forEach(function (b) {
+    POCKETS.forEach(function (p) {
+      var d1 = Math.hypot(cue.x - b.x, cue.y - b.y);
+      var d2 = Math.hypot(b.x - p.x, b.y - p.y);
+      var score = d1 + d2 * 1.2;
+      if (!best || score < best.score) best = { ball: b, pocket: p, score: score, d1: d1, d2: d2 };
+    });
+  });
+  var b = best.ball, p = best.pocket;
+  var ux = (b.x - p.x) / best.d2, uy = (b.y - p.y) / best.d2;   // ball -> pocket unit
+  var gx = b.x + ux * 2 * R, gy = b.y + uy * 2 * R;             // ghost-ball spot
+  var dx = gx - cue.x, dy = gy - cue.y, len = Math.hypot(dx, dy);
+  if (len < 2 * R + 2) { dx = b.x - cue.x; dy = b.y - cue.y; len = Math.hypot(dx, dy); }
+  var px = -dy / len, py = dx / len, nz = gauss() * 5;
+  var power = 0.3 + Math.min(0.45, (best.d1 + best.d2) / 1600);
+  return shoot(dx / len + px * nz / len, dy / len + py * nz / len, power);
 }
 
 /* ---------- drawing ---------- */
@@ -232,6 +376,81 @@ function rr(x, y, w, h, r) {
   ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r);
   ctx.closePath();
 }
+function drawBall(b) {
+  var bg;
+  if (b.stripe) {
+    ctx.save();
+    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 7); ctx.clip();
+    ctx.fillStyle = '#fffdf4'; ctx.fillRect(b.x - R, b.y - R, 2 * R, 2 * R);
+    var sg = ctx.createLinearGradient(0, b.y - R * 0.55, 0, b.y + R * 0.55);
+    sg.addColorStop(0, b.color); sg.addColorStop(0.5, b.color); sg.addColorStop(1, b.color);
+    ctx.fillStyle = sg; ctx.fillRect(b.x - R, b.y - R * 0.55, 2 * R, R * 1.1);
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 7); ctx.lineWidth = 1; ctx.strokeStyle = '#00000066'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(b.x - 5, b.y - 6, 5, 0, 7); ctx.fillStyle = '#ffffffaa'; ctx.fill();
+  } else {
+    bg = ctx.createRadialGradient(b.x - 5, b.y - 6, 2, b.x, b.y, R + 1);
+    bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.25, b.color); bg.addColorStop(1, b.color);
+    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 7); ctx.fillStyle = bg; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = '#00000066'; ctx.stroke();
+  }
+  if (!b.cue) {
+    ctx.beginPath(); ctx.arc(b.x, b.y, 8, 0, 7); ctx.fillStyle = '#fffdf4'; ctx.fill();
+    ctx.fillStyle = '#17130f'; ctx.font = '800 11px "Barlow Condensed",sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(String(b.num), b.x, b.y + 0.5);
+  }
+}
+function drawCue(ux, uy, power) {
+  // Fancy cue stick: tapered maple shaft, brass joint, leather wrap, blue tip.
+  var cue = cueBall();
+  var px = -uy, py = ux;
+  var tipD = R + 4, back = tipD + power * 90;
+  var t0x = cue.x - ux * back, t0y = cue.y - uy * back;              // tip (near ball)
+  var vx = -ux, vy = -uy, tEdge = 1e9;   // butt must stay on the canvas
+  if (vx > 0.001) tEdge = Math.min(tEdge, (612 - t0x) / vx);
+  if (vx < -0.001) tEdge = Math.min(tEdge, (8 - t0x) / vx);
+  if (vy > 0.001) tEdge = Math.min(tEdge, (992 - t0y) / vy);
+  if (vy < -0.001) tEdge = Math.min(tEdge, (8 - t0y) / vy);
+  var len = Math.max(90, Math.min(280, tEdge));
+  var b0x = cue.x - ux * (back + len), b0y = cue.y - uy * (back + len); // butt
+  ctx.save();
+  ctx.shadowColor = '#00000088'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 4; ctx.shadowOffsetY = 6;
+  // shaft polygon (tip width 5 -> butt width 12)
+  ctx.beginPath();
+  ctx.moveTo(t0x + px * 2.5, t0y + py * 2.5);
+  ctx.lineTo(b0x + px * 6, b0y + py * 6);
+  ctx.lineTo(b0x - px * 6, b0y - py * 6);
+  ctx.lineTo(t0x - px * 2.5, t0y - py * 2.5);
+  ctx.closePath();
+  var sg = ctx.createLinearGradient(t0x, t0y, b0x, b0y);
+  sg.addColorStop(0, '#e8c795'); sg.addColorStop(0.45, '#c89a5e'); sg.addColorStop(0.62, '#a97a42'); sg.addColorStop(1, '#3a2318');
+  ctx.fillStyle = sg; ctx.fill();
+  ctx.shadowColor = 'transparent'; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+  // brass joint collar at 45% along the stick
+  var jx = t0x + (b0x - t0x) * 0.45, jy = t0y + (b0y - t0y) * 0.45;
+  var jw = 2.5 + (6 - 2.5) * 0.45;
+  ctx.strokeStyle = '#e8c95c'; ctx.lineWidth = 10; ctx.lineCap = 'butt';
+  ctx.beginPath();
+  ctx.moveTo(jx + px * jw, jy + py * jw); ctx.lineTo(jx - px * jw, jy - py * jw); ctx.stroke();
+  // leather wrap rings near the butt
+  ctx.strokeStyle = '#00000055'; ctx.lineWidth = 2;
+  [0.72, 0.82, 0.92].forEach(function (f) {
+    var wx = t0x + (b0x - t0x) * f, wy = t0y + (b0y - t0y) * f;
+    var ww = 2.5 + (6 - 2.5) * f;
+    ctx.beginPath();
+    ctx.moveTo(wx + px * ww, wy + py * ww); ctx.lineTo(wx - px * ww, wy - py * ww); ctx.stroke();
+  });
+  // blue leather tip
+  ctx.fillStyle = '#2b6cb0';
+  ctx.beginPath();
+  ctx.moveTo(t0x + px * 3, t0y + py * 3);
+  ctx.lineTo(t0x - ux * 7 + px * 3, t0y - uy * 7 + py * 3);
+  ctx.lineTo(t0x - ux * 7 - px * 3, t0y - uy * 7 - py * 3);
+  ctx.lineTo(t0x - px * 3, t0y - py * 3);
+  ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
 function draw() {
   if (!ctx) return;
   // wood rail
@@ -240,23 +459,25 @@ function draw() {
   ctx.fillStyle = g; rr(0, 0, W, H, 26); ctx.fill();
   ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 2; rr(8, 8, W - 16, H - 16, 22); ctx.stroke();
   // felt
-  var fg = ctx.createRadialGradient(420, 240, 80, 500, 280, 640);
+  var fg = ctx.createRadialGradient(310, 420, 80, 310, 500, 640);
   fg.addColorStop(0, '#12855f'); fg.addColorStop(0.6, '#0b5a40'); fg.addColorStop(1, '#063d2a');
   ctx.fillStyle = fg; rr(FELT.x0 - 26, FELT.y0 - 26, (FELT.x1 - FELT.x0) + 52, (FELT.y1 - FELT.y0) + 52, 18); ctx.fill();
   // cushion inner shadow line
   ctx.strokeStyle = '#00000055'; ctx.lineWidth = 3;
   rr(FELT.x0 - 4, FELT.y0 - 4, (FELT.x1 - FELT.x0) + 8, (FELT.y1 - FELT.y0) + 8, 12); ctx.stroke();
-  // head string + spot
+  // head string + spots
   ctx.strokeStyle = '#ffffff22'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(250, FELT.y0 - 20); ctx.lineTo(250, FELT.y1 + 20); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(FELT.x0 - 20, HEAD.y); ctx.lineTo(FELT.x1 + 20, HEAD.y); ctx.stroke();
+  ctx.beginPath(); ctx.arc(FOOT.x, FOOT.y, 4, 0, 7); ctx.fillStyle = '#ffffff44'; ctx.fill();
+  ctx.beginPath(); ctx.arc(HEAD.x, HEAD.y, 4, 0, 7); ctx.fillStyle = '#ffffff44'; ctx.fill();
   // pockets
   POCKETS.forEach(function (p) {
     ctx.beginPath(); ctx.arc(p.x, p.y, PR, 0, 7); ctx.fillStyle = '#050505'; ctx.fill();
     ctx.lineWidth = 3; ctx.strokeStyle = '#c9a227'; ctx.stroke();
   });
-  // aim guide
+  // aim guide + fancy cue
   var cue = cueBall();
-  if (state === 'aim' && aim && cue.active) {
+  if (state === 'aim' && turn === 'you' && aim && cue.active) {
     var dx = aim.sx - aim.cx, dy = aim.sy - aim.cy, len = Math.hypot(dx, dy);
     if (len > 8) {
       var ux = dx / len, uy = dy / len, power = Math.min(1, len / 300);
@@ -265,29 +486,13 @@ function draw() {
       ctx.beginPath(); ctx.moveTo(cue.x + ux * (R + 4), cue.y + uy * (R + 4));
       ctx.lineTo(cue.x + ux * (90 + power * 220), cue.y + uy * (90 + power * 220)); ctx.stroke();
       ctx.setLineDash([]);
-      // cue stick pulled back
-      ctx.strokeStyle = '#a9743f'; ctx.lineWidth = 7; ctx.lineCap = 'round';
-      var back = R + 16 + power * 90;
-      ctx.beginPath(); ctx.moveTo(cue.x - ux * back, cue.y - uy * back);
-      ctx.lineTo(cue.x - ux * (back + 150), cue.y - uy * (back + 150)); ctx.stroke();
       ctx.restore();
+      drawCue(ux, uy, power);
       document.getElementById('powerFill').style.width = Math.round(power * 100) + '%';
     }
   }
   // balls
-  balls.forEach(function (b) {
-    if (!b.active) return;
-    var bg = ctx.createRadialGradient(b.x - 4, b.y - 5, 2, b.x, b.y, R + 1);
-    bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.25, b.color); bg.addColorStop(1, b.color);
-    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 7); ctx.fillStyle = bg; ctx.fill();
-    ctx.lineWidth = 1; ctx.strokeStyle = '#00000066'; ctx.stroke();
-    if (!b.cue) {
-      ctx.beginPath(); ctx.arc(b.x, b.y, 6.5, 0, 7); ctx.fillStyle = '#fffdf4'; ctx.fill();
-      ctx.fillStyle = '#17130f'; ctx.font = '800 9px "Barlow Condensed",sans-serif';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(String(b.num), b.x, b.y + 0.5);
-    }
-  });
+  balls.forEach(function (b) { if (b.active) drawBall(b); });
 }
 function loop(ts) {
   if (!lastTime) lastTime = ts;
@@ -302,7 +507,7 @@ function toCanvas(e) {
   return { x: (e.clientX - r.left) * (W / r.width), y: (e.clientY - r.top) * (H / r.height) };
 }
 cv.addEventListener('pointerdown', function (e) {
-  if (state !== 'aim') return;
+  if (state !== 'aim' || turn !== 'you') return;
   var p = toCanvas(e); aim = { sx: p.x, sy: p.y, cx: p.x, cy: p.y };
   try { cv.setPointerCapture(e.pointerId); } catch (err) {}
   draw();
@@ -315,7 +520,7 @@ function endAim(e) {
   if (!aim) return;
   var dx = aim.sx - aim.cx, dy = aim.sy - aim.cy, len = Math.hypot(dx, dy);
   var a = aim; aim = null;
-  if (state === 'aim' && len > 14) shoot(dx, dy, Math.min(1, len / 300));
+  if (state === 'aim' && turn === 'you' && len > 14) shoot(dx, dy, Math.min(1, len / 300));
   else { document.getElementById('powerFill').style.width = '0%'; draw(); }
 }
 cv.addEventListener('pointerup', endAim);
@@ -328,33 +533,45 @@ document.getElementById('backBtn').addEventListener('click', function () {
   window.location.href = 'index.html';
 });
 
-/* ---------- test hooks (used by tools/sims/bar_pool_sim.js) ---------- */
+/* ---------- test hooks ---------- */
 window.__POOL = {
   get balls() { return balls; },
-  rack: rack, shoot: shoot, step: step, draw: draw,
-  get state() { return state; }, get shots() { return shots; }, get pocketed() { return pocketed; },
+  rack: rack, shoot: shoot, step: step, draw: draw, botShot: botShot,
+  get state() { return state; }, get turn() { return turn; },
+  get groups() { return groups; }, get shots() { return shots; },
+  get breakShot() { return breakShot; },
   setBall: function (i, x, y, vx, vy) { var b = balls[i]; b.x = x; b.y = y; b.vx = vx || 0; b.vy = vy || 0; b.active = true; },
-  setState: function (s) { state = s; }
+  setActive: function (i, on) { balls[i].active = !!on; balls[i].vx = 0; balls[i].vy = 0; },
+  setState: function (s) { state = s; },
+  setTurn: function (t) { turn = t; },
+  setBreak: function (v) { breakShot = !!v; },
+  setGroups: function (y, h) { groups.you = y; groups.house = h; },
+  setAim: function (sx, sy, cx, cy) { aim = { sx: sx, sy: sy, cx: cx, cy: cy }; }
 };
 
 rack();
 requestAnimationFrame(loop);
-if (DEMO) { setTimeout(function () { shoot(1, 0.08, 0.72); }, 650); }
+if (DEMO) { setTimeout(function () { shoot(0, -1, 0.72); }, 650); }
 </script>
 <div class="htp-overlay" id="htpOverlay" role="dialog" aria-modal="true" aria-label="How to play">
   <div class="htp-card">
     <h2>How to Play — Pool</h2>
     <h3>The Object</h3>
-    <p>Clear the table: sink all <b>8 balls</b> in <b>as few shots as you can</b>. It's solo — you against the table. The chip up top keeps count of <b>BALLS</b> sunk and <b>SHOTS</b> taken.</p>
+    <p>You against the House on a full <b>north–south</b> table: <b>solids 1–7</b> or <b>stripes 9–15</b>, then the <b>8-ball</b>. First to clear their group and sink the 8 takes the table.</p>
     <h3>Shooting</h3>
     <ul>
       <li>Press anywhere on the table and <b>drag back, away from the cue ball</b> — like pulling back a cue stick.</li>
       <li>The <b>gold dashed line</b> is your shot: the cue ball travels along it. The longer the pull, the harder the shot — watch the <b>POWER</b> bar fill.</li>
-      <li><b>Release to shoot.</b> Balls that reach any of the six pockets drop, and sunk balls collect in the tray under the table.</li>
-      <li>No turns, no fouls, no opponent: sink one and shoot again from wherever the cue ball stops.</li>
+      <li><b>Release to shoot.</b> Balls that reach any of the six pockets drop. Pocket one of your group and you shoot again; miss, and the House steps in.</li>
     </ul>
-    <h3>Scratch &amp; Finish</h3>
-    <p>Sink the cue ball and it <b>spots right back up</b> on the head spot, free — no charge, it's Nikki's house. <b>RE-RACK</b> starts a fresh table any time. Sink the 8th ball and the table is cleared: your shot count is your score — rack 'em again and try to beat it.</p>
+    <h3>Groups, Turns &amp; the 8</h3>
+    <ul>
+      <li>You break from the south. The table starts <b>open</b> — the first group ball pocketed on a shot after the break sets your group (solids or stripes); the House gets the other.</li>
+      <li><b>Stripes</b> are white balls with a wide color band; <b>solids</b> are all color. The tray under the table shows what each side has left.</li>
+      <li>Sink the cue ball and it <b>spots right back up</b> on the head spot, free — but your turn is over.</li>
+      <li>Sink the <b>8 early</b>, or scratch on the 8, and you lose on the spot. Clear your group first, then the 8, and the table is yours.</li>
+    </ul>
+    <p><b>RE-RACK</b> starts a fresh table any time.</p>
     <button class="htp-close" id="htpClose" type="button">CLOSE</button>
   </div>
 </div>
