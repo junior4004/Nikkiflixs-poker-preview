@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Nikkiflixs Roulette</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap');
+:root{--ink:#f8f2df;--muted:#c9c0a6;--bg:#100c09;--gold:#ddb866;--line:#5e452a;--shadow:0 18px 55px #0009}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Source Sans 3",sans-serif;background:var(--bg);color:var(--ink)}
+body{background-image:linear-gradient(#090603d9,#090603f2),url('../poker/assets/poker-lobby/table-01.webp');background-size:cover;background-position:center;background-attachment:fixed}
+button{cursor:pointer;font:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:20px clamp(14px,4vw,44px) 60px}
+.head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.back{min-height:44px;padding:9px 16px;border:1px solid var(--line);background:#1a1510;color:var(--ink);border-radius:8px;font-weight:700;text-decoration:none;display:inline-grid;place-items:center}
+.head h1{margin:0;font:800 clamp(30px,6vw,52px)/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.02em;color:#f4d68d;text-shadow:0 3px 14px #000}
+.sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+.wallet{display:flex;gap:10px;align-items:baseline;justify-content:center;padding:10px 14px;border:1px solid var(--line);background:#1a1510;border-radius:10px;margin-bottom:18px}
+.wallet strong{font:800 26px/1 "Barlow Condensed",sans-serif;color:var(--gold);font-variant-numeric:tabular-nums}
+.wallet span{font-size:13px;color:var(--muted)}
+.wheel{width:min(280px,76vw);height:min(280px,76vw);margin:0 auto 14px;border-radius:50%;background:conic-gradient(#c00 0 9.7deg,#000 9.7deg 19.4deg,#c00 19.4deg 29.1deg,#000 29.1deg 38.8deg,#c00 38.8deg 48.5deg,#000 48.5deg 58.2deg,#c00 58.2deg 67.9deg,#000 67.9deg 77.6deg,#c00 77.6deg 87.3deg,#000 87.3deg 97deg,#c00 97deg 106.7deg,#000 106.7deg 116.4deg,#c00 116.4deg 126.1deg,#000 126.1deg 135.8deg,#c00 135.8deg 145.5deg,#000 145.5deg 155.2deg,#c00 155.2deg 164.9deg,#000 164.9deg 174.6deg,#c00 174.6deg 184.3deg,#000 184.3deg 194deg,#c00 194deg 203.7deg,#000 203.7deg 213.4deg,#c00 213.4deg 223.1deg,#000 223.1deg 232.8deg,#c00 232.8deg 242.5deg,#000 242.5deg 252.2deg,#c00 252.2deg 261.9deg,#000 261.9deg 271.6deg,#c00 271.6deg 281.3deg,#000 281.3deg 291deg,#c00 291deg 300.7deg,#000 300.7deg 310.4deg,#c00 310.4deg 320.1deg,#000 320.1deg 329.8deg,#c00 329.8deg 339.5deg,#0a0 339.5deg 360deg);border:12px solid #8a6a2a;box-shadow:0 0 40px #000, inset 0 0 30px #000;position:relative;transition:transform 4s cubic-bezier(.15,.85,.25,1)}
+.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#f0d488,#8a6a2a);border:4px solid #5a451a}
+.ball{position:absolute;top:10px;left:50%;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;transform:translateX(-50%)}
+.result{text-align:center;font-size:24px;color:#fff;margin:10px 0;min-height:36px;font-weight:bold}
+.bets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:500px;margin:0 auto 15px}
+.roulette-bet{padding:15px;border:2px solid #f0d488;border-radius:8px;font-weight:bold;color:#fff}
+.roulette-bet.red{background:#c00}.roulette-bet.black{background:#000}.roulette-bet.green{background:#0a0}
+.roulette-bet.plain{background:#2a2a2a;color:#f0d488;padding:12px}
+.spin-row{text-align:center;margin-bottom:16px}
+.spin-btn{padding:15px 40px;background:linear-gradient(135deg,#f0d488,#c67b1c);color:#1e1003;border:none;border-radius:8px;font-size:20px;font-weight:bold}
+.spin-btn:disabled{opacity:.5}
+.betbox{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px}
+.betbox button{min-height:44px;padding:8px 16px;border:1px solid var(--line);background:#1a1510;color:var(--ink);border-radius:8px;font-weight:700}
+.betbox strong{font:800 22px/1 "Barlow Condensed",sans-serif;color:var(--gold);font-variant-numeric:tabular-nums}
+.pays{max-width:500px;margin:0 auto;border:1px solid var(--line);border-radius:10px;background:#141009cc;padding:14px 16px;color:var(--muted);font-size:13px;line-height:1.6}
+.pays b{color:var(--gold)}
+.note{margin-top:20px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:#141009cc;color:var(--muted);font-size:13px;line-height:1.5}
+.note b{color:var(--gold)}
+.confetti{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:50}
+.confetti i{position:absolute;top:-12px;width:8px;height:14px;background:#f1bc42;animation:cfall 1.1s ease-out forwards}
+@keyframes cfall{to{transform:translateY(105vh) rotate(540deg);opacity:0}}
+@media(max-width:560px){.result{font-size:20px}.roulette-bet{padding:12px}.roulette-bet.plain{padding:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head"><a class="back" href="index.html">← Table Games</a><h1>Roulette</h1></div>
+  <p class="sub">European wheel · single zero. Place your bet, then spin.</p>
+  <div class="wallet" aria-label="Session gold coin balance"><span>SESSION COINS</span><strong id="balance">10,000</strong><span>GC</span></div>
+  <div class="wheel" id="rouletteWheel" role="img" aria-label="Roulette wheel">
+    <div class="hub"></div>
+    <div class="ball" id="rouletteBall"></div>
+  </div>
+  <div class="result" id="rouletteResult">Place your bet</div>
+  <div class="bets">
+    <button class="roulette-bet red" data-bet="red" type="button">RED</button>
+    <button class="roulette-bet black" data-bet="black" type="button">BLACK</button>
+    <button class="roulette-bet green" data-bet="green" type="button">ZERO</button>
+    <button class="roulette-bet plain" data-bet="odd" type="button">ODD</button>
+    <button class="roulette-bet plain" data-bet="even" type="button">EVEN</button>
+    <button class="roulette-bet plain" data-bet="high" type="button">19-36</button>
+  </div>
+  <div class="betbox" aria-label="Bet controls">
+    <button id="betDown" type="button" aria-label="Lower bet">−</button>
+    <span><small style="color:var(--muted);font-size:11px;letter-spacing:.12em;">BET&nbsp;</small><strong id="bet">250</strong><span style="color:var(--muted);font-size:13px;"> GC</span></span>
+    <button id="betUp" type="button" aria-label="Raise bet">+</button>
+  </div>
+  <div class="spin-row"><button class="spin-btn" id="rouletteSpin" type="button">SPIN</button></div>
+  <div class="pays"><b>Pays:</b> RED / BLACK, ODD / EVEN, and 19-36 pay 1 to 1. ZERO pays 35 to 1. The wheel has a single zero.</div>
+  <div class="note"><b>Social poker club:</b> token play only, no cash value. Your session balance starts at 10,000 and resets when you leave. Good luck.</div>
+</div>
+<div class="confetti" id="confetti"></div>
+<script>
+(function(){
+  "use strict";
+  var balance = 10000, bets = [100, 250, 500, 1000, 2500, 5000, 10000], betIndex = 1;
+  var rouletteBet = null, spinning = false, audioCtx = null;
+  var balanceEl = document.getElementById('balance'), betEl = document.getElementById('bet'),
+      resultEl = document.getElementById('rouletteResult'), wheel = document.getElementById('rouletteWheel'),
+      spinBtn = document.getElementById('rouletteSpin');
+  function updateUI(){
+    balanceEl.textContent = balance.toLocaleString();
+    betEl.textContent = bets[betIndex].toLocaleString();
+    document.getElementById('betDown').disabled = betIndex === 0;
+    document.getElementById('betUp').disabled = betIndex === bets.length - 1;
+    spinBtn.disabled = spinning;
+  }
+  function tone(freq, dur, type, vol){
+    try{
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || .05, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + dur);
+    }catch(e){}
+  }
+  function confetti(){
+    var p = document.getElementById('confetti'); p.innerHTML = '';
+    for (var i = 0; i < 28; i++){
+      var e = document.createElement('i');
+      e.style.left = Math.floor(Math.random() * 100) + '%';
+      e.style.background = ['#f1bc42', '#cf2028', '#2ba46f', '#f7e7a9'][Math.floor(Math.random() * 4)];
+      e.style.animationDelay = (Math.floor(Math.random() * 200) / 1000) + 's';
+      p.appendChild(e);
+    }
+    setTimeout(function(){ p.innerHTML = ''; }, 1500);
+  }
+  function showToast(txt){ resultEl.textContent = txt; }
+  document.querySelectorAll('.roulette-bet').forEach(function(b){
+    b.style.outline = 'none';
+    b.addEventListener('click', function(){
+      if (spinning) return;
+      document.querySelectorAll('.roulette-bet').forEach(function(x){ x.style.outline = 'none'; });
+      b.style.outline = '3px solid #fff';
+      rouletteBet = b.dataset.bet;
+      resultEl.textContent = 'Bet: ' + b.textContent;
+    });
+  });
+  document.getElementById('betDown').addEventListener('click', function(){ if (betIndex > 0) betIndex--; updateUI(); });
+  document.getElementById('betUp').addEventListener('click', function(){ if (betIndex < bets.length - 1) betIndex++; updateUI(); });
+  spinBtn.addEventListener('click', function(){
+    if (spinning) return;
+    if (!rouletteBet){ resultEl.textContent = 'Place a bet first!'; return; }
+    var wager = bets[betIndex];
+    if (balance < wager){ showToast('Not enough coins'); return; }
+    balance -= wager; spinning = true; updateUI();
+    var spins = 5 + Math.random() * 3;
+    var finalAngle = Math.random() * 360;
+    wheel.style.transform = 'rotate(' + (spins * 360 + finalAngle) + 'deg)';
+    resultEl.textContent = 'Spinning...';
+    setTimeout(function(){
+      var num = Math.floor(Math.random() * 37);
+      var isRed = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(num);
+      var color = num === 0 ? 'green' : (isRed ? 'red' : 'black');
+      var win = false, payout = 0;
+      if (rouletteBet === 'red' && color === 'red'){ win = true; payout = wager * 2; }
+      else if (rouletteBet === 'black' && color === 'black'){ win = true; payout = wager * 2; }
+      else if (rouletteBet === 'green' && num === 0){ win = true; payout = wager * 36; }
+      else if (rouletteBet === 'odd' && num % 2 === 1){ win = true; payout = wager * 2; }
+      else if (rouletteBet === 'even' && num !== 0 && num % 2 === 0){ win = true; payout = wager * 2; }
+      else if (rouletteBet === 'high' && num >= 19){ win = true; payout = wager * 2; }
+      if (win){ balance += payout; resultEl.textContent = num + ' ' + color + ' - YOU WIN ' + (payout - wager) + '!'; confetti(); tone(440, .2, 'triangle', .06); }
+      else { resultEl.textContent = num + ' ' + color + ' - You lose'; tone(90, .22, 'sine', .04); }
+      spinning = false; updateUI();
+    }, 4100);
+  });
+  updateUI();
+})();
+</script>
+</body>
+</html>

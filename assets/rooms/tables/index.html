@@ -34,6 +34,9 @@ button{cursor:pointer;font:inherit}
 .die.two{transform:rotate(11deg)}
 .pip{width:8px;height:8px;border-radius:50%;background:#1a1a1a;place-self:center;visibility:hidden}
 .die.d1 .p1,.die.d1 .p9,.die.d6 .p1,.die.d6 .p3,.die.d6 .p4,.die.d6 .p6,.die.d6 .p7,.die.d6 .p9{visibility:visible}
+.roulette-art{background:radial-gradient(ellipse at center,#0f6b47 0%,#083a26 55%,#04170f 100%)!important;display:grid;place-items:center}
+.wheel-mini{width:110px;height:110px;border-radius:50%;background:conic-gradient(#c00 0 9.7deg,#000 9.7deg 19.4deg,#c00 19.4deg 29.1deg,#000 29.1deg 38.8deg,#c00 38.8deg 48.5deg,#000 48.5deg 58.2deg,#c00 58.2deg 67.9deg,#000 67.9deg 77.6deg,#c00 77.6deg 87.3deg,#000 87.3deg 97deg,#c00 97deg 106.7deg,#000 106.7deg 116.4deg,#c00 116.4deg 126.1deg,#000 126.1deg 135.8deg,#c00 135.8deg 145.5deg,#000 145.5deg 155.2deg,#c00 155.2deg 164.9deg,#000 164.9deg 174.6deg,#c00 174.6deg 184.3deg,#000 184.3deg 194deg,#c00 194deg 203.7deg,#000 203.7deg 213.4deg,#c00 213.4deg 223.1deg,#000 223.1deg 232.8deg,#c00 232.8deg 242.5deg,#000 242.5deg 252.2deg,#c00 252.2deg 261.9deg,#000 261.9deg 271.6deg,#c00 271.6deg 281.3deg,#000 281.3deg 291deg,#c00 291deg 300.7deg,#000 300.7deg 310.4deg,#c00 310.4deg 320.1deg,#000 320.1deg 329.8deg,#c00 329.8deg 339.5deg,#0a0 339.5deg 360deg;border:6px solid #8a6a2a;box-shadow:0 0 20px #000;position:relative;z-index:1}
+.wheel-mini::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#f0d488,#8a6a2a);border:2px solid #5a451a}
 .domino-art{background:radial-gradient(ellipse at center,#7d1023 0%,#4d0a16 55%,#26040b 100%)!important;display:grid;place-items:center}
 .dpair{display:flex;gap:12px;align-items:center;position:relative;z-index:1}
 .dtile{background:linear-gradient(180deg,#fffefb,#e9e2d2);border:2px solid #6b543a;border-radius:6px;display:flex;box-shadow:0 6px 14px #000c}
@@ -87,6 +90,11 @@ button{cursor:pointer;font:inherit}
       </div></div>
       <div class="body"><h2>Craps</h2><p>Pass line, come bets, place bets, hardways — full layout</p>
       <div class="meta"><span class="min">MIN BET 5</span><span class="go">PLAY →</span></div></div>
+    </button>
+    <button class="table-card" data-href="roulette.html" type="button">
+      <div class="art roulette-art"><div class="wheel-mini" aria-hidden="true"></div></div>
+      <div class="body"><h2>Roulette</h2><p>European wheel · single zero · red/black, odd/even, 19-36</p>
+      <div class="meta"><span class="min">MIN BET 100</span><span class="go">PLAY →</span></div></div>
     </button>
     <button class="table-card" data-href="dominoes.html" type="button">
       <div class="art domino-art"><div class="dpair" aria-hidden="true">
