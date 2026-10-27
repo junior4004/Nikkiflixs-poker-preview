@@ -897,10 +897,10 @@ function musicSchedule(){
     var bar = Math.floor(musicStep / 8) % 4, inBar = musicStep % 8;
     var chord = MUSIC_CHORDS[bar], at = musicNext;
     if (inBar === 0){
-      for (var ci = 0; ci < 3; ci++) musicNote(chord[ci], at, MUSIC_BEAT * 4 * 0.95, "triangle", 0.045, musicGain, 0.15);
+      for (var ci = 0; ci < 3; ci++) musicNote(chord[ci], at, MUSIC_BEAT * 4 * 0.95, "triangle", 0.22, musicGain, 0.15);
     }
-    if (inBar === 0 || inBar === 4) musicNote(MUSIC_ROOTS[bar], at, 0.42, "sine", 0.11, musicGain, 0.01);
-    if (inBar % 2 === 0) musicNote(chord[(inBar / 2) % 3], at, 0.30, "triangle", 0.05, musicGain, 0.01);
+    if (inBar === 0 || inBar === 4) musicNote(MUSIC_ROOTS[bar], at, 0.42, "sine", 0.30, musicGain, 0.01);
+    if (inBar % 2 === 0) musicNote(chord[(inBar / 2) % 3], at, 0.30, "triangle", 0.24, musicGain, 0.01);
     /* spin layer: brighter arpeggio + offbeat ticks, audible only via spinGain */
     musicNote(chord[musicStep % 3] * 2, at, 0.20, "triangle", 0.055, spinGain, 0.01);
     if (inBar % 2 === 1) musicHat(at, spinGain);
