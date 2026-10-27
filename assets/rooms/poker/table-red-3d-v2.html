@@ -31,7 +31,7 @@
     .brand{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-14deg);font:400 112px/.8 "Great Vibes Local",cursive;color:#f6d36f;text-shadow:0 3px 4px #41000b,0 0 14px #ffd3618c;white-space:nowrap}
     .dealer{position:absolute;z-index:18;left:64%;top:11%;width:96px;transform:translate(-50%,-50%);text-align:center}.dealer img{display:block;width:96px;height:112px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 10px #000e)}.dealer-name{display:inline-block;margin-top:-8px;padding:5px 9px;border:1px solid #d7a44d;border-radius:7px;background:#15100df2;color:#ffe7ad;font:700 9px/1 sans-serif;box-shadow:0 4px 9px #000d}.dealer-button{position:absolute;right:-3px;bottom:15px;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:#fff8e8;color:#111;border:2px solid #ad8e50;font:800 11px/1 "Barlow Condensed";box-shadow:0 3px 8px #000b}
     .seat{position:absolute;inset:0;z-index:14;pointer-events:none}.pod{pointer-events:auto;cursor:pointer;position:absolute;left:var(--x);top:var(--y);width:142px;height:132px;transform:translate(-50%,-50%);text-align:center}.portrait-wrap{position:absolute;left:50%;top:0;width:74px;height:84px;transform:translateX(-50%)}.portrait{display:block;width:74px;height:84px;border-radius:50% / 46%;object-fit:cover;border:4px solid #d9b557;background:#21151d;box-shadow:0 8px 16px #000f}.turn-ring{--arc:1turn;--ring:var(--green);position:absolute;inset:-6px;border-radius:10px;padding:3px;display:none;pointer-events:none;background:conic-gradient(from -90deg,var(--ring) 0 var(--arc),transparent var(--arc) 1turn);filter:drop-shadow(0 0 7px var(--ring));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}.seat.active .turn-ring{display:block;animation:drainGreen 21s linear forwards}.seat.active.warning .turn-ring{--ring:var(--danger);animation:drainRed 10.5s linear forwards}.seat.authoritative.active .turn-ring{animation-duration:var(--turn-green,21s)}.seat.authoritative.active.warning .turn-ring{animation-duration:var(--turn-red,10.5s)}@property --arc{syntax:"<angle>";inherits:false;initial-value:1turn}@keyframes drainGreen{from{--arc:1turn}to{--arc:0turn}}@keyframes drainRed{from{--arc:1turn}to{--arc:0turn}}
-    .nameplate{position:absolute;left:0;right:0;top:86px;height:44px;padding:6px 9px;border-radius:8px;background:linear-gradient(180deg,#272320,#080708);border:1px solid #e2af4f;box-shadow:0 6px 12px #000e}.nameplate strong,.nameplate span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nameplate strong{font:700 14px/1 sans-serif}.nameplate span{margin-top:6px;color:#ffd36f;font:800 13px/1 sans-serif}.seat.folded .portrait{filter:grayscale(.8) brightness(.55)}.seat.folded .nameplate::after{content:"FOLDED";position:absolute;inset:0;display:grid;place-items:center;border-radius:7px;background:#090708e8;color:#ffbdc2;font:800 13px/1 "Barlow Condensed";letter-spacing:.08em}.seat.out-of-chips .nameplate::after{content:"OUT OF CHIPS";position:absolute;inset:0;display:grid;place-items:center;border-radius:7px;background:#24080bed;color:#ffe09a;font:800 12px/1 "Barlow Condensed";letter-spacing:.06em}.sit-in{display:none;position:absolute;inset:4px;border:1px solid #f3cf6d;border-radius:6px;background:linear-gradient(180deg,#b8872d,#654216);color:#fff9df;font:800 14px/1 "Barlow Condensed";letter-spacing:.05em;cursor:pointer;pointer-events:auto}.seat.empty-seat .sit-in{display:block}.seat.empty-seat .stack-value{visibility:hidden}.seat.empty-seat.folded .nameplate::after,.seat.you.folded .nameplate::after{display:none}.seat.out-of-chips .nameplate::after{display:grid}.seat.empty-seat .portrait{filter:grayscale(.45) brightness(.7)}.seat.empty-seat .seat-chips,.seat.empty-seat .pocket{display:none}.seat.seat-open .seat-chips{display:none}.seat.you.empty-seat .seat-chips,.seat.you.empty-seat .pocket{display:flex}
+    .nameplate{position:absolute;left:0;right:0;top:86px;height:44px;padding:6px 9px;border-radius:8px;background:linear-gradient(180deg,#272320,#080708);border:1px solid #e2af4f;box-shadow:0 6px 12px #000e}.nameplate strong,.nameplate span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nameplate strong{font:700 14px/1 sans-serif}.nameplate span{margin-top:6px;color:#ffd36f;font:800 13px/1 sans-serif}.seat.folded .portrait{filter:grayscale(.5) brightness(.78)}.seat.folded .nameplate::after{content:"FOLDED";position:absolute;inset:0;display:grid;place-items:center;border-radius:7px;background:rgba(9,7,8,0.55);color:#ffd9de;font:800 13px/1 "Barlow Condensed";letter-spacing:.08em}.seat.out-of-chips .nameplate::after{content:"OUT OF CHIPS";position:absolute;inset:0;display:grid;place-items:center;border-radius:7px;background:#24080bed;color:#ffe09a;font:800 12px/1 "Barlow Condensed";letter-spacing:.06em}.sit-in{display:none;position:absolute;inset:4px;border:1px solid #f3cf6d;border-radius:6px;background:linear-gradient(180deg,#b8872d,#654216);color:#fff9df;font:800 14px/1 "Barlow Condensed";letter-spacing:.05em;cursor:pointer;pointer-events:auto}.seat.empty-seat .sit-in{display:block}.seat.empty-seat .stack-value{visibility:hidden}.seat.empty-seat.folded .nameplate::after,.seat.you.folded .nameplate::after{display:none}.seat.out-of-chips .nameplate::after{display:grid}.seat.empty-seat .portrait{filter:grayscale(.45) brightness(.7)}.seat.empty-seat .seat-chips,.seat.empty-seat .pocket{display:none}.seat.seat-open .seat-chips{display:none}.seat.you.empty-seat .seat-chips,.seat.you.empty-seat .pocket{display:flex}
     .blind{position:absolute;z-index:4;right:-12px;top:68px;min-width:34px;height:34px;padding:0 4px;display:none;place-items:center;border-radius:50%;background:#f5d46d;color:#2c1900;border:3px solid #8f6515;box-shadow:0 0 0 3px #130a08,0 4px 10px #000d,0 0 10px #f5d46d80;font:800 12px/1 "Barlow Condensed"}.blind.show{display:grid}
     .pocket{position:absolute;z-index:13;left:50%;top:132px;transform:translateX(-50%);display:flex;gap:6px}.hole{width:46px;height:64px;padding:7px 5px;position:relative;pointer-events:none;border-radius:6px;background:linear-gradient(145deg,#fff,#ece8df);border:2px solid #8f8a80;color:#0d0d10;font:800 27px/.85 "Barlow Condensed";box-shadow:0 5px 9px #000c;opacity:0}.seat .pocket{pointer-events:none}.hole.red{color:#c20f25}.hole::after{content:attr(data-suit);position:absolute;right:4px;bottom:4px;font-size:.82em}.hole.back{background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f3d999;box-shadow:inset 0 0 0 2px #640919,0 5px 9px #000c}.hole.back::after{content:""}.seat.you .hole{width:50px;height:70px;font-size:31px;padding:8px 6px}
     .seat-chips{position:absolute;z-index:10;left:var(--kx);top:var(--ky);width:44px;height:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 5px 4px #000e)}.seat-chips i{position:absolute;left:6px;width:31px;height:16px;border-radius:50%;border:3px dashed #fffdf4;background:radial-gradient(ellipse at 34% 28%,#ffffff 0 7%,#f9e3e7 11% 19%,#c22440 25% 57%,#7d1223 61% 88%,#570a17 100%);box-shadow:0 2px 0 #2a050c,0 4px 3px #00000059,inset 0 0 0 2px #ffd76a4d,inset 0 3px 4px #ffffff73,inset 0 -4px 5px #00000059}.seat-chips i::before,.pot-chips i::before,.bet-stack i::before{content:"";position:absolute;left:13%;top:7%;width:50%;height:36%;border-radius:50%;background:linear-gradient(180deg,#ffffffd9,#ffffff00);transform:rotate(-14deg);pointer-events:none}.seat-chips i:nth-child(1){bottom:0;transform:rotate(-3deg)}.seat-chips i:nth-child(2){bottom:7px;transform:rotate(2.5deg);background:radial-gradient(ellipse at 34% 28%,#ffffff 0 7%,#e6f2ff 11% 19%,#1f6fc4 25% 57%,#0b3f7d 61% 88%,#072c57 100%)}.seat-chips i:nth-child(3){bottom:14px;transform:rotate(-2deg);background:radial-gradient(ellipse at 34% 28%,#ffffff 0 7%,#fff3c4 11% 19%,#dda520 25% 57%,#8a5f07 61% 88%,#5f4104 100%)}.seat-chips i:nth-child(4){bottom:21px;transform:rotate(3deg)}.seat-chips i:last-child::after{content:"NF";position:absolute;inset:0;display:grid;place-items:center;font:italic 700 8px Georgia,'Times New Roman',serif;letter-spacing:.05em;color:#43300a;text-shadow:0 0 2px #fff8;opacity:.9}.seat-chips.empty{opacity:.22}
@@ -129,11 +129,11 @@
     .nameplate.action-state{border-color:#fff0a5;background:linear-gradient(180deg,#a51e2c,#5d0c17);box-shadow:0 0 0 2px #f4c85f88,0 6px 12px #000e}.nameplate.action-state strong{color:#fff7d0;font:800 16px/1 "Barlow Condensed";letter-spacing:.07em;text-shadow:0 1px 2px #000}.nameplate.action-call,.nameplate.action-check{background:linear-gradient(180deg,#745719,#3b2909)}.nameplate.action-all-in{background:linear-gradient(180deg,#d13b47,#710c19);box-shadow:0 0 0 2px #fff0a5,0 0 18px #ef3f4f99,0 6px 12px #000e}
     /* Final rail geometry: a visibly longer table, with all opponents outside the rail. */
     .camera{width:560px;height:760px}
-    .table{left:19.65%;top:18%;width:60.7%;height:82%;border-radius:48% / 20%}
+    .table{left:19.65%;top:16%;width:60.7%;height:82%;border-radius:48% / 20%}
     .table::before{border-radius:48% / 20%}
     .table::after{border-radius:48% / 20%}
-    .dealer{left:67%;top:26%}.dealer::before{content:"";position:absolute;left:50%;top:50%;width:126px;height:134px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse at center,#1a0508e6 0 55%,transparent 72%);z-index:-1}
-    .pot{top:45%}.board{top:55%}.muck{top:46%}.deck{left:54%;top:30%}
+    .dealer{left:67%;top:19%}.dealer::before{content:"";position:absolute;left:50%;top:50%;width:126px;height:134px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse at center,#1a0508e6 0 55%,transparent 72%);z-index:-1}
+    .pot{top:43%}.board{top:53%}.muck{top:44%}.deck{left:54%;top:28%}
     .seat[data-view-slot="0"] .pod,.seat[data-view-slot="4"] .pod{width:130px}
     .seat[data-view-slot="1"] .portrait-wrap,.seat[data-view-slot="2"] .portrait-wrap,.seat[data-view-slot="3"] .portrait-wrap{left:50%;z-index:2}
     .seat[data-view-slot="5"] .portrait-wrap,.seat[data-view-slot="6"] .portrait-wrap,.seat[data-view-slot="7"] .portrait-wrap{left:50%;z-index:2}
@@ -150,13 +150,13 @@
     .showdown-winner{z-index:40!important;transform:translateY(-16px) scale(1.08);filter:none!important;opacity:1!important;box-shadow:0 0 0 3px #ffe074,0 0 24px #ffd24fcc,0 10px 18px #000e!important}
     .seat.showdown-loser .portrait,.seat.showdown-loser .nameplate{filter:grayscale(.9) brightness(.5)}
     .seat.showdown-winner-seat .portrait{box-shadow:0 0 0 3px #fff0a8,0 0 26px #ffd046,0 8px 16px #000f}
-    .pot-award-label{position:absolute;left:50%;top:31%;z-index:34;transform:translate(-50%,-50%);padding:7px 13px;border-radius:999px;background:#201608f2;border:1px solid #f5cf6d;color:#fff1b4;font:800 12px/1 "Barlow Condensed";box-shadow:0 5px 15px #000c,0 0 15px #ffd24f55;white-space:nowrap}
+    .pot-award-label{position:absolute;left:50%;top:29%;z-index:34;transform:translate(-50%,-50%);padding:7px 13px;border-radius:999px;background:#201608f2;border:1px solid #f5cf6d;color:#fff1b4;font:800 12px/1 "Barlow Condensed";box-shadow:0 5px 15px #000c,0 0 15px #ffd24f55;white-space:nowrap}
     .talk{position:fixed;z-index:45;left:12px;top:max(4px,env(safe-area-inset-top));bottom:auto;width:54px;height:54px;min-width:54px;margin:0;padding:5px;border-radius:50%;white-space:normal;line-height:1.05;box-shadow:0 7px 18px #000d}
     @media(max-width:620px){
       .camera{width:560px;height:760px}
-      .table{left:19.65%;top:18%;width:60.7%;height:82%}
-      .dealer{left:67%;top:26%}
-      .pot{top:45%}.board{top:55%}.muck{top:46%}
+      .table{left:19.65%;top:16%;width:60.7%;height:82%}
+      .dealer{left:67%;top:19%}
+      .pot{top:43%}.board{top:53%}.muck{top:44%}
       .talk{left:auto;right:12px;top:auto;bottom:calc(118px + env(safe-area-inset-bottom));width:56px;height:56px;min-width:56px;font-size:8px}
     }
     /* Hole cards stay prominent over each active portrait, then disappear when that player folds. */
@@ -259,18 +259,20 @@
     .bj-status{position:absolute;z-index:18;left:50%;top:47%;width:min(480px,62%);transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:12px}.bj-status .casino-message{min-height:36px;margin:0;padding:6px 12px;font-size:13px}.bj-score{padding:6px 9px;border:1px solid #e3c373;background:#06130e;color:#ffe6a0;font:800 12px/1 "Barlow Condensed";white-space:nowrap}
     @media(max-width:720px){.casino-table-room.blackjack-mode .casino-stage{inset:58px 0 100px;padding:5px}.blackjack-felt{width:100%;height:calc(100dvh - 164px);min-height:470px;border-radius:42% 42% 10% 10% / 17% 17% 6% 6%;transform:none}.blackjack-felt::before{inset:10px 8px}.blackjack-felt::after{top:43%;font-size:9px;width:76%;padding:9px 0}.bj-dealer-station{top:-22px;transform:translateX(-50%) scale(.75);transform-origin:top center}.bj-shoe{left:68%;top:5%;transform:scale(.72) skewX(-8deg)}.bj-discard{left:23%;top:6%;transform:scale(.72)}.blackjack-felt .play-card{width:44px;height:63px;font-size:21px}.blackjack-felt .play-card b{font-size:18px}.bj-dealer-hand{top:13%;gap:4px}.bj-player-hand{top:53%;gap:4px}.bj-status{top:42%;width:90%;gap:5px}.bj-status .casino-message{font-size:10px}.bj-score{font-size:9px}.bj-seat:nth-child(1),.bj-seat:nth-child(5){display:none}.bj-seat:nth-child(2){--sx:20%;--sy:75%}.bj-seat:nth-child(4){--sx:80%;--sy:75%}.bj-seat:nth-child(3){--sy:84%}.bj-circle{width:52px;height:52px;border-width:3px;font-size:7px}.bj-circle strong{font-size:11px}.bj-chip-crescent{bottom:-20px;width:350px;transform:translateX(-50%) scale(.76);transform-origin:bottom center}.bj-bet-stack{top:73%}.bj-dealer-arm{width:120px}.casino-table-room.blackjack-mode .casino-controls{min-height:100px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}}
       .seat[data-view-slot="0"]{--x:50%!important;--y:99%!important;--kx:64%!important;--ky:92%!important}
-    .seat[data-view-slot="1"]{--x:9.5%!important;--y:83%!important;--kx:29%!important;--ky:82%!important}
-    .seat[data-view-slot="2"]{--x:8%!important;--y:59%!important;--kx:27.5%!important;--ky:59%!important}
-    .seat[data-view-slot="3"]{--x:9.5%!important;--y:33%!important;--kx:29%!important;--ky:33%!important}
-    .seat[data-view-slot="4"]{--x:46%!important;--y:8%!important;--kx:61%!important;--ky:21%!important}
-    .seat[data-view-slot="5"]{--x:90.5%!important;--y:33%!important;--kx:71%!important;--ky:33%!important}
-    .seat[data-view-slot="6"]{--x:92%!important;--y:59%!important;--kx:72.5%!important;--ky:59%!important}
-    .seat[data-view-slot="7"]{--x:90.5%!important;--y:83%!important;--kx:71%!important;--ky:82%!important}
+    .seat[data-view-slot="1"]{--x:9.5%!important;--y:81%!important;--kx:29%!important;--ky:80%!important}
+    .seat[data-view-slot="2"]{--x:8%!important;--y:57%!important;--kx:27.5%!important;--ky:57%!important}
+    .seat[data-view-slot="3"]{--x:9.5%!important;--y:31%!important;--kx:29%!important;--ky:31%!important}
+    .seat[data-view-slot="4"]{--x:46%!important;--y:8%!important;--kx:61%!important;--ky:19%!important}
+    .seat[data-view-slot="5"]{--x:90.5%!important;--y:31%!important;--kx:71%!important;--ky:31%!important}
+    .seat[data-view-slot="6"]{--x:92%!important;--y:57%!important;--kx:72.5%!important;--ky:57%!important}
+    .seat[data-view-slot="7"]{--x:90.5%!important;--y:81%!important;--kx:71%!important;--ky:80%!important}
 /* RED FIX 2026-10-26 (Jerry live tap-test 21:15 MDT + LIVE-pill order). RED FILE ONLY. Phone-only geometry: slot 4 (top-middle) back off the felt rim — Build 276 moved plates top 79→124px, which pushed slot 4's plate 11px onto the felt; slot 0 (hero) up so the plate + stack clear the controls bar at short (browser-chrome) viewport heights, where the plate was buried behind the bar; talk button into the gap between hero and bottom-right seat (x-separation is height-proof) instead of over the bottom-right seat, keeping the 118px bottom clearance. LIVE pill hidden red-only (same badge code exists in emerald — see report flag — this rule touches only this file). */
 @media(max-width:620px){
 .seat[data-view-slot="4"]{--y:4.5%!important}
-.seat[data-view-slot="0"]{--y:89%!important}
+.seat[data-view-slot="0"]{--y:91%!important}
 .talk{left:63%!important;right:auto!important}
+/* RED 10-ITEM FINAL MODEL 2026-10-26: top plate rides the table up to its head (pod stays). */
+.seat[data-view-slot="4"] .nameplate{top:109px}
 }
 #nfLiveBadge{display:none!important}
 </style>
@@ -416,8 +418,8 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
    now displayed BIG, directly under the pot pile, always visible; the
    existing writers (postRoundBet / resetVisuals / proofs) already keep
    its text current — only the display changes. */
-.pot{top:calc(45% - 20px)}
-.board{top:calc(55% - 20px)}
+.pot{top:calc(43% - 20px)}
+.board{top:calc(53% - 20px)}
 #potValue{display:block;margin-top:3px;font:800 23px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#ffe9a8;text-shadow:0 2px 6px #000,0 0 2px #000}
 </style>
 <style>
@@ -591,13 +593,13 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
    class gets no mark at all: it hits and bounces away (bounceOff). The
    shoe's signature is a CSS footprint — ball, sole and heel in dark
    translucent brown, stamped at a boot angle — that fades with the effect. */
-.splat-mark{position:absolute;width:88px;height:80px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;transition:opacity .5s ease}
+.splat-mark{position:absolute;width:132px;height:80px;transform:translate(-50%,-50%);z-index:8;pointer-events:none;transition:opacity .5s ease}
 .splat-mark.fade{opacity:0}
 .splat-mark .blob{position:absolute;inset:0;border-radius:58% 42% 55% 45%/48% 56% 44% 52%;opacity:.94;box-shadow:0 2px 6px rgba(0,0,0,.5),inset 0 -4px 8px rgba(0,0,0,.25)}
 .splat-mark .dot{position:absolute;border-radius:50%;opacity:.94}
-.splat-mark .dot.d1{width:13px;height:11px;left:-9px;top:8px}
-.splat-mark .dot.d2{width:9px;height:8px;right:-7px;bottom:10px}
-.splat-mark img{position:absolute;left:50%;top:50%;width:40px;height:40px;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
+.splat-mark .dot.d1{width:20px;height:17px;left:-14px;top:12px}
+.splat-mark .dot.d2{width:14px;height:12px;right:-11px;bottom:15px}
+.splat-mark img{position:absolute;left:50%;top:50%;width:60px;height:60px;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 1px 2px rgba(0,0,0,.55))}
 .splat-mark .gly{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:30px}
 .shoe-print{position:absolute;width:17px;height:32px;transform:translate(-50%,-50%) rotate(18deg);z-index:8;pointer-events:none;opacity:.85;filter:blur(.4px);transition:opacity .6s ease;background:radial-gradient(ellipse 48% 26% at 50% 13%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 56% 38% at 50% 56%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 74%),radial-gradient(ellipse 42% 15% at 50% 92%,rgba(32,21,12,.88) 58%,rgba(32,21,12,0) 75%)}
 .shoe-print.fade{opacity:0}
@@ -697,7 +699,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
    a hard item's HIT reads as a hit (then it bounces — see bounceOff). */
 .hit-flash{position:fixed;z-index:95;width:66px;height:66px;margin:-33px 0 0 -33px;pointer-events:none;background:radial-gradient(circle,#fffbe8 0 16%,#ffe066 34%,rgba(255,160,40,.85) 52%,rgba(255,120,20,0) 72%);clip-path:polygon(50% 0%,59% 33%,98% 25%,68% 47%,100% 62%,64% 62%,79% 100%,50% 71%,21% 100%,36% 62%,0% 62%,32% 47%,2% 25%,41% 33%);filter:drop-shadow(0 0 6px rgba(255,170,40,.9))}
 /* BUILD 266 — splat droplets thrown past the mark's rim as it spreads. */
-.splat-mark .drop{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;opacity:.95;z-index:2}
+.splat-mark .drop{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;opacity:.95;z-index:2}
 </style>
 <style>
 /* INTEGRITY 2026-10-26 (red + emerald, identical): green-ring specificity fix,
@@ -716,6 +718,20 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 .hole.nf-deal-in{animation:nfDealIn .45s cubic-bezier(.2,.75,.25,1) both}
 @keyframes nfDealIn{from{transform:translateY(-16px) scale(.85);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
 </style>
+  <style>
+    /* RED 2026-10-27 R2: phone seat-chip lane — every stack sits clear of all faces, plates, pocket cards, board cards, bets and the pot (camera-% centers measured from the 390/412 harness). Phone only; desktop keeps its existing chip placement. The pot lift (1%) clears the pot label off the board cards' top edge; the Build 232 pot rule (line ~421) otherwise overrides the phone block. */
+    @media(max-width:620px){
+      .pot{top:calc(42% - 20px)}
+      .seat[data-view-slot="0"] .seat-chips{left:33.2%!important;top:90.9%!important}
+      .seat[data-view-slot="1"] .seat-chips{left:25%!important;top:90.3%!important}
+      .seat[data-view-slot="2"] .seat-chips{left:35%!important;top:66.8%!important}
+      .seat[data-view-slot="3"] .seat-chips{left:24.3%!important;top:23.2%!important}
+      .seat[data-view-slot="4"] .seat-chips{left:31.1%!important;top:29.7%!important}
+      .seat[data-view-slot="5"] .seat-chips{left:63.6%!important;top:33.4%!important}
+      .seat[data-view-slot="6"] .seat-chips{left:65%!important;top:66.8%!important}
+      .seat[data-view-slot="7"] .seat-chips{left:75%!important;top:90.3%!important}
+    }
+  </style>
 </head>
 <body>
 
@@ -723,7 +739,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   <div class="lobby-shell">
     <div class="lobby-tools"><button class="leaderboard-open" id="lobbyLeaderboard" type="button">POKER LEADERBOARD</button><span class="balance-pill">GOLD COINS <b id="accountBalance">GC 0</b></span><button class="buy-main" id="profileOpen" type="button">MY PROFILE</button><button class="buy-main" id="storeOpen" type="button">STORE</button><button class="buy-main" id="lobbyBuy" type="button">BUY +</button><a class="buy-main" href="/" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">EXIT</a><a class="buy-main" href="/" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">LOBBY</a></div>
     <h1 class="lobby-heading">Pick a table. Take your seat.</h1>
-    <p class="lobby-intro">Choose from seven red-velvet poker tables, five blackjack tables, or the craps table. Every table opens into a playable game.</p>
+    <p class="lobby-intro">Choose from seven red-velvet poker tables. Every table opens into a playable game.</p>
     <section class="daily-bonus" id="dailyBonus" aria-labelledby="dailyBonusTitle"><span class="daily-mark">500</span><div class="daily-copy"><strong id="dailyBonusTitle">GC 500 DAILY LOGIN BONUS</strong><span id="dailyBonusStatus" role="status">Your live account confirms eligibility and updates the balance.</span></div><button class="daily-claim" id="claimDailyBonus" type="button" disabled>WAITING FOR SERVER</button></section>
     <h2 class="game-section-heading">POKER <span>7 TABLES</span></h2>
     <div class="table-grid" id="tableGrid">
@@ -735,19 +751,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
       <article class="table-choice"><div><strong class="table-game">Pot-Limit Omaha · 8-max</strong><div class="table-meta"><span>Blinds <b>25 / 50</b></span><span><b>7</b> seated</span><span>Buy-in GC 2,000–5,000</span></div></div><button class="join-table" type="button" data-game="omaha" data-seats="8" data-sb="25" data-bb="50">VIEW TABLE</button></article>
       <article class="table-choice"><div><strong class="table-game">Pot-Limit Omaha · 8-max</strong><div class="table-meta"><span>Blinds <b>100 / 200</b></span><span><b>6</b> seated</span><span>Buy-in GC 8,000–20,000</span></div></div><button class="join-table" type="button" data-game="omaha" data-seats="8" data-sb="100" data-bb="200">VIEW TABLE</button></article>
     </div>
-    <h2 class="game-section-heading">BLACKJACK · 21 <span>5 TABLES</span></h2>
-    <div class="table-grid" id="blackjackTableGrid">
-      <article class="table-choice blackjack-table"><div><span class="game-tag">OPEN TABLE</span><strong class="table-game">Blackjack 21 · Starter</strong><div class="table-meta"><span>Bets <b>GC 10–100</b></span><span>Dealer stands on 17</span><span>Blackjack pays 3:2</span></div></div><button class="join-table join-casino" type="button" aria-label="Play Starter Blackjack 21" data-casino-game="blackjack" data-table-name="Starter Blackjack 21" data-min-bet="10" data-max-bet="100">PLAY 21</button></article>
-      <article class="table-choice blackjack-table"><div><span class="game-tag">CLASSIC</span><strong class="table-game">Blackjack 21 · Silver</strong><div class="table-meta"><span>Bets <b>GC 25–250</b></span><span>Dealer stands on 17</span><span>Blackjack pays 3:2</span></div></div><button class="join-table join-casino" type="button" data-casino-game="blackjack" data-table-name="Silver Blackjack 21" data-min-bet="25" data-max-bet="250">PLAY 21</button></article>
-      <article class="table-choice blackjack-table"><div><span class="game-tag">GOLD TABLE</span><strong class="table-game">Blackjack 21 · Gold</strong><div class="table-meta"><span>Bets <b>GC 50–500</b></span><span>Dealer stands on 17</span><span>Blackjack pays 3:2</span></div></div><button class="join-table join-casino" type="button" data-casino-game="blackjack" data-table-name="Gold Blackjack 21" data-min-bet="50" data-max-bet="500">PLAY 21</button></article>
-      <article class="table-choice blackjack-table"><div><span class="game-tag">HIGH LIMIT</span><strong class="table-game">Blackjack 21 · High Roller</strong><div class="table-meta"><span>Bets <b>GC 100–1,000</b></span><span>Dealer stands on 17</span><span>Blackjack pays 3:2</span></div></div><button class="join-table join-casino" type="button" data-casino-game="blackjack" data-table-name="High Roller Blackjack 21" data-min-bet="100" data-max-bet="1000">PLAY 21</button></article>
-      <article class="table-choice blackjack-table"><div><span class="game-tag">VIP</span><strong class="table-game">Blackjack 21 · VIP</strong><div class="table-meta"><span>Bets <b>GC 250–2,500</b></span><span>Dealer stands on 17</span><span>Blackjack pays 3:2</span></div></div><button class="join-table join-casino" type="button" data-casino-game="blackjack" data-table-name="VIP Blackjack 21" data-min-bet="250" data-max-bet="2500">PLAY 21</button></article>
-    </div>
-    <h2 class="game-section-heading">CRAPS <span>1 TABLE</span></h2>
-    <div class="table-grid" id="crapsTableGrid">
-      <article class="table-choice craps-table"><div><span class="game-tag">LIVE DICE</span><strong class="table-game">Nikkiflixs Craps</strong><div class="table-meta"><span>Bets <b>GC 1–500</b></span><span>Full layout</span><span>Place &amp; Come bets</span><span>Hardways</span></div></div><button class="join-table join-casino" type="button" data-casino-game="craps" data-table-name="Nikkiflixs Craps" data-min-bet="1" data-max-bet="500">ROLL DICE</button></article>
-    </div>
-    <p class="rules-note"><b>Gold coins only.</b> Poker tables keep their listed buy-ins. Blackjack deals from the shoe, stands on 17, pays 3:2 for a natural 21, and offers the 3-to-1 natural side bet. Craps uses the complete line, Come, Field, number, hardway, and proposition layout. Daily bonus eligibility and live account balances come only from the authenticated multiplayer server; this static preview keeps play chips in the current session only.</p>
+    <p class="rules-note"><b>Gold coins only.</b> Poker tables keep their listed buy-ins. Daily bonus eligibility and live account balances come only from the authenticated multiplayer server; this static preview keeps play chips in the current session only.</p>
   </div>
 </section>
 <div class="lobby-modal" id="lobbyBuyModal" role="dialog" aria-modal="true" aria-labelledby="lobbyBuyTitle"><div class="panel"><button class="close" id="closeLobbyBuy" aria-label="Close chip packages">×</button><h2 id="lobbyBuyTitle">Gold coin packages</h2><p>Choose a package. Checkout is available only through the secure live cashier.</p><div class="package-grid"><button class="package" type="button"><strong>STARTER</strong><span>2,000 · $0.99</span></button><button class="package" type="button"><strong>VALUE</strong><span>7,500 · $3</span></button><button class="package" type="button"><strong>STACK</strong><span>14,000 · $5</span></button><button class="package" type="button"><strong>TABLE</strong><span>30,000 · $10</span></button><button class="package special" type="button"><strong>DOUBLE DEAL</strong><span>65,000 · $20</span></button><button class="package" type="button"><strong>HIGH ROLLER</strong><span>140,000 · $40</span></button><button class="package special" type="button"><strong>BEST VALUE</strong><span>375,000 · $100</span></button></div><p class="cashier-honest">Selecting a package does not charge you on this page.</p></div></div>
@@ -924,7 +928,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
   function setStack(index,value){stacks[index]=Math.max(0,Math.floor(value));seats[index].querySelector('.nameplate span').textContent=money(stacks[index]);seats[index].querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)}
-  function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);if(stacks[index]===0)handAllIn[index]=true;logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0)sfx('chips');return paid}
+  function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);if(stacks[index]===0)handAllIn[index]=true;logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0&&!playSfx('chip-clack',.7))sfx('chips');return paid}
   var pendingCreatorReset=false;
   function applyCreatorReset(src,force){
     /* the reset itself: BETWEEN hands only; automatic resets fire only
@@ -1072,7 +1076,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
       if(kind==='card'){
         if(sfxLast.card&&now-sfxLast.card<.09)return;sfxLast.card=now;
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var d0=sfxNoiseBuf.getChannelData(0);for(var i=0;i<d0.length;i++)d0[i]=(Math.random()*2-1)*(1-i/d0.length)}
-        var src=audio.createBufferSource();src.buffer=sfxNoiseBuf;var f=audio.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=.7;var g=audio.createGain();g.gain.value=.10;src.connect(f);f.connect(g);g.connect(audio.destination);src.start();
+        var src=audio.createBufferSource();src.buffer=sfxNoiseBuf;var f=audio.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;f.Q.value=.7;var g=audio.createGain();g.gain.value=.13;src.connect(f);f.connect(g);g.connect(audio.destination);src.start();
       }else if(kind==='chips'){
         if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;
         if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dc=sfxNoiseBuf.getChannelData(0);for(var j=0;j<dc.length;j++)dc[j]=(Math.random()*2-1)*(1-j/dc.length)}
@@ -1116,7 +1120,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   var sfxBuffers={},sfxLoading=false;
   function loadSfx(){
     if(sfxLoading||!audio)return;sfxLoading=true;
-    ['knock-knock'].forEach(function(name){
+    ['knock-knock','card-muck','chip-clack'].forEach(function(name){
       fetch('assets/sfx/'+name+'.mp3').then(function(r){return r.arrayBuffer()}).then(function(buf){
         return audio.decodeAudioData(buf);
       }).then(function(decoded){sfxBuffers[name]=decoded}).catch(function(){});
@@ -1153,9 +1157,12 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
      JUST in front of each player — the old spots threw bets up to 27% of
      the camera toward mid-table; the new ones sit ~11-16% out from each
      seat anchor, obviously that player's bet. */
-  var betPositions=[['50%','86%'],['24%','76%'],['22%','59%'],['24%','38%'],['47%','19%'],['76%','38%'],['78%','59%'],['76%','76%']];
-  function updateBetPositions(){Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=betPositions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
+  var betPositions=[['50%','84%'],['24%','74%'],['22%','62%'],['24%','36%'],['47%','17%'],['76%','36%'],['78%','62%'],['76%','74%']];
+  /* RED 2026-10-27 R2: phone bet lane — every bet sits clear of all faces, plates, pocket cards, board cards and the pot (camera-% centers measured from the 390/412 harness; desktop keeps the original lane). */
+  var betPositionsPhone=[['29%','84%'],['37%','74%'],['37%','60%'],['25%','17%'],['46%','30.5%'],['75%','9%'],['63%','60%'],['63%','74%']];
+  function updateBetPositions(){var positions=window.matchMedia('(max-width:620px)').matches?betPositionsPhone:betPositions;Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=positions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
   updateBetPositions();
+  addEventListener('resize',updateBetPositions);
   function restoreName(index){var plate=seats[index].querySelector('.nameplate'),strong=plate.querySelector('strong');strong.textContent=names[index];plate.classList.remove('action-state','action-bet','action-raise','action-call','action-check','action-all-in','action-small-blind','action-big-blind')}
   function setActionPlate(index,action,isAggressor){
     if(isAggressor&&currentAggressor!==null&&currentAggressor!==index)restoreName(currentAggressor);
@@ -1183,9 +1190,9 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     sfx('win');
     var from=point(potChips),to=point(seats[index].querySelector('.seat-chips')),flight=document.createElement('div');flight.className='pot-flight';flight.style.left=from.x+'px';flight.style.top=from.y+'px';flight.style.setProperty('--dx',(to.x-from.x)+'px');flight.style.setProperty('--dy',(to.y-from.y)+'px');flight.innerHTML='<span class="bet-stack"><i></i><i></i><i></i><i></i></span><b class="bet-amount">POT '+money(amount)+' → '+names[index]+'</b>';motion.appendChild(flight);potChips.style.opacity='0';logEvent('pot-slide-started',{seat:index,name:names[index],amount:amount});var paid=false;function payWinner(){if(paid)return;paid=true;setStack(index,stacks[index]+amount);logEvent('pot-slide-arrived',{seat:index,name:names[index],amount:amount,stack:stacks[index]})}flight.addEventListener('animationend',function(){payWinner();flight.remove()});later(1700,function(){payWinner();if(flight.parentNode)flight.remove()})
   }
-  function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
+  function foldCards(seat,onDone){playSfx('card-muck',.8);var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
-  var markerPositions=[['36%','80%'],['24%','67%'],['21%','53%'],['24%','32%'],['57%','28%'],['76%','32%'],['79%','53%'],['76%','67%']];
+  var markerPositions=[['36%','78%'],['24%','65%'],['21%','51%'],['24%','30%'],['57%','26%'],['76%','30%'],['79%','51%'],['76%','65%']];
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index]&&stacks[index]>0)return index}return after}
   function dealerIndex(){return dealerButton}
   function smallBlindIndex(){return nextEligible(dealerButton)}
@@ -1251,6 +1258,17 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   }
   function deal(){
     var button=dealerIndex(),order=dealOrder(),cards=[];
+    if(order.length<2){
+      /* RED 10-ITEM #8 LONE-PLAYER GUARD (2026-10-26): never deal, post blinds, or award a pot when fewer than two seats can play (bots that left at once whose replacements have not seated yet). Wait, seat replacements, retry — no cards, no blinds, no award. */
+      deck.className='deck';handRunning=false;addButton.disabled=false;
+      logEvent('hand-held-lone-player',{eligible:order.map(function(seat){return Number(seat.getAttribute('data-index'))}),emptySeats:seats.map(function(seat,index){return emptyBotSeat[index]?index:-1}).filter(function(i){return i>-1}),pendingSeats:seats.map(function(seat,index){return pendingBotSeat[index]?index:-1}).filter(function(i){return i>-1})});
+      say('Waiting for players \u2014 seating new opponents\u2026',3600);
+      /* Re-assert the hold message mid-hold: say() is last-writer-wins, so a bot-join toast landing in the same instant can mask it. Only re-says if the waiting text is not already showing; ends exactly at the 3600ms retry. */
+      setTimeout(function(){if(!handRunning&&toast.textContent.indexOf('Waiting for players')===-1)say('Waiting for players \u2014 seating new opponents\u2026',2400)},1200);
+      seats.forEach(function(seat,index){if(index!==0&&emptyBotSeat[index])seatNewBot(index)});
+      setTimeout(function(){if(!tableRoom.classList.contains('is-hidden')&&!handRunning)shuffleAndDeal()},3600)
+      return;
+    }
     for(var round=0;round<activeConfig.holeCards;round++){order.forEach(function(seat){cards.push(seat.querySelectorAll('.hole')[round])})}
     logEvent('deal-start',{dealer:button,smallBlind:smallBlindIndex(),bigBlind:bigBlindIndex(),firstCard:order.length?Number(order[0].getAttribute('data-index')):null,lastCard:order.length?Number(order[order.length-1].getAttribute('data-index')):null,order:order.map(function(seat){return Number(seat.getAttribute('data-index'))}),cards:cards.length});
     cards.forEach(function(card,index){later(index*145,function(){flyCard(card,function(){if(index===cards.length-1){if(!handFolded[localSeatAbsolute])revealPlayerCards(localSeatAbsolute);logEvent('deal-complete',{cards:cards.length,localCardsFlippedAfterAllCards:true,localSeat:localSeatAbsolute});later(650,postBlinds)}})})})
@@ -1344,6 +1362,14 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   }
   function endHandUncontested(winner){
     clearTurn();
+    if(sittingOut[winner]||handFolded[winner]){
+      /* RED 10-ITEM #8 DEFENSIVE: never award a pot to a folded, sitting-out, or empty seat. Void the award but still close the hand out (advance blinds, reset pot, next hand). */
+      logEvent('award-blocked-ineligible',{winner:winner,sittingOut:!!sittingOut[winner],folded:!!handFolded[winner],pot:pot});
+      statusMain.textContent='HAND VOID \u2014 NO ELIGIBLE WINNER';
+      later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
+      later(4700,function(){var oldDealer=dealerIndex(),oldSmallBlind=smallBlindIndex(),oldBigBlind=bigBlindIndex();clearShowdownHighlight();pot=0;advanceBlindTrio();if(waitingForBigBlind&&bigBlindIndex()===localSeatAbsolute){delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;say('Big blind reached you \u2014 you\u2019re in')}setBlinds();handRunning=false;addButton.disabled=false;logEvent('hand-complete',{awardedPot:0,uncontested:true,voided:true,oldDealer:oldDealer,newDealer:dealerIndex(),oldSmallBlind:oldSmallBlind,newSmallBlind:smallBlindIndex(),oldBigBlind:oldBigBlind,newBigBlind:bigBlindIndex()});later(900,shuffleAndDeal)});
+      return;
+    }
     var awardedPot=pot;
     seatWins[winner]=(seatWins[winner]||0)+1;if(awardedPot>(seatBest[winner]||0))seatBest[winner]=awardedPot;settleStats([winner],awardedPot,null);
     if(winner===0){prof.wins++;if(awardedPot>prof.biggest)prof.biggest=awardedPot;profSave()}
@@ -1357,6 +1383,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
   function showdown(){
     clearTurn();var ranked=[];
     seats.forEach(function(seat,index){if(!handFolded[index]){var selection=bestGameSelection(boardCards,demoHands[index]);ranked.push({index:index,rank:selection.rank,chosen:selection.indices})}});
+    if(!ranked.length){logEvent('showdown-no-eligible',{pot:pot});statusMain.textContent='SHOWDOWN VOID \u2014 NO ELIGIBLE HANDS';pot=0;potChips.style.opacity='0';potValueNode.textContent='$0';advanceBlindTrio();setBlinds();handRunning=false;addButton.disabled=false;later(900,shuffleAndDeal);return;}
     var liveIndexes=ranked.map(function(entry){return entry.index});revealShowdownAtPortraits(liveIndexes);
     ranked.sort(function(a,b){return compareRanks(b.rank,a.rank)});var winnerInfo=ranked[0],winners=ranked.filter(function(entry){return compareRanks(entry.rank,winnerInfo.rank)===0}),share=Math.floor(pot/winners.length),awardedPot=pot;
     highlightWinningFive(winnerInfo,liveIndexes,share);logEvent('showdown',{pot:pot,hand:handName(winnerInfo.rank),winners:winners.map(function(entry){return{seat:entry.index,name:names[entry.index],share:share,rank:entry.rank,chosen:entry.chosen}})});if(winners.some(function(e){return e.index===0})){prof.wins++;if(awardedPot>prof.biggest)prof.biggest=awardedPot;profSave()}
@@ -1493,7 +1520,7 @@ if(!nfStillWaiting&&(board.length>0||snapshot.handRunning===true)){seats.forEach
     if(window.__liveTableKey===tableKey&&(handRunning||handNumber>0)){document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();logEvent('table-reentered',{hand:handNumber,running:handRunning});return}
     window.__liveTableKey=tableKey;
     clearTimers();clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;pendingJoinNextHand=false;var game=button.getAttribute('data-game'),maxSeats=Number(button.getAttribute('data-seats')),sb=Number(button.getAttribute('data-sb')),bb=Number(button.getAttribute('data-bb')),freeTable=button.getAttribute('data-free-table')==='true',listedMinimum=Number(button.getAttribute('data-min-buyin'));activeConfig={game:game,maxSeats:maxSeats,sb:sb,bb:bb,holeCards:game==='omaha'?4:2,freeTable:freeTable};minimumBuyin=freeTable?0:(Number.isFinite(listedMinimum)?listedMinimum:bb*40);configureHoleCards(activeConfig.holeCards);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');sittingOut=maxSeats===6?{0:true,3:true,5:true}:{0:true};waitingForBigBlind=false;dealerButton=1;handNumber=0;handRunning=false;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');
-    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');if(stacks[0]>0){pendingJoinNextHand=true;spectateFirstHand=true;gameSpeed=0.45;say('A hand is already going at this table — you are dealt in on the next one',4200)}if(creatorOn()){names[0]='The Creator';restoreName(0)}
+    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');/* RED 2026-10-27 R3: no auto-join on table pick — bots play on their own until the player taps SIT IN; sitting is their tap only. */if(creatorOn()){names[0]='The Creator';restoreName(0)}
     document.getElementById('tableGame').textContent=(freeTable?'Starter Texas Hold’em':game==='omaha'?'Pot-Limit Omaha':'Texas Hold’em')+' · '+maxSeats+'-max';document.getElementById('tableStakes').textContent='BLINDS '+sb+' / '+bb+' · '+(freeTable?'NO MINIMUM BUY-IN':'BUY-IN GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString());document.getElementById('modalReason').textContent=freeTable?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount to your stack.':'Move Gold Coins from your account to your table stack. Buy-in: GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString()+'.';
     var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):bb*100));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
     document.getElementById('roomLobby').classList.add('hidden');tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();randomizeHands();var nfSelAv=storedAvatarPath();if(nfSelAv)applyHeroAvatar(nfSelAv);if(liveSoloKilled)showLiveWaitingState();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(creatorOn()&&bank<minimumBuyin){bank=minimumBuyin*5;walletSave();say('👑 Creator wallet topped up — '+money(bank),3000)}else if(!freeTable&&bank<minimumBuyin)say('You need '+money(minimumBuyin)+' to sit at this table',4200);later(700,function(){shuffleAndDeal()})
@@ -1653,7 +1680,7 @@ grantCheck();
      glove, coconut...) and bounces off via bounceOff(). */
   var SPLAT_ITEMS={pie:1,tomato:1,egg:1,cake:1,donut:1,burger:1,banana:1,melon:1,lemon:1,paint:1,spray:1,snowball:1,balloon:1};
   var SPLAT_COLORS={pie:'#f0dcb0',tomato:'#d92b1f',egg:'#f7b731',cake:'#ff9ecb',donut:'#e08a4c',burger:'#c97b2d',banana:'#f5d90a',melon:'#ff5a76',lemon:'#efe13a',paint:'#7a4fd0',spray:'#59b7ff',snowball:'#eaf6ff',balloon:'#39c2ff'};
-  function splatMark(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('splat');var col=SPLAT_COLORS[item[0]]||'#e33';var m=document.createElement('div');m.className='splat-mark';m.style.left=(30+Math.random()*40)+'%';m.style.top=(24+Math.random()*36)+'%';var drops='';for(var di=0;di<6;di++)drops+='<span class="drop" style="background:'+col+'"></span>';m.innerHTML='<span class="blob" style="background:'+col+'"></span>'+drops+'<span class="dot d1" style="background:'+col+'"></span><span class="dot d2" style="background:'+col+'"></span>'+(artFile(item[0])?'<img style="clip-path:circle(46% at 50% 50%)" src="'+ITEM_ART+artFile(item[0])+'" alt="">':'<span class="gly">'+item[2]+'</span>');wrap.appendChild(m);/* BUILD 266: a splat SPREADS — it lands small, bursts outward past full size and settles, flinging droplets beyond its rim; the mark then lingers and fades on the old timing */if(m.animate){m.animate([{transform:'translate(-50%,-50%) scale(.22)'},{transform:'translate(-50%,-50%) scale(1.12)',offset:.62},{transform:'translate(-50%,-50%) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.8,.3,1)'});m.querySelectorAll('.drop').forEach(function(dr,di2){var ang=(di2/6)*Math.PI*2+Math.random()*.7,dist=32+Math.random()*22;dr.animate([{transform:'translate(0,0) scale(1)',opacity:'1'},{transform:'translate('+(Math.cos(ang)*dist).toFixed(1)+'px,'+(Math.sin(ang)*dist).toFixed(1)+'px) scale(.55)',opacity:'.92'}],{duration:430+Math.random()*140,easing:'cubic-bezier(.1,.7,.3,1)'})})}setTimeout(function(){m.classList.add('fade')},3200);setTimeout(function(){m.remove()},3900)}
+  function splatMark(index,item){var wrap=seats[index].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('splat');var col=SPLAT_COLORS[item[0]]||'#e33';var m=document.createElement('div');m.className='splat-mark';m.style.left=(30+Math.random()*40)+'%';m.style.top=(24+Math.random()*36)+'%';var drops='';for(var di=0;di<6;di++)drops+='<span class="drop" style="background:'+col+'"></span>';m.innerHTML='<span class="blob" style="background:'+col+'"></span>'+drops+'<span class="dot d1" style="background:'+col+'"></span><span class="dot d2" style="background:'+col+'"></span>'+(artFile(item[0])?'<img style="clip-path:circle(46% at 50% 50%)" src="'+ITEM_ART+artFile(item[0])+'" alt="">':'<span class="gly">'+item[2]+'</span>');wrap.appendChild(m);/* BUILD 266: a splat SPREADS — it lands small, bursts outward past full size and settles, flinging droplets beyond its rim; the mark then lingers and fades on the old timing */if(m.animate){m.animate([{transform:'translate(-50%,-50%) scale(.22)'},{transform:'translate(-50%,-50%) scale(1.12)',offset:.62},{transform:'translate(-50%,-50%) scale(1)'}],{duration:300,easing:'cubic-bezier(.2,.8,.3,1)'});m.querySelectorAll('.drop').forEach(function(dr,di2){var ang=(di2/6)*Math.PI*2+Math.random()*.7,dist=48+Math.random()*32;dr.animate([{transform:'translate(0,0) scale(1)',opacity:'1'},{transform:'translate('+(Math.cos(ang)*dist).toFixed(1)+'px,'+(Math.sin(ang)*dist).toFixed(1)+'px) scale(.55)',opacity:'.92'}],{duration:500+Math.random()*150,easing:'cubic-bezier(.1,.7,.3,1)',fill:'forwards'})})}setTimeout(function(){m.classList.add('fade')},6000);setTimeout(function(){m.remove()},7000)}
   function shoePrint(index){var wrap=seats[index].querySelector('.portrait-wrap');var p=document.createElement('span');p.className='shoe-print';p.style.left=(38+Math.random()*24)+'%';p.style.top=(30+Math.random()*22)+'%';wrap.appendChild(p);setTimeout(function(){p.classList.add('fade')},3000);setTimeout(function(){p.remove()},3700)}
   function hitFlash(x,y){var fl=document.createElement('div');fl.className='hit-flash';fl.style.left=x+'px';fl.style.top=y+'px';document.body.appendChild(fl);if(fl.animate){var fa=fl.animate([{transform:'scale(.35) rotate(0deg)',opacity:'1'},{transform:'scale(1.15) rotate(24deg)',opacity:'0'}],{duration:230,easing:'ease-out'});fa.onfinish=function(){fl.remove()}}else setTimeout(function(){fl.remove()},230)}
   function bounceOff(item,toIndex){var wrap=seats[toIndex].querySelector('.portrait-wrap');wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');throwSnd('thud');setTimeout(function(){throwSnd('thud')},470);if(item[0]==='shoe'||item[0]==='boot')shoePrint(toIndex);var b=seatCenter(toIndex);hitFlash(b.x,b.y);var el=document.createElement('div');el.className='thrown-item bounce-item';var f=artFile(item[0]);if(f){var im=document.createElement('img');im.src=ITEM_ART+f;im.alt='';el.appendChild(im);el.style.left=(b.x-27)+'px';el.style.top=(b.y-27)+'px'}else{el.textContent=item[2];el.style.left=(b.x-15)+'px';el.style.top=(b.y-15)+'px'}document.body.appendChild(el);if(!el.animate){setTimeout(function(){el.remove()},60);return}var dir=b.x<window.innerWidth/2?-1:1;var anim=el.animate([{transform:'translate(0,0) rotate(0deg) scale(1.12,1.12)'},{transform:'translate('+(dir*30)+'px,-50px) rotate(140deg) scale(1,1)',offset:.3},{transform:'translate('+(dir*58)+'px,12px) rotate(235deg) scale(1.06,.8)',offset:.52},{transform:'translate('+(dir*84)+'px,-24px) rotate(315deg) scale(.95,.95)',offset:.74},{transform:'translate('+(dir*110)+'px,22px) rotate(400deg) scale(.82,.82)',opacity:'0'}],{duration:860,easing:'ease-out'});anim.onfinish=function(){el.remove()}}
@@ -2244,6 +2271,7 @@ window.__NIKKIFLIXS_START_LIVE__();
   function tick(){
     var live=null;try{live=window.__NIKKIFLIXS_LIVE__}catch(e){}
     if(document.querySelector('.modal.open, .gift-modal.open')){hideBanner();badge.classList.remove('show');return}
+    var lobbyEl=document.getElementById('roomLobby');if(lobbyEl&&!lobbyEl.classList.contains('hidden')){hideBanner();badge.classList.remove('show');return}
     var attached=!!(live&&live.attached);
     var socketLive=!!(live&&live.socket&&live.socket.connected);
     if(attached&&socketLive){hideBanner();badge.classList.add('show');return}
