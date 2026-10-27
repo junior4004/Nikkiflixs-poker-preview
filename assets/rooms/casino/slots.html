@@ -67,9 +67,25 @@
     .wallet-pill strong{ font-size:17px; }
   }
 
-  /* ---------- MACHINE SWITCHER: 6 chips, one row, nothing scrolls ---------- */
+  /* ---------- MACHINE PICKER: scrollable strip + ALL-machines grid ----------
+     32 machines cannot fit one row of chips, so the strip scrolls sideways
+     (touch-drag) and the ALL MACHINES button opens a full grid. The strip
+     keeps the same height as the old 6-chip row, so the machine below it
+     still fits one phone screen exactly as before. */
   .switcher{
-    flex:0 0 auto; display:flex; gap:4px; padding:7px 4px 8px; background:#120d08;
+    flex:0 0 auto; display:flex; gap:6px; padding:7px 4px 8px; background:#120d08;
+    align-items:stretch;
+  }
+  .chip-strip{
+    flex:1 1 auto; min-width:0; display:flex; gap:4px; overflow-x:auto;
+    scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity;
+  }
+  .chip-strip::-webkit-scrollbar{ display:none; }
+  .chip-strip .m-chip{ flex:0 0 62px; scroll-snap-align:start; }
+  .all-btn{
+    flex:0 0 auto; border:1px solid var(--gold); border-radius:9px; background:#2b1e0a;
+    color:var(--gold); padding:6px 10px; font:800 11px/1.2 "Barlow Condensed";
+    letter-spacing:.06em; text-transform:uppercase; align-self:center; white-space:nowrap;
   }
   .m-chip{
     flex:1 1 0; min-width:0; border:1px solid var(--line); border-radius:9px;
@@ -89,6 +105,19 @@
     box-shadow:0 0 0 1px var(--gold), 0 0 14px rgba(245,196,81,.35);
   }
   .m-chip[aria-pressed="true"] .nm{ color:var(--gold); }
+  /* Grid modal: every machine, one tap away. Overlay only — it never
+     takes layout height from the machine itself. */
+  .grid-modal{
+    position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.88);
+    display:none; overflow-y:auto; padding:14px 10px 24px;
+  }
+  .grid-modal.open{ display:block; }
+  .grid-box{ max-width:430px; margin:0 auto; }
+  .grid-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+  .grid-head h3{ margin:0; font:800 18px/1 "Barlow Condensed"; letter-spacing:.08em; color:var(--gold); text-transform:uppercase; }
+  .grid-close{ border:1px solid var(--line); background:#1d150c; color:var(--ink); border-radius:8px; padding:8px 14px; font-weight:800; }
+  .grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .grid .m-chip{ flex:none; }
 
   /* ---------- STAGE + MACHINE ---------- */
   .stage{ flex:1 1 auto; min-height:0; display:flex; justify-content:center; }
@@ -402,13 +431,82 @@
 </header>
 
 <nav class="switcher" id="switcher" aria-label="Choose a slot machine">
+  <div class="chip-strip" id="chipStrip">
   <button class="m-chip" data-machine="piggy" aria-pressed="true" style="--chip:#f7a8b8"><span class="dot"></span><span class="nm">Piggy</span><span class="sb">5-REEL</span></button>
   <button class="m-chip" data-machine="liberty" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Liberty</span><span class="sb">5-REEL</span></button>
   <button class="m-chip" data-machine="pharaoh" aria-pressed="false" style="--chip:#f5c451"><span class="dot"></span><span class="nm">Pharaoh</span><span class="sb">5-REEL</span></button>
   <button class="m-chip" data-machine="neon" aria-pressed="false" style="--chip:#ff3fa4"><span class="dot"></span><span class="nm">Neon</span><span class="sb">5-REEL</span></button>
   <button class="m-chip" data-machine="deadwood" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Deadwood</span><span class="sb">5-REEL</span></button>
   <button class="m-chip" data-machine="atlantis" aria-pressed="false" style="--chip:#37c9d6"><span class="dot"></span><span class="nm">Atlantis</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="emerald" aria-pressed="false" style="--chip:#2ee6a8"><span class="dot"></span><span class="nm">Emerald</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="fruit" aria-pressed="false" style="--chip:#ff5a3c"><span class="dot"></span><span class="nm">Fruit</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="jungle" aria-pressed="false" style="--chip:#3fae2a"><span class="dot"></span><span class="nm">Jungle</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="pirate" aria-pressed="false" style="--chip:#8a5a2a"><span class="dot"></span><span class="nm">Pirate</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="cosmic" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Cosmic</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="goldrush" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Gold Rush</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="candy" aria-pressed="false" style="--chip:#ff6fa5"><span class="dot"></span><span class="nm">Candy</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="safari" aria-pressed="false" style="--chip:#e8912d"><span class="dot"></span><span class="nm">Safari</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="aztec" aria-pressed="false" style="--chip:#e8a33d"><span class="dot"></span><span class="nm">Aztec</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="olympus" aria-pressed="false" style="--chip:#d9d9e8"><span class="dot"></span><span class="nm">Olympus</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="viking" aria-pressed="false" style="--chip:#9aa5b1"><span class="dot"></span><span class="nm">Viking</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="samurai" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Samurai</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="clover" aria-pressed="false" style="--chip:#2fae5f"><span class="dot"></span><span class="nm">Clover</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="spooky" aria-pressed="false" style="--chip:#ff7a1a"><span class="dot"></span><span class="nm">Spooky</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="winter" aria-pressed="false" style="--chip:#7fd4ff"><span class="dot"></span><span class="nm">Winter</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="volcano" aria-pressed="false" style="--chip:#ff4a2a"><span class="dot"></span><span class="nm">Volcano</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="steam" aria-pressed="false" style="--chip:#c98f2d"><span class="dot"></span><span class="nm">Steam</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="rock" aria-pressed="false" style="--chip:#ff2a4a"><span class="dot"></span><span class="nm">Rock</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="farm" aria-pressed="false" style="--chip:#e8c33d"><span class="dot"></span><span class="nm">Farm</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="circus" aria-pressed="false" style="--chip:#ff2a2a"><span class="dot"></span><span class="nm">Circus</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="movie" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Movie</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="noir" aria-pressed="false" style="--chip:#6a6a7a"><span class="dot"></span><span class="nm">Noir</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="desert" aria-pressed="false" style="--chip:#e8b84a"><span class="dot"></span><span class="nm">Desert</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="aurora" aria-pressed="false" style="--chip:#7ae8c8"><span class="dot"></span><span class="nm">Aurora</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="wizard" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Wizard</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="bakery" aria-pressed="false" style="--chip:#ff9ec6"><span class="dot"></span><span class="nm">Bakery</span><span class="sb">5-REEL</span></button>
+  </div>
+  <button class="all-btn" id="allBtn" type="button">ALL<br>MACHINES</button>
 </nav>
+
+<div class="grid-modal" id="gridModal" role="dialog" aria-label="All slot machines">
+  <div class="grid-box">
+    <div class="grid-head"><h3>All Machines &mdash; 32</h3><button class="grid-close" id="gridClose" type="button">Close</button></div>
+    <div class="grid" id="machineGrid">
+  <button class="m-chip" data-machine="piggy" aria-pressed="true" style="--chip:#f7a8b8"><span class="dot"></span><span class="nm">Piggy</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="liberty" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Liberty</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="pharaoh" aria-pressed="false" style="--chip:#f5c451"><span class="dot"></span><span class="nm">Pharaoh</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="neon" aria-pressed="false" style="--chip:#ff3fa4"><span class="dot"></span><span class="nm">Neon</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="deadwood" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Deadwood</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="atlantis" aria-pressed="false" style="--chip:#37c9d6"><span class="dot"></span><span class="nm">Atlantis</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="emerald" aria-pressed="false" style="--chip:#2ee6a8"><span class="dot"></span><span class="nm">Emerald</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="fruit" aria-pressed="false" style="--chip:#ff5a3c"><span class="dot"></span><span class="nm">Fruit</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="jungle" aria-pressed="false" style="--chip:#3fae2a"><span class="dot"></span><span class="nm">Jungle</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="pirate" aria-pressed="false" style="--chip:#8a5a2a"><span class="dot"></span><span class="nm">Pirate</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="cosmic" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Cosmic</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="goldrush" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Gold Rush</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="candy" aria-pressed="false" style="--chip:#ff6fa5"><span class="dot"></span><span class="nm">Candy</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="safari" aria-pressed="false" style="--chip:#e8912d"><span class="dot"></span><span class="nm">Safari</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="aztec" aria-pressed="false" style="--chip:#e8a33d"><span class="dot"></span><span class="nm">Aztec</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="olympus" aria-pressed="false" style="--chip:#d9d9e8"><span class="dot"></span><span class="nm">Olympus</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="viking" aria-pressed="false" style="--chip:#9aa5b1"><span class="dot"></span><span class="nm">Viking</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="samurai" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Samurai</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="clover" aria-pressed="false" style="--chip:#2fae5f"><span class="dot"></span><span class="nm">Clover</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="spooky" aria-pressed="false" style="--chip:#ff7a1a"><span class="dot"></span><span class="nm">Spooky</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="winter" aria-pressed="false" style="--chip:#7fd4ff"><span class="dot"></span><span class="nm">Winter</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="volcano" aria-pressed="false" style="--chip:#ff4a2a"><span class="dot"></span><span class="nm">Volcano</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="steam" aria-pressed="false" style="--chip:#c98f2d"><span class="dot"></span><span class="nm">Steam</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="rock" aria-pressed="false" style="--chip:#ff2a4a"><span class="dot"></span><span class="nm">Rock</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="farm" aria-pressed="false" style="--chip:#e8c33d"><span class="dot"></span><span class="nm">Farm</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="circus" aria-pressed="false" style="--chip:#ff2a2a"><span class="dot"></span><span class="nm">Circus</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="movie" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Movie</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="noir" aria-pressed="false" style="--chip:#6a6a7a"><span class="dot"></span><span class="nm">Noir</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="desert" aria-pressed="false" style="--chip:#e8b84a"><span class="dot"></span><span class="nm">Desert</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="aurora" aria-pressed="false" style="--chip:#7ae8c8"><span class="dot"></span><span class="nm">Aurora</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="wizard" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Wizard</span><span class="sb">5-REEL</span></button>
+  <button class="m-chip" data-machine="bakery" aria-pressed="false" style="--chip:#ff9ec6"><span class="dot"></span><span class="nm">Bakery</span><span class="sb">5-REEL</span></button>
+    </div>
+  </div>
+</div>
 
 <main class="stage">
   <div class="machine" id="machine">
@@ -986,6 +1084,1109 @@ $("infoBtn").onclick = function(){ sfx.click(); buildPaytable(); $("payModal").c
 $("payClose").onclick = function(){ $("payModal").classList.remove("show"); };
 $("payModal").addEventListener("click", function(e){ if (e.target === this) this.classList.remove("show"); });
 
+/* ================= FLEET EXPANSION: 26 new machines (32 total) =================
+   Same shared math, same role keys, same helpers. Scenes are flat painted SVG
+   (no gradients, so no id collisions); symbols are compact layered SVG. */
+
+THEMES.emerald = {
+  name: "EMERALD GEMS", slogan: "CUT FROM PURE LUCK", short: "Emerald", chip: "#2ee6a8",
+  frame: ["#0a3d2e", "#04180f"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#0a1f1a\"/>"
+    + "<polygon points=\"120,180 90,110 120,60 150,110\" fill=\"#2ee6a8\"/><polygon points=\"120,60 150,110 120,180 90,110\" fill=\"#1f9e72\" opacity=\".7\"/>"
+    + "<polygon points=\"300,180 270,120 300,70 330,120\" fill=\"#b678f0\"/><polygon points=\"300,70 330,120 300,180 270,120\" fill=\"#8a4fd0\" opacity=\".7\"/>"
+    + "<polygon points=\"480,180 450,120 480,70 510,120\" fill=\"#ff5a5a\"/><polygon points=\"480,70 510,120 480,180 450,120\" fill=\"#c93a3a\" opacity=\".7\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#04180f\"/>"
+    + spark(210, 50, 9, .9) + spark(400, 40, 8, .8) + spark(60, 90, 7, .7) + spark(540, 90, 7, .7)
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#0a3d2e"),
+    high: "<polygon points=\"50,14 82,34 82,66 50,86 18,66 18,34\" fill=\"#2ee6a8\" stroke=\"#0a6e4e\" stroke-width=\"2\"/>"
+      + "<polygon points=\"50,14 82,34 50,50 18,34\" fill=\"#7df5cd\"/>"
+      + "<path d=\"M18 34 H82 M50 14 L50 50 M34 42 L50 50 L66 42\" stroke=\"#0a6e4e\" stroke-width=\"1.5\" fill=\"none\"/>",
+    mid1: "<polygon points=\"50,14 82,34 82,66 50,86 18,66 18,34\" fill=\"#ff5a5a\" stroke=\"#a81e1e\" stroke-width=\"2\"/>"
+      + "<polygon points=\"50,14 82,34 50,50 18,34\" fill=\"#ff9a9a\"/>"
+      + "<path d=\"M18 34 H82 M50 14 L50 50\" stroke=\"#a81e1e\" stroke-width=\"1.5\" fill=\"none\"/>",
+    mid2: "<ellipse cx=\"50\" cy=\"50\" rx=\"30\" ry=\"34\" fill=\"#4a7de0\" stroke=\"#1a2a5e\" stroke-width=\"2\"/>"
+      + "<ellipse cx=\"50\" cy=\"50\" rx=\"18\" ry=\"22\" fill=\"#8fb4ff\" opacity=\".8\"/>"
+      + "<path d=\"M32 30 L50 50 L68 30 M32 70 L50 50 L68 70\" stroke=\"#1a2a5e\" stroke-width=\"1.5\" fill=\"none\"/>",
+    mid3: "<polygon points=\"50,16 68,36 84,30 76,58 82,82 50,92 18,82 24,58 16,30 32,36\" fill=\"#b678f0\" stroke=\"#6d28b8\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 16 L50 92 M32 36 L50 60 L68 36\" stroke=\"#6d28b8\" stroke-width=\"1.5\" fill=\"none\"/>",
+    a: letterTile("A", "#0a3d2e", "#1f7a5a", "#04180f"),
+    k: letterTile("K", "#0a3d2e", "#1f7a5a", "#04180f"),
+    q: letterTile("Q", "#0a3d2e", "#1f7a5a", "#04180f"),
+    j: letterTile("J", "#0a3d2e", "#1f7a5a", "#04180f"),
+    ten: letterTile("10", "#0a3d2e", "#1f7a5a", "#04180f"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Gem", high: "Emerald", mid1: "Ruby", mid2: "Sapphire", mid3: "Amethyst",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The emerald WILD gem substitutes for every symbol except the BONUS star. A line of WILD gems alone is the top-paying combination on the machine."
+};
+
+THEMES.fruit = {
+  name: "FRUIT FRENZY", slogan: "SWEET SPINS DAILY", short: "Fruit", chip: "#ff5a3c",
+  frame: ["#3a1a08", "#180a02"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#ffe9a8\"/>"
+    + "<rect x=\"0\" y=\"0\" width=\"600\" height=\"34\" fill=\"#e8232a\"/>"
+    + "<rect x=\"0\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/><rect x=\"100\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/><rect x=\"200\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/><rect x=\"300\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/><rect x=\"400\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/><rect x=\"500\" y=\"0\" width=\"50\" height=\"34\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"60\" y=\"130\" width=\"130\" height=\"50\" fill=\"#8a5a2a\"/><rect x=\"230\" y=\"130\" width=\"130\" height=\"50\" fill=\"#8a5a2a\"/><rect x=\"400\" y=\"130\" width=\"130\" height=\"50\" fill=\"#8a5a2a\"/>"
+    + "<circle cx=\"90\" cy=\"110\" r=\"20\" fill=\"#ff7a1a\"/><circle cx=\"130\" cy=\"104\" r=\"20\" fill=\"#ff7a1a\"/><circle cx=\"110\" cy=\"84\" r=\"20\" fill=\"#ff7a1a\"/>"
+    + "<circle cx=\"270\" cy=\"110\" r=\"20\" fill=\"#e8232a\"/><circle cx=\"310\" cy=\"104\" r=\"20\" fill=\"#e8232a\"/><circle cx=\"290\" cy=\"84\" r=\"20\" fill=\"#e8232a\"/>"
+    + "<circle cx=\"440\" cy=\"110\" r=\"20\" fill=\"#ffd34d\"/><circle cx=\"480\" cy=\"104\" r=\"20\" fill=\"#ffd34d\"/><circle cx=\"460\" cy=\"84\" r=\"20\" fill=\"#ffd34d\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#3a1a08\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#3a1a08"),
+    high: "<path d=\"M14 30 A36 36 0 0 0 86 30 L86 44 A36 36 0 0 1 14 44 Z\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<path d=\"M14 30 A36 36 0 0 0 86 30\" fill=\"none\" stroke=\"#2e7d32\" stroke-width=\"6\"/>"
+      + "<circle cx=\"32\" cy=\"58\" r=\"3\" fill=\"#3a2028\"/><circle cx=\"50\" cy=\"64\" r=\"3\" fill=\"#3a2028\"/><circle cx=\"68\" cy=\"58\" r=\"3\" fill=\"#3a2028\"/>",
+    mid1: "<circle cx=\"50\" cy=\"56\" r=\"30\" fill=\"#ff7a1a\" stroke=\"#b85a0a\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 26 Q56 14 68 12\" stroke=\"#2e7d32\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<ellipse cx=\"70\" cy=\"14\" rx=\"10\" ry=\"5\" fill=\"#43a047\" transform=\"rotate(24 70 14)\"/>"
+      + "<circle cx=\"40\" cy=\"46\" r=\"5\" fill=\"#ffffff\" opacity=\".55\"/>",
+    mid2: "<ellipse cx=\"50\" cy=\"54\" rx=\"32\" ry=\"24\" fill=\"#ffd34d\" stroke=\"#b89a0a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"20\" cy=\"54\" r=\"6\" fill=\"#ffe9a8\"/><circle cx=\"80\" cy=\"54\" r=\"6\" fill=\"#ffe9a8\"/>"
+      + "<path d=\"M50 30 Q54 20 64 18\" stroke=\"#2e7d32\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid3: "<circle cx=\"36\" cy=\"62\" r=\"16\" fill=\"#e0263c\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"64\" cy=\"56\" r=\"16\" fill=\"#e0263c\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<path d=\"M36 48 Q50 28 64 42 M64 42 Q58 24 50 20\" stroke=\"#2e7d32\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<ellipse cx=\"72\" cy=\"24\" rx=\"10\" ry=\"5\" fill=\"#43a047\" transform=\"rotate(24 72 24)\"/>"
+      + "<circle cx=\"30\" cy=\"56\" r=\"4\" fill=\"#ffffff\" opacity=\".65\"/><circle cx=\"58\" cy=\"50\" r=\"4\" fill=\"#ffffff\" opacity=\".65\"/>",
+    a: letterTile("A", "#3a1a08", "#7a3a12", "#180a02"),
+    k: letterTile("K", "#3a1a08", "#7a3a12", "#180a02"),
+    q: letterTile("Q", "#3a1a08", "#7a3a12", "#180a02"),
+    j: letterTile("J", "#3a1a08", "#7a3a12", "#180a02"),
+    ten: letterTile("10", "#3a1a08", "#7a3a12", "#180a02"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Star", high: "Watermelon", mid1: "Orange", mid2: "Lemon", mid3: "Cherries",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD star substitutes for every symbol except the BONUS star. A line of WILD stars alone is the top-paying combination on the machine."
+};
+
+THEMES.jungle = {
+  name: "JUNGLE KING", slogan: "ROAR INTO RICHES", short: "Jungle", chip: "#3fae2a",
+  frame: ["#123d0a", "#061a02"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#143d1a\"/>"
+    + "<circle cx=\"90\" cy=\"60\" r=\"55\" fill=\"#1f6b2a\"/><circle cx=\"180\" cy=\"40\" r=\"65\" fill=\"#2e8b3a\"/><circle cx=\"300\" cy=\"55\" r=\"60\" fill=\"#1f6b2a\"/><circle cx=\"420\" cy=\"42\" r=\"62\" fill=\"#2e8b3a\"/><circle cx=\"520\" cy=\"60\" r=\"55\" fill=\"#1f6b2a\"/>"
+    + "<circle cx=\"480\" cy=\"40\" r=\"22\" fill=\"#ffd964\"/>"
+    + "<path d=\"M120 200 Q130 150 120 120 M120 160 Q140 150 150 160 M120 160 Q100 150 90 160\" stroke=\"#2e8b3a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<path d=\"M470 200 Q480 155 470 125 M470 165 Q490 155 500 165 M470 165 Q450 155 440 165\" stroke=\"#2e8b3a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#0a2408\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#123d0a"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"36\" fill=\"#c8890a\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"25\" fill=\"#f5c451\"/>"
+      + "<circle cx=\"28\" cy=\"34\" r=\"9\" fill=\"#c8890a\"/><circle cx=\"72\" cy=\"34\" r=\"9\" fill=\"#c8890a\"/>"
+      + "<ellipse cx=\"50\" cy=\"60\" rx=\"11\" ry=\"8\" fill=\"#ffe9a8\"/>"
+      + "<path d=\"M44 58 h12 l-6 6 Z\" fill=\"#7a4a06\"/>"
+      + "<circle cx=\"41\" cy=\"44\" r=\"3\" fill=\"#3a2028\"/><circle cx=\"59\" cy=\"44\" r=\"3\" fill=\"#3a2028\"/>",
+    mid1: "<ellipse cx=\"46\" cy=\"56\" rx=\"26\" ry=\"22\" fill=\"#2b2b3a\"/>"
+      + "<polygon points=\"66,40 88,34 74,52\" fill=\"#ff7a1a\"/>"
+      + "<polygon points=\"66,40 88,34 74,52\" fill=\"#ffd34d\" opacity=\".5\"/>"
+      + "<circle cx=\"40\" cy=\"50\" r=\"4\" fill=\"#ffffff\"/>"
+      + "<path d=\"M30 74 Q46 84 62 74\" stroke=\"#2b2b3a\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid2: "<path d=\"M30 30 Q22 55 36 78 Q46 84 50 70 Q54 84 64 78 Q78 55 70 30 Q60 44 50 44 Q40 44 30 30 Z\" fill=\"#ffd34d\" stroke=\"#b89a0a\" stroke-width=\"2\"/>"
+      + "<path d=\"M40 40 Q50 52 60 40\" stroke=\"#b89a0a\" stroke-width=\"1.5\" fill=\"none\"/>",
+    mid3: "<ellipse cx=\"50\" cy=\"52\" rx=\"26\" ry=\"32\" fill=\"#2e8b3a\"/>"
+      + "<path d=\"M50 20 V84 M36 40 L50 50 L64 40 M34 58 L50 66 L66 58\" stroke=\"#143d1a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>",
+    a: letterTile("A", "#123d0a", "#2e6b1e", "#061a02"),
+    k: letterTile("K", "#123d0a", "#2e6b1e", "#061a02"),
+    q: letterTile("Q", "#123d0a", "#2e6b1e", "#061a02"),
+    j: letterTile("J", "#123d0a", "#2e6b1e", "#061a02"),
+    ten: letterTile("10", "#123d0a", "#2e6b1e", "#061a02"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Paw", high: "Lion", mid1: "Toucan", mid2: "Bananas", mid3: "Jungle Leaf",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD paw substitutes for every symbol except the BONUS star. A line of WILD paws alone is the top-paying combination on the machine."
+};
+
+THEMES.pirate = {
+  name: "PIRATE GOLD", slogan: "X MARKS THE JACKPOT", short: "Pirate", chip: "#8a5a2a",
+  frame: ["#1a1206", "#0a0702"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#0a2a3a\"/>"
+    + "<circle cx=\"500\" cy=\"44\" r=\"24\" fill=\"#ffe9a8\"/>"
+    + "<path d=\"M180 150 L420 150 L390 185 L210 185 Z\" fill=\"#4a2c10\"/>"
+    + "<rect x=\"296\" y=\"40\" width=\"8\" height=\"110\" fill=\"#6e4a1e\"/>"
+    + "<polygon points=\"304,50 380,78 304,106\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"304\" y=\"42\" width=\"26\" height=\"16\" fill=\"#e8232a\"/>"
+    + "<path d=\"M0 170 Q30 160 60 170 T120 170 T180 170 T240 170 T300 170 T360 170 T420 170 T480 170 T540 170 T600 170\" stroke=\"#ffffff\" stroke-width=\"3\" fill=\"none\" opacity=\".5\"/>"
+    + "<path d=\"M0 186 Q30 176 60 186 T120 186 T180 186 T240 186 T300 186 T360 186 T420 186 T480 186 T540 186 T600 186\" stroke=\"#ffffff\" stroke-width=\"3\" fill=\"none\" opacity=\".35\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a1206"),
+    high: "<circle cx=\"50\" cy=\"46\" r=\"28\" fill=\"#fffbe9\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<rect x=\"38\" y=\"66\" width=\"24\" height=\"14\" rx=\"4\" fill=\"#fffbe9\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"40\" cy=\"44\" r=\"7\" fill=\"#1a1a1a\"/><circle cx=\"60\" cy=\"44\" r=\"7\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M46 58 h8 l-4 6 Z\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M22 82 L78 26 M78 82 L22 26\" stroke=\"#fffbe9\" stroke-width=\"5\" stroke-linecap=\"round\"/>"
+      + "<circle cx=\"22\" cy=\"82\" r=\"5\" fill=\"#fffbe9\"/><circle cx=\"78\" cy=\"82\" r=\"5\" fill=\"#fffbe9\"/><circle cx=\"22\" cy=\"26\" r=\"5\" fill=\"#fffbe9\"/><circle cx=\"78\" cy=\"26\" r=\"5\" fill=\"#fffbe9\"/>",
+    mid1: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"3\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"24\" fill=\"#ffe9a8\"/>"
+      + "<polygon points=\"50,32 54,46 68,50 54,54 50,68 46,54 32,50 46,46\" fill=\"#c8890a\"/>"
+      + "<text x=\"50\" y=\"88\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"900\" fill=\"#8a5a00\">N</text>",
+    mid2: "<circle cx=\"50\" cy=\"22\" r=\"9\" fill=\"none\" stroke=\"#8a8f98\" stroke-width=\"5\"/>"
+      + "<rect x=\"47\" y=\"28\" width=\"6\" height=\"52\" fill=\"#8a8f98\"/>"
+      + "<rect x=\"24\" y=\"40\" width=\"52\" height=\"6\" fill=\"#8a8f98\"/>"
+      + "<path d=\"M24 62 Q24 84 50 84 Q76 84 76 62\" fill=\"none\" stroke=\"#8a8f98\" stroke-width=\"6\" stroke-linecap=\"round\"/>",
+    mid3: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"3\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"24\" fill=\"#ffe9a8\" stroke=\"#c8890a\" stroke-width=\"1.5\"/>"
+      + "<path d=\"M50 36 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z\" fill=\"#c8890a\"/>"
+      + "<circle cx=\"34\" cy=\"34\" r=\"3\" fill=\"#c8890a\"/><circle cx=\"66\" cy=\"34\" r=\"3\" fill=\"#c8890a\"/><circle cx=\"34\" cy=\"66\" r=\"3\" fill=\"#c8890a\"/><circle cx=\"66\" cy=\"66\" r=\"3\" fill=\"#c8890a\"/>",
+    a: letterTile("A", "#1a1206", "#4a3208", "#0a0702"),
+    k: letterTile("K", "#1a1206", "#4a3208", "#0a0702"),
+    q: letterTile("Q", "#1a1206", "#4a3208", "#0a0702"),
+    j: letterTile("J", "#1a1206", "#4a3208", "#0a0702"),
+    ten: letterTile("10", "#1a1206", "#4a3208", "#0a0702"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Flag", high: "Skull", mid1: "Compass", mid2: "Anchor", mid3: "Doubloon",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD flag substitutes for every symbol except the BONUS star. A line of WILD flags alone is the top-paying combination on the machine."
+};
+
+THEMES.cosmic = {
+  name: "COSMIC VOYAGE", slogan: "TO THE STARS AND BACK", short: "Cosmic", chip: "#7a6cff",
+  frame: ["#120a3e", "#050218"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#050218\"/>"
+    + "<circle cx=\"60\" cy=\"40\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"140\" cy=\"90\" r=\"2\" fill=\"#ffffff\"/><circle cx=\"220\" cy=\"30\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"360\" cy=\"60\" r=\"2\" fill=\"#ffffff\"/><circle cx=\"450\" cy=\"30\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"540\" cy=\"90\" r=\"2\" fill=\"#ffffff\"/><circle cx=\"300\" cy=\"120\" r=\"2\" fill=\"#ffffff\"/>"
+    + "<circle cx=\"150\" cy=\"120\" r=\"42\" fill=\"#7a6cff\"/>"
+    + "<ellipse cx=\"150\" cy=\"120\" rx=\"78\" ry=\"16\" fill=\"none\" stroke=\"#f5c451\" stroke-width=\"5\" transform=\"rotate(-18 150 120)\"/>"
+    + "<ellipse cx=\"430\" cy=\"80\" rx=\"46\" ry=\"30\" fill=\"#ff3fa4\" opacity=\".28\"/>"
+    + "<ellipse cx=\"460\" cy=\"140\" rx=\"60\" ry=\"34\" fill=\"#37c9d6\" opacity=\".22\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#0a0618\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#120a3e"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#7a6cff\" stroke=\"#3a2a8e\" stroke-width=\"2\"/>"
+      + "<ellipse cx=\"50\" cy=\"50\" rx=\"44\" ry=\"11\" fill=\"none\" stroke=\"#f5c451\" stroke-width=\"4\" transform=\"rotate(-18 50 50)\"/>"
+      + "<circle cx=\"42\" cy=\"42\" r=\"5\" fill=\"#b9aaff\"/>",
+    mid1: "<path d=\"M50 10 C62 28 66 48 62 66 L50 84 L38 66 C34 48 38 28 50 10 Z\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"38\" r=\"9\" fill=\"#43d5ff\" stroke=\"#1a6a8e\" stroke-width=\"2\"/>"
+      + "<path d=\"M38 66 L28 84 L44 72 Z\" fill=\"#e8232a\"/><path d=\"M62 66 L72 84 L56 72 Z\" fill=\"#e8232a\"/>"
+      + "<path d=\"M46 84 Q50 96 54 84\" fill=\"#ff7a1a\"/>",
+    mid2: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"3\"/>"
+      + "<ellipse cx=\"50\" cy=\"52\" rx=\"20\" ry=\"14\" fill=\"#f5c451\" stroke=\"#c8890a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"22\" cy=\"50\" r=\"6\" fill=\"#9a9ab0\"/><circle cx=\"78\" cy=\"50\" r=\"6\" fill=\"#9a9ab0\"/>"
+      + "<rect x=\"44\" y=\"12\" width=\"12\" height=\"10\" rx=\"3\" fill=\"#9a9ab0\"/>",
+    mid3: "<path d=\"M62 12 A38 38 0 1 0 62 88 A30 30 0 1 1 62 12 Z\" fill=\"#ffd964\" stroke=\"#c8890a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"34\" cy=\"34\" r=\"4\" fill=\"#ffe9a8\"/><circle cx=\"30\" cy=\"58\" r=\"3\" fill=\"#ffe9a8\"/>",
+    a: letterTile("A", "#120a3e", "#3a2a8e", "#050218"),
+    k: letterTile("K", "#120a3e", "#3a2a8e", "#050218"),
+    q: letterTile("Q", "#120a3e", "#3a2a8e", "#050218"),
+    j: letterTile("J", "#120a3e", "#3a2a8e", "#050218"),
+    ten: letterTile("10", "#120a3e", "#3a2a8e", "#050218"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Comet", high: "Ringed Planet", mid1: "Rocket", mid2: "Astronaut", mid3: "Moon",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD comet substitutes for every symbol except the BONUS star. A line of WILD comets alone is the top-paying combination on the machine."
+};
+
+THEMES.goldrush = {
+  name: "GOLD RUSH", slogan: "STRIKE IT RICH", short: "Gold Rush", chip: "#d9a92f",
+  frame: ["#3a2410", "#160c04"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#f2d492\"/>"
+    + "<circle cx=\"500\" cy=\"44\" r=\"26\" fill=\"#ffd964\"/>"
+    + "<polygon points=\"0,180 120,70 240,180\" fill=\"#8a5a2a\"/><polygon points=\"360,180 480,60 600,180\" fill=\"#6e4418\"/>"
+    + "<rect x=\"240\" y=\"110\" width=\"120\" height=\"90\" fill=\"#3a2410\"/>"
+    + "<path d=\"M270 200 V140 Q300 115 330 140 V200 Z\" fill=\"#120801\"/>"
+    + "<path d=\"M200 200 H400\" stroke=\"#6e4418\" stroke-width=\"4\"/>"
+    + "<path d=\"M230 190 L230 200 M280 190 L280 200 M330 190 L330 200\" stroke=\"#6e4418\" stroke-width=\"4\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#6e4418\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#3a2410"),
+    high: "<polygon points=\"50,16 78,34 84,60 62,84 38,84 16,60 22,34\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M22 34 L50 44 L78 34 M38 60 L50 44 L62 60\" stroke=\"#c8890a\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"50\" cy=\"62\" r=\"6\" fill=\"#ffe9a8\"/>",
+    mid1: "<rect x=\"46\" y=\"14\" width=\"8\" height=\"72\" fill=\"#6e4418\" transform=\"rotate(24 50 50)\"/>"
+      + "<path d=\"M22 34 Q50 10 78 34 Q66 26 50 30 Q34 26 22 34 Z\" fill=\"#8a8f98\" stroke=\"#3a3f47\" stroke-width=\"2\"/>",
+    mid2: "<rect x=\"36\" y=\"26\" width=\"28\" height=\"44\" rx=\"6\" fill=\"#2b1a0c\" stroke=\"#c8890a\" stroke-width=\"2\"/>"
+      + "<rect x=\"42\" y=\"34\" width=\"16\" height=\"28\" rx=\"3\" fill=\"#ffd964\"/>"
+      + "<path d=\"M50 26 Q50 18 58 16\" stroke=\"#c8890a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<rect x=\"30\" y=\"70\" width=\"40\" height=\"8\" rx=\"3\" fill=\"#2b1a0c\"/>",
+    mid3: "<path d=\"M28 62 L72 62 L64 78 L36 78 Z\" fill=\"#4a2c10\" stroke=\"#1a0e02\" stroke-width=\"2\"/>"
+      + "<rect x=\"32\" y=\"52\" width=\"36\" height=\"10\" rx=\"3\" fill=\"#6e4418\" stroke=\"#1a0e02\" stroke-width=\"2\"/>"
+      + "<circle cx=\"38\" cy=\"68\" r=\"6\" fill=\"#1a1a1a\"/><circle cx=\"62\" cy=\"68\" r=\"6\" fill=\"#1a1a1a\"/>"
+      + "<circle cx=\"46\" cy=\"48\" r=\"5\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/><circle cx=\"58\" cy=\"48\" r=\"5\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>",
+    a: letterTile("A", "#3a2410", "#6e4a1e", "#160c04"),
+    k: letterTile("K", "#3a2410", "#6e4a1e", "#160c04"),
+    q: letterTile("Q", "#3a2410", "#6e4a1e", "#160c04"),
+    j: letterTile("J", "#3a2410", "#6e4a1e", "#160c04"),
+    ten: letterTile("10", "#3a2410", "#6e4a1e", "#160c04"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Nugget", high: "Gold Nugget", mid1: "Pickaxe", mid2: "Lantern", mid3: "Mine Cart",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD nugget substitutes for every symbol except the BONUS star. A line of WILD nuggets alone is the top-paying combination on the machine."
+};
+
+THEMES.candy = {
+  name: "CANDY LAND", slogan: "SUGAR SWEET WINS", short: "Candy", chip: "#ff6fa5",
+  frame: ["#3e0a2a", "#180412"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#ffd6e8\"/>"
+    + "<ellipse cx=\"120\" cy=\"50\" rx=\"44\" ry=\"18\" fill=\"#ffffff\"/><ellipse cx=\"160\" cy=\"42\" rx=\"34\" ry=\"16\" fill=\"#ffffff\"/>"
+    + "<ellipse cx=\"450\" cy=\"40\" rx=\"44\" ry=\"18\" fill=\"#ffffff\"/><ellipse cx=\"490\" cy=\"32\" rx=\"34\" ry=\"16\" fill=\"#ffffff\"/>"
+    + "<rect x=\"80\" y=\"90\" width=\"12\" height=\"110\" fill=\"#ffffff\"/><rect x=\"80\" y=\"100\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"80\" y=\"120\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"80\" y=\"140\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"80\" y=\"160\" width=\"12\" height=\"8\" fill=\"#e8232a\"/>"
+    + "<rect x=\"500\" y=\"90\" width=\"12\" height=\"110\" fill=\"#ffffff\"/><rect x=\"500\" y=\"100\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"500\" y=\"120\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"500\" y=\"140\" width=\"12\" height=\"8\" fill=\"#e8232a\"/><rect x=\"500\" y=\"160\" width=\"12\" height=\"8\" fill=\"#e8232a\"/>"
+    + "<path d=\"M0 200 Q150 130 300 200 Z\" fill=\"#ff9ec6\"/><path d=\"M300 200 Q450 130 600 200 Z\" fill=\"#b678f0\"/>"
+    + "<circle cx=\"300\" cy=\"110\" r=\"26\" fill=\"#ff6fa5\"/><circle cx=\"300\" cy=\"110\" r=\"14\" fill=\"#ffffff\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#3e0a2a"),
+    high: "<circle cx=\"50\" cy=\"44\" r=\"28\" fill=\"#ff6fa5\" stroke=\"#c22a6e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"44\" r=\"20\" fill=\"#ffffff\"/>"
+      + "<circle cx=\"50\" cy=\"44\" r=\"12\" fill=\"#ff6fa5\"/>"
+      + "<circle cx=\"50\" cy=\"44\" r=\"5\" fill=\"#ffffff\"/>"
+      + "<rect x=\"47\" y=\"70\" width=\"6\" height=\"22\" fill=\"#fffbe9\" stroke=\"#c9bba5\" stroke-width=\"1\"/>",
+    mid1: "<path d=\"M28 58 L72 58 L64 82 L36 82 Z\" fill=\"#ff6fa5\" stroke=\"#c22a6e\" stroke-width=\"2\"/>"
+      + "<path d=\"M36 58 L44 82 M50 58 L50 82 M64 58 L56 82\" stroke=\"#ffffff\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 58 Q50 34 70 58 Q50 48 30 58 Z\" fill=\"#fffbe9\" stroke=\"#c22a6e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"34\" r=\"5\" fill=\"#e8232a\"/>",
+    mid2: "<path d=\"M50 14 V78\" stroke=\"#ffffff\" stroke-width=\"11\" stroke-linecap=\"round\"/>"
+      + "<path d=\"M50 14 V78\" stroke=\"#e8232a\" stroke-width=\"11\" stroke-linecap=\"round\" stroke-dasharray=\"7 7\"/>"
+      + "<path d=\"M50 14 Q68 14 68 32\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"11\" stroke-linecap=\"round\"/>"
+      + "<path d=\"M50 14 Q68 14 68 32\" fill=\"none\" stroke=\"#e8232a\" stroke-width=\"11\" stroke-linecap=\"round\" stroke-dasharray=\"7 7\"/>",
+    mid3: "<path d=\"M26 78 Q26 44 50 44 Q74 44 74 78 Z\" fill=\"#43d5ff\" stroke=\"#1a6a8e\" stroke-width=\"2\"/>"
+      + "<rect x=\"26\" y=\"78\" width=\"48\" height=\"8\" rx=\"3\" fill=\"#1a6a8e\"/>"
+      + "<circle cx=\"40\" cy=\"62\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"56\" cy=\"56\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"64\" cy=\"68\" r=\"3\" fill=\"#ffffff\"/>",
+    a: letterTile("A", "#3e0a2a", "#a83a6e", "#180412"),
+    k: letterTile("K", "#3e0a2a", "#a83a6e", "#180412"),
+    q: letterTile("Q", "#3e0a2a", "#a83a6e", "#180412"),
+    j: letterTile("J", "#3e0a2a", "#a83a6e", "#180412"),
+    ten: letterTile("10", "#3e0a2a", "#a83a6e", "#180412"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Swirl", high: "Lollipop", mid1: "Cupcake", mid2: "Candy Cane", mid3: "Gumdrop",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The pink WILD swirl substitutes for every symbol except the BONUS star. A line of WILD swirls alone is the top-paying combination on the machine."
+};
+
+THEMES.safari = {
+  name: "SAFARI SUNSET", slogan: "WILD WINS AT DUSK", short: "Safari", chip: "#e8912d",
+  frame: ["#4a2a08", "#1d1002"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"130\" fill=\"#e8912d\"/><rect x=\"0\" y=\"130\" width=\"600\" height=\"70\" fill=\"#4a2a08\"/>"
+    + "<circle cx=\"300\" cy=\"130\" r=\"44\" fill=\"#ffd964\"/>"
+    + "<rect x=\"120\" y=\"60\" width=\"8\" height=\"70\" fill=\"#3a2410\"/>"
+    + "<ellipse cx=\"124\" cy=\"58\" rx=\"70\" ry=\"12\" fill=\"#2e4a12\"/><ellipse cx=\"124\" cy=\"52\" rx=\"46\" ry=\"9\" fill=\"#2e4a12\"/>"
+    + "<path d=\"M450 130 Q460 105 470 130 M470 130 Q480 105 490 130\" stroke=\"#2e4a12\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<ellipse cx=\"90\" cy=\"170\" rx=\"60\" ry=\"8\" fill=\"#2e4a12\"/><ellipse cx=\"500\" cy=\"172\" rx=\"60\" ry=\"8\" fill=\"#2e4a12\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#4a2a08"),
+    high: "<ellipse cx=\"28\" cy=\"44\" rx=\"14\" ry=\"18\" fill=\"#9a9ab0\"/><ellipse cx=\"72\" cy=\"44\" rx=\"14\" ry=\"18\" fill=\"#9a9ab0\"/>"
+      + "<ellipse cx=\"50\" cy=\"54\" rx=\"26\" ry=\"28\" fill=\"#b9bcc8\"/>"
+      + "<path d=\"M50 62 Q42 82 34 86 Q44 88 50 76 Q56 88 66 86 Q58 82 50 62 Z\" fill=\"#b9bcc8\"/>"
+      + "<path d=\"M42 74 Q50 78 58 74\" stroke=\"#7a7e8e\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"40\" cy=\"46\" r=\"3.5\" fill=\"#1a1a1a\"/><circle cx=\"60\" cy=\"46\" r=\"3.5\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M36 66 Q30 56 26 62 M64 66 Q70 56 74 62\" stroke=\"#e8e8f2\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid1: "<rect x=\"38\" y=\"40\" width=\"24\" height=\"34\" rx=\"10\" fill=\"#e8a33d\"/>"
+      + "<rect x=\"34\" y=\"22\" width=\"8\" height=\"20\" rx=\"4\" fill=\"#e8a33d\"/><rect x=\"58\" y=\"22\" width=\"8\" height=\"20\" rx=\"4\" fill=\"#e8a33d\"/>"
+      + "<circle cx=\"38\" cy=\"18\" r=\"4\" fill=\"#8a5a2a\"/><circle cx=\"62\" cy=\"18\" r=\"4\" fill=\"#8a5a2a\"/>"
+      + "<circle cx=\"46\" cy=\"52\" r=\"4\" fill=\"#8a5a2a\"/><circle cx=\"56\" cy=\"62\" r=\"4\" fill=\"#8a5a2a\"/><circle cx=\"44\" cy=\"66\" r=\"3\" fill=\"#8a5a2a\"/>"
+      + "<circle cx=\"44\" cy=\"46\" r=\"3\" fill=\"#1a1a1a\"/><circle cx=\"56\" cy=\"46\" r=\"3\" fill=\"#1a1a1a\"/>"
+      + "<ellipse cx=\"50\" cy=\"66\" rx=\"6\" ry=\"4\" fill=\"#f5c451\"/>",
+    mid2: "<ellipse cx=\"50\" cy=\"52\" rx=\"30\" ry=\"26\" fill=\"#fffbe9\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<path d=\"M28 40 L44 44 L32 52 L46 56 M72 40 L56 44 L68 52 L54 56 M40 30 L48 38 L56 30\" stroke=\"#1a1a1a\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<circle cx=\"42\" cy=\"62\" r=\"3\" fill=\"#1a1a1a\"/><circle cx=\"58\" cy=\"62\" r=\"3\" fill=\"#1a1a1a\"/>"
+      + "<ellipse cx=\"28\" cy=\"30\" rx=\"8\" ry=\"12\" fill=\"#fffbe9\" stroke=\"#3a3a3a\" stroke-width=\"2\"/><ellipse cx=\"72\" cy=\"30\" rx=\"8\" ry=\"12\" fill=\"#fffbe9\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>",
+    mid3: "<ellipse cx=\"50\" cy=\"58\" rx=\"24\" ry=\"18\" fill=\"#ff85a8\"/>"
+      + "<path d=\"M50 44 Q44 28 34 22 Q44 20 50 34 Q56 20 66 22 Q56 28 50 44 Z\" fill=\"#ff85a8\"/>"
+      + "<path d=\"M50 44 Q50 66 50 84\" stroke=\"#ff85a8\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<path d=\"M50 84 L44 92 M50 84 L56 92\" stroke=\"#ff85a8\" stroke-width=\"4\" stroke-linecap=\"round\"/>"
+      + "<circle cx=\"46\" cy=\"52\" r=\"3\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M56 54 L68 52 L56 58 Z\" fill=\"#ff7a1a\"/>",
+    a: letterTile("A", "#4a2a08", "#8a5f06", "#1d1002"),
+    k: letterTile("K", "#4a2a08", "#8a5f06", "#1d1002"),
+    q: letterTile("Q", "#4a2a08", "#8a5f06", "#1d1002"),
+    j: letterTile("J", "#4a2a08", "#8a5f06", "#1d1002"),
+    ten: letterTile("10", "#4a2a08", "#8a5f06", "#1d1002"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Sun", high: "Elephant", mid1: "Giraffe", mid2: "Zebra", mid3: "Flamingo",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD sun substitutes for every symbol except the BONUS star. A line of WILD suns alone is the top-paying combination on the machine."
+};
+
+THEMES.aztec = {
+  name: "AZTEC SUN", slogan: "GOLD OF THE SUN GOD", short: "Aztec", chip: "#e8a33d",
+  frame: ["#3a2a08", "#160e02"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#e8c87a\"/>"
+    + "<circle cx=\"300\" cy=\"70\" r=\"40\" fill=\"#ffd964\"/><circle cx=\"300\" cy=\"70\" r=\"56\" fill=\"#ffd964\" opacity=\".3\"/>"
+    + "<rect x=\"200\" y=\"150\" width=\"200\" height=\"30\" fill=\"#8a7a5a\"/><rect x=\"220\" y=\"125\" width=\"160\" height=\"25\" fill=\"#9a8a6a\"/><rect x=\"240\" y=\"100\" width=\"120\" height=\"25\" fill=\"#8a7a5a\"/><rect x=\"260\" y=\"78\" width=\"80\" height=\"22\" fill=\"#9a8a6a\"/>"
+    + "<rect x=\"288\" y=\"150\" width=\"24\" height=\"30\" fill=\"#3a2a08\"/>"
+    + "<path d=\"M80 200 Q90 150 80 120 M80 160 Q100 150 110 160 M80 160 Q60 150 50 160\" stroke=\"#2e4a12\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<path d=\"M520 200 Q530 150 520 120 M520 160 Q540 150 550 160 M520 160 Q500 150 490 160\" stroke=\"#2e4a12\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#6e5a3a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#3a2a08"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"3\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"22\" fill=\"#ffe9a8\" stroke=\"#c8890a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"11\" fill=\"#c8890a\"/>"
+      + "<path d=\"M50 8 L54 18 L50 24 L46 18 Z M50 92 L54 82 L50 76 L46 82 Z M8 50 L18 46 L24 50 L18 54 Z M92 50 L82 46 L76 50 L82 54 Z M20 20 L28 26 L22 32 Z M80 20 L72 26 L78 32 Z M20 80 L28 74 L22 68 Z M80 80 L72 74 L78 68 Z\" fill=\"#c8890a\"/>",
+    mid1: "<circle cx=\"50\" cy=\"34\" r=\"18\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 52 L70 52 L64 84 L36 84 Z\" fill=\"#c8890a\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<circle cx=\"43\" cy=\"32\" r=\"3\" fill=\"#3a2028\"/><circle cx=\"57\" cy=\"32\" r=\"3\" fill=\"#3a2028\"/>"
+      + "<path d=\"M44 42 Q50 46 56 42\" stroke=\"#3a2028\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<path d=\"M50 16 L50 8 M38 20 L32 12 M62 20 L68 12\" stroke=\"#f5c451\" stroke-width=\"3\" stroke-linecap=\"round\"/>",
+    mid2: "<path d=\"M20 44 Q50 10 80 44\" fill=\"none\" stroke=\"#2e8b3a\" stroke-width=\"3\"/>"
+      + "<ellipse cx=\"26\" cy=\"38\" rx=\"7\" ry=\"14\" fill=\"#43a047\" transform=\"rotate(-30 26 38)\"/>"
+      + "<ellipse cx=\"40\" cy=\"28\" rx=\"7\" ry=\"14\" fill=\"#2e8b3a\" transform=\"rotate(-12 40 28)\"/>"
+      + "<ellipse cx=\"56\" cy=\"28\" rx=\"7\" ry=\"14\" fill=\"#ff7a1a\" transform=\"rotate(12 56 28)\"/>"
+      + "<ellipse cx=\"70\" cy=\"38\" rx=\"7\" ry=\"14\" fill=\"#e8232a\" transform=\"rotate(30 70 38)\"/>"
+      + "<rect x=\"44\" y=\"52\" width=\"12\" height=\"20\" fill=\"#c8890a\"/>",
+    mid3: "<rect x=\"20\" y=\"70\" width=\"60\" height=\"14\" fill=\"#8a7a5a\"/><rect x=\"28\" y=\"56\" width=\"44\" height=\"14\" fill=\"#9a8a6a\"/><rect x=\"36\" y=\"42\" width=\"28\" height=\"14\" fill=\"#8a7a5a\"/><rect x=\"44\" y=\"28\" width=\"12\" height=\"14\" fill=\"#9a8a6a\"/>"
+      + "<rect x=\"46\" y=\"70\" width=\"8\" height=\"14\" fill=\"#3a2a08\"/>",
+    a: letterTile("A", "#3a2a08", "#7a5a12", "#160e02"),
+    k: letterTile("K", "#3a2a08", "#7a5a12", "#160e02"),
+    q: letterTile("Q", "#3a2a08", "#7a5a12", "#160e02"),
+    j: letterTile("J", "#3a2a08", "#7a5a12", "#160e02"),
+    ten: letterTile("10", "#3a2a08", "#7a5a12", "#160e02"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Idol", high: "Sun Stone", mid1: "Golden Idol", mid2: "Headdress", mid3: "Temple",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD idol substitutes for every symbol except the BONUS star. A line of WILD idols alone is the top-paying combination on the machine."
+};
+
+THEMES.olympus = {
+  name: "OLYMPUS", slogan: "FORTUNE OF THE GODS", short: "Olympus", chip: "#d9d9e8",
+  frame: ["#1a2a4a", "#080f22"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#7ec8e8\"/>"
+    + "<ellipse cx=\"110\" cy=\"46\" rx=\"50\" ry=\"16\" fill=\"#ffffff\"/><ellipse cx=\"150\" cy=\"38\" rx=\"38\" ry=\"14\" fill=\"#ffffff\"/>"
+    + "<ellipse cx=\"450\" cy=\"40\" rx=\"50\" ry=\"16\" fill=\"#ffffff\"/><ellipse cx=\"490\" cy=\"32\" rx=\"38\" ry=\"14\" fill=\"#ffffff\"/>"
+    + "<rect x=\"230\" y=\"80\" width=\"140\" height=\"100\" fill=\"#e8e8f2\"/>"
+    + "<rect x=\"220\" y=\"68\" width=\"160\" height=\"14\" fill=\"#d9d9e8\"/>"
+    + "<rect x=\"240\" y=\"82\" width=\"12\" height=\"98\" fill=\"#ffffff\"/><rect x=\"274\" y=\"82\" width=\"12\" height=\"98\" fill=\"#ffffff\"/><rect x=\"308\" y=\"82\" width=\"12\" height=\"98\" fill=\"#ffffff\"/><rect x=\"342\" y=\"82\" width=\"12\" height=\"98\" fill=\"#ffffff\"/>"
+    + "<polygon points=\"300,20 310,40 330,44 314,56 318,76 300,66 282,76 286,56 270,44 290,40\" fill=\"#ffd34d\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#4a5a7a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a2a4a"),
+    high: "<polygon points=\"58,12 34,44 52,44 40,88 68,52 50,52\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"2\" stroke-linejoin=\"round\"/>"
+      + "<polygon points=\"58,12 34,44 52,44 40,88 68,52 50,52\" fill=\"#ffe9a8\" opacity=\".35\"/>",
+    mid1: "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"none\" stroke=\"#2e8b3a\" stroke-width=\"4\" stroke-dasharray=\"10 6\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"22\" fill=\"none\" stroke=\"#43a047\" stroke-width=\"3\" stroke-dasharray=\"8 5\"/>"
+      + "<path d=\"M50 74 L44 86 L56 86 Z\" fill=\"#f5c451\"/>",
+    mid2: "<rect x=\"30\" y=\"18\" width=\"40\" height=\"10\" rx=\"2\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+      + "<rect x=\"36\" y=\"28\" width=\"8\" height=\"44\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"1.5\"/>"
+      + "<rect x=\"56\" y=\"28\" width=\"8\" height=\"44\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"1.5\"/>"
+      + "<rect x=\"30\" y=\"72\" width=\"40\" height=\"10\" rx=\"2\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>",
+    mid3: "<circle cx=\"38\" cy=\"40\" r=\"11\" fill=\"#7a2a8e\"/><circle cx=\"56\" cy=\"34\" r=\"11\" fill=\"#7a2a8e\"/><circle cx=\"66\" cy=\"50\" r=\"11\" fill=\"#7a2a8e\"/><circle cx=\"44\" cy=\"58\" r=\"11\" fill=\"#9b4de0\"/><circle cx=\"60\" cy=\"68\" r=\"11\" fill=\"#9b4de0\"/>"
+      + "<path d=\"M50 26 Q56 14 66 12\" stroke=\"#2e8b3a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<ellipse cx=\"70\" cy=\"14\" rx=\"9\" ry=\"4\" fill=\"#43a047\" transform=\"rotate(24 70 14)\"/>",
+    a: letterTile("A", "#1a2a4a", "#3a5a8e", "#080f22"),
+    k: letterTile("K", "#1a2a4a", "#3a5a8e", "#080f22"),
+    q: letterTile("Q", "#1a2a4a", "#3a5a8e", "#080f22"),
+    j: letterTile("J", "#1a2a4a", "#3a5a8e", "#080f22"),
+    ten: letterTile("10", "#1a2a4a", "#3a5a8e", "#080f22"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Bolt", high: "Thunderbolt", mid1: "Laurel", mid2: "Column", mid3: "Grapes",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD bolt substitutes for every symbol except the BONUS star. A line of WILD bolts alone is the top-paying combination on the machine."
+};
+
+THEMES.viking = {
+  name: "VIKING SAGA", slogan: "SAIL TO VALHALLA", short: "Viking", chip: "#9aa5b1",
+  frame: ["#1a222e", "#080c12"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#1a3a4a\"/>"
+    + "<polygon points=\"0,110 90,40 180,110\" fill=\"#2a4a5a\"/><polygon points=\"420,110 510,40 600,110\" fill=\"#2a4a5a\"/>"
+    + "<path d=\"M180 150 L420 150 L390 182 L210 182 Z\" fill=\"#4a2c10\"/>"
+    + "<rect x=\"296\" y=\"50\" width=\"8\" height=\"100\" fill=\"#6e4a1e\"/>"
+    + "<rect x=\"304\" y=\"58\" width=\"56\" height=\"40\" fill=\"#e8232a\"/><rect x=\"304\" y=\"98\" width=\"56\" height=\"40\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"304\" y=\"58\" width=\"14\" height=\"80\" fill=\"#e8232a\"/><rect x=\"332\" y=\"58\" width=\"14\" height=\"80\" fill=\"#e8232a\"/>"
+    + "<path d=\"M0 182 Q30 174 60 182 T120 182 T180 182 T240 182 T300 182 T360 182 T420 182 T480 182 T540 182 T600 182\" stroke=\"#ffffff\" stroke-width=\"3\" fill=\"none\" opacity=\".4\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a222e"),
+    high: "<path d=\"M24 50 Q24 22 50 22 Q76 22 76 50 L76 62 L24 62 Z\" fill=\"#8a8f98\" stroke=\"#3a3f47\" stroke-width=\"2\"/>"
+      + "<path d=\"M24 44 Q10 38 8 22 Q22 28 28 34 M76 44 Q90 38 92 22 Q78 28 72 34\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+      + "<rect x=\"44\" y=\"52\" width=\"12\" height=\"18\" fill=\"#8a8f98\" stroke=\"#3a3f47\" stroke-width=\"2\"/>"
+      + "<circle cx=\"38\" cy=\"46\" r=\"3\" fill=\"#1a1a1a\"/><circle cx=\"62\" cy=\"46\" r=\"3\" fill=\"#1a1a1a\"/>",
+    mid1: "<rect x=\"46\" y=\"12\" width=\"8\" height=\"76\" fill=\"#6e4418\"/>"
+      + "<path d=\"M54 22 Q78 26 80 44 Q64 38 54 40 Z\" fill=\"#c8ccd4\" stroke=\"#7a7e8e\" stroke-width=\"2\"/>"
+      + "<path d=\"M54 60 Q78 64 80 82 Q64 76 54 78 Z\" fill=\"#c8ccd4\" stroke=\"#7a7e8e\" stroke-width=\"2\"/>",
+    mid2: "<path d=\"M20 62 L80 62 L72 78 L28 78 Z\" fill=\"#6e4418\" stroke=\"#3a2410\" stroke-width=\"2\"/>"
+      + "<rect x=\"48\" y=\"22\" width=\"4\" height=\"40\" fill=\"#6e4418\"/>"
+      + "<rect x=\"52\" y=\"26\" width=\"26\" height=\"32\" fill=\"#e8232a\"/><rect x=\"52\" y=\"26\" width=\"7\" height=\"32\" fill=\"#fffbe9\"/><rect x=\"66\" y=\"26\" width=\"6\" height=\"32\" fill=\"#fffbe9\"/>"
+      + "<circle cx=\"50\" cy=\"20\" r=\"5\" fill=\"#f5c451\"/>",
+    mid3: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 18 V82 M18 50 H82\" stroke=\"#fffbe9\" stroke-width=\"6\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"10\" fill=\"#c8ccd4\" stroke=\"#7a7e8e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"4\" fill=\"#7a7e8e\"/>",
+    a: letterTile("A", "#1a222e", "#4a5a6e", "#080c12"),
+    k: letterTile("K", "#1a222e", "#4a5a6e", "#080c12"),
+    q: letterTile("Q", "#1a222e", "#4a5a6e", "#080c12"),
+    j: letterTile("J", "#1a222e", "#4a5a6e", "#080c12"),
+    ten: letterTile("10", "#1a222e", "#4a5a6e", "#080c12"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Rune", high: "Horned Helmet", mid1: "Battle Axe", mid2: "Longship", mid3: "Shield",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The silver WILD rune substitutes for every symbol except the BONUS star. A line of WILD runes alone is the top-paying combination on the machine."
+};
+
+THEMES.samurai = {
+  name: "SAMURAI HONOR", slogan: "THE WAY OF THE BLADE", short: "Samurai", chip: "#e8232a",
+  frame: ["#2a0a12", "#12040a"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#f2d8c8\"/>"
+    + "<circle cx=\"300\" cy=\"70\" r=\"42\" fill=\"#e8232a\"/>"
+    + "<polygon points=\"0,180 120,90 240,180\" fill=\"#7a8a9a\"/><polygon points=\"360,180 480,90 600,180\" fill=\"#5a6a7a\"/>"
+    + "<rect x=\"120\" y=\"60\" width=\"10\" height=\"120\" fill=\"#c22a2a\"/><rect x=\"170\" y=\"60\" width=\"10\" height=\"120\" fill=\"#c22a2a\"/>"
+    + "<rect x=\"100\" y=\"50\" width=\"100\" height=\"12\" fill=\"#1a0a12\"/><rect x=\"110\" y=\"76\" width=\"80\" height=\"10\" fill=\"#c22a2a\"/>"
+    + "<circle cx=\"470\" cy=\"60\" r=\"8\" fill=\"#ff9ec6\"/><circle cx=\"490\" cy=\"48\" r=\"8\" fill=\"#ff9ec6\"/><circle cx=\"450\" cy=\"48\" r=\"8\" fill=\"#ff9ec6\"/><circle cx=\"470\" cy=\"36\" r=\"8\" fill=\"#ff9ec6\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#3a2a1a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#2a0a12"),
+    high: "<polygon points=\"78,14 86,22 30,80 22,72\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+      + "<rect x=\"16\" y=\"68\" width=\"22\" height=\"9\" rx=\"3\" fill=\"#1a1a1a\" transform=\"rotate(-38 27 72)\"/>"
+      + "<circle cx=\"28\" cy=\"66\" r=\"5\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>",
+    mid1: "<ellipse cx=\"50\" cy=\"30\" rx=\"13\" ry=\"17\" fill=\"#ff9ec6\" transform=\"rotate(0 50 30)\"/>"
+      + "<ellipse cx=\"30\" cy=\"52\" rx=\"13\" ry=\"17\" fill=\"#ff9ec6\" transform=\"rotate(-72 30 52)\"/>"
+      + "<ellipse cx=\"70\" cy=\"52\" rx=\"13\" ry=\"17\" fill=\"#ff9ec6\" transform=\"rotate(72 70 52)\"/>"
+      + "<ellipse cx=\"38\" cy=\"74\" rx=\"13\" ry=\"17\" fill=\"#ff9ec6\" transform=\"rotate(-36 38 74)\"/>"
+      + "<ellipse cx=\"62\" cy=\"74\" rx=\"13\" ry=\"17\" fill=\"#ff9ec6\" transform=\"rotate(36 62 74)\"/>"
+      + "<circle cx=\"50\" cy=\"54\" r=\"7\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"1.5\"/>",
+    mid2: "<rect x=\"22\" y=\"30\" width=\"8\" height=\"56\" fill=\"#c22a2a\"/><rect x=\"70\" y=\"30\" width=\"8\" height=\"56\" fill=\"#c22a2a\"/>"
+      + "<rect x=\"12\" y=\"20\" width=\"76\" height=\"10\" rx=\"3\" fill=\"#1a0a12\"/>"
+      + "<rect x=\"18\" y=\"42\" width=\"64\" height=\"8\" rx=\"3\" fill=\"#c22a2a\"/>",
+    mid3: "<path d=\"M20 78 Q20 40 50 40 Q80 40 80 78 Q65 68 50 68 Q35 68 20 78 Z\" fill=\"#ff3fa4\" stroke=\"#a81e5e\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 70 L50 44 L70 70 M40 72 L50 48 L60 72\" stroke=\"#a81e5e\" stroke-width=\"1.5\" fill=\"none\"/>"
+      + "<circle cx=\"50\" cy=\"78\" r=\"5\" fill=\"#f5c451\"/>",
+    a: letterTile("A", "#2a0a12", "#7a1e2e", "#12040a"),
+    k: letterTile("K", "#2a0a12", "#7a1e2e", "#12040a"),
+    q: letterTile("Q", "#2a0a12", "#7a1e2e", "#12040a"),
+    j: letterTile("J", "#2a0a12", "#7a1e2e", "#12040a"),
+    ten: letterTile("10", "#2a0a12", "#7a1e2e", "#12040a"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Blade", high: "Katana", mid1: "Blossom", mid2: "Torii Gate", mid3: "Fan",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD blade substitutes for every symbol except the BONUS star. A line of WILD blades alone is the top-paying combination on the machine."
+};
+
+THEMES.clover = {
+  name: "LUCKY CLOVER", slogan: "THE LUCK OF THE IRISH", short: "Clover", chip: "#2fae5f",
+  frame: ["#0a3d1a", "#041a08"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#7ec8f2\"/>"
+    + "<ellipse cx=\"120\" cy=\"46\" rx=\"46\" ry=\"16\" fill=\"#ffffff\"/><ellipse cx=\"460\" cy=\"38\" rx=\"46\" ry=\"16\" fill=\"#ffffff\"/>"
+    + "<path d=\"M0 200 Q150 120 300 200 Z\" fill=\"#2e8b3a\"/><path d=\"M300 200 Q450 120 600 200 Z\" fill=\"#43a047\"/>"
+    + "<path d=\"M120 150 A120 120 0 0 1 480 150\" fill=\"none\" stroke=\"#e8232a\" stroke-width=\"10\"/>"
+    + "<path d=\"M140 150 A100 100 0 0 1 460 150\" fill=\"none\" stroke=\"#ff7a1a\" stroke-width=\"10\"/>"
+    + "<path d=\"M160 150 A80 80 0 0 1 440 150\" fill=\"none\" stroke=\"#ffd34d\" stroke-width=\"10\"/>"
+    + "<path d=\"M180 150 A60 60 0 0 1 420 150\" fill=\"none\" stroke=\"#43a047\" stroke-width=\"10\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#1f6b2a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#0a3d1a"),
+    high: "<circle cx=\"38\" cy=\"38\" r=\"16\" fill=\"#2fae5f\"/><circle cx=\"62\" cy=\"38\" r=\"16\" fill=\"#2fae5f\"/>"
+      + "<circle cx=\"38\" cy=\"62\" r=\"16\" fill=\"#2fae5f\"/><circle cx=\"62\" cy=\"62\" r=\"16\" fill=\"#2fae5f\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"9\" fill=\"#1f7a3a\"/>"
+      + "<path d=\"M50 58 Q50 78 40 86\" stroke=\"#1f7a3a\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid1: "<path d=\"M28 52 Q28 78 50 78 Q72 78 72 52 L66 52 Q66 44 58 44 L42 44 Q34 44 34 52 Z\" fill=\"#1a1a1a\"/>"
+      + "<circle cx=\"38\" cy=\"42\" r=\"9\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<circle cx=\"52\" cy=\"38\" r=\"9\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<circle cx=\"64\" cy=\"44\" r=\"9\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>",
+    mid2: "<rect x=\"40\" y=\"22\" width=\"20\" height=\"30\" fill=\"#1f7a3a\" stroke=\"#0a3d1a\" stroke-width=\"2\"/>"
+      + "<ellipse cx=\"50\" cy=\"56\" rx=\"34\" ry=\"10\" fill=\"#1f7a3a\" stroke=\"#0a3d1a\" stroke-width=\"2\"/>"
+      + "<rect x=\"42\" y=\"56\" width=\"16\" height=\"12\" rx=\"2\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>"
+      + "<rect x=\"38\" y=\"66\" width=\"24\" height=\"16\" rx=\"3\" fill=\"#1f7a3a\" stroke=\"#0a3d1a\" stroke-width=\"2\"/>",
+    mid3: "<path d=\"M14 78 A36 36 0 0 1 86 78\" fill=\"none\" stroke=\"#e8232a\" stroke-width=\"7\"/>"
+      + "<path d=\"M24 78 A26 26 0 0 1 76 78\" fill=\"none\" stroke=\"#ff7a1a\" stroke-width=\"7\"/>"
+      + "<path d=\"M34 78 A16 16 0 0 1 66 78\" fill=\"none\" stroke=\"#ffd34d\" stroke-width=\"7\"/>",
+    a: letterTile("A", "#0a3d1a", "#1f7a3a", "#041a08"),
+    k: letterTile("K", "#0a3d1a", "#1f7a3a", "#041a08"),
+    q: letterTile("Q", "#0a3d1a", "#1f7a3a", "#041a08"),
+    j: letterTile("J", "#0a3d1a", "#1f7a3a", "#041a08"),
+    ten: letterTile("10", "#0a3d1a", "#1f7a3a", "#041a08"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Clover", high: "Four-Leaf Clover", mid1: "Pot of Gold", mid2: "Leprechaun Hat", mid3: "Rainbow",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The green WILD clover substitutes for every symbol except the BONUS star. A line of WILD clovers alone is the top-paying combination on the machine."
+};
+
+THEMES.spooky = {
+  name: "SPOOKY MANOR", slogan: "FRIGHTFULLY GOOD WINS", short: "Spooky", chip: "#ff7a1a",
+  frame: ["#1a0a2e", "#0a0418"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#1a0a2e\"/>"
+    + "<circle cx=\"480\" cy=\"48\" r=\"26\" fill=\"#ffe9a8\"/>"
+    + "<rect x=\"220\" y=\"80\" width=\"160\" height=\"120\" fill=\"#0a0418\"/>"
+    + "<polygon points=\"210,82 300,40 390,82\" fill=\"#0a0418\"/>"
+    + "<rect x=\"280\" y=\"130\" width=\"40\" height=\"70\" fill=\"#2a1245\"/>"
+    + "<rect x=\"240\" y=\"100\" width=\"26\" height=\"30\" fill=\"#ffd964\" opacity=\".8\"/><rect x=\"330\" y=\"100\" width=\"26\" height=\"30\" fill=\"#ffd964\" opacity=\".8\"/>"
+    + "<path d=\"M100 200 Q110 150 100 120 M100 160 Q120 150 130 160 M100 160 Q80 150 70 160\" stroke=\"#3a2a1a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<path d=\"M520 200 Q530 160 520 135 M520 168 Q540 158 550 168\" stroke=\"#3a2a1a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<path d=\"M160 60 Q170 52 180 60 Q190 52 200 60\" fill=\"#1a1a1a\"/>"
+    + "<path d=\"M420 70 Q430 62 440 70 Q450 62 460 70\" fill=\"#1a1a1a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a0a2e"),
+    high: "<ellipse cx=\"50\" cy=\"54\" rx=\"32\" ry=\"28\" fill=\"#ff7a1a\" stroke=\"#b85a0a\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 34 Q38 52 30 74 M50 30 Q56 50 50 80 M70 34 Q62 52 70 74\" stroke=\"#b85a0a\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<polygon points=\"38,48 46,48 42,56\" fill=\"#1a1a1a\"/><polygon points=\"54,48 62,48 58,56\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M36 66 L44 62 L50 66 L56 62 L64 66 L60 72 L40 72 Z\" fill=\"#1a1a1a\"/>",
+    mid1: "<path d=\"M26 82 Q26 40 50 40 Q74 40 74 82 L68 74 L62 82 L56 74 L50 82 L44 74 L38 82 L32 74 Z\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<circle cx=\"41\" cy=\"54\" r=\"4\" fill=\"#1a1a1a\"/><circle cx=\"59\" cy=\"54\" r=\"4\" fill=\"#1a1a1a\"/>"
+      + "<ellipse cx=\"50\" cy=\"64\" rx=\"5\" ry=\"3\" fill=\"#1a1a1a\"/>",
+    mid2: "<ellipse cx=\"50\" cy=\"50\" rx=\"12\" ry=\"9\" fill=\"#1a1a1a\"/>"
+      + "<path d=\"M40 48 Q22 26 12 34 Q20 46 28 52 M60 48 Q78 26 88 34 Q80 46 72 52\" fill=\"#1a1a1a\"/>"
+      + "<circle cx=\"46\" cy=\"48\" r=\"2\" fill=\"#ff3fa4\"/><circle cx=\"54\" cy=\"48\" r=\"2\" fill=\"#ff3fa4\"/>",
+    mid3: "<path d=\"M50 12 L62 56 L78 62 L22 62 L38 56 Z\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<ellipse cx=\"50\" cy=\"64\" rx=\"34\" ry=\"9\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<rect x=\"38\" y=\"50\" width=\"24\" height=\"7\" fill=\"#7a2a8e\"/>",
+    a: letterTile("A", "#1a0a2e", "#4a2a6e", "#0a0418"),
+    k: letterTile("K", "#1a0a2e", "#4a2a6e", "#0a0418"),
+    q: letterTile("Q", "#1a0a2e", "#4a2a6e", "#0a0418"),
+    j: letterTile("J", "#1a0a2e", "#4a2a6e", "#0a0418"),
+    ten: letterTile("10", "#1a0a2e", "#4a2a6e", "#0a0418"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Moon", high: "Pumpkin", mid1: "Ghost", mid2: "Bat", mid3: "Witch Hat",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The gold WILD moon substitutes for every symbol except the BONUS star. A line of WILD moons alone is the top-paying combination on the machine."
+};
+
+THEMES.winter = {
+  name: "WINTER WONDER", slogan: "COZY WINS BY THE FIRE", short: "Winter", chip: "#7fd4ff",
+  frame: ["#0a2a4a", "#04101e"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#0a2a4a\"/>"
+    + "<circle cx=\"80\" cy=\"40\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"180\" cy=\"70\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"300\" cy=\"30\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"420\" cy=\"60\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"520\" cy=\"36\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"240\" cy=\"110\" r=\"2.5\" fill=\"#ffffff\"/><circle cx=\"380\" cy=\"120\" r=\"2.5\" fill=\"#ffffff\"/>"
+    + "<path d=\"M0 200 Q150 140 300 200 Z\" fill=\"#e8f4ff\"/><path d=\"M300 200 Q450 140 600 200 Z\" fill=\"#d9ecff\"/>"
+    + "<polygon points=\"120,180 150,100 180,180\" fill=\"#1f6b2a\"/><polygon points=\"132,130 150,90 168,130\" fill=\"#2e8b3a\"/><rect x=\"146\" y=\"180\" width=\"8\" height=\"14\" fill=\"#4a2c10\"/>"
+    + "<polygon points=\"430,180 460,100 490,180\" fill=\"#1f6b2a\"/><polygon points=\"442,130 460,90 478,130\" fill=\"#2e8b3a\"/><rect x=\"456\" y=\"180\" width=\"8\" height=\"14\" fill=\"#4a2c10\"/>"
+    + "<path d=\"M60 60 Q300 10 540 60\" fill=\"none\" stroke=\"#7fd4ff\" stroke-width=\"5\" opacity=\".5\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#0a2a4a"),
+    high: "<path d=\"M50 12 V88 M16 31 L84 69 M84 31 L16 69\" stroke=\"#bfe8ff\" stroke-width=\"5\" stroke-linecap=\"round\"/>"
+      + "<path d=\"M50 12 L44 22 L56 22 Z M50 88 L44 78 L56 78 Z M16 31 L26 34 L22 42 Z M84 31 L74 34 L78 42 Z M16 69 L26 66 L22 58 Z M84 69 L74 66 L78 58 Z\" fill=\"#bfe8ff\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"8\" fill=\"#ffffff\"/>",
+    mid1: "<path d=\"M30 62 Q30 30 50 22 Q70 30 70 62 L74 66 L26 66 Z\" fill=\"#e8232a\"/>"
+      + "<rect x=\"26\" y=\"62\" width=\"48\" height=\"12\" rx=\"6\" fill=\"#fffbe9\"/>"
+      + "<circle cx=\"74\" cy=\"24\" r=\"8\" fill=\"#fffbe9\"/>",
+    mid2: "<circle cx=\"50\" cy=\"56\" r=\"28\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<rect x=\"44\" y=\"16\" width=\"12\" height=\"12\" rx=\"2\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>"
+      + "<circle cx=\"40\" cy=\"46\" r=\"7\" fill=\"#ffffff\" opacity=\".7\"/>"
+      + "<path d=\"M50 84 Q50 90 46 92\" stroke=\"#f5c451\" stroke-width=\"3\" fill=\"none\"/>",
+    mid3: "<polygon points=\"50,14 62,44 74,44 74,58 62,58 62,84 38,84 38,58 26,58 26,44 38,44\" fill=\"#1f6b2a\"/>"
+      + "<polygon points=\"50,14 62,44 38,44\" fill=\"#2e8b3a\"/>"
+      + "<circle cx=\"42\" cy=\"66\" r=\"3\" fill=\"#ff5a5a\"/><circle cx=\"58\" cy=\"50\" r=\"3\" fill=\"#ffd34d\"/><circle cx=\"46\" cy=\"38\" r=\"3\" fill=\"#bfe8ff\"/>",
+    a: letterTile("A", "#0a2a4a", "#2a5a8e", "#04101e"),
+    k: letterTile("K", "#0a2a4a", "#2a5a8e", "#04101e"),
+    q: letterTile("Q", "#0a2a4a", "#2a5a8e", "#04101e"),
+    j: letterTile("J", "#0a2a4a", "#2a5a8e", "#04101e"),
+    ten: letterTile("10", "#0a2a4a", "#2a5a8e", "#04101e"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Flake", high: "Snowflake", mid1: "Santa Hat", mid2: "Ornament", mid3: "Pine Tree",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The icy WILD flake substitutes for every symbol except the BONUS star. A line of WILD flakes alone is the top-paying combination on the machine."
+};
+
+THEMES.volcano = {
+  name: "VOLCANO ISLE", slogan: "ERUPTION OF RICHES", short: "Volcano", chip: "#ff4a2a",
+  frame: ["#2a0a08", "#120402"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#7ec8e8\"/>"
+    + "<ellipse cx=\"120\" cy=\"46\" rx=\"46\" ry=\"14\" fill=\"#ffffff\"/><ellipse cx=\"480\" cy=\"40\" rx=\"46\" ry=\"14\" fill=\"#ffffff\"/>"
+    + "<path d=\"M220 200 L280 80 L320 80 L380 200 Z\" fill=\"#4a2c10\"/>"
+    + "<path d=\"M280 80 Q300 60 320 80 L310 92 L290 92 Z\" fill=\"#ff4a2a\"/>"
+    + "<path d=\"M300 60 Q310 40 300 24 Q290 40 300 60 Z\" fill=\"#ff7a1a\"/>"
+    + "<circle cx=\"290\" cy=\"34\" r=\"7\" fill=\"#ff7a1a\"/><circle cx=\"314\" cy=\"44\" r=\"6\" fill=\"#ff4a2a\"/>"
+    + "<path d=\"M0 180 Q150 168 300 180 T600 180 L600 200 L0 200 Z\" fill=\"#1a5a8a\"/>"
+    + "<path d=\"M120 200 Q130 150 120 125 M120 165 Q140 155 150 165 M120 165 Q100 155 90 165\" stroke=\"#2e8b3a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#2a0a08"),
+    high: "<path d=\"M28 78 L44 30 L56 30 L72 78 Z\" fill=\"#4a2c10\" stroke=\"#1a0e02\" stroke-width=\"2\"/>"
+      + "<path d=\"M44 30 Q50 18 56 30 L52 38 L48 38 Z\" fill=\"#ff4a2a\"/>"
+      + "<path d=\"M28 78 Q50 66 72 78\" stroke=\"#ff7a1a\" stroke-width=\"4\" fill=\"none\"/>"
+      + "<circle cx=\"40\" cy=\"20\" r=\"5\" fill=\"#ff7a1a\"/><circle cx=\"62\" cy=\"16\" r=\"4\" fill=\"#ff4a2a\"/>",
+    mid1: "<rect x=\"32\" y=\"30\" width=\"36\" height=\"46\" rx=\"8\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<circle cx=\"44\" cy=\"48\" r=\"5\" fill=\"#fffbe9\"/><circle cx=\"56\" cy=\"48\" r=\"5\" fill=\"#fffbe9\"/>"
+      + "<path d=\"M40 62 L60 62\" stroke=\"#fffbe9\" stroke-width=\"3\"/>"
+      + "<path d=\"M42 66 L46 62 L50 66 L54 62 L58 66\" stroke=\"#fffbe9\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<path d=\"M50 30 Q50 20 42 16 M50 30 Q50 20 58 16\" stroke=\"#ff7a1a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid2: "<ellipse cx=\"50\" cy=\"50\" rx=\"16\" ry=\"34\" fill=\"#ff7a1a\" stroke=\"#b85a0a\" stroke-width=\"2\" transform=\"rotate(24 50 50)\"/>"
+      + "<path d=\"M50 18 Q60 50 50 82\" stroke=\"#ffd34d\" stroke-width=\"3\" fill=\"none\"/>"
+      + "<path d=\"M38 30 Q50 50 38 70\" stroke=\"#ffd34d\" stroke-width=\"2\" fill=\"none\"/>",
+    mid3: "<ellipse cx=\"50\" cy=\"28\" rx=\"12\" ry=\"18\" fill=\"#ff3fa4\"/>"
+      + "<ellipse cx=\"28\" cy=\"50\" rx=\"18\" ry=\"12\" fill=\"#ff3fa4\"/>"
+      + "<ellipse cx=\"72\" cy=\"50\" rx=\"18\" ry=\"12\" fill=\"#ff3fa4\"/>"
+      + "<ellipse cx=\"36\" cy=\"72\" rx=\"12\" ry=\"18\" fill=\"#ff6fa5\" transform=\"rotate(40 36 72)\"/>"
+      + "<ellipse cx=\"64\" cy=\"72\" rx=\"12\" ry=\"18\" fill=\"#ff6fa5\" transform=\"rotate(-40 64 72)\"/>"
+      + "<circle cx=\"50\" cy=\"52\" r=\"8\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"1.5\"/>",
+    a: letterTile("A", "#2a0a08", "#7a2a12", "#120402"),
+    k: letterTile("K", "#2a0a08", "#7a2a12", "#120402"),
+    q: letterTile("Q", "#2a0a08", "#7a2a12", "#120402"),
+    j: letterTile("J", "#2a0a08", "#7a2a12", "#120402"),
+    ten: letterTile("10", "#2a0a08", "#7a2a12", "#120402"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Lava", high: "Volcano", mid1: "Tiki Mask", mid2: "Surfboard", mid3: "Hibiscus",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The molten WILD lava substitutes for every symbol except the BONUS star. A line of WILD lavas alone is the top-paying combination on the machine."
+};
+
+THEMES.steam = {
+  name: "STEAMPUNK WORKS", slogan: "GEARED FOR GOLD", short: "Steam", chip: "#c98f2d",
+  frame: ["#2a1a0a", "#120a02"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#6e4418\"/>"
+    + "<rect x=\"0\" y=\"0\" width=\"600\" height=\"200\" fill=\"none\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<rect x=\"40\" y=\"30\" width=\"90\" height=\"90\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<rect x=\"170\" y=\"50\" width=\"110\" height=\"70\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<circle cx=\"400\" cy=\"80\" r=\"44\" fill=\"#c98f2d\" stroke=\"#4a2c10\" stroke-width=\"3\"/>"
+    + "<circle cx=\"400\" cy=\"80\" r=\"18\" fill=\"#6e4418\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<circle cx=\"400\" cy=\"36\" r=\"6\" fill=\"#4a2c10\"/><circle cx=\"444\" cy=\"80\" r=\"6\" fill=\"#4a2c10\"/><circle cx=\"400\" cy=\"124\" r=\"6\" fill=\"#4a2c10\"/><circle cx=\"356\" cy=\"80\" r=\"6\" fill=\"#4a2c10\"/>"
+    + "<rect x=\"500\" y=\"20\" width=\"26\" height=\"160\" fill=\"#4a2c10\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#2a1a0a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#2a1a0a"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"18\" fill=\"#8a5a00\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"7\" fill=\"#f5c451\"/>"
+      + "<rect x=\"46\" y=\"12\" width=\"8\" height=\"12\" rx=\"2\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1\"/>"
+      + "<rect x=\"46\" y=\"76\" width=\"8\" height=\"12\" rx=\"2\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1\"/>"
+      + "<rect x=\"12\" y=\"46\" width=\"12\" height=\"8\" rx=\"2\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1\"/>"
+      + "<rect x=\"76\" y=\"46\" width=\"12\" height=\"8\" rx=\"2\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1\"/>",
+    mid1: "<circle cx=\"50\" cy=\"52\" r=\"30\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"3\"/>"
+      + "<circle cx=\"50\" cy=\"52\" r=\"22\" fill=\"#ffe9a8\"/>"
+      + "<path d=\"M50 52 L50 34 M50 52 L62 58\" stroke=\"#1a1a1a\" stroke-width=\"3\" stroke-linecap=\"round\"/>"
+      + "<circle cx=\"50\" cy=\"52\" r=\"3\" fill=\"#1a1a1a\"/>"
+      + "<rect x=\"44\" y=\"14\" width=\"12\" height=\"10\" rx=\"3\" fill=\"#c8890a\"/>"
+      + "<path d=\"M50 14 Q50 8 58 8\" stroke=\"#c8890a\" stroke-width=\"2\" fill=\"none\"/>",
+    mid2: "<circle cx=\"30\" cy=\"50\" r=\"18\" fill=\"#43d5ff\" stroke=\"#1a6a8e\" stroke-width=\"3\"/>"
+      + "<circle cx=\"70\" cy=\"50\" r=\"18\" fill=\"#43d5ff\" stroke=\"#1a6a8e\" stroke-width=\"3\"/>"
+      + "<rect x=\"30\" y=\"44\" width=\"40\" height=\"12\" fill=\"#2a1a0a\"/>"
+      + "<circle cx=\"30\" cy=\"50\" r=\"8\" fill=\"#bfe8ff\"/><circle cx=\"70\" cy=\"50\" r=\"8\" fill=\"#bfe8ff\"/>"
+      + "<path d=\"M12 50 H22 M78 50 H88\" stroke=\"#8a5a2a\" stroke-width=\"4\"/>",
+    mid3: "<ellipse cx=\"50\" cy=\"40\" rx=\"34\" ry=\"20\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M16 40 Q50 56 84 40\" stroke=\"#8a5a00\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<rect x=\"42\" y=\"58\" width=\"16\" height=\"18\" rx=\"3\" fill=\"#6e4418\" stroke=\"#3a2410\" stroke-width=\"2\"/>"
+      + "<path d=\"M34 30 L50 22 L66 30\" stroke=\"#8a5a00\" stroke-width=\"2\" fill=\"none\"/>",
+    a: letterTile("A", "#2a1a0a", "#6e4a1e", "#120a02"),
+    k: letterTile("K", "#2a1a0a", "#6e4a1e", "#120a02"),
+    q: letterTile("Q", "#2a1a0a", "#6e4a1e", "#120a02"),
+    j: letterTile("J", "#2a1a0a", "#6e4a1e", "#120a02"),
+    ten: letterTile("10", "#2a1a0a", "#6e4a1e", "#120a02"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Gear", high: "Brass Gear", mid1: "Pocket Watch", mid2: "Goggles", mid3: "Airship",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The brass WILD gear substitutes for every symbol except the BONUS star. A line of WILD gears alone is the top-paying combination on the machine."
+};
+
+THEMES.rock = {
+  name: "ROCK LEGENDS", slogan: "TURN IT UP TO ELEVEN", short: "Rock", chip: "#ff2a4a",
+  frame: ["#1a0a12", "#0a0408"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#12060c\"/>"
+    + "<polygon points=\"150,0 230,0 300,180 210,180\" fill=\"#ffd34d\" opacity=\".14\"/>"
+    + "<polygon points=\"370,0 450,0 390,180 300,180\" fill=\"#ff3fa4\" opacity=\".14\"/>"
+    + "<rect x=\"60\" y=\"110\" width=\"70\" height=\"70\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+    + "<circle cx=\"80\" cy=\"134\" r=\"12\" fill=\"#3a3a3a\"/><circle cx=\"110\" cy=\"134\" r=\"12\" fill=\"#3a3a3a\"/><circle cx=\"95\" cy=\"160\" r=\"12\" fill=\"#3a3a3a\"/>"
+    + "<rect x=\"470\" y=\"110\" width=\"70\" height=\"70\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+    + "<circle cx=\"490\" cy=\"134\" r=\"12\" fill=\"#3a3a3a\"/><circle cx=\"520\" cy=\"134\" r=\"12\" fill=\"#3a3a3a\"/><circle cx=\"505\" cy=\"160\" r=\"12\" fill=\"#3a3a3a\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#0a0408\"/>"
+    + "<circle cx=\"300\" cy=\"60\" r=\"4\" fill=\"#ffffff\"/><circle cx=\"240\" cy=\"40\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"360\" cy=\"44\" r=\"3\" fill=\"#ffffff\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a0a12"),
+    high: "<ellipse cx=\"42\" cy=\"58\" rx=\"22\" ry=\"18\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<path d=\"M58 50 L72 30 L80 34 L68 54 Z\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<rect x=\"64\" y=\"18\" width=\"10\" height=\"26\" rx=\"3\" fill=\"#6e4418\" transform=\"rotate(18 69 31)\"/>"
+      + "<circle cx=\"42\" cy=\"58\" r=\"7\" fill=\"#fffbe9\"/>"
+      + "<path d=\"M60 44 L72 28\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>",
+    mid1: "<circle cx=\"50\" cy=\"38\" r=\"20\" fill=\"#3a3a3a\" stroke=\"#1a1a1a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"38\" r=\"14\" fill=\"#1a1a1a\"/>"
+      + "<circle cx=\"44\" cy=\"32\" r=\"2.5\" fill=\"#c9c9c9\"/><circle cx=\"54\" cy=\"30\" r=\"2.5\" fill=\"#c9c9c9\"/><circle cx=\"50\" cy=\"42\" r=\"2.5\" fill=\"#c9c9c9\"/><circle cx=\"40\" cy=\"40\" r=\"2.5\" fill=\"#c9c9c9\"/><circle cx=\"60\" cy=\"40\" r=\"2.5\" fill=\"#c9c9c9\"/>"
+      + "<path d=\"M44 56 L40 82 L48 82 L52 58 Z\" fill=\"#c9c9c9\"/>"
+      + "<rect x=\"36\" y=\"80\" width=\"20\" height=\"6\" rx=\"3\" fill=\"#1a1a1a\"/>",
+    mid2: "<circle cx=\"50\" cy=\"50\" r=\"32\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"26\" fill=\"none\" stroke=\"#3a3a3a\" stroke-width=\"1.5\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"18\" fill=\"none\" stroke=\"#3a3a3a\" stroke-width=\"1.5\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"12\" fill=\"#e8232a\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"3\" fill=\"#fffbe9\"/>",
+    mid3: "<ellipse cx=\"50\" cy=\"34\" rx=\"28\" ry=\"10\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+      + "<path d=\"M22 34 V66 Q22 78 50 78 Q78 78 78 66 V34\" fill=\"#c22a2a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 52 L70 52\" stroke=\"#fffbe9\" stroke-width=\"3\"/>"
+      + "<path d=\"M28 30 L48 44 M72 30 L52 44\" stroke=\"#8a8f98\" stroke-width=\"3\" stroke-linecap=\"round\"/>",
+    a: letterTile("A", "#1a0a12", "#6e1e32", "#0a0408"),
+    k: letterTile("K", "#1a0a12", "#6e1e32", "#0a0408"),
+    q: letterTile("Q", "#1a0a12", "#6e1e32", "#0a0408"),
+    j: letterTile("J", "#1a0a12", "#6e1e32", "#0a0408"),
+    ten: letterTile("10", "#1a0a12", "#6e1e32", "#0a0408"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Note", high: "Guitar", mid1: "Microphone", mid2: "Vinyl", mid3: "Drum",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The red WILD note substitutes for every symbol except the BONUS star. A line of WILD notes alone is the top-paying combination on the machine."
+};
+
+THEMES.farm = {
+  name: "COUNTRY HARVEST", slogan: "FRESH FROM THE FARM", short: "Farm", chip: "#e8c33d",
+  frame: ["#3d1a0a", "#1e0c02"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#7ec8e8\"/>"
+    + "<ellipse cx=\"110\" cy=\"46\" rx=\"46\" ry=\"14\" fill=\"#ffffff\"/><ellipse cx=\"470\" cy=\"40\" rx=\"46\" ry=\"14\" fill=\"#ffffff\"/>"
+    + "<rect x=\"200\" y=\"90\" width=\"120\" height=\"90\" fill=\"#c22a2a\"/>"
+    + "<polygon points=\"190,92 260,50 330,92\" fill=\"#8a1a1a\"/>"
+    + "<rect x=\"240\" y=\"130\" width=\"40\" height=\"50\" fill=\"#6e4418\"/>"
+    + "<rect x=\"220\" y=\"110\" width=\"26\" height=\"26\" fill=\"#ffe9a8\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+    + "<rect x=\"270\" y=\"110\" width=\"26\" height=\"26\" fill=\"#ffe9a8\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#43a047\"/>"
+    + "<rect x=\"120\" y=\"150\" width=\"60\" height=\"30\" fill=\"#e8e8f2\" opacity=\".5\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#3d1a0a"),
+    high: "<ellipse cx=\"50\" cy=\"50\" rx=\"14\" ry=\"24\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"26\" r=\"8\" fill=\"#ff9ec6\"/>"
+      + "<ellipse cx=\"50\" cy=\"72\" rx=\"10\" ry=\"6\" fill=\"#ff9ec6\"/>"
+      + "<circle cx=\"46\" cy=\"48\" r=\"2\" fill=\"#1a1a1a\"/><circle cx=\"54\" cy=\"48\" r=\"2\" fill=\"#1a1a1a\"/>"
+      + "<ellipse cx=\"50\" cy=\"56\" rx=\"6\" ry=\"4\" fill=\"#ff7aa5\"/>"
+      + "<rect x=\"36\" y=\"16\" width=\"6\" height=\"16\" rx=\"3\" fill=\"#ff9ec6\" transform=\"rotate(-16 39 24)\"/>"
+      + "<rect x=\"58\" y=\"16\" width=\"6\" height=\"16\" rx=\"3\" fill=\"#ff9ec6\" transform=\"rotate(16 61 24)\"/>",
+    mid1: "<path d=\"M20 82 L80 82 L76 30 L24 30 Z\" fill=\"#d9a92f\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M20 82 L12 92 L88 92 L80 82\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M28 40 Q50 48 72 40\" stroke=\"#8a5a00\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<path d=\"M50 30 Q50 14 44 8 M50 30 Q50 12 56 8\" stroke=\"#2e8b3a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>",
+    mid2: "<path d=\"M24 62 L50 26 L76 62 Z\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<rect x=\"36\" y=\"62\" width=\"28\" height=\"18\" fill=\"#43a047\" stroke=\"#1f6b2a\" stroke-width=\"2\"/>"
+      + "<path d=\"M36 66 L46 74 M64 66 L54 74\" stroke=\"#1f6b2a\" stroke-width=\"2\"/>",
+    mid3: "<rect x=\"44\" y=\"22\" width=\"12\" height=\"50\" fill=\"#6e4418\"/>"
+      + "<path d=\"M44 22 L34 34 L66 34 L56 22 Z\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<rect x=\"30\" y=\"34\" width=\"40\" height=\"8\" rx=\"3\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"44\" r=\"6\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>",
+    a: letterTile("A", "#3d1a0a", "#6e4418", "#1e0c02"),
+    k: letterTile("K", "#3d1a0a", "#6e4418", "#1e0c02"),
+    q: letterTile("Q", "#3d1a0a", "#6e4418", "#1e0c02"),
+    j: letterTile("J", "#3d1a0a", "#6e4418", "#1e0c02"),
+    ten: letterTile("10", "#3d1a0a", "#6e4418", "#1e0c02"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Barn", high: "Pig", mid1: "Harvest Basket", mid2: "Hen House", mid3: "Windmill",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The golden WILD barn substitutes for every symbol except the BONUS star. A line of WILD barns alone is the top-paying combination on the machine."
+};
+
+THEMES.circus = {
+  name: "BIG TOP CIRCUS", slogan: "THE GREATEST SHOW ON REELS", short: "Circus", chip: "#ff2a2a",
+  frame: ["#2a0a1a", "#14040e"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#1a1a3a\"/>"
+    + "<circle cx=\"80\" cy=\"40\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"200\" cy=\"30\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"320\" cy=\"50\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"440\" cy=\"32\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"530\" cy=\"52\" r=\"3\" fill=\"#ffffff\"/>"
+    + "<polygon points=\"300,30 180,180 420,180\" fill=\"#e8232a\"/>"
+    + "<polygon points=\"300,30 210,180 270,180\" fill=\"#fffbe9\"/>"
+    + "<polygon points=\"300,30 330,180 390,180\" fill=\"#fffbe9\"/>"
+    + "<polygon points=\"300,30 290,30 310,30 300,10\" fill=\"#ffd34d\"/>"
+    + "<rect x=\"270\" y=\"140\" width=\"60\" height=\"40\" fill=\"#2a0a1a\"/>"
+    + "<path d=\"M140 200 Q150 170 140 150\" stroke=\"#7a8a9a\" stroke-width=\"4\" fill=\"none\"/>"
+    + "<path d=\"M460 200 Q450 170 460 150\" stroke=\"#7a8a9a\" stroke-width=\"4\" fill=\"none\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#2a0a1a"),
+    high: "<ellipse cx=\"50\" cy=\"48\" rx=\"24\" ry=\"16\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<path d=\"M26 48 L50 22 L74 48 Z\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"18\" r=\"5\" fill=\"#f5c451\"/>"
+      + "<path d=\"M26 48 Q50 58 74 48\" stroke=\"#c9c9c9\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<rect x=\"40\" y=\"64\" width=\"20\" height=\"18\" fill=\"#e8232a\"/>",
+    mid1: "<path d=\"M20 74 L50 22 L80 74 Z\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M20 74 L26 74 L50 30 L74 74 L80 74\" fill=\"#e8232a\" stroke=\"#7d0a1e\" stroke-width=\"2\"/>"
+      + "<rect x=\"28\" y=\"74\" width=\"44\" height=\"8\" rx=\"3\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>",
+    mid2: "<circle cx=\"34\" cy=\"62\" r=\"18\" fill=\"#ff7a1a\" stroke=\"#b85a0a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"66\" cy=\"62\" r=\"18\" fill=\"#ff7a1a\" stroke=\"#b85a0a\" stroke-width=\"2\"/>"
+      + "<path d=\"M34 44 L28 28 L42 32 M66 44 L72 28 L58 32\" stroke=\"#1a1a1a\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"34\" cy=\"58\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"66\" cy=\"58\" r=\"4\" fill=\"#fffbe9\"/>",
+    mid3: "<circle cx=\"50\" cy=\"42\" r=\"18\" fill=\"#ff9ec6\" stroke=\"#a81e5e\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 24 Q42 12 32 12 Q40 22 42 24 M50 24 Q58 12 68 12 Q60 22 58 24\" stroke=\"#a81e5e\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<circle cx=\"42\" cy=\"40\" r=\"2.5\" fill=\"#1a1a1a\"/><circle cx=\"58\" cy=\"40\" r=\"2.5\" fill=\"#1a1a1a\"/>"
+      + "<circle cx=\"50\" cy=\"52\" r=\"6\" fill=\"#e8232a\"/>",
+    a: letterTile("A", "#2a0a1a", "#7a1e32", "#14040e"),
+    k: letterTile("K", "#2a0a1a", "#7a1e32", "#14040e"),
+    q: letterTile("Q", "#2a0a1a", "#7a1e32", "#14040e"),
+    j: letterTile("J", "#2a0a1a", "#7a1e32", "#14040e"),
+    ten: letterTile("10", "#2a0a1a", "#7a1e32", "#14040e"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Tent", high: "Big Top", mid1: "Tightrope", mid2: "Clown", mid3: "Elephant",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The striped WILD tent substitutes for every symbol except the BONUS star. A line of WILD tents alone is the top-paying combination on the machine."
+};
+
+THEMES.movie = {
+  name: "MOVIE MAGIC", slogan: "LIGHTS, CAMERA, JACKPOT", short: "Movie", chip: "#d9a92f",
+  frame: ["#1a0a0a", "#0a0404"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#1a0a0a\"/>"
+    + "<polygon points=\"150,0 230,0 300,180 210,180\" fill=\"#ffd34d\" opacity=\".18\"/>"
+    + "<polygon points=\"370,0 450,0 390,180 300,180\" fill=\"#ffd34d\" opacity=\".18\"/>"
+    + "<rect x=\"220\" y=\"60\" width=\"160\" height=\"120\" fill=\"#fffbe9\" stroke=\"#8a5a00\" stroke-width=\"3\"/>"
+    + "<rect x=\"232\" y=\"72\" width=\"136\" height=\"96\" fill=\"#1a1a1a\"/>"
+    + "<polygon points=\"300,100 330,120 300,140\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"60\" y=\"40\" width=\"30\" height=\"40\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+    + "<rect x=\"510\" y=\"40\" width=\"30\" height=\"40\" fill=\"#e8e8f2\" stroke=\"#9a9ab0\" stroke-width=\"2\"/>"
+    + "<circle cx=\"75\" cy=\"50\" r=\"4\" fill=\"#1a1a1a\"/><circle cx=\"525\" cy=\"50\" r=\"4\" fill=\"#1a1a1a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a0a0a"),
+    high: "<rect x=\"22\" y=\"36\" width=\"56\" height=\"36\" rx=\"4\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"34\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"50\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"66\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/>"
+      + "<circle cx=\"34\" cy=\"66\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"50\" cy=\"66\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"66\" cy=\"66\" r=\"4\" fill=\"#fffbe9\"/>"
+      + "<path d=\"M20 24 L80 24 L78 36 L22 36 Z\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<path d=\"M20 72 L80 72 L78 84 L22 84 Z\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<rect x=\"30\" y=\"48\" width=\"40\" height=\"4\" fill=\"#fffbe9\" opacity=\".5\"/>",
+    mid1: "<rect x=\"34\" y=\"14\" width=\"32\" height=\"52\" rx=\"4\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<rect x=\"34\" y=\"22\" width=\"32\" height=\"6\" fill=\"#fffbe9\"/>"
+      + "<rect x=\"30\" y=\"66\" width=\"40\" height=\"10\" rx=\"3\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 14 L50 66\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<path d=\"M40 30 L60 30 M40 42 L60 42 M40 54 L60 54\" stroke=\"#fffbe9\" stroke-width=\"2\"/>",
+    mid2: "<path d=\"M30 60 L50 30 L70 60 Z\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"6\" fill=\"#fffbe9\"/>"
+      + "<circle cx=\"30\" cy=\"60\" r=\"8\" fill=\"#c98f2d\"/><circle cx=\"70\" cy=\"60\" r=\"8\" fill=\"#c98f2d\"/>"
+      + "<rect x=\"28\" y=\"68\" width=\"44\" height=\"8\" rx=\"3\" fill=\"#c98f2d\" stroke=\"#8a5a00\" stroke-width=\"1.5\"/>",
+    mid3: "<path d=\"M24 78 L24 30 Q24 20 34 20 L66 20 Q76 20 76 30 L76 78\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<path d=\"M32 28 L32 58 L50 40 L68 58 L68 28\" stroke=\"#c9c9c9\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<rect x=\"42\" y=\"56\" width=\"16\" height=\"8\" rx=\"2\" fill=\"#e8232a\"/>",
+    a: letterTile("A", "#1a0a0a", "#5a2a1a", "#0a0404"),
+    k: letterTile("K", "#1a0a0a", "#5a2a1a", "#0a0404"),
+    q: letterTile("Q", "#1a0a0a", "#5a2a1a", "#0a0404"),
+    j: letterTile("J", "#1a0a0a", "#5a2a1a", "#0a0404"),
+    ten: letterTile("10", "#1a0a0a", "#5a2a1a", "#0a0404"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Reel", high: "Film Reel", mid1: "Clapperboard", mid2: "Spotlight", mid3: "Ticket",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The golden WILD reel substitutes for every symbol except the BONUS star. A line of WILD reels alone is the top-paying combination on the machine."
+};
+
+THEMES.noir = {
+  name: "NOIR CITY", slogan: "SHADOWS PAY IN GOLD", short: "Noir", chip: "#6a6a7a",
+  frame: ["#0a0a12", "#040406"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#0a0a12\"/>"
+    + "<polygon points=\"150,0 230,0 300,180 210,180\" fill=\"#ffd34d\" opacity=\".14\"/>"
+    + "<rect x=\"60\" y=\"60\" width=\"80\" height=\"140\" fill=\"#1a1a2a\"/>"
+    + "<rect x=\"80\" y=\"80\" width=\"14\" height=\"18\" fill=\"#ffd964\"/><rect x=\"104\" y=\"80\" width=\"14\" height=\"18\" fill=\"#ffd964\"/>"
+    + "<rect x=\"80\" y=\"110\" width=\"14\" height=\"18\" fill=\"#ffd964\" opacity=\".6\"/><rect x=\"104\" y=\"110\" width=\"14\" height=\"18\" fill=\"#ffd964\" opacity=\".6\"/>"
+    + "<rect x=\"460\" y=\"40\" width=\"80\" height=\"160\" fill=\"#1a1a2a\"/>"
+    + "<rect x=\"480\" y=\"60\" width=\"14\" height=\"18\" fill=\"#ffd964\"/><rect x=\"504\" y=\"60\" width=\"14\" height=\"18\" fill=\"#ffd964\"/>"
+    + "<rect x=\"480\" y=\"90\" width=\"14\" height=\"18\" fill=\"#ffd964\" opacity=\".6\"/><rect x=\"504\" y=\"90\" width=\"14\" height=\"18\" fill=\"#ffd964\" opacity=\".6\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#1a1a2a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#0a0a12"),
+    high: "<path d=\"M28 56 Q28 30 50 30 Q72 30 72 56 L68 78 L32 78 Z\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<path d=\"M28 56 L22 44 L32 52 M72 56 L78 44 L68 52\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<rect x=\"42\" y=\"30\" width=\"16\" height=\"6\" rx=\"2\" fill=\"#3a3a3a\"/>"
+      + "<rect x=\"46\" y=\"60\" width=\"8\" height=\"10\" rx=\"2\" fill=\"#3a3a3a\"/>"
+      + "<circle cx=\"42\" cy=\"52\" r=\"2\" fill=\"#ffd964\"/><circle cx=\"58\" cy=\"52\" r=\"2\" fill=\"#ffd964\"/>",
+    mid1: "<path d=\"M50 18 L58 38 L78 40 L62 54 L66 74 L50 64 L34 74 L38 54 L22 40 L42 38 Z\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"46\" r=\"6\" fill=\"#ffe9a8\"/>",
+    mid2: "<rect x=\"34\" y=\"18\" width=\"32\" height=\"58\" rx=\"3\" fill=\"#1a1a1a\" stroke=\"#3a3a3a\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 26 Q50 52 42 60 M50 26 Q50 52 58 60\" stroke=\"#c9c9c9\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"50\" cy=\"70\" r=\"3\" fill=\"#c9c9c9\"/>",
+    mid3: "<path d=\"M30 78 L34 30 L66 30 L70 78 Z\" fill=\"#2a2a3a\" stroke=\"#4a4a5a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"42\" cy=\"50\" r=\"6\" fill=\"#c9c9c9\"/><circle cx=\"58\" cy=\"50\" r=\"6\" fill=\"#c9c9c9\"/>"
+      + "<path d=\"M46 50 L54 50\" stroke=\"#1a1a1a\" stroke-width=\"2\"/>"
+      + "<rect x=\"46\" y=\"30\" width=\"8\" height=\"6\" fill=\"#4a4a5a\"/>",
+    a: letterTile("A", "#0a0a12", "#3a3a4a", "#040406"),
+    k: letterTile("K", "#0a0a12", "#3a3a4a", "#040406"),
+    q: letterTile("Q", "#0a0a12", "#3a3a4a", "#040406"),
+    j: letterTile("J", "#0a0a12", "#3a3a4a", "#040406"),
+    ten: letterTile("10", "#0a0a12", "#3a3a4a", "#040406"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Fedora", high: "Detective Hat", mid1: "Gold Badge", mid2: "Magnifying Glass", mid3: "Binoculars",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The black WILD fedora substitutes for every symbol except the BONUS star. A line of WILD fedoras alone is the top-paying combination on the machine."
+};
+
+THEMES.desert = {
+  name: "DESERT OASIS", slogan: "GOLD BENEATH THE SAND", short: "Desert", chip: "#e8b84a",
+  frame: ["#5a2a0a", "#2a1202"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#f2d8a8\"/>"
+    + "<circle cx=\"480\" cy=\"48\" r=\"28\" fill=\"#ffd34d\"/>"
+    + "<path d=\"M0 200 Q150 140 300 200 Z\" fill=\"#e8c888\"/><path d=\"M300 200 Q450 140 600 200 Z\" fill=\"#d9b878\"/>"
+    + "<path d=\"M200 200 Q210 130 200 110 M200 160 Q220 150 230 160 M200 160 Q180 150 170 160\" stroke=\"#2e8b3a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#c9a45a\"/>"
+    + "<path d=\"M120 200 Q130 160 120 140 M120 180 Q140 170 150 180 M120 180 Q100 170 90 180\" stroke=\"#2e8b3a\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#5a2a0a"),
+    high: "<polygon points=\"50,14 84,48 76,84 24,84 16,48\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\" stroke-linejoin=\"round\"/>"
+      + "<polygon points=\"50,14 84,48 76,84 24,84 16,48\" fill=\"#ffe9a8\" opacity=\".4\"/>"
+      + "<polygon points=\"50,34 66,48 60,66 40,66 34,48\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"1.5\"/>",
+    mid1: "<path d=\"M50 18 Q60 18 62 30 Q74 30 76 44 Q74 58 62 60 Q60 72 50 72 Q40 72 38 60 Q26 58 24 44 Q26 30 38 30 Q40 18 50 18 Z\" fill=\"#2e8b3a\" stroke=\"#1f6b2a\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 18 L50 72\" stroke=\"#1f6b2a\" stroke-width=\"2\"/>"
+      + "<path d=\"M24 44 L76 44\" stroke=\"#1f6b2a\" stroke-width=\"2\"/>",
+    mid2: "<path d=\"M50 84 Q50 40 42 30 M50 84 Q50 40 58 30\" stroke=\"#2e8b3a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<path d=\"M42 30 Q36 22 30 24 Q36 32 42 30 M58 30 Q64 22 70 24 Q64 32 58 30\" stroke=\"#2e8b3a\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\"/>"
+      + "<rect x=\"44\" y=\"40\" width=\"12\" height=\"40\" fill=\"#6e4418\"/>"
+      + "<path d=\"M38 40 L62 40 L56 34 L44 34 Z\" fill=\"#8a5a2a\"/>",
+    mid3: "<circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#7ec8e8\" stroke=\"#1a6a8e\" stroke-width=\"2\"/>"
+      + "<path d=\"M22 50 Q50 38 78 50 Q50 62 22 50 Z\" fill=\"#43d5ff\" opacity=\".6\"/>"
+      + "<circle cx=\"50\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/>",
+    a: letterTile("A", "#5a2a0a", "#8a5a2a", "#2a1202"),
+    k: letterTile("K", "#5a2a0a", "#8a5a2a", "#2a1202"),
+    q: letterTile("Q", "#5a2a0a", "#8a5a2a", "#2a1202"),
+    j: letterTile("J", "#5a2a0a", "#8a5a2a", "#2a1202"),
+    ten: letterTile("10", "#5a2a0a", "#8a5a2a", "#2a1202"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Pyramid", high: "Gold Nugget", mid1: "Cactus", mid2: "Palm Tree", mid3: "Oasis",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The golden WILD pyramid substitutes for every symbol except the BONUS star. A line of WILD pyramids alone is the top-paying combination on the machine."
+};
+
+THEMES.aurora = {
+  name: "AURORA SKIES", slogan: "LIGHTS THAT PAY", short: "Aurora", chip: "#7ae8c8",
+  frame: ["#0a1a3a", "#04101e"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#0a1a3a\"/>"
+    + "<path d=\"M0 80 Q150 20 300 80 T600 80 L600 120 Q450 60 300 120 T0 120 Z\" fill=\"#43d5ff\" opacity=\".5\"/>"
+    + "<path d=\"M0 110 Q150 50 300 110 T600 110 L600 150 Q450 90 300 150 T0 150 Z\" fill=\"#7ae8c8\" opacity=\".5\"/>"
+    + "<circle cx=\"80\" cy=\"40\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"180\" cy=\"30\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"300\" cy=\"36\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"420\" cy=\"28\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"520\" cy=\"44\" r=\"3\" fill=\"#ffffff\"/>"
+    + "<path d=\"M0 200 Q150 160 300 200 Z\" fill=\"#e8f4ff\"/><path d=\"M300 200 Q450 160 600 200 Z\" fill=\"#d9ecff\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#1a3a5a\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#0a1a3a"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#7ae8c8\" stroke=\"#2e8b6a\" stroke-width=\"2\"/>"
+      + "<path d=\"M22 50 Q50 38 78 50 Q50 62 22 50 Z\" fill=\"#43d5ff\" opacity=\".6\"/>"
+      + "<path d=\"M22 50 Q50 62 78 50\" stroke=\"#2e8b6a\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"50\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/>",
+    mid1: "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"none\" stroke=\"#bfe8ff\" stroke-width=\"2\"/>"
+      + "<polygon points=\"50,24 62,50 50,76 38,50\" fill=\"#bfe8ff\"/>"
+      + "<polygon points=\"50,24 62,50 50,76 38,50\" fill=\"#ffffff\" opacity=\".5\"/>"
+      + "<path d=\"M50 24 L50 76 M38 50 L62 50\" stroke=\"#7fd4ff\" stroke-width=\"1.5\"/>",
+    mid2: "<path d=\"M20 78 L50 22 L80 78 Z\" fill=\"#e8f4ff\" stroke=\"#7fd4ff\" stroke-width=\"2\"/>"
+      + "<path d=\"M20 78 L50 22 L80 78\" fill=\"none\" stroke=\"#7fd4ff\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"62\" r=\"6\" fill=\"#7fd4ff\"/>",
+    mid3: "<path d=\"M50 14 L56 34 L76 34 L60 48 L66 68 L50 56 L34 68 L40 48 L24 34 L44 34 Z\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"2\"/>",
+    a: letterTile("A", "#0a1a3a", "#2a5a8e", "#04101e"),
+    k: letterTile("K", "#0a1a3a", "#2a5a8e", "#04101e"),
+    q: letterTile("Q", "#0a1a3a", "#2a5a8e", "#04101e"),
+    j: letterTile("J", "#0a1a3a", "#2a5a8e", "#04101e"),
+    ten: letterTile("10", "#0a1a3a", "#2a5a8e", "#04101e"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Aurora", high: "Aurora Orb", mid1: "Ice Crystal", mid2: "Igloo", mid3: "Polar Star",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The glowing WILD aurora substitutes for every symbol except the BONUS star. A line of WILD auroras alone is the top-paying combination on the machine."
+};
+
+THEMES.wizard = {
+  name: "WIZARD'S TOWER", slogan: "SPELLS THAT PAY", short: "Wizard", chip: "#7a6cff",
+  frame: ["#1a0a3a", "#0a041e"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#1a0a3a\"/>"
+    + "<circle cx=\"80\" cy=\"40\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"180\" cy=\"30\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"300\" cy=\"36\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"420\" cy=\"28\" r=\"3\" fill=\"#ffffff\"/><circle cx=\"520\" cy=\"44\" r=\"3\" fill=\"#ffffff\"/>"
+    + "<polygon points=\"300,30 240,100 360,100\" fill=\"#7a6cff\"/>"
+    + "<rect x=\"240\" y=\"100\" width=\"120\" height=\"100\" fill=\"#2a1a5a\"/>"
+    + "<rect x=\"280\" y=\"140\" width=\"40\" height=\"60\" fill=\"#1a0a3a\"/>"
+    + "<rect x=\"260\" y=\"120\" width=\"26\" height=\"26\" fill=\"#ffd964\" opacity=\".8\"/><rect x=\"314\" y=\"120\" width=\"26\" height=\"26\" fill=\"#ffd964\" opacity=\".8\"/>"
+    + "<path d=\"M120 200 Q130 160 120 140\" stroke=\"#3a2a1a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "<path d=\"M480 200 Q470 160 480 140\" stroke=\"#3a2a1a\" stroke-width=\"5\" fill=\"none\" stroke-linecap=\"round\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#1a0a3a"),
+    high: "<path d=\"M50 14 L62 44 L76 44 L62 48 L58 84 L42 84 L38 48 L24 44 L38 44 Z\" fill=\"#7a6cff\" stroke=\"#4a2a9a\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"20\" r=\"6\" fill=\"#ffd34d\" stroke=\"#c8890a\" stroke-width=\"1.5\"/>"
+      + "<path d=\"M42 84 L38 90 L62 90 L58 84\" fill=\"#4a2a9a\"/>",
+    mid1: "<circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#43d5ff\" stroke=\"#1a6a8e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"#bfe8ff\" opacity=\".5\"/>"
+      + "<circle cx=\"42\" cy=\"42\" r=\"6\" fill=\"#ffffff\" opacity=\".8\"/>"
+      + "<path d=\"M50 78 L50 90 M40 88 L60 88\" stroke=\"#1a6a8e\" stroke-width=\"3\" stroke-linecap=\"round\"/>",
+    mid2: "<rect x=\"34\" y=\"18\" width=\"32\" height=\"52\" rx=\"4\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<path d=\"M50 18 L50 70\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<path d=\"M40 30 L60 30 M40 42 L60 42 M40 54 L60 54\" stroke=\"#ffd964\" stroke-width=\"2\"/>"
+      + "<rect x=\"30\" y=\"70\" width=\"40\" height=\"8\" rx=\"3\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>",
+    mid3: "<path d=\"M50 14 L62 44 L78 50 L62 56 L50 86 L38 56 L22 50 L38 44 Z\" fill=\"#ff3fa4\" stroke=\"#a81e5e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"6\" fill=\"#ffd34d\"/>",
+    a: letterTile("A", "#1a0a3a", "#4a2a7a", "#0a041e"),
+    k: letterTile("K", "#1a0a3a", "#4a2a7a", "#0a041e"),
+    q: letterTile("Q", "#1a0a3a", "#4a2a7a", "#0a041e"),
+    j: letterTile("J", "#1a0a3a", "#4a2a7a", "#0a041e"),
+    ten: letterTile("10", "#1a0a3a", "#4a2a7a", "#0a041e"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Wand", high: "Wizard Hat", mid1: "Crystal Ball", mid2: "Spell Book", mid3: "Magic Star",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The purple WILD wand substitutes for every symbol except the BONUS star. A line of WILD wands alone is the top-paying combination on the machine."
+};
+
+THEMES.bakery = {
+  name: "BAKERY BLISS", slogan: "FRESH OUT OF THE OVEN", short: "Bakery", chip: "#ff9ec6",
+  frame: ["#5a2a1a", "#2a120a"],
+  scene: "<svg viewBox=\"0 0 600 200\" preserveAspectRatio=\"xMidYMid slice\" aria-hidden=\"true\">"
+    + "<rect width=\"600\" height=\"200\" fill=\"#ffe9c8\"/>"
+    + "<rect x=\"80\" y=\"60\" width=\"120\" height=\"120\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<rect x=\"80\" y=\"60\" width=\"120\" height=\"30\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"92\" y=\"100\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#ff9ec6\"/>"
+    + "<rect x=\"134\" y=\"100\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#ffd34d\"/>"
+    + "<rect x=\"92\" y=\"140\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#43a047\"/>"
+    + "<rect x=\"134\" y=\"140\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#e8232a\"/>"
+    + "<rect x=\"400\" y=\"80\" width=\"120\" height=\"100\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+    + "<rect x=\"400\" y=\"80\" width=\"120\" height=\"30\" fill=\"#fffbe9\"/>"
+    + "<rect x=\"412\" y=\"120\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#7a6cff\"/>"
+    + "<rect x=\"454\" y=\"120\" width=\"30\" height=\"30\" rx=\"3\" fill=\"#ff7a1a\"/>"
+    + "<rect x=\"0\" y=\"180\" width=\"600\" height=\"20\" fill=\"#c98f2d\"/>"
+    + "</svg>",
+  sym: {
+    wild: wildMedal("#5a2a1a"),
+    high: "<circle cx=\"50\" cy=\"50\" r=\"30\" fill=\"#ff9ec6\" stroke=\"#a81e5e\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"22\" fill=\"#ffc8dd\"/>"
+      + "<path d=\"M50 34 Q58 42 50 50 Q42 42 50 34 Z\" fill=\"#e8232a\"/>"
+      + "<path d=\"M34 62 Q50 70 66 62\" stroke=\"#a81e5e\" stroke-width=\"2\" fill=\"none\"/>"
+      + "<circle cx=\"40\" cy=\"44\" r=\"2.5\" fill=\"#fffbe9\"/><circle cx=\"60\" cy=\"44\" r=\"2.5\" fill=\"#fffbe9\"/><circle cx=\"50\" cy=\"56\" r=\"2.5\" fill=\"#fffbe9\"/>",
+    mid1: "<path d=\"M24 62 L76 62 L70 78 L30 78 Z\" fill=\"#f5c451\" stroke=\"#8a5a00\" stroke-width=\"2\"/>"
+      + "<path d=\"M24 62 L30 44 L70 44 L76 62 Z\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<circle cx=\"38\" cy=\"54\" r=\"4\" fill=\"#ff9ec6\"/><circle cx=\"50\" cy=\"54\" r=\"4\" fill=\"#ffd34d\"/><circle cx=\"62\" cy=\"54\" r=\"4\" fill=\"#43a047\"/>"
+      + "<path d=\"M50 44 L50 34\" stroke=\"#8a5a00\" stroke-width=\"2\"/>",
+    mid2: "<circle cx=\"50\" cy=\"50\" r=\"28\" fill=\"#8a5a2a\" stroke=\"#4a2c10\" stroke-width=\"2\"/>"
+      + "<circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"#c98f2d\"/>"
+      + "<circle cx=\"42\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"58\" cy=\"42\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"42\" cy=\"58\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"58\" cy=\"58\" r=\"4\" fill=\"#fffbe9\"/><circle cx=\"50\" cy=\"50\" r=\"4\" fill=\"#fffbe9\"/>",
+    mid3: "<rect x=\"30\" y=\"30\" width=\"40\" height=\"40\" rx=\"6\" fill=\"#fffbe9\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<path d=\"M30 50 L70 50\" stroke=\"#c9c9c9\" stroke-width=\"2\"/>"
+      + "<circle cx=\"40\" cy=\"40\" r=\"4\" fill=\"#ff9ec6\"/><circle cx=\"60\" cy=\"40\" r=\"4\" fill=\"#ff9ec6\"/><circle cx=\"40\" cy=\"60\" r=\"4\" fill=\"#ff9ec6\"/><circle cx=\"60\" cy=\"60\" r=\"4\" fill=\"#ff9ec6\"/>"
+      + "<path d=\"M50 30 L50 70\" stroke=\"#c9c9c9\" stroke-width=\"1.5\"/>",
+    a: letterTile("A", "#5a2a1a", "#8a5a2a", "#2a120a"),
+    k: letterTile("K", "#5a2a1a", "#8a5a2a", "#2a120a"),
+    q: letterTile("Q", "#5a2a1a", "#8a5a2a", "#2a120a"),
+    j: letterTile("J", "#5a2a1a", "#8a5a2a", "#2a120a"),
+    ten: letterTile("10", "#5a2a1a", "#8a5a2a", "#2a120a"),
+    scatter: scatterStar()
+  },
+  names: { wild: "Wild Cake", high: "Cupcake", mid1: "Donut", mid2: "Cookie", mid3: "Waffle",
+    a: "Ace", k: "King", q: "Queen", j: "Jack", ten: "Ten", scatter: "Bonus Star" },
+  wildNote: "The pink WILD cake substitutes for every symbol except the BONUS star. A line of WILD cakes alone is the top-paying combination on the machine."
+};
+
 /* ================= THEME SWITCHING ================= */
 function buildPaytable(){
   var th = theme();
@@ -1022,8 +2223,11 @@ function selectMachine(id){
   setMsg(th.name + " — place your bet, good luck!");
 }
 document.querySelectorAll(".m-chip").forEach(function(b){
-  b.addEventListener("click", function(){ sfx.click(); selectMachine(b.dataset.machine); });
+  b.addEventListener("click", function(){ sfx.click(); selectMachine(b.dataset.machine); $("gridModal").classList.remove("open"); });
 });
+$("allBtn").addEventListener("click", function(){ sfx.click(); $("gridModal").classList.add("open"); });
+$("gridClose").addEventListener("click", function(){ sfx.click(); $("gridModal").classList.remove("open"); });
+$("gridModal").addEventListener("click", function(e){ if (e.target === this) this.classList.remove("open"); });
 
 /* ================= SPIN ENGINE =================
    Real machines spin DOWN: the strip travels downward, new symbols
