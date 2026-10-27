@@ -67,57 +67,30 @@
     .wallet-pill strong{ font-size:17px; }
   }
 
-  /* ---------- MACHINE PICKER: scrollable strip + ALL-machines grid ----------
-     32 machines cannot fit one row of chips, so the strip scrolls sideways
-     (touch-drag) and the ALL MACHINES button opens a full grid. The strip
-     keeps the same height as the old 6-chip row, so the machine below it
-     still fits one phone screen exactly as before. */
-  .switcher{
-    flex:0 0 auto; display:flex; gap:6px; padding:7px 4px 8px; background:#120d08;
-    align-items:stretch;
-  }
-  .chip-strip{
-    flex:1 1 auto; min-width:0; display:flex; gap:4px; overflow-x:auto;
-    scrollbar-width:none; -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity;
-  }
-  .chip-strip::-webkit-scrollbar{ display:none; }
-  .chip-strip .m-chip{ flex:0 0 62px; scroll-snap-align:start; }
-  .all-btn{
-    flex:0 0 auto; border:1px solid var(--gold); border-radius:9px; background:#2b1e0a;
-    color:var(--gold); padding:6px 10px; font:800 11px/1.2 "Barlow Condensed";
-    letter-spacing:.06em; text-transform:uppercase; align-self:center; white-space:nowrap;
-  }
-  .m-chip{
-    flex:1 1 0; min-width:0; border:1px solid var(--line); border-radius:9px;
-    background:#1d150c; color:var(--ink); padding:6px 0 7px; text-align:center;
-  }
-  .m-chip .dot{
-    display:block; width:12px; height:12px; border-radius:50%; margin:0 auto 3px;
-    background:var(--chip,#f5c451); box-shadow:0 0 7px var(--chip,#f5c451);
-  }
-  .m-chip .nm{
-    display:block; font:800 9px/1.05 "Barlow Condensed"; letter-spacing:0;
-    text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  .m-chip .sb{ display:block; font-size:8.5px; color:#c9bba5; letter-spacing:.08em; white-space:nowrap; }
-  .m-chip[aria-pressed="true"]{
-    border-color:var(--gold); background:#2b1e0a;
-    box-shadow:0 0 0 1px var(--gold), 0 0 14px rgba(245,196,81,.35);
-  }
-  .m-chip[aria-pressed="true"] .nm{ color:var(--gold); }
-  /* Grid modal: every machine, one tap away. Overlay only — it never
-     takes layout height from the machine itself. */
-  .grid-modal{
-    position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.88);
-    display:none; overflow-y:auto; padding:14px 10px 24px;
-  }
-  .grid-modal.open{ display:block; }
-  .grid-box{ max-width:430px; margin:0 auto; }
-  .grid-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
-  .grid-head h3{ margin:0; font:800 18px/1 "Barlow Condensed"; letter-spacing:.08em; color:var(--gold); text-transform:uppercase; }
-  .grid-close{ border:1px solid var(--line); background:#1d150c; color:var(--ink); border-radius:8px; padding:8px 14px; font-weight:800; }
-  .grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
-  .grid .m-chip{ flex:none; }
+  /* ---------- POSTER LOBBY (replaces the old chip row + ALL grid, 2026-10-26) ----------
+     Rows of full machine posters, horizontally scrollable (native touch scroll).
+     Row groupings are THEME families only — all 32 machines share one math set,
+     so no row is labeled with a mechanic (no Mega Wins / Hold and Spin rows). */
+  #lobbyView{ flex:1 1 auto; min-height:0; overflow-y:auto; padding:10px 10px 24px; }
+  body.playing #lobbyView{ display:none; }
+  #playView{ flex:1 1 auto; min-height:0; display:none; flex-direction:column; }
+  body.playing #playView{ display:flex; }
+  #lobbyBtn{ display:none; }
+  body.playing #lobbyBtn{ display:inline-flex; }
+  body.playing #clubBtn{ display:none; }
+  .lobby-head h2{ margin:2px 2px 4px; font:800 22px/1 "Barlow Condensed"; letter-spacing:.1em; color:var(--gold); text-transform:uppercase; }
+  .lobby-head p{ margin:0 2px 14px; font-size:13px; line-height:1.4; color:#c9bba5; }
+  .lobby-row{ margin:0 0 18px; }
+  .lobby-row h3{ margin:0 0 8px 2px; font:800 15px/1 "Barlow Condensed"; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; }
+  .row-scroll{ display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x proximity; padding:2px 2px 12px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .row-scroll::-webkit-scrollbar{ display:none; }
+  .poster{ flex:0 0 116px; scroll-snap-align:start; border:2px solid var(--line); border-radius:12px; background:#1d150c; color:var(--ink); padding:0 0 8px; overflow:hidden; text-align:center; }
+  .poster:active{ transform:translateY(1px); }
+  .poster-scene{ display:block; position:relative; aspect-ratio:3/1; overflow:hidden; border-bottom:2px solid var(--gold); }
+  .poster-scene svg{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+  .poster .p-name{ display:block; font:800 13px/1.15 "Barlow Condensed"; letter-spacing:.05em; color:var(--gold); margin:7px 4px 2px; text-transform:uppercase; }
+  .poster .p-slogan{ display:block; font-size:9px; letter-spacing:.12em; color:#c9bba5; font-weight:700; margin:0 4px; }
+  .poster .p-play{ display:block; font-size:9px; letter-spacing:.2em; color:#ffd34d; font-weight:800; margin-top:5px; }
 
   /* ---------- STAGE + MACHINE ---------- */
   .stage{ flex:1 1 auto; min-height:0; display:flex; justify-content:center; }
@@ -401,10 +374,17 @@
     background:#1a1005; color:var(--cream); font-size:18px; font-family:inherit;
   }
 
-  /* ---------- PHONES: window sized by script to the largest 6/5 box that fits ---------- */
+  /* ---------- PHONES: window sized by script to the largest 6/5 box that fits ----------
+     CENTERING FIX 2026-10-26 (Jungle King screenshot): the old grid used a 1fr
+     middle column, so when the window was height-constrained (narrower than the
+     column) the frame sat left-aligned with all the slack on the right — left
+     numbers hugging the frame, right numbers far away at the screen edge.
+     Content-sized tracks + justify-content:center make the whole assembly
+     (left numbers + frame + right numbers) ONE centered unit: the numbers
+     move WITH the frame, gaps equal on both sides, at any window size. */
   @media (max-width:899px){
     .reel-wrap{
-      display:grid; grid-template-columns:20px 1fr 20px; align-content:center;
+      display:grid; grid-template-columns:20px auto 20px; justify-content:center; column-gap:5px; align-content:center;
       background:radial-gradient(62% 58% at 50% 50%, rgba(245,196,81,.08), rgba(64,190,220,.05) 55%, rgba(0,0,0,0) 78%);
     }
     .tabs{ width:auto; }
@@ -422,92 +402,25 @@
   }
 </style>
 </head>
-<body>
+<body class="lobby">
 <header class="floor-head">
-  <a class="back-btn" href="index.html">&larr; Poker Club</a>
+  <a class="back-btn" id="clubBtn" href="index.html">&larr; Poker Club</a>
+  <button class="back-btn" id="lobbyBtn" type="button">&larr; Lobby</button>
   <div class="floor-title">The Slot Floor<small>Nikkiflixs Poker Club</small></div>
   <div class="head-spacer"></div>
   <div class="wallet-pill" aria-label="Your gold coin balance"><small>BALANCE</small><strong id="walletPill">0</strong><span>GC</span></div>
 </header>
-
-<nav class="switcher" id="switcher" aria-label="Choose a slot machine">
-  <div class="chip-strip" id="chipStrip">
-  <button class="m-chip" data-machine="piggy" aria-pressed="true" style="--chip:#f7a8b8"><span class="dot"></span><span class="nm">Piggy</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="liberty" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Liberty</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="pharaoh" aria-pressed="false" style="--chip:#f5c451"><span class="dot"></span><span class="nm">Pharaoh</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="neon" aria-pressed="false" style="--chip:#ff3fa4"><span class="dot"></span><span class="nm">Neon</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="deadwood" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Deadwood</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="atlantis" aria-pressed="false" style="--chip:#37c9d6"><span class="dot"></span><span class="nm">Atlantis</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="emerald" aria-pressed="false" style="--chip:#2ee6a8"><span class="dot"></span><span class="nm">Emerald</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="fruit" aria-pressed="false" style="--chip:#ff5a3c"><span class="dot"></span><span class="nm">Fruit</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="jungle" aria-pressed="false" style="--chip:#3fae2a"><span class="dot"></span><span class="nm">Jungle</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="pirate" aria-pressed="false" style="--chip:#8a5a2a"><span class="dot"></span><span class="nm">Pirate</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="cosmic" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Cosmic</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="goldrush" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Gold Rush</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="candy" aria-pressed="false" style="--chip:#ff6fa5"><span class="dot"></span><span class="nm">Candy</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="safari" aria-pressed="false" style="--chip:#e8912d"><span class="dot"></span><span class="nm">Safari</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="aztec" aria-pressed="false" style="--chip:#e8a33d"><span class="dot"></span><span class="nm">Aztec</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="olympus" aria-pressed="false" style="--chip:#d9d9e8"><span class="dot"></span><span class="nm">Olympus</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="viking" aria-pressed="false" style="--chip:#9aa5b1"><span class="dot"></span><span class="nm">Viking</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="samurai" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Samurai</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="clover" aria-pressed="false" style="--chip:#2fae5f"><span class="dot"></span><span class="nm">Clover</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="spooky" aria-pressed="false" style="--chip:#ff7a1a"><span class="dot"></span><span class="nm">Spooky</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="winter" aria-pressed="false" style="--chip:#7fd4ff"><span class="dot"></span><span class="nm">Winter</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="volcano" aria-pressed="false" style="--chip:#ff4a2a"><span class="dot"></span><span class="nm">Volcano</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="steam" aria-pressed="false" style="--chip:#c98f2d"><span class="dot"></span><span class="nm">Steam</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="rock" aria-pressed="false" style="--chip:#ff2a4a"><span class="dot"></span><span class="nm">Rock</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="farm" aria-pressed="false" style="--chip:#e8c33d"><span class="dot"></span><span class="nm">Farm</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="circus" aria-pressed="false" style="--chip:#ff2a2a"><span class="dot"></span><span class="nm">Circus</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="movie" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Movie</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="noir" aria-pressed="false" style="--chip:#6a6a7a"><span class="dot"></span><span class="nm">Noir</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="desert" aria-pressed="false" style="--chip:#e8b84a"><span class="dot"></span><span class="nm">Desert</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="aurora" aria-pressed="false" style="--chip:#7ae8c8"><span class="dot"></span><span class="nm">Aurora</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="wizard" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Wizard</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="bakery" aria-pressed="false" style="--chip:#ff9ec6"><span class="dot"></span><span class="nm">Bakery</span><span class="sb">5-REEL</span></button>
+<div id="lobbyView">
+  <div class="lobby-head">
+    <h2>Pick a machine</h2>
+    <p>Every machine plays the same way and pays from the same paytable &mdash; pick the art you like, tap its poster, and play.</p>
   </div>
-  <button class="all-btn" id="allBtn" type="button">ALL<br>MACHINES</button>
-</nav>
-
-<div class="grid-modal" id="gridModal" role="dialog" aria-label="All slot machines">
-  <div class="grid-box">
-    <div class="grid-head"><h3>All Machines &mdash; 32</h3><button class="grid-close" id="gridClose" type="button">Close</button></div>
-    <div class="grid" id="machineGrid">
-  <button class="m-chip" data-machine="piggy" aria-pressed="true" style="--chip:#f7a8b8"><span class="dot"></span><span class="nm">Piggy</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="liberty" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Liberty</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="pharaoh" aria-pressed="false" style="--chip:#f5c451"><span class="dot"></span><span class="nm">Pharaoh</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="neon" aria-pressed="false" style="--chip:#ff3fa4"><span class="dot"></span><span class="nm">Neon</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="deadwood" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Deadwood</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="atlantis" aria-pressed="false" style="--chip:#37c9d6"><span class="dot"></span><span class="nm">Atlantis</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="emerald" aria-pressed="false" style="--chip:#2ee6a8"><span class="dot"></span><span class="nm">Emerald</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="fruit" aria-pressed="false" style="--chip:#ff5a3c"><span class="dot"></span><span class="nm">Fruit</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="jungle" aria-pressed="false" style="--chip:#3fae2a"><span class="dot"></span><span class="nm">Jungle</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="pirate" aria-pressed="false" style="--chip:#8a5a2a"><span class="dot"></span><span class="nm">Pirate</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="cosmic" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Cosmic</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="goldrush" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Gold Rush</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="candy" aria-pressed="false" style="--chip:#ff6fa5"><span class="dot"></span><span class="nm">Candy</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="safari" aria-pressed="false" style="--chip:#e8912d"><span class="dot"></span><span class="nm">Safari</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="aztec" aria-pressed="false" style="--chip:#e8a33d"><span class="dot"></span><span class="nm">Aztec</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="olympus" aria-pressed="false" style="--chip:#d9d9e8"><span class="dot"></span><span class="nm">Olympus</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="viking" aria-pressed="false" style="--chip:#9aa5b1"><span class="dot"></span><span class="nm">Viking</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="samurai" aria-pressed="false" style="--chip:#e8232a"><span class="dot"></span><span class="nm">Samurai</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="clover" aria-pressed="false" style="--chip:#2fae5f"><span class="dot"></span><span class="nm">Clover</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="spooky" aria-pressed="false" style="--chip:#ff7a1a"><span class="dot"></span><span class="nm">Spooky</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="winter" aria-pressed="false" style="--chip:#7fd4ff"><span class="dot"></span><span class="nm">Winter</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="volcano" aria-pressed="false" style="--chip:#ff4a2a"><span class="dot"></span><span class="nm">Volcano</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="steam" aria-pressed="false" style="--chip:#c98f2d"><span class="dot"></span><span class="nm">Steam</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="rock" aria-pressed="false" style="--chip:#ff2a4a"><span class="dot"></span><span class="nm">Rock</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="farm" aria-pressed="false" style="--chip:#e8c33d"><span class="dot"></span><span class="nm">Farm</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="circus" aria-pressed="false" style="--chip:#ff2a2a"><span class="dot"></span><span class="nm">Circus</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="movie" aria-pressed="false" style="--chip:#d9a92f"><span class="dot"></span><span class="nm">Movie</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="noir" aria-pressed="false" style="--chip:#6a6a7a"><span class="dot"></span><span class="nm">Noir</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="desert" aria-pressed="false" style="--chip:#e8b84a"><span class="dot"></span><span class="nm">Desert</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="aurora" aria-pressed="false" style="--chip:#7ae8c8"><span class="dot"></span><span class="nm">Aurora</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="wizard" aria-pressed="false" style="--chip:#7a6cff"><span class="dot"></span><span class="nm">Wizard</span><span class="sb">5-REEL</span></button>
-  <button class="m-chip" data-machine="bakery" aria-pressed="false" style="--chip:#ff9ec6"><span class="dot"></span><span class="nm">Bakery</span><span class="sb">5-REEL</span></button>
-    </div>
-  </div>
+  <div id="lobbyRows"></div>
 </div>
 
+
+
+<div id="playView">
 <main class="stage">
   <div class="machine" id="machine">
     <div class="plaques" aria-hidden="true">
@@ -569,6 +482,7 @@
   </div>
 </main>
 <p class="session-note">Gold coins have no cash value and cannot be cashed out. Every paytable is printed on the machine &mdash; what you see is exactly what it pays.</p>
+</div>
 
 <div id="coinLayer"></div>
 
@@ -976,7 +890,9 @@ function noiseBurst(dur, freq, vol, delay){
   src.connect(f); f.connect(g); g.connect(master); src.start(t);
 }
 var sfx = {
-  click:  function(){ tone(660, 0.06, "square", 0.10); },
+  /* REAL-MACHINE CLICK (2026-10-26): layered mechanical thock, not a thin blip —
+     bright tick + low body thump + short mid knock. WebAudio only. */
+  click:  function(){ noiseBurst(0.025, 2600, 0.28); tone(180, 0.09, "sine", 0.40, 75); tone(950, 0.03, "square", 0.08); },
   step:   function(){ tone(520, 0.05, "square", 0.08); },
   spin:   function(){ noiseBurst(0.35, 900, 0.20); tone(180, 0.3, "sawtooth", 0.05, 420); },
   stop:   function(){ tone(150, 0.13, "sine", 0.5, 55); noiseBurst(0.06, 500, 0.28); },
@@ -986,6 +902,82 @@ var sfx = {
   scatter:function(k){ tone(880, 0.2, "sine", 0.2, 1320, k * 0.05); },
   fs:     function(){ [392,523,659,784,1047,1319].forEach(function(f,i){ tone(f, 0.24, "triangle", 0.22, null, i * 0.1); }); }
 };
+
+/* ================= SPIN MUSIC (WebAudio only — no audio files, no URLs) ================
+   Spec (corrected 2026-10-26, Chumba "Rhino Coins" demo): music starts the moment
+   you ENTER a machine and keeps playing while you play it. It LIFTS on spin
+   (an extra arpeggio + hat layer fades in while the reels run) and falls back
+   to the base loop when the reels settle — it does NOT stop at settle. It
+   STOPS when you leave the machine back to the poster lobby. SOUND OFF stops
+   it immediately and keeps it silent; SOUND ON re-enables it on the next
+   entry/spin interaction. This is a multi-voice bed — pad chords (C–Am–F–G),
+   bass, and arpeggio — not single tones. Entry tap is the user gesture that
+   creates/resumes the AudioContext, so autoplay rules are satisfied. */
+var musicGain = null, spinGain = null, musicTimer = null, musicNext = 0, musicStep = 0, musicNoiseBuf = null;
+var MUSIC_CHORDS = [ [261.63, 329.63, 392.00], [220.00, 261.63, 329.63], [174.61, 220.00, 261.63], [196.00, 246.94, 293.66] ];
+var MUSIC_ROOTS = [130.81, 110.00, 87.31, 98.00];
+var MUSIC_BPM = 112, MUSIC_BEAT = 60 / MUSIC_BPM, MUSIC_EIGHTH = MUSIC_BEAT / 2;
+function musicNote(freq, at, dur, type, vol, bus, attack){
+  var o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter();
+  o.type = type || "triangle"; o.frequency.value = freq;
+  f.type = "lowpass"; f.frequency.value = 2400;
+  g.gain.setValueAtTime(0.0001, at);
+  g.gain.exponentialRampToValueAtTime(vol, at + (attack || 0.03));
+  g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+  o.connect(f); f.connect(g); g.connect(bus); o.start(at); o.stop(at + dur + 0.05);
+}
+function musicHat(at, bus){
+  if (!musicNoiseBuf){
+    var len = Math.max(1, (0.08 * AC.sampleRate) | 0);
+    musicNoiseBuf = AC.createBuffer(1, len, AC.sampleRate);
+    var d = musicNoiseBuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  }
+  var src = AC.createBufferSource(); src.buffer = musicNoiseBuf;
+  var f = AC.createBiquadFilter(); f.type = "highpass"; f.frequency.value = 6000;
+  var g = AC.createGain(); g.gain.value = 0.018;
+  src.connect(f); f.connect(g); g.connect(bus); src.start(at);
+}
+function musicSchedule(){
+  if (!AC || !musicGain) return;
+  while (musicNext < AC.currentTime + 0.35){
+    var bar = Math.floor(musicStep / 8) % 4, inBar = musicStep % 8;
+    var chord = MUSIC_CHORDS[bar], at = musicNext;
+    if (inBar === 0){
+      for (var ci = 0; ci < 3; ci++) musicNote(chord[ci], at, MUSIC_BEAT * 4 * 0.95, "triangle", 0.045, musicGain, 0.15);
+    }
+    if (inBar === 0 || inBar === 4) musicNote(MUSIC_ROOTS[bar], at, 0.42, "sine", 0.11, musicGain, 0.01);
+    if (inBar % 2 === 0) musicNote(chord[(inBar / 2) % 3], at, 0.30, "triangle", 0.05, musicGain, 0.01);
+    /* spin layer: brighter arpeggio + offbeat hats, audible only via spinGain */
+    musicNote(chord[musicStep % 3] * 2, at, 0.20, "triangle", 0.055, spinGain, 0.01);
+    if (inBar % 2 === 1) musicHat(at, spinGain);
+    musicNext += MUSIC_EIGHTH; musicStep++;
+  }
+}
+function musicStart(){
+  if (!state.sound || musicTimer) return;
+  if (!audio()) return;
+  if (!musicGain){ musicGain = AC.createGain(); musicGain.gain.value = 0.85; musicGain.connect(master); }
+  else musicGain.gain.setValueAtTime(0.85, AC.currentTime);
+  if (!spinGain){ spinGain = AC.createGain(); spinGain.gain.value = 0; spinGain.connect(master); }
+  musicNext = AC.currentTime + 0.06; musicStep = 0;
+  musicTimer = setInterval(musicSchedule, 90); musicSchedule();
+}
+function musicSpinStart(){
+  if (!state.sound) return;
+  musicStart();
+  if (spinGain) spinGain.gain.setTargetAtTime(0.9, AC.currentTime, 0.08);
+}
+function musicSpinEnd(){
+  if (spinGain && AC) spinGain.gain.setTargetAtTime(0, AC.currentTime, 0.12);
+}
+function musicStop(){
+  if (musicTimer){ clearInterval(musicTimer); musicTimer = null; }
+  if (AC && musicGain) musicGain.gain.setValueAtTime(0, AC.currentTime);
+  if (AC && spinGain) spinGain.gain.setValueAtTime(0, AC.currentTime);
+  musicGain = null; spinGain = null;
+}
+window.addEventListener("pagehide", function(){ musicStop(); });
 
 /* ================= BUILD STATIC UI ================= */
 var reelsEl = $("reels"), reelInners = [], strips = [], tabEls = [];
@@ -1054,7 +1046,7 @@ function refreshUI(){
   roTotal.textContent = fmt(totalBet());
   roWin.textContent = fmt(state.lastWin);
   var lock = state.spinning || state.freeSpins > 0;
-  ["betMinus","betPlus","lineMinus","linePlus","maxBetBtn"].forEach(function(id){ $(id).disabled = lock; });
+  ["betMinus","betPlus","lineMinus","linePlus","maxBetBtn","lobbyBtn"].forEach(function(id){ $(id).disabled = lock; });
   spinBtn.disabled = state.spinning;
   spinLbl.textContent = state.freeSpins > 0 ? "FREE" : "SPIN";
   spinBtn.classList.toggle("fs", state.freeSpins > 0);
@@ -1078,7 +1070,8 @@ $("soundBtn").onclick = function(){
   $("soundSub").textContent = state.sound ? "ON" : "OFF";
   this.setAttribute("aria-pressed", state.sound ? "true" : "false");
   this.setAttribute("aria-label", state.sound ? "Turn sound off" : "Turn sound on");
-  if (state.sound) sfx.click();
+  if (state.sound){ sfx.click(); if (document.body.classList.contains("playing")) musicStart(); }
+  else musicStop();
 };
 $("infoBtn").onclick = function(){ sfx.click(); buildPaytable(); $("payModal").classList.add("show"); };
 $("payClose").onclick = function(){ $("payModal").classList.remove("show"); };
@@ -2205,9 +2198,6 @@ function selectMachine(id){
   if (state.spinning || state.freeSpins > 0) return;
   state.machine = id;
   var th = theme();
-  document.querySelectorAll(".m-chip").forEach(function(b){
-    b.setAttribute("aria-pressed", b.dataset.machine === id ? "true" : "false");
-  });
   $("npTitle").textContent = th.name;
   $("npSlogan").textContent = th.slogan;
   var scene = $("scene");
@@ -2222,12 +2212,50 @@ function selectMachine(id){
   paintStatic();
   setMsg(th.name + " — place your bet, good luck!");
 }
-document.querySelectorAll(".m-chip").forEach(function(b){
-  b.addEventListener("click", function(){ sfx.click(); selectMachine(b.dataset.machine); $("gridModal").classList.remove("open"); });
-});
-$("allBtn").addEventListener("click", function(){ sfx.click(); $("gridModal").classList.add("open"); });
-$("gridClose").addEventListener("click", function(){ sfx.click(); $("gridModal").classList.remove("open"); });
-$("gridModal").addEventListener("click", function(e){ if (e.target === this) this.classList.remove("open"); });
+/* ================= POSTER LOBBY =================
+   Rows are theme families (honest grouping — shared math, no mechanic labels).
+   Every theme appears exactly once. */
+var LOBBY_ROWS = [
+  ["Wild Kingdom", ["jungle","safari","farm","piggy"]],
+  ["Treasure Hunt", ["emerald","atlantis","pirate","goldrush","desert"]],
+  ["Vegas Classics", ["liberty","fruit","neon","clover"]],
+  ["Myths & Quests", ["pharaoh","aztec","olympus","viking","samurai","wizard","cosmic","deadwood"]],
+  ["Shows & Sweets", ["candy","bakery","circus","movie","rock"]],
+  ["Dark & Dramatic Worlds", ["spooky","winter","volcano","steam","noir","aurora"]]
+];
+function buildLobby(){
+  var host = $("lobbyRows"); if (!host) return;
+  host.innerHTML = "";
+  LOBBY_ROWS.forEach(function(row){
+    var sec = document.createElement("div"); sec.className = "lobby-row";
+    var h = document.createElement("h3"); h.textContent = row[0]; sec.appendChild(h);
+    var sc = document.createElement("div"); sc.className = "row-scroll";
+    row[1].forEach(function(id){
+      var th = THEMES[id]; if (!th) return;
+      var b = document.createElement("button"); b.className = "poster"; b.type = "button"; b.dataset.machine = id;
+      b.setAttribute("aria-label", "Play " + th.name);
+      b.innerHTML = '<span class="poster-scene">' + th.scene + "</span>"
+        + '<span class="p-name">' + th.name + '</span>'
+        + '<span class="p-slogan">' + th.slogan + '</span>'
+        + '<span class="p-play">TAP TO PLAY</span>';
+      b.addEventListener("click", function(){ sfx.click(); showPlay(id); });
+      sc.appendChild(b);
+    });
+    sec.appendChild(sc); host.appendChild(sec);
+  });
+}
+function showPlay(id){
+  if (state.spinning || state.freeSpins > 0) return;
+  document.body.classList.remove("lobby"); document.body.classList.add("playing");
+  selectMachine(id);
+  musicStart();
+}
+function showLobby(){
+  if (state.spinning || state.freeSpins > 0) return;
+  musicStop();
+  document.body.classList.remove("playing"); document.body.classList.add("lobby");
+}
+$("lobbyBtn").addEventListener("click", function(){ showLobby(); });
 
 /* ================= SPIN ENGINE =================
    Real machines spin DOWN: the strip travels downward, new symbols
@@ -2266,6 +2294,7 @@ function doSpin(){
   setMsg(isFree ? "Free spin — all wins doubled!" : "Good luck!");
   refreshUI();
   sfx.spin();
+  musicSpinStart();
   reelsEl.classList.add("spinning");
 
   var stops = [], newGrid = [];
@@ -2315,6 +2344,7 @@ function doSpin(){
           grid = newGrid;
           state.spinning = false;
           reelsEl.classList.remove("spinning");
+          musicSpinEnd();
           evaluate(bet, isFree);
         }
       }
@@ -2540,6 +2570,7 @@ window.addEventListener("resize", function(){
 
 /* initial paint: piggy scene + frame, then the static grid */
 (function init(){
+  buildLobby();
   var th = theme();
   var scene = $("scene");
   var holder = document.createElement("div");
