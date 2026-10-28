@@ -1019,6 +1019,12 @@ body.targeting .pod{box-shadow:0 0 24px rgba(255,217,77,.55)}
       }else if(kind==='knock'){
         if(sfxLast.knock&&now-sfxLast.knock<.15)return;sfxLast.knock=now;
         if(!sfxFile('wood-knock',.95)){[0,.165].forEach(function(off2){var o2=audio.createOscillator(),gk=audio.createGain();o2.type='sine';o2.frequency.setValueAtTime(172,now+off2);o2.frequency.exponentialRampToValueAtTime(88,now+off2+.12);gk.gain.setValueAtTime(.38,now+off2);gk.gain.exponentialRampToValueAtTime(.001,now+off2+.16);o2.connect(gk);gk.connect(audio.destination);o2.start(now+off2);o2.stop(now+off2+.17)})}
+      }else if(kind==='muck'){
+        /* SWEEP FIX: fold plays ONLY the verified card-muck sample (same
+           model as 4max) — no synth fallback: on any load failure fold
+           stays silent, never static. */
+        if(sfxLast.muck&&now-sfxLast.muck<.15)return;sfxLast.muck=now;
+        sfxFile('card-muck',.6);
       }
     }catch(e){}
   }
@@ -1083,7 +1089,7 @@ body.targeting .pod{box-shadow:0 0 24px rgba(255,217,77,.55)}
     sfx('win');
     var from=point(potChips),to=point(seats[index].querySelector('.seat-chips')),flight=document.createElement('div');flight.className='pot-flight';flight.style.left=from.x+'px';flight.style.top=from.y+'px';flight.style.setProperty('--dx',(to.x-from.x)+'px');flight.style.setProperty('--dy',(to.y-from.y)+'px');flight.innerHTML='<span class="bet-stack"><i></i><i></i><i></i><i></i></span><b class="bet-amount">POT '+money(amount)+' → '+names[index]+'</b>';motion.appendChild(flight);potChips.style.opacity='0';logEvent('pot-slide-started',{seat:index,name:names[index],amount:amount});var paid=false;function payWinner(){if(paid)return;paid=true;setStack(index,stacks[index]+amount);logEvent('pot-slide-arrived',{seat:index,name:names[index],amount:amount,stack:stacks[index]})}flight.addEventListener('animationend',function(){payWinner();flight.remove()});later(1700,function(){payWinner();if(flight.parentNode)flight.remove()})
   }
-  function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
+  function foldCards(seat,onDone){sfx('muck');var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
   var markerPositions=[['38%','68%'],['22%','66%'],['19%','46%'],['22%','32%'],['58%','32%'],['71%','32%'],['74%','46%'],['71%','66%']];
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index]&&stacks[index]>0)return index}return after}
