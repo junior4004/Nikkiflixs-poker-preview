@@ -117,8 +117,6 @@
     .youtube-copy{padding:17px 18px 19px}
     .youtube-copy h3{font-size:18px;margin:0 0 6px}
     .youtube-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
-    .youtube-link{display:inline-flex;align-items:center;gap:7px;margin-top:12px;color:#ff7185;font-size:12px;font-weight:800;text-underline-offset:3px}
-    .youtube-link svg{width:15px;height:15px}
     .youtube-note{margin:14px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 
     .news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -213,7 +211,7 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
     <nav class="browse-nav" aria-label="Browse theater">
       <a href="#movies">Movies</a>
       <a href="#full-story">Full Story</a>
-      <a href="#youtube-free">YouTube Free Movies</a>
+      <a href="#nikkiflixs-films">Nikkiflixs Films</a>
       <a href="#classic-tv">Classic TV</a>
       <a href="#news">Free News</a>
       <a href="#antenna">Antenna TV</a>
@@ -249,114 +247,207 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
     <div class="fs-stamp">BUILD 153</div>
     </section>
 
-    <section class="content-section youtube-top" id="youtube-free" aria-labelledby="youtube-title">
+        <style>.nf-facade{cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#000;color:#fff}.nf-play{width:68px;height:68px;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.42)}.nf-play svg{width:30px;height:30px;margin-left:3px}.nf-facade-title{font-weight:800;text-align:center;padding:0 14px;line-height:1.3}</style>
+    <section class="content-section youtube-top" id="nikkiflixs-films" aria-labelledby="nikkiflixs-films-title">
       <div class="section-head">
-        <div><h2 id="youtube-title">Nikkiflixs on YouTube</h2><p>Watch original Nikkiflixs stories and selected public-domain classics without leaving the theater.</p></div>
+        <div><h2 id="nikkiflixs-films-title">Nikkiflixs Films</h2><p>Tap a card to play it right here in the theater. These are Nikkiflixs films.</p></div>
       </div>
       <div class="youtube-grid">
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/rus3I-3-I5c" title="The Heavyweight Debt — Episode 1" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/rus3I-3-I5c?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 1">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 1</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 1</h3>
-            <p>Watch Episode 1 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=rus3I-3-I5c" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 1</h3><p>Episode 1 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/Qp-VkWiHJkw" title="The Heavyweight Debt — Episode 2" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/Qp-VkWiHJkw?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 2">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 2</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 2</h3>
-            <p>Watch Episode 2 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=Qp-VkWiHJkw" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 2</h3><p>Episode 2 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/zjm4DkmC35Q" title="The Heavyweight Debt — Episode 3" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/zjm4DkmC35Q?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 3">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 3</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 3</h3>
-            <p>Watch Episode 3 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=zjm4DkmC35Q" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 3</h3><p>Episode 3 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/W8tgQPu0Fb0" title="The Heavyweight Debt — Episode 4" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/W8tgQPu0Fb0?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 4">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 4</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 4</h3>
-            <p>Watch Episode 4 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=W8tgQPu0Fb0" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 4</h3><p>Episode 4 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/DqAc7GnfHlU" title="The Heavyweight Debt — Episode 5" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/DqAc7GnfHlU?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 5">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 5</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 5</h3>
-            <p>Watch Episode 5 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=DqAc7GnfHlU" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 5</h3><p>Episode 5 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/iVrUxPGB_mk" title="The Heavyweight Debt — Episode 6" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/iVrUxPGB_mk?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The Heavyweight Debt — Episode 6">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The Heavyweight Debt — Episode 6</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The Heavyweight Debt — Episode 6</h3>
-            <p>Watch Episode 6 of the Nikkiflixs crime-drama series.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=iVrUxPGB_mk" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>The Heavyweight Debt — Episode 6</h3><p>Episode 6 of the Nikkiflixs crime-drama series.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/jHdV4kO-SjY" title="Zodiac" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/jHdV4kO-SjY?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Zodiac">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Zodiac</span>
           </div>
-          <div class="youtube-copy">
-            <h3>Zodiac</h3>
-            <p>Watch the Nikkiflixs film about the Zodiac case.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=jHdV4kO-SjY" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>Zodiac</h3><p>The Nikkiflixs film about the Zodiac case.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/b31YkgSZpGk" title="Pacquiao — Underdog" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/b31YkgSZpGk?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Pacquiao — Underdog">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Pacquiao — Underdog</span>
           </div>
-          <div class="youtube-copy">
-            <h3>Pacquiao — Underdog</h3>
-            <p>Watch the Nikkiflixs underdog film about Manny Pacquiao.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=b31YkgSZpGk" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>Pacquiao — Underdog</h3><p>The Nikkiflixs underdog film about Manny Pacquiao.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/BRu4mpd79gk" title="Night of the Living Dead, a public-domain full movie on YouTube" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/olErZu1LfII?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Tony Jackson">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Tony Jackson</span>
           </div>
-          <div class="youtube-copy">
-            <h3>Night of the Living Dead</h3>
-            <p>George A. Romero’s 1968 horror classic, presented as a public-domain full movie.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=BRu4mpd79gk" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
-          </div>
+          <div class="youtube-copy"><h3>Tony Jackson</h3><p>A Nikkiflixs film.</p></div>
         </article>
-        <article class="youtube-card">
-          <div class="youtube-player">
-            <iframe src="https://www.youtube.com/embed/UNssrJz55Y4" title="The General, a public-domain full movie on YouTube" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/s0MByQaikKA?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Terry Fox">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Terry Fox</span>
           </div>
-          <div class="youtube-copy">
-            <h3>The General</h3>
-            <p>Buster Keaton’s 1926 silent comedy, presented as a public-domain full movie.</p>
-            <a class="youtube-link" href="https://www.youtube.com/watch?v=UNssrJz55Y4" target="_blank" rel="noopener noreferrer">Open on YouTube <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          <div class="youtube-copy"><h3>Terry Fox</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/rHQxqfkruwo?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Niki Lauda">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Niki Lauda</span>
           </div>
+          <div class="youtube-copy"><h3>Niki Lauda</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/w0_jIa-hhso?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Roswell">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Roswell</span>
+          </div>
+          <div class="youtube-copy"><h3>Roswell</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/ejD-aON12FE?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play D.B. Cooper">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">D.B. Cooper</span>
+          </div>
+          <div class="youtube-copy"><h3>D.B. Cooper</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/P7hm_kxzmBE?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Jim Abbott">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Jim Abbott</span>
+          </div>
+          <div class="youtube-copy"><h3>Jim Abbott</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/M2QD-UOMBAU?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Operation Royal Flush">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Operation Royal Flush</span>
+          </div>
+          <div class="youtube-copy"><h3>Operation Royal Flush</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/fonQzqT6ocg?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Manson">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Manson</span>
+          </div>
+          <div class="youtube-copy"><h3>Manson</h3><p>A Nikkiflixs film. 1:08:32.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/cbSbnmhwDsk?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Chris Watts">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Chris Watts</span>
+          </div>
+          <div class="youtube-copy"><h3>Chris Watts</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/AM8EdRGbb2E?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Hells Angels">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Hells Angels</span>
+          </div>
+          <div class="youtube-copy"><h3>Hells Angels</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/BRu4mpd79gk?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Night of the Living Dead">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Night of the Living Dead</span>
+          </div>
+          <div class="youtube-copy"><h3>Night of the Living Dead</h3><p>George A. Romero’s 1968 horror classic, presented as a public-domain full movie.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/UNssrJz55Y4?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play The General">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">The General</span>
+          </div>
+          <div class="youtube-copy"><h3>The General</h3><p>Buster Keaton’s 1926 silent comedy, presented as a public-domain full movie.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/qgbHtgPzniU?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Wilma Rudolph">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Wilma Rudolph</span>
+          </div>
+          <div class="youtube-copy"><h3>Wilma Rudolph</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/4-_tThaHqMg?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Biker Gangs">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Biker Gangs</span>
+          </div>
+          <div class="youtube-copy"><h3>Biker Gangs</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/29oUJJmxvME?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Bethany Hamilton">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Bethany Hamilton</span>
+          </div>
+          <div class="youtube-copy"><h3>Bethany Hamilton</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/ErbkiFNNkZI?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Bonnie and Clyde">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Bonnie and Clyde</span>
+          </div>
+          <div class="youtube-copy"><h3>Bonnie and Clyde</h3><p>A Nikkiflixs film.</p></div>
+        </article>
+        <article class="youtube-card nf-card">
+          <div class="youtube-player nf-facade" data-embed="https://www.youtube.com/embed/Ethh5VpC2P0?autoplay=1&amp;rel=0" role="button" tabindex="0" aria-label="Play Whitey Bulger">
+            <span class="nf-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="nf-facade-title">Whitey Bulger</span>
+          </div>
+          <div class="youtube-copy"><h3>Whitey Bulger</h3><p>A Nikkiflixs film.</p></div>
         </article>
       </div>
-      <p class="youtube-note">YouTube may show ads, and availability can vary by country or change when a rights holder updates its catalog.</p>
+      <p class="youtube-note">Tap any card and the film plays right here, in the theater.</p>
     </section>
+    <script>
+    (function(){'use strict';
+      document.querySelectorAll('.nf-facade').forEach(function(facade){
+        function play(){
+          var url = facade.getAttribute('data-embed');
+          var title = facade.getAttribute('aria-label') || 'Play film';
+          var frame = document.createElement('iframe');
+          frame.src = url; frame.title = title; frame.loading = 'eager';
+          frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
+          frame.allowFullscreen = true;
+          facade.innerHTML = ''; facade.appendChild(frame);
+        }
+        facade.addEventListener('click', play);
+        facade.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(); } });
+      });
+    })();
+    </script>
 
     <style>.youtube-player video{position:absolute;inset:0;width:100%;height:100%;background:#000}</style>
     <section class="content-section youtube-top" id="uncut" aria-labelledby="uncut-title">
@@ -402,7 +493,7 @@ iframe[src*="netlify"], div[id*="netlify"], div[class*="netlify"], a[href*="netl
       <div class="catalog-head">
         <div class="host-intro">
           <img class="host-intro-portrait" src="assets/hosts/nikki.webp" alt="Stylized portrait of Nikki, with long straight black hair and a black host uniform with gold trim" />
-          <div><span class="host-name">Nikki</span><h1 id="catalog-title">Pick a movie</h1><p>Hey, this is Nikki. Pick a <b>movie</b> below and tap <b>play</b> &mdash; I&rsquo;ll get it rolling for you. Or scroll down for our YouTube originals.</p><span class="host-note">Every title shown here is cleared for free viewing.</span></div>
+          <div><span class="host-name">Nikki</span><h1 id="catalog-title">Pick a movie</h1><p>Hey, this is Nikki. Pick a <b>movie</b> below and tap <b>play</b> &mdash; I&rsquo;ll get it rolling for you. Or scroll down for our films.</p><span class="host-note">Every title shown here is cleared for free viewing.</span></div>
         </div>
         <div class="catalog-count" id="catalogCount" aria-live="polite">Loading movies…</div>
       </div>
