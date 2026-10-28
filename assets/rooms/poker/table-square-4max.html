@@ -748,6 +748,14 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 .square-table .seat[data-view-slot="0"] .nameplate{top:148px}
 .square-table .pod{height:212px}
 .square-table .seat[data-view-slot="0"] .pod{height:190px}
+/* SHOT-3004 FIX (staged, not pushed): plates up so board cards clear, board down so showdown lift clears, side pockets out so pot clears, open seats show no FOLDED tag */
+.square-table .seat[data-view-slot="2"] .nameplate,.square-table .seat[data-view-slot="4"] .nameplate,.square-table .seat[data-view-slot="6"] .nameplate{margin-top:-11px}
+.square-table .seat[data-view-slot="4"] .pocket{margin-top:6px}
+.square-table .seat[data-view-slot="2"] .pocket{margin-left:-10px;gap:5px}
+.square-table .seat[data-view-slot="6"] .pocket{margin-right:-12px;gap:5px}
+.square-table .seat[data-view-slot="2"] .pocket .hole,.square-table .seat[data-view-slot="6"] .pocket .hole{width:45px}
+.square-table .board{margin-top:31px}
+.square-table .seat.seat-open.folded .nameplate::after{display:none}
 </style>
 </head>
 <body>
@@ -1090,7 +1098,7 @@ body.targeting .square-table .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
     if(toWinner){slidePotToWinner(Number(seat.getAttribute('data-index')),amount);return}
     var seatIndex=Number(seat.getAttribute('data-index'));postRoundBet(seatIndex,amount,'BET',true)
   }
-  var betPositions=[['50%','63%'],['30%','61%'],['26%','50%'],['30%','38%'],['50%','37%'],['70%','38%'],['74%','50%'],['70%','61%']];
+  var betPositions=[['50%','68%'],['30%','61%'],['26%','50%'],['30%','38%'],['50%','37%'],['70%','38%'],['74%','50%'],['70%','61%']];
   function updateBetPositions(){Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=betPositions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
   updateBetPositions();
   function restoreName(index){var seat=seats[index];if(seat.classList.contains('seat-open'))return;var plate=seat.querySelector('.nameplate'),strong=plate.querySelector('strong');strong.textContent=names[index];plate.classList.remove('action-state','action-bet','action-raise','action-call','action-check','action-all-in','action-small-blind','action-big-blind')}
