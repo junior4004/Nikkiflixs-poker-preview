@@ -1784,6 +1784,75 @@ function cmKnowledgeAnswer(q){
     return {say:prefix+' '+cmAgo(top.ts)+': '+top.fact+'.',act:null};
   }catch(e){return null;}
 }
+/* Baked sports facts — each verified by web search on 2026-10-28; source in the comment. */
+var CM_BAKED_FACTS=[
+  /* Source: Raiders.com — "Raiders select Fernando Mendoza with the No. 1 overall pick in the 2026 NFL Draft" */
+  {need:['draft'],any:['overall','number 1','no 1','first pick','top pick'],say:'Fernando Mendoza, quarterback out of Indiana, was the No. 1 overall pick in the 2026 NFL Draft, selected by the Las Vegas Raiders.',src:'Raiders.com'},
+  /* Source: ESPN, Feb 9 2026 — Seahawks beat Patriots 29-13 in Super Bowl LX */
+  {need:['super bowl'],any:['lx','final','score','winner','champion','won'],say:'The Seattle Seahawks won Super Bowl LX, beating the New England Patriots 29-13 on February 8, 2026.',src:'ESPN'},
+  /* Source: USA Today, Jun 13 2026 — Knicks beat Spurs 4-1 in the 2026 NBA Finals */
+  {need:['nba','finals'],any:['2026','winner','champion','result'],say:'The New York Knicks won the 2026 NBA Finals, beating the San Antonio Spurs 4-1.',src:'USA Today'},
+  /* Source: USA Today / NPR, Nov 2025 — Dodgers beat Blue Jays 4-3 in the 2025 World Series */
+  {need:['world series'],any:['2025','winner','champion'],say:'The Los Angeles Dodgers won the 2025 World Series, beating the Toronto Blue Jays 4-3.',src:'USA Today'}
+];
+function cmBakedAnswer(q){
+  /* Baked facts only: every need word AND one any word must appear. Never guesses. */
+  try{
+    var ql=' '+q.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+' ';
+    for(var i=0;i<CM_BAKED_FACTS.length;i++){
+      var f=CM_BAKED_FACTS[i],ok=true,j;
+      for(j=0;j<f.need.length;j++){if(ql.indexOf(' '+f.need[j]+' ')<0){ok=false;break;}}
+      if(!ok)continue;
+      if(f.any){
+        var anyOk=false;
+        for(j=0;j<f.any.length;j++){if(ql.indexOf(' '+f.any[j]+' ')>=0){anyOk=true;break;}}
+        if(!anyOk)continue;
+      }
+      return {say:f.say+' Source: '+f.src+'.',act:null};
+    }
+  }catch(e){}
+  return null;
+}
+function cmShorten(t){
+  t=(''+t).replace(/\s+/g,' ').trim();
+  if(t.length<=280)return t;
+  var cut=t.slice(0,280),dot=cut.lastIndexOf('. ');
+  if(dot>120)cut=cut.slice(0,dot+1);
+  return cut;
+}
+function cmLiveAnswer(q){
+  /* Free, keyless sources only: DuckDuckGo instant answer, then Wikipedia search+summary. */
+  /* Returns a promise of an answer string or null. Never throws, never invents. */
+  try{
+    if(typeof fetch!=='function')return Promise.resolve(null);
+    var overall=new Promise(function(res){setTimeout(function(){res(null);},15000);});
+    var ddg='https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1';
+    var chain=fetch(ddg).then(function(r){return r.json();}).then(function(j){
+      var t=(j&&j.AbstractText)||'';
+      if(!t&&j&&j.RelatedTopics){
+        for(var i=0;i<j.RelatedTopics.length;i++){
+          var rt=j.RelatedTopics[i];
+          if(rt&&rt.Text){t=rt.Text;break;}
+        }
+      }
+      if(t)return cmShorten(t)+' Source: DuckDuckGo.';
+      return null;
+    }).catch(function(){return null;}).then(function(a){
+      if(a)return a;
+      var wq='https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(q)+'&format=json&origin=*&srlimit=1';
+      return fetch(wq).then(function(r){return r.json();}).then(function(j){
+        var hit=j&&j.query&&j.query.search&&j.query.search[0];
+        if(!hit)return null;
+        var sum='https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(hit.title);
+        return fetch(sum).then(function(r){return r.json();}).then(function(s){
+          if(!s||!s.extract)return null;
+          return cmShorten(s.extract)+' Source: Wikipedia.';
+        });
+      }).catch(function(){return null;});
+    });
+    return Promise.race([chain,overall]);
+  }catch(e){return Promise.resolve(null);}
+}
 function cmToggle(force){
   cmOpen=(typeof force==='boolean')?force:!cmOpen;
   document.getElementById('cmPanel').style.display=cmOpen?'flex':'none';
@@ -1800,6 +1869,7 @@ function cmSay(text,me){
   var t=el('span','');t.textContent=text;d.appendChild(t);
   log.appendChild(d);
   log.scrollTop=log.scrollHeight;
+  return d;
 }
 function cmEntry(){
   try{if(sessionStorage.getItem('cm_seen'))return;sessionStorage.setItem('cm_seen','1');}catch(e){}
@@ -1874,7 +1944,9 @@ function cmAnswer(q){
     return {say:'I don\'t make picks — but the 🎲 tab has the real lines if you want to size one up.',act:function(){setView('odds');}};
   if(/hello|\bhi\b|hey|thanks|thank/.test(ql))
     return {say:'Hey. Odds, schedules, news, fantasy — what are you looking for?',act:null};
-  return {say:'I can point you to odds, schedules, news, or fantasy — try "where are the NFL schedules" or "who\'s injured".',act:null};
+  var baked=cmBakedAnswer(q);
+  if(baked)return baked;
+  return {say:'I can point you to odds, schedules, news, or fantasy — try "where are the NFL schedules" or "who\'s injured".',act:null,fallback:true};
 }
 function cmAsk(){
   var inp=document.getElementById('cmInput');
@@ -1884,6 +1956,20 @@ function cmAsk(){
   cmSay(q,true);
   var r;
   try{r=cmAnswer(q);}catch(e){r={say:'Something glitched on my end — try asking about odds, schedules, news, or fantasy.',act:null};}
+  if(r&&r.fallback){
+    /* No route matched and no baked answer: try free live sources, else keep the routing help. */
+    var pend=cmSay('Looking that up…',false);
+    var pspan=pend?pend.querySelector('span'):null;
+    cmLiveAnswer(q).then(function(ans){
+      var txt=ans||r.say;
+      if(pspan)pspan.textContent=txt;
+      cmLog(q,txt);
+    }).catch(function(){
+      if(pspan)pspan.textContent=r.say;
+      cmLog(q,r.say);
+    });
+    return;
+  }
   cmSay(r.say,false);
   cmLog(q,r.say);
   if(r.act){try{r.act();}catch(e){}}
