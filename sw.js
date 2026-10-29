@@ -1,4 +1,4 @@
-var CACHE = 'nikkiflixs-v278';
+var CACHE = 'nikkiflixs-v279';
 var ASSETS = [
   '/',
   '/index.html',
