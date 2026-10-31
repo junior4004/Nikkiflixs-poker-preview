@@ -67,16 +67,62 @@
     '#nkGate a.nk-leave{display:block;text-align:center;margin-top:14px;color:#f2c76f;font-size:14px}' +
     '#nkGate .nk-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto;max-height:46dvh;max-height:46vh;padding:2px}' +
     '#nkGate .nk-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:3px solid transparent;cursor:pointer;background:#21151d}' +
-    '#nkGate .nk-grid img.nk-picked{border-color:#ffd968;box-shadow:0 0 0 2px #ffd968,0 0 14px #ffd96888}';
+    '#nkGate .nk-grid img.nk-picked{border-color:#ffd968;box-shadow:0 0 0 2px #ffd968,0 0 14px #ffd96888}' +'#nkGateTop{display:flex;gap:8px;margin-bottom:14px}' +'#nkGateTop button{flex:1;min-height:44px;padding:10px 8px;border-radius:10px;border:1px solid #e2af4f;background:linear-gradient(180deg,#2a2119,#171008);color:#ffe19b;font-size:15px;font-weight:800;letter-spacing:.03em;cursor:pointer}' +'#nkGateTop button:first-child{background:linear-gradient(180deg,#b8872d,#654216);color:#fff9df}' +'#nkGateTop.hidden{display:none}';
   document.head.appendChild(style);
 
   var root = document.createElement('div');
   root.id = 'nkGate';
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-label', 'Nikkiflixs entry gate');
-  root.innerHTML = '<div class="nk-panel"><div id="nkGateBody"></div></div>';
+  root.innerHTML = '<div class="nk-panel"><div id="nkGateTop"><button id="nkGateAdmin" type="button">Admin</button><button id="nkGateSupport" type="button">Support</button></div><div id="nkGateBody"></div></div>';
   document.body.appendChild(root);
   var body = document.getElementById('nkGateBody');
+
+  /* 2026-10-30: Admin + Support live on this gate, at the top, BEFORE player sign-in.
+     They open the EXISTING showroom panels (index.html) — no new panels, no admin
+     controls on the gate itself, no player-sign-in bypass, no admin-PIN bypass.
+     While a panel is open the gate is hidden behind that panel's own full-screen
+     shade, so the showroom behind it cannot be used; when the panel closes, the
+     gate returns to the same step. If this page has no showroom panels (table
+     pages), the top row is hidden and the gate is unchanged. */
+  (function wireGateTopButtons() {
+    var top = document.getElementById('nkGateTop');
+    var adminBtn = document.getElementById('nkGateAdmin');
+    var supportBtn = document.getElementById('nkGateSupport');
+    var adminPanel = document.getElementById('adminPanel');
+    var supportPanel = document.getElementById('supportPanel');
+    if (!top || !adminPanel || !supportPanel) { if (top) top.classList.add('hidden'); return; }
+    var gateHiddenForPanel = false;
+    function panelsOpen() {
+      return (adminPanel && adminPanel.classList.contains('open')) ||
+             (supportPanel && supportPanel.classList.contains('open'));
+    }
+    function restoreGate() {
+      if (gateHiddenForPanel && !panelsOpen()) {
+        gateHiddenForPanel = false;
+        root.style.display = '';
+      }
+    }
+    var observer = new MutationObserver(restoreGate);
+    observer.observe(adminPanel, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(supportPanel, { attributes: true, attributeFilter: ['class'] });
+    function openFromGate(kind) {
+      var fn = kind === 'admin' ? window.__NIKKIFLIXS_OPEN_ADMIN__ : window.__NIKKIFLIXS_OPEN_SUPPORT__;
+      gateHiddenForPanel = true;
+      root.style.display = 'none';
+      try {
+        if (typeof fn === 'function') fn();
+        else {
+          var launcher = document.getElementById(kind === 'admin' ? 'adminLauncher' : 'supportLauncher');
+          if (launcher) launcher.click();
+        }
+      } catch (e) { gateHiddenForPanel = false; root.style.display = ''; return; }
+      /* Safety: if the panel did not actually open, put the gate straight back. */
+      setTimeout(function () { if (!panelsOpen()) restoreGate(); }, 400);
+    }
+    if (adminBtn) adminBtn.addEventListener('click', function () { openFromGate('admin'); });
+    if (supportBtn) supportBtn.addEventListener('click', function () { openFromGate('support'); });
+  })();
 
   function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
