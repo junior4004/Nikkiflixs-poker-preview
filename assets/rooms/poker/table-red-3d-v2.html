@@ -272,6 +272,9 @@
 @keyframes nf-angry-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 .seat.nf-laughing .portrait,.seat.nf-laughing .avatar-wrap{animation:none}
 .seat.nf-angry .portrait,.seat.nf-angry .avatar-wrap{animation:none}
+/* MERGED-323: hero (view-slot 0) hole cards ONLY, from approved v287 push file. Normal top -87px, showdown-flash -75px. Face fully clear, no seat/felt/rail/other cards moved. */
+.seat[data-view-slot="0"] .pocket{left:50%;right:auto;top:-87px;transform:translateX(-50%);z-index:6}
+.seat.showdown-flash[data-view-slot="0"] .pocket{left:50%!important;right:auto!important;top:-75px!important;transform:translateX(-50%)!important}
 </style>
 <style>
 .seat-flag{position:absolute;top:-9px;right:-17px;font-size:25px;z-index:6;filter:drop-shadow(0 1px 3px #000)}
@@ -1183,7 +1186,7 @@ var tableSfxFiles={};
      the camera toward mid-table; the new ones sit ~11-16% out from each
      seat anchor, obviously that player's bet. */
   /* RED KEEPER FIX 3: bet spots re-aimed so no bet covers a pocket, a plate, or a chip stack (measured at 390x844 + 412x915; hero spot unchanged). Round 2: optimizer-picked spots with wedge/ray/side constraints; seat2's lane is tight (board + two pockets) and may graze a card corner by ~1px. */
-  var betPositions=[['50%','85%'],['33.5%','62%'],['10%','44%'],['31.5%','30%'],['48%','28%'],['64%','32.5%'],['65.5%','62%'],['62%','69.5%']];
+  var betPositions=[['68%','85%'],['33.5%','62%'],['10%','44%'],['31.5%','30%'],['54%','28%'],['64%','32.5%'],['65.5%','62%'],['62%','69.5%']]; /* MERGED-323: hero bet 50%->68% (was dead-centre ON his pocket cards) and Andre bet 48%->54% (was off the felt), tops unchanged 85%/28%, no other slot moved. */
   function updateBetPositions(){Array.prototype.forEach.call(document.querySelectorAll('.round-bet'),function(bet){var absolute=Number(bet.getAttribute('data-seat')),pos=betPositions[screenSlot(absolute)];bet.style.setProperty('--bx',pos[0]);bet.style.setProperty('--by',pos[1])})}
   updateBetPositions();
   function restoreName(index){var plate=seats[index].querySelector('.nameplate'),strong=plate.querySelector('strong');strong.textContent=names[index];plate.classList.remove('action-state','action-bet','action-raise','action-call','action-check','action-all-in','action-small-blind','action-big-blind')}
@@ -1502,7 +1505,7 @@ var tableSfxFiles={};
         eligible.sort(function(a,b){return compareRanks(b.rank,a.rank)});
         var bestRank=eligible.length?eligible[0].rank:null;
         var sliceWinners=eligible.filter(function(e){return compareRanks(e.rank,bestRank)===0});
-        slices.push({amount:sliceAmount,level:level,winners:sliceWinners.map(function(e){return e.index}),rank:bestRank});
+        slices.push({amount:sliceAmount,level:level,eligibleCount:eligible.length,winners:sliceWinners.map(function(e){return e.index}),rank:bestRank}); /* MERGED-323: eligibleCount kept so a sole-eligible side slice is labeled a RETURN, not a win */
         prev=level;
       });
     }else{
@@ -1518,15 +1521,18 @@ var tableSfxFiles={};
     highlightWinningFive(winnerInfo,liveIndexes,totals[winnerInfo.index]||0);
     var winFiveText=winnerInfo.chosen.map(function(ci){var c=ci<5?boardCards[ci]:demoHands[winnerInfo.index][ci-5];return c[0]+c[1]}).join(' ');
     var winDesc=describeWinningHand(winnerInfo.rank);
-    statusMain.textContent=names[winnerInfo.index]+' WINS · '+winDesc+' · '+winFiveText;
-    statusTrail.textContent='SHOWDOWN · '+winnerEntries.map(function(e){return names[e.index]+' '+money(totals[e.index])}).join(' · ');(function(){var parts=slices.map(function(sl,i){return (i===0?'MAIN POT ':'SIDE POT '+i+' ')+money(sl.amount)+' to '+sl.winners.map(function(w){return names[w]}).join(' + ')});var lbl='POTS: '+parts.join(' · ');statusTrail.textContent+=' — '+lbl;var aw=document.querySelector('.pot-award-label');if(aw)aw.textContent+=' — '+lbl;})(); /* PREVIEW4: side-pot label so a split never looks like a mistake */
+    /* MERGED-323: the HAND winner is only the best hand. A player who only takes a side slice is NOT a hand winner — his slice is money, not a win. */
+    var handWinners=ranked.filter(function(e){return compareRanks(e.rank,winnerInfo.rank)===0}).map(function(e){return e.index});
+    var sideKind={};slices.forEach(function(sl,i){if(i===0)return;sl.winners.forEach(function(w){if(handWinners.indexOf(w)<0)sideKind[w]=(sl.eligibleCount&&sl.eligibleCount>1)?'SIDE POT':'RETURN'})});
+    statusMain.textContent=names[winnerInfo.index]+' WINS '+money(totals[winnerInfo.index])+' · '+winDesc+' · '+winFiveText;
+    statusTrail.textContent='SHOWDOWN · '+winnerEntries.map(function(e){return names[e.index]+' '+money(totals[e.index])+(handWinners.indexOf(e.index)>-1?' — HAND WINNER':(sideKind[e.index]==='RETURN'?' — SIDE POT RETURN':' — SIDE POT'))}).join(' · ');(function(){var parts=slices.map(function(sl,i){return (i===0?'MAIN POT ':(sl.eligibleCount===1?'SIDE POT '+i+' RETURNED ':'SIDE POT '+i+' '))+money(sl.amount)+' to '+sl.winners.map(function(w){return names[w]}).join(' + ')});var lbl='POTS: '+parts.join(' · ');statusTrail.textContent+=' — '+lbl;var aw=document.querySelector('.pot-award-label');if(aw)aw.textContent+=' — '+lbl;})(); /* MERGED-323: side slices labeled as side pot or return, never as a second hand win */
     logEvent('showdown',{pot:pot,hand:handName(winnerInfo.rank),winningHand:winDesc,winningFive:winFiveText,contributions:contribs.slice(),slices:slices.map(function(sl){return{amount:sl.amount,winners:sl.winners.slice()}}),winners:winnerEntries.map(function(entry){return{seat:entry.index,name:names[entry.index],share:totals[entry.index],rank:entry.rank,chosen:entry.chosen}})});
     logEvent('side-pots',{slices:slices.map(function(sl){return{amount:sl.amount,winners:sl.winners.slice()}}),used:useSlices,totalContrib:totalContrib,pot:pot});
-    if(winnerIndexes.indexOf(0)>-1){prof.wins++;if(pot>prof.biggest)prof.biggest=pot;profSave()}
-    settleStats(winnerIndexes,Math.max.apply(Math,winnerIndexes.map(function(i){return totals[i]})),winnerInfo.rank);
-    winnerEntries.forEach(function(entry){seatWins[entry.index]=(seatWins[entry.index]||0)+1;if(totals[entry.index]>(seatBest[entry.index]||0))seatBest[entry.index]=totals[entry.index]});
-    winnerIndexes.forEach(function(i){setPortraitEmotion(i,'laugh')});if(winnerInfo&&winnerInfo.rank&&winnerInfo.rank[0]>=6){winnerIndexes.forEach(function(i){nfEmotion(i,'awe')}) } /* PREVIEW4: awe = full house or better, motion pop, not a new face */
-    liveIndexes.forEach(function(i){if(winnerIndexes.indexOf(i)<0)setPortraitEmotion(i,'angry')});
+    if(handWinners.indexOf(0)>-1){prof.wins++;if(totals[0]>prof.biggest)prof.biggest=totals[0];profSave()} /* MERGED-323: a side slice alone is not a profile win, and biggest win is the hero's share, not the whole pot */
+    settleStats(handWinners,Math.max.apply(Math,handWinners.map(function(i){return totals[i]})),winnerInfo.rank);
+    handWinners.forEach(function(i){seatWins[i]=(seatWins[i]||0)+1;if(totals[i]>(seatBest[i]||0))seatBest[i]=totals[i]}); /* MERGED-323: seat win counted for the hand winner only */
+    handWinners.forEach(function(i){setPortraitEmotion(i,'laugh')});if(winnerInfo&&winnerInfo.rank&&winnerInfo.rank[0]>=6){handWinners.forEach(function(i){nfEmotion(i,'awe')}) } /* MERGED-323: only the hand winner laughs; a side-only recipient gets the losing face. NOTE: Build 323 setPortraitEmotion/nfEmotion are HEADS-STILL no-ops, so these calls change counting/labels only, no motion reintroduced. */
+    liveIndexes.forEach(function(i){if(handWinners.indexOf(i)<0)setPortraitEmotion(i,'angry')});
     later(4000,function(){revertEmotions()});
     winnerEntries.forEach(function(entry,n){later(650+n*230,function(){flyChips(seats[entry.index],true,totals[entry.index]);logEvent('pot-slid-to-winner',{seat:entry.index,name:names[entry.index],amount:totals[entry.index]})})});
     later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
@@ -1855,7 +1861,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   playerModal.innerHTML='<div class="gift-panel player-card"><h3 id="pcName"></h3><div style="text-align:center;margin:8px 0"><img id="pcAvatar" alt="" style="width:44px;height:44px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p id="pcStats" style="font-size:13px;line-height:1.5"></p><div class="p-actions"><button id="pcPopT" type="button">😂 TAUNT POP</button><button id="pcPopM" type="button">😤 MAD POP</button></div><div id="pcThrowSec" style="margin-top:10px"><div style="font-size:12px;font-weight:800;color:#ffe9a8;letter-spacing:.4px;margin:2px 0 6px">🎁 THROW SOMETHING — tap one to arm it, then tap the player</div><div class="gift-grid" id="pcThrowGrid"></div></div><button class="gift-close" id="pcClose" type="button">CLOSE</button></div>';
   document.body.appendChild(playerModal);
   var pcTarget=null;
-  function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';var self=index===0,S=ps(index);
+  function openPlayerCard(index){pcTarget=index;var img=seats[index].querySelector('.portrait');document.getElementById('pcName').textContent=names[index]+(seatFlags[index]?' '+seatFlags[index]:'');document.getElementById('pcAvatar').src=img?img.getAttribute('src'):'';var self=index===localSeatAbsolute,S=ps(index); /* MERGED-323-FIX: own card = hero's live-server seat, not hard-coded seat 0 — otherwise at a live seat other than 0 the throw section hid and bot session stats showed instead of his own */
     var H=self?prof.hands:S.hands,W=self?prof.wins:S.wins,L=self?(prof.losses||0):S.losses,F=self?(prof.folds||0):S.folds,FS=self?prof.fs:S.fs,BN=self?(prof.bestName||S.bestName):S.bestName,BP=self?Math.max(prof.biggest||0,S.bestPot||0):(S.bestPot||0);
     var played=Math.max(1,H),pct=function(n){return Math.round(100*n/played)+'%'};
     var rows='<div style="display:grid;grid-template-columns:1fr auto;gap:3px 14px;text-align:left">'
@@ -1867,7 +1873,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
     +'<span>Folds by street</span><b>Pre '+FS.PREFLOP+' · Flop '+FS.FLOP+' · Turn '+FS.TURN+' · River '+FS.RIVER+'</b>'
     +'<span>Best hand won</span><b>'+(BN||'—')+'</b>'
     +'<span>Biggest pot won</span><b>'+money(BP)+'</b></div>'
-    +(self?'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">Your lifetime record on this phone — it saves and keeps growing.</p>':'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">This session at the tables.</p>');
+    +(self?'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">Your lifetime record on this phone — it saves and keeps growing.</p>':'<p style="margin:8px 0 0;color:#cbbf9f;font-size:12px">This session at the tables.</p><p style="margin:6px 0 0;color:#ffe9a8;font-size:12px">Throwables live in YOUR card — tap your own portrait, pick an item, then tap a player.</p>' /* MERGED-323: signpost, so tapping another player no longer reads as 'no throwables' */);
     document.getElementById('pcStats').innerHTML=rows;
     document.getElementById('pcThrowSec').style.display=self?'':'none';if(self)renderPcThrow();document.getElementById('pcPopT').style.display=self?'':'none';document.getElementById('pcPopM').style.display=self?'':'none';
     document.getElementById('pcPopT').textContent='😂 TAUNT POP ('+popsGet('nikkiflixs_pops_taunt')+')';document.getElementById('pcPopM').textContent='😤 MAD POP ('+popsGet('nikkiflixs_pops_mad')+')';playerModal.classList.add('open')}
@@ -1886,8 +1892,8 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===0&&toIndex!==0)scheduleR
   seats.forEach(function(seat,index){seat.addEventListener('click',function(e){
     if(throwArm||popArm){e.stopPropagation();e.preventDefault();if(index===0){disarmAll();if(!sittingOut[0])openPlayerCard(0);return}var t=throwArm,p=popArm;disarmAll();if(t)doThrow(0,index,t);else if(p)doPop(0,index,p);return}
     if(seat.classList.contains('seat-open')||emptyBotSeat[index]){if(!sittingOut[localSeatAbsolute]&&handRunning)return;e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are in — bottom seat, cards on the next hand',2600);return} if(index!==localSeatAbsolute&&!seat.classList.contains('seat-open')&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(index); /* BUILD 241: the whole pod is the tap target — taps landing on the nameplate, the felt cards or the flag used to miss .portrait-wrap and never open the card (owner: sometimes 1 tap, sometimes 4-5) */
-    if(index===localSeatAbsolute&&!sittingOut[localSeatAbsolute]&&e.target.closest&&e.target.closest('.pod'))openPlayerCard(localSeatAbsolute);
-    if(index===localSeatAbsolute&&sittingOut[localSeatAbsolute]&&stacks[localSeatAbsolute]>0&&!pendingJoinNextHand&&!(e.target.closest&&e.target.closest('#sitIn'))){e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are back in — cards on the next hand',2600)}
+    if(index===localSeatAbsolute&&e.target.closest&&e.target.closest('.pod')){if(!sittingOut[localSeatAbsolute])openPlayerCard(localSeatAbsolute);else if(e.target.closest('.portrait-wrap'))openPlayerCard(localSeatAbsolute); /* MERGED-323: spectating hero portrait tap opens his own card (throwables live there) in every state, adapted from push fix index 0 -> localSeatAbsolute so Build 323 own-seat-at-any-server-seat is kept */
+    else if(stacks[localSeatAbsolute]>0&&!pendingJoinNextHand&&!(e.target.closest&&e.target.closest('#sitIn'))){e.stopPropagation();e.preventDefault();document.getElementById('sitIn').click();say('You are back in — cards on the next hand',2600)}}
   },true)});
   paintPopBtn();
   /* OWNER RULE 2026-10-23 02:03 MDT: bots NEVER throw on their own — free bot
