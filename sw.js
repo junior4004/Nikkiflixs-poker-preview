@@ -1,4 +1,4 @@
-var CACHE = 'nikkiflixs-v287';
+var CACHE = 'nikkiflixs-v288';
 var ASSETS = [
   '/',
   '/index.html',
@@ -6,10 +6,23 @@ var ASSETS = [
   '/assets/rooms/poker/table-red-3d-v2.html'
 ];
 
+// FIX for stale builds (Jerry, 2026-11-02): the v287 worker had two traps.
+// 1. install() failed outright if ANY precache fetch failed (e.g. during the
+//    GitHub Pages propagation window), so the new worker never activated and
+//    the OLD worker kept serving old files indefinitely.
+// 2. Static assets were cache-first, so avatars/felt/sfx stayed old even
+//    when the HTML page itself was fresh.
+// This version: install never fails on a precache miss, and EVERY request
+// under scope is network-first with the HTTP cache bypassed, falling back
+// to the saved copy only when the network actually fails. Fresh beats fast.
+
 self.addEventListener('install', function(e) {
   e.waitUntil(
     caches.open(CACHE).then(function(cache) {
-      return cache.addAll(ASSETS);
+      return cache.addAll(ASSETS).catch(function() {
+        // One asset failing must not block the whole update.
+        return null;
+      });
     }).then(function() {
       return self.skipWaiting();
     })
@@ -29,34 +42,16 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  var url = new URL(e.request.url);
-  var isPage = e.request.mode === 'navigate' || /\.html$/.test(url.pathname) || ASSETS.indexOf(url.pathname) >= 0;
-  if (isPage) {
-    // HTML pages: NETWORK FIRST. A poker table served stale from cache is a
-    // broken table — always try the live page, cache only as offline fallback.
-    e.respondWith(
-      fetch(e.request).then(function(response) {
-        var clone = response.clone();
-        caches.open(CACHE).then(function(cache) {
-          cache.put(e.request, clone);
-        });
-        return response;
-      }).catch(function() {
-        return caches.match(e.request);
-      })
-    );
-    return;
-  }
-  // Static assets: cache-first (fast), refreshed on cache version bumps.
+  if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(function(resp) {
-      return resp || fetch(e.request).then(function(response) {
-        var clone = response.clone();
-        caches.open(CACHE).then(function(cache) {
-          cache.put(e.request, clone);
-        });
-        return response;
+    fetch(new Request(e.request, { cache: 'reload' })).then(function(response) {
+      var clone = response.clone();
+      caches.open(CACHE).then(function(cache) {
+        cache.put(e.request, clone);
       });
+      return response;
+    }).catch(function() {
+      return caches.match(e.request);
     })
   );
 });
