@@ -757,6 +757,20 @@ button,.button,[role="button"]{touch-action:manipulation}
 .seat.nf-angry .portrait,.seat.nf-angry .portrait-wrap{animation:none}
 .pop-bubble{z-index:99999!important}
 </style>
+<style>
+/* SHOWDOWN CARD-SPREAD FIX (test copy, 2026-11-04): showdown only.
+   Opponent pockets (view-slots 1-7) used BUILD 235 absolute positioning:
+   first card left:0, second left:14px, width 38px at showdown, so 24px of
+   the first card hid under the second and the pair read as one card.
+   In showdown-flash state only, lay both holes side by side in normal
+   flow: no absolute positioning, no left/top offsets, no rotation, no
+   negative margin, gap 6px, pocket sized to both cards. Placement
+   (left/top per seat) is deliberately NOT touched here. Hero
+   (view-slot 0) is excluded and unchanged. Mid-hand backs are
+   unaffected: they never carry .showdown-flash. */
+.seat.showdown-flash[data-view-slot="1"] .pocket,.seat.showdown-flash[data-view-slot="2"] .pocket,.seat.showdown-flash[data-view-slot="3"] .pocket,.seat.showdown-flash[data-view-slot="4"] .pocket,.seat.showdown-flash[data-view-slot="5"] .pocket,.seat.showdown-flash[data-view-slot="6"] .pocket,.seat.showdown-flash[data-view-slot="7"] .pocket{width:max-content!important;height:auto!important;display:flex!important;flex-direction:row!important;gap:6px!important}
+.seat.showdown-flash[data-view-slot="1"] .pocket .hole,.seat.showdown-flash[data-view-slot="2"] .pocket .hole,.seat.showdown-flash[data-view-slot="3"] .pocket .hole,.seat.showdown-flash[data-view-slot="4"] .pocket .hole,.seat.showdown-flash[data-view-slot="5"] .pocket .hole,.seat.showdown-flash[data-view-slot="6"] .pocket .hole,.seat.showdown-flash[data-view-slot="7"] .pocket .hole{position:relative!important;left:auto!important;top:auto!important;margin-left:0!important;transform:none!important;flex:0 0 auto!important}
+</style>
 </head>
 <body>
 <style>.emotion-video{position:absolute;left:0;top:0;width:74px;height:84px;border-radius:50% / 46%;object-fit:cover;border:4px solid #d9b557;background:#21151d;display:none;z-index:5}</style>
