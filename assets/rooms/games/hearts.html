@@ -194,8 +194,8 @@ body.mp-spectating .sit-in{display:block}
 .showdown-dim{filter:grayscale(1) brightness(.42);opacity:.56!important;box-shadow:0 4px 8px #000b!important}
 .showdown-winner{z-index:40!important;transform:translateY(-16px) scale(1.08);filter:none!important;opacity:1!important;box-shadow:0 0 0 3px #ffe074,0 0 24px #ffd24fcc,0 10px 18px #000e!important}
 .seat.showdown-loser .portrait,.seat.showdown-loser .nameplate{filter:grayscale(.5) brightness(.75)}
-.talk{border:1px solid #d7a44d;background:#17120d;color:#ffe7ad;font:800 11px/1.15 sans-serif;cursor:pointer;position:fixed;z-index:50;left:8px;right:auto;top:auto;bottom:225px;width:68px;height:68px;min-width:0;margin:0;padding:0;border-radius:50%;white-space:normal;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 18px #000d}
-@media(max-width:620px){.camera{width:560px;height:760px}.table{left:19.65%;top:18%;width:60.7%;height:82%}.dealer{left:75%;top:22%}.pot{top:45%}.board{top:55%}.muck{top:46%}.talk{left:8px;right:auto;top:auto;bottom:225px;width:68px;height:68px;min-width:0;font-size:11px}}
+.talk{border:1px solid #d7a44d;background:#17120d;color:#ffe7ad;font:800 11px/1.15 sans-serif;cursor:pointer;position:fixed;z-index:50;left:8px;right:auto;top:auto;bottom:205px;width:68px;height:68px;min-width:0;margin:0;padding:0;border-radius:50%;white-space:normal;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 18px #000d}
+@media(max-width:620px){.camera{width:560px;height:760px}.table{left:19.65%;top:18%;width:60.7%;height:82%}.dealer{left:75%;top:22%}.pot{top:45%}.board{top:55%}.muck{top:46%}.talk{left:8px;right:auto;top:auto;bottom:205px;width:68px;height:68px;min-width:0;font-size:11px}}
 /* Hole cards stay prominent over each active portrait, then disappear when that player folds. */.seat[data-view-slot] .pocket{left:50%;right:auto;top:14px;z-index:6;width:max-content;transform:translateX(-50%);display:flex;flex-direction:row;gap:10px}
 .seat[data-view-slot] .pocket .hole{width:42px;height:59px;font-size:26px;flex:0 0 auto}
 .seat[data-view-slot] .pocket .hole+.hole{margin-left:0}
@@ -604,7 +604,7 @@ body.targeting .seat .portrait{box-shadow:0 0 20px #e5ba53aa}
 .portrait.charred{filter:brightness(.22) saturate(0) contrast(1.5)}
 .brand-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .brand-svg text{fill:url(#brandGold);font-family:"Great Vibes Local",cursive;paint-order:stroke;stroke:rgba(24,2,10,.38);stroke-width:1px}
-.brand-svg .brand-l1{font-size:145px;letter-spacing:2px}
+.brand-svg .brand-l1{font-size:150px;letter-spacing:2px}
 .brand-svg .brand-l2{font-size:34px;letter-spacing:1px;stroke-width:2px}
 .brand-svg .brand-l3{font-size:28px;letter-spacing:1px;stroke-width:2px}
 .pot{position:absolute;z-index:12;left:50%;transform:translate(-50%,-50%);text-align:center;top:calc(45% - 20px)}
@@ -789,13 +789,18 @@ button,.button,[role="button"]{touch-action:manipulation}
     <button class="tool leaderboard-table-tool" id="tableLeaderboard" type="button" aria-label="Open poker leaderboard">LEADERBOARD</button>
     <button class="tool" id="handLogBtn" type="button" aria-label="Open server hand log">HAND LOG</button><span id="handLogState">LOG: SERVER</span>
     <button class="tool gold" id="buyChips" type="button" aria-label="Buy chip packages">BUY +</button>
-    <button class="tool" id="addChips" type="button" aria-label="Add chips before the next hand">+ <span class="wide-label">ADD CHIPS</span></button>
+    <button class="tool" id="addChips" type="button" aria-label="Add chips before the next deal">+ <span class="wide-label">ADD CHIPS</span></button>
   </header>
   <div class="build-stamp" id="buildStamp">NIKKIFLIXS POKER · 4-PLAYER RACETRACK</div>
   <div class="connection-state" id="connectionState" role="status" aria-live="assertive"></div>
   <section class="stage" id="stage" aria-label="One wide camera view of the whole poker table">
     <div class="camera" id="camera">
-      <div class="table"><svg class="brand-svg" viewBox="0 0 510 936" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="brandGold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#a87c2a"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#c9962e"/></linearGradient></defs><g transform="translate(255 468) rotate(-61.5) translate(0 25)"><text class="brand-l1" x="0" y="0" text-anchor="middle">Nikkiflixs</text><text class="brand-l2" x="0" y="71" text-anchor="middle">Poker Room and Entertainment</text><text class="brand-l3" x="0" y="113" text-anchor="middle">Established in 2026</text></g></svg> <!-- HEARTS v3 DIAGONAL WORDMARK — COPY VERBATIM to every table: viewBox 0 0 510 936; group translate(255 468) rotate(-61.5) translate(0 25); l1 145px at (0,0), l2 34px at (0,71), l3 28px at (0,113); text-anchor middle; Great Vibes Local, gold gradient; angle -61.5deg = table diagonal (246x452 felt at 412x915); span ~302px screen, corners clear of dealer and seats. --></div>
+      <div class="table"><svg class="brand-svg" viewBox="0 0 510 936" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><linearGradient id="brandGold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#a87c2a"/><stop offset=".5" stop-color="#ffe9a8"/><stop offset="1" stop-color="#c9962e"/></linearGradient></defs><g transform="translate(255 468) rotate(-63) translate(0 25)"><text class="brand-l1" x="0" y="0" text-anchor="middle">Nikkiflixs</text><text class="brand-l2" x="0" y="71" text-anchor="middle">Poker Room and Entertainment</text><text class="brand-l3" x="0" y="113" text-anchor="middle">Established in 2026</text></g></svg> <!-- HEARTS v4 DIAGONAL WORDMARK — was v3 COPY VERBATIM at -61.5deg; v4 turns it a
+     little steeper to -63deg, l1 145 -> 150px, so the S end reaches more towards Nikki (dealer, top
+     right) and the N end more towards the bottom-left corner: viewBox 0 0 510 936;
+     group translate(255 468) rotate(-63) translate(0 25); l1 150px at (0,0), l2 34px
+     at (0,71), l3 28px at (0,113); text-anchor middle; Great Vibes Local, gold
+     gradient; span ~304px screen, corners clear of dealer and seats. --></div>
       <div class="table-markers" aria-label="Rotating dealer and blind positions"></span></span></span></div>
       <div class="dealer" aria-label="Nikki, permanent dealer"><img src="data:image/webp;base64,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" alt="Nikki, the dealer, in a black uniform with gold trim"><span class="dealer-name">Nikki · Dealer</span></div>
       <div class="deck" id="deck" aria-label="Deck being shuffled"><i></i><i></i><i></i></div>
@@ -815,7 +820,7 @@ button,.button,[role="button"]{touch-action:manipulation}
     <div class="actions"><button class="action" data-action="fold" disabled>FOLD</button><button class="action" data-action="check" disabled>CHECK</button><button class="action call" data-action="call" disabled>CALL</button><button class="action raise" data-action="raise" disabled>RAISE</button></div>
   </footer>
   <div class="toast" id="toast" role="status"></div>
-  <div class="modal" id="chipModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="panel"><button class="close" id="closeModal" aria-label="Close">×</button><h2 id="modalTitle">Add chips before the next hand</h2><p id="modalReason">Move chips from your account to your table stack. This table requires at least $200 in your account before you sit.</p><div class="balance-row"><span>Account chips</span><b id="bankBalance">12,600</b></div><label for="chipRange">Add to table <span class="amount" id="chipAmount">$200</span></label><input id="chipRange" type="range" min="25" max="12600" step="25" value="200"><div class="modal-actions"><button class="primary" id="confirmAdd">ADD FROM ACCOUNT</button><button id="buyMore">BUY MORE CHIPS</button><button class="leave" id="leaveTable">LEAVE TABLE</button></div><div class="cashier-note" id="cashierNote">The secure cashier opens from the live account. No purchase is made in this layout demo.</div></div></div>
+  <div class="modal" id="chipModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="panel"><button class="close" id="closeModal" aria-label="Close">×</button><h2 id="modalTitle">Add chips before the next deal</h2><p id="modalReason">Move chips from your account to your table stack. This table requires at least $200 in your account before you sit.</p><div class="balance-row"><span>Account chips</span><b id="bankBalance">12,600</b></div><label for="chipRange">Add to table <span class="amount" id="chipAmount">$200</span></label><input id="chipRange" type="range" min="25" max="12600" step="25" value="200"><div class="modal-actions"><button class="primary" id="confirmAdd">ADD FROM ACCOUNT</button><button id="buyMore">BUY MORE CHIPS</button><button class="leave" id="leaveTable">LEAVE TABLE</button></div><div class="cashier-note" id="cashierNote">The secure cashier opens from the live account. No purchase is made in this layout demo.</div></div></div>
   <div class="modal" id="raiseModal" role="dialog" aria-modal="true" aria-labelledby="raiseTitle"><div class="panel"><button class="close" id="closeRaise" aria-label="Cancel raise">×</button><h2 id="raiseTitle">Choose raise amount</h2><p>Drag to any amount or use a quick pick, then confirm.</p><div class="raise-readout"><span>RAISE TO</span><output id="raiseAmount" for="raiseRange">$0</output></div><input class="raise-slider" id="raiseRange" type="range" min="0" max="100" step="5" value="0" aria-label="Custom raise amount"><div class="raise-options" id="raiseOptions"><button class="raise-option" type="button" data-raise-preset="half"><strong>HALF POT</strong><span>$0</span></button><button class="raise-option" type="button" data-raise-preset="pot"><strong>POT</strong><span>$0</span></button><button class="raise-option" type="button" data-raise-preset="all-in"><strong>ALL-IN</strong><span>$0</span></button></div><button class="raise-confirm" id="confirmRaise" type="button">CONFIRM RAISE</button><button class="raise-cancel" id="cancelRaise" type="button">CANCEL</button></div></div>
   <div class="modal" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileTitle"><div class="panel"><button class="close" id="closeProfile" aria-label="Close profile">×</button><h2 id="profileTitle">Your Profile</h2><div style="text-align:center;margin:12px 0 4px"><img id="profileAvatar" src="https://nikkiflixs.com/assets/avatars/gallery/avatar-03.png" alt="Your avatar" style="width:84px;height:84px;border-radius:50%;border:2px solid #e2af4f;object-fit:cover"></div><p>Balance <b id="profileBalance">GC 0</b> · At the table <b id="profileStack">GC 0</b></p><p>Hands played <b id="profileHands">0</b> · Hands won <b id="profileWins">0</b> · Biggest pot won <b id="profileBiggest">GC 0</b></p><p style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px"><button class="package" id="profileStore" type="button"><strong>COIN STORE</strong><span>Buy gold coins</span></button><button class="package" id="profileLobby" type="button"><strong>LOBBY</strong><span>Back to tables</span></button><button class="package" id="profileAdmin" type="button"><strong>👑 ADMIN</strong><span>Creator only</span></button><button class="package" id="profileRedeem" type="button"><strong>🎟️ REDEEM CODE</strong><span>Enter a gift code</span></button><button class="package" id="profileAccount" type="button"><strong>👤 ACCOUNT</strong><span>Sign up / Log in</span></button></p></div></div>
 <div class="modal" id="buyModal" role="dialog" aria-modal="true" aria-labelledby="buyTitle"><div class="panel"><button class="close" id="closeBuy" aria-label="Close chip packages">×</button><h2 id="buyTitle">Buy chips</h2><p>Choose a gold-coin package. Specials are marked below.</p><div class="raise-options"><button class="raise-option chip-package" type="button"><strong>STARTER</strong><span>2,000 · $0.99</span></button><button class="raise-option chip-package" type="button"><strong>DOUBLE DEAL</strong><span>7,500 · $3</span></button><button class="raise-option chip-package" type="button"><strong>SPECIAL</strong><span>65,000 · $20</span></button></div><div class="cashier-note show">Package checkout opens from the secure live cashier. No purchase is made in this table preview.</div></div></div>
@@ -1106,7 +1111,7 @@ function sfx(kind){
       if(mpMode){if(liveTransport&&typeof liveTransport.requestResume==='function'){liveTransport.requestResume()}mpJoined=true;mpSpectating=false;mpWaitingForNextHand=true;sitInHandNumber=handNumber;mpWantSeat=null;mpSyncHook();logEvent('sit-in-multiplayer',{hand:handNumber,pot:pot});return}
       if(stacks[localSeatAbsolute]<=0){holdSeatForReload(localSeatAbsolute);openModal(true);logEvent('sit-in-blocked-no-chips',{hand:handNumber,pot:pot});return}
       pendingJoinNextHand=true;sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;sitInHandNumber=handNumber;seats[localSeatAbsolute].classList.remove('showdown-flash');seats[localSeatAbsolute].querySelectorAll('.hole').forEach(function(c){setHoleBack(c);c.style.opacity='0'}); 
-      seats[localSeatAbsolute].classList.remove('empty-seat','out-of-chips');seats[localSeatAbsolute].classList.add('folded');seats[localSeatAbsolute].setAttribute('aria-label','You, seated and waiting for the next hand');
+      seats[localSeatAbsolute].classList.remove('empty-seat','out-of-chips');seats[localSeatAbsolute].classList.add('folded');seats[localSeatAbsolute].setAttribute('aria-label','You, seated and waiting for the next deal');
       logEvent('sit-in',{buyIn:stacks[localSeatAbsolute],audioUnlocked:true,audioState:audio?audio.state:'not-created',choice:'wait-for-next-hand',hand:handNumber,pot:pot,handContinues:handRunning})
     })
   });
@@ -1984,8 +1989,8 @@ function GF_showdown() {
   if(navigator.webdriver)document.addEventListener('keydown',function(event){if(event.key==='F1')window.__pokerTest.showShuffleProof();if(event.key==='F2')window.__pokerTest.showMidDealProof();if(event.key==='F3')window.__pokerTest.showStreetCollectProof();if(event.key==='F4')window.__pokerTest.showCoverageProof();if(event.key==='F5')window.__pokerTest.showMidHandProof();if(event.key==='F6')window.__pokerTest.showMarkerProof(false);if(event.key==='F7')window.__pokerTest.showMarkerProof(true);if(event.key==='F8')window.__pokerTest.showShowdownProof();if(event.key==='F9')window.__pokerTest.openRaiseProof();if(event.key==='F10')window.__pokerTest.previewOpponentTurn();if(event.key==='F11'){var nextViewer=(localSeatAbsolute+3)%8;applyViewerPerspective(nextViewer);showAuditProof('VIEWER '+names[nextViewer]+' · ABSOLUTE SEAT '+nextViewer+' ROTATED TO BOTTOM')}if(event.key==='F12')window.__pokerTest.showTripsProof()});
   var buyModal=document.getElementById('buyModal');document.getElementById('buyChips').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('closeBuy').addEventListener('click',function(){buyModal.classList.remove('open')});buyModal.addEventListener('click',function(event){if(event.target===buyModal)buyModal.classList.remove('open')});
   var modal=document.getElementById('chipModal'),range=document.getElementById('chipRange'),amount=document.getElementById('chipAmount'),bankBalance=document.getElementById('bankBalance'),cashierNote=document.getElementById('cashierNote');
-  function openModal(isBroke){if(handRunning&&!isBroke){return}document.getElementById('modalTitle').textContent=isBroke?'You’re out of table chips':'Add chips before the next hand';document.getElementById('modalReason').textContent=isBroke?'Choose how to stay in: add Gold Coins from your account, buy more, or leave the table.':(minimumBuyin===0?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount from your account to your stack.':'Move Gold Coins from your account to your table stack. Minimum buy-in is '+money(minimumBuyin)+'.');bankBalance.textContent=accountConnected?bank.toLocaleString():bank.toLocaleString()+' preview';modal.classList.add('open')}
-  addButton.addEventListener('click',function(){openModal(false)});document.getElementById('closeModal').addEventListener('click',function(){modal.classList.remove('open')});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open')});range.addEventListener('input',function(){amount.textContent=money(Number(range.value))});document.getElementById('confirmAdd').addEventListener('click',function(){var value=Number(range.value);if((value>bank&&!creatorOn())||value<1)return;if(minimumBuyin>0&&stacks[localSeatAbsolute]===0&&value<minimumBuyin){return}if(accountConnected){if(liveTransport&&typeof liveTransport.moveCoinsToTable==='function'){liveTransport.moveCoinsToTable({amount:value,table:{game:activeConfig.game,maxSeats:activeConfig.maxSeats,smallBlind:activeConfig.sb,bigBlind:activeConfig.bb,freeTable:activeConfig.freeTable}});modal.classList.remove('open');logEvent('server-stack-transfer-requested',{amount:value,freeTable:activeConfig.freeTable})}return}var wasOut=stacks[localSeatAbsolute]<=0||seats[localSeatAbsolute].classList.contains('out-of-chips');if(!creatorOn())bank-=value;setStack(localSeatAbsolute,stacks[localSeatAbsolute]+value);modal.classList.remove('open');if(wasOut){pendingJoinNextHand=true;sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;sitInHandNumber=handNumber;seats[localSeatAbsolute].classList.remove('showdown-flash');seats[localSeatAbsolute].querySelectorAll('.hole').forEach(function(c){setHoleBack(c);c.style.opacity='0'}); clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[localSeatAbsolute].classList.remove('empty-seat','out-of-chips');seats[localSeatAbsolute].classList.add('folded');seats[localSeatAbsolute].setAttribute('aria-label','You, reloaded and waiting for the next hand');logEvent('reload-queued',{seat:localSeatAbsolute,amount:value,stack:stacks[localSeatAbsolute],hand:handNumber,freeTable:activeConfig.freeTable})}});document.getElementById('buyMore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('leaveTable').addEventListener('click',function(){modal.classList.remove('open');pendingJoinNextHand=false;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;seats[localSeatAbsolute].classList.remove('out-of-chips');seats[localSeatAbsolute].classList.add('empty-seat','folded');seats[localSeatAbsolute].setAttribute('aria-label','Your empty seat, bottom-center');});
+  function openModal(isBroke){if(handRunning&&!isBroke){return}document.getElementById('modalTitle').textContent=isBroke?'You’re out of table chips':'Add chips before the next deal';document.getElementById('modalReason').textContent=isBroke?'Choose how to stay in: add Gold Coins from your account, buy more, or leave the table.':(minimumBuyin===0?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount from your account to your stack.':'Move Gold Coins from your account to your table stack. Minimum buy-in is '+money(minimumBuyin)+'.');bankBalance.textContent=accountConnected?bank.toLocaleString():bank.toLocaleString()+' preview';modal.classList.add('open')}
+  addButton.addEventListener('click',function(){openModal(false)});document.getElementById('closeModal').addEventListener('click',function(){modal.classList.remove('open')});modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open')});range.addEventListener('input',function(){amount.textContent=money(Number(range.value))});document.getElementById('confirmAdd').addEventListener('click',function(){var value=Number(range.value);if((value>bank&&!creatorOn())||value<1)return;if(minimumBuyin>0&&stacks[localSeatAbsolute]===0&&value<minimumBuyin){return}if(accountConnected){if(liveTransport&&typeof liveTransport.moveCoinsToTable==='function'){liveTransport.moveCoinsToTable({amount:value,table:{game:activeConfig.game,maxSeats:activeConfig.maxSeats,smallBlind:activeConfig.sb,bigBlind:activeConfig.bb,freeTable:activeConfig.freeTable}});modal.classList.remove('open');logEvent('server-stack-transfer-requested',{amount:value,freeTable:activeConfig.freeTable})}return}var wasOut=stacks[localSeatAbsolute]<=0||seats[localSeatAbsolute].classList.contains('out-of-chips');if(!creatorOn())bank-=value;setStack(localSeatAbsolute,stacks[localSeatAbsolute]+value);modal.classList.remove('open');if(wasOut){pendingJoinNextHand=true;sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;sitInHandNumber=handNumber;seats[localSeatAbsolute].classList.remove('showdown-flash');seats[localSeatAbsolute].querySelectorAll('.hole').forEach(function(c){setHoleBack(c);c.style.opacity='0'}); clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;seats[localSeatAbsolute].classList.remove('empty-seat','out-of-chips');seats[localSeatAbsolute].classList.add('folded');seats[localSeatAbsolute].setAttribute('aria-label','You, reloaded and waiting for the next deal');logEvent('reload-queued',{seat:localSeatAbsolute,amount:value,stack:stacks[localSeatAbsolute],hand:handNumber,freeTable:activeConfig.freeTable})}});document.getElementById('buyMore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});document.getElementById('leaveTable').addEventListener('click',function(){modal.classList.remove('open');pendingJoinNextHand=false;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;seats[localSeatAbsolute].classList.remove('out-of-chips');seats[localSeatAbsolute].classList.add('empty-seat','folded');seats[localSeatAbsolute].setAttribute('aria-label','Your empty seat, bottom-center');});
   var talk=document.getElementById('talk'),talkHeld=false,talkOn=false,micRequestPending=false,micRequestCount=0;
   function microphoneHelp(error){
     if(!window.isSecureContext)return 'Microphone access needs a secure HTTPS page. Open the secure Nikkiflixs address, then tap TALK again.';
@@ -2712,7 +2717,7 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
   if(!controls)return;
   var pill=document.createElement('div');
   pill.id='waitingPill';
-  pill.textContent='WAITING FOR NEXT HAND';
+  pill.textContent='WAITING FOR THE NEXT DEAL';
   controls.appendChild(pill);
   function sync(){
     var room=document.getElementById('tableRoom');
@@ -2748,12 +2753,23 @@ window.addEventListener('nikkiflixs:multiplayer-ready',function(event){attachLiv
      centre pass/result/game-over panels RETIRED into the strip; per-player badges removed.
      NOTHING COVERS NOTHING: every overlay measured 0-overlap in the harness.
      v3 (2026-11-06): DIAGONAL WORDMARK corner to corner (-61.5deg, 145px Nikkiflixs +
-     34px/28px sub-lines, viewBox 0 0 510 936, group translate(255 468) rotate(-61.5)
-     translate(0 25) — COPY VERBATIM to every table); TAP TO TALK is a 68px CIRCLE
-     on the LEFT, up off the table (left:8px, bottom:225px); PASS moves DOWN to the
+     34px/28px sub-lines, viewBox 0 0 510 936, group translate(255 468) rotate(-63 in v4;
+     -61.5 in v3) translate(0 25); TAP TO TALK is a 68px CIRCLE
+     on the LEFT, up off the table (left:8px, bottom 225px in v3; 205px in v4); PASS moves DOWN to the
      bottom RIGHT where talk was (right:8px, bottom:118px); pass wording disappears
      on submit (asserted in harness); DIFFERENT PLAYERS: Marcus T. / Dana W. /
      Victor L. (avatars 07 / 24 / 11) — never Tony / Andre / Marcia again on Hearts.
+     v4 (2026-11-07): AUTO-DEAL — the tap-for-next button is GONE (button,
+     handler, hint, comment); after a hand ends Nikki deals the next one herself
+     (runDealAnimation: 52 card backs fly dealer -> seats in turn, 45ms apart,
+     then the pass starts by itself); TALK CIRCLE DOWN a little (bottom 225->205px,
+     centre (42,656)->(42,676) @412, (42,585)->(42,605) @390); WORDMARK ANGLE
+     -61.5 -> -63deg, l1 145 -> 150px, so the S end reaches more towards Nikki (dealer, top right)
+     and the N end more towards the bottom-left corner; GREYED CARDS ALL THE WAY
+     OUT — on the hero's turn illegal cards leave the fan into a collapsed pile
+     at the left (.sp-aside) and only playable cards stay in the fan (.sp-play),
+     lifted + glowing, so a playable card between two illegal cards is fully
+     exposed and tappable. All 9 old tap-for-next wordings reworded to "next deal".
      Rules: 52 cards, 13 each; pass 3 (LEFT, RIGHT, ACROSS, NO PASS, rotating);
      2 of clubs leads trick 1; must follow suit; hearts cannot be led until
      broken; Queen of spades = 13, each heart = 1; shoot the moon = 0 for you,
@@ -2774,10 +2790,19 @@ body.hearts-mode .nameplate span{display:none!important}
 .sp-trick .sp-card{margin:0}
 #spHand{display:flex;justify-content:center;align-items:flex-end;padding:6px 4px 2px;min-height:72px}
 #spHand .sp-card{cursor:pointer;transition:transform .12s}
-#spHand .sp-card.sp-playable:hover{transform:translateY(-8px)}
-#spHand .sp-card.sp-playable{outline:2px solid #f5cf6d}
+#spHand .sp-card.sp-playable:hover{transform:translateY(-10px)}
+#spHand .sp-card.sp-playable{outline:2px solid #ffe074;box-shadow:0 0 0 1px #ffe074,0 0 16px #ffd24fcc,0 6px 12px #000c;transform:translateY(-6px)}
 #spHand .sp-card.sp-selected{transform:translateY(-14px);outline:2px solid #35dd77}
 #spHand .sp-card.sp-dim{opacity:.45;pointer-events:none}
+/* v4 SPLIT FAN: illegal cards leave the fan into a collapsed pile at the left
+   (.sp-aside, 3px steps, dimmed, no pointer events); only playable cards stay
+   in the fan (.sp-play), lifted and glowing. The two groups are separate boxes
+   8px apart, so an illegal card can never cover a playable card. */
+#spHand .sp-aside{display:flex;align-items:flex-end;flex:0 0 auto;margin-right:8px}
+#spHand .sp-play{display:flex;align-items:flex-end;flex:0 0 auto}
+#spHand .sp-aside .sp-card{cursor:default}
+/* v4 DEAL: card backs that fly from the dealer to each seat in turn. */
+.sp-deal{position:fixed;z-index:80;width:42px;height:72px;border-radius:6px;pointer-events:none;background:linear-gradient(135deg,transparent 0 8%,#f1c55a 8% 12%,transparent 12% 20%,#f1c55a 20% 24%,transparent 24%),#650d1d;border:2px solid #f5cf6d;box-shadow:0 4px 10px #000c;transition:transform .38s ease,opacity .25s ease;margin:0}
 #spHand .sp-card+.sp-card{margin-left:-14px}
 .sp-card{width:42px;height:72px;background:#fffdf6;border:1px solid #999;border-radius:6px;color:#111;
   font:800 19px/1.05 sans-serif;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding:6px 0 0 4px;
@@ -2832,11 +2857,54 @@ function isQS(c){return c.suit==='\u2660'&&c.rank==='Q';}
 var S={phase:'lobby',hand:0,passDir:'LEFT',turn:0,leadSuit:null,heartsBroken:false,
   hands:{},passSel:[],pendingPass:{},handPoints:{0:0,2:0,4:0,6:0},tricks:{0:0,2:0,4:0,6:0},
   scores:{0:0,2:0,4:0,6:0},trick:[],trickCount:0,auto:false,speed:1,over:false,winner:null,moon:null,log:[],timers:[],
-  seated:false,pulling:false,lastWinner:null,lastLeader:null,resolveScheduled:false,resolvingTrick:false,pullNodes:[]};
+  seated:false,pulling:false,lastWinner:null,lastLeader:null,resolveScheduled:false,resolvingTrick:false,pullNodes:[],dealNodes:[],dealsDone:0};
 function log(m){S.log.push(m);if(S.log.length>200)S.log.shift();}
 function dly(ms,fn){var id=setTimeout(fn,Math.max(5,ms*S.speed));S.timers.push(id);return id;}
 function clearHtTimers(){S.timers.forEach(clearTimeout);S.timers=[];}
 function clearPullNodes(){if(S.pullNodes){S.pullNodes.forEach(function(n){if(n.parentNode)n.parentNode.removeChild(n);});S.pullNodes=[];}}
+function clearDealNodes(){if(S.dealNodes){S.dealNodes.forEach(function(n){if(n.parentNode)n.parentNode.removeChild(n);});S.dealNodes=[];}}
+function dealerCenter(){
+  var d=document.querySelector('.dealer img')||document.querySelector('.dealer');
+  if(d){var r=d.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};}
+  var t=document.querySelector('.table').getBoundingClientRect();
+  return {x:t.left+t.width-20,y:t.top+20};
+}
+function seatCenter(s){
+  var seat=document.querySelector('.seat[data-index="'+s+'"]');
+  if(seat){var r=seat.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};}
+  var t=document.querySelector('.table').getBoundingClientRect();
+  return {x:t.left+t.width/2,y:t.top+t.height/2};
+}
+function runDealAnimation(onDone){
+  /* v4 AUTO-DEAL: Nikki deals — 52 card backs fly from the dealer to each seat
+     in turn (round-robin, 45ms apart), land, fade, and are removed. The hero's
+     cards land on his hand slots; the bots' on their seats. Nothing rests
+     covering a portrait or a button — every deal card fades out where it lands. */
+  clearDealNodes();
+  var dc=dealerCenter();
+  var handR=handEl.getBoundingClientRect();
+  var heroCx=handR.left+handR.width/2,heroTop=handR.top+2;
+  var counts={0:0,2:0,4:0,6:0};
+  for(var i=0;i<52;i++){
+    (function(i){
+      var seat=SEATS[i%4],k=counts[seat]++;
+      dly(i*45,function(){
+        if(S.phase!=='dealing')return;
+        var n=document.createElement('div');n.className='sp-deal';
+        n.style.left=(dc.x-21)+'px';n.style.top=(dc.y-36)+'px';
+        document.body.appendChild(n);S.dealNodes.push(n);
+        var tx,ty;
+        if(seat===0){tx=heroCx+(k-6)*28;ty=heroTop+36;}
+        else{var sc=seatCenter(seat);tx=sc.x;ty=sc.y;}
+        void n.offsetWidth;
+        n.style.transform='translate('+Math.round(tx-dc.x)+'px,'+Math.round(ty-dc.y)+'px)';
+        dly(450,function(){n.style.opacity='0';});
+        dly(750,function(){if(n.parentNode)n.parentNode.removeChild(n);});
+      });
+    })(i);
+  }
+  dly(52*45+900,onDone);
+}
 function nextSeat(s){return SEATS[(SEATS.indexOf(s)+1)%4];}
 function prevSeat(s){return SEATS[(SEATS.indexOf(s)+3)%4];}
 function passDirFor(hand){var r=hand%4;return r===1?'LEFT':r===2?'RIGHT':r===3?'ACROSS':'NO PASS';}
@@ -2948,7 +3016,7 @@ function buildUI(){
   var room=document.getElementById('tableRoom');
   document.body.classList.add('hearts-mode');
   scoreEl=el('div');scoreEl.id='spScore';room.appendChild(scoreEl);
-  scoreEl.addEventListener('click',function(e){var id=e.target&&e.target.id;if(id==='spPassGo')submitPass();else if(id==='spNext')newHand();else if(id==='spAgain')newGame();});
+  scoreEl.addEventListener('click',function(e){var id=e.target&&e.target.id;if(id==='spPassGo')submitPass();else if(id==='spAgain')newGame();});
   var cam=document.querySelector('.camera')||room;
   var pos={0:['50%','68%'],2:['27%','48%'],4:['50%','28%'],6:['73%','48%']};
   SEATS.forEach(function(s){
@@ -2981,7 +3049,8 @@ function buildUI(){
 }
 function renderScore(){
   /* ONE small strip at the top edge (34px, y=62): scores in play, the pass
-     controls during the pass, NEXT HAND / NEW GAME after a hand. The strip
+     controls during the pass, NEW GAME after a game. No tap-to-deal button —
+     Nikki deals the next one automatically (v4 auto-deal). The strip
      is the ONLY overlay: it covers no player, no card and no button. */
   var lowest=Math.min(S.scores[0],S.scores[2],S.scores[4],S.scores[6]);
   function seg(s){
@@ -2990,10 +3059,12 @@ function renderScore(){
   }
   if(S.phase==='lobby'){
     scoreEl.innerHTML='<span class="sp-team">HEARTS \u00b7 LOWEST SCORE WINS \u00b7 GAME ENDS AT 100</span>';
+  }else if(S.phase==='dealing'){
+    scoreEl.innerHTML='<span class="sp-team">NIKKI IS DEALING HAND '+S.hand+'\u2026</span>';
   }else if(S.phase==='pass'){
     scoreEl.innerHTML='<span class="sp-team">PASS 3 CARDS \u2014 '+S.passDir+' \u00b7 '+S.passSel.length+' / 3</span><button type="button" id="spPassGo">PASS</button>';
   }else if(S.phase==='handEnd'){
-    scoreEl.innerHTML='<span class="sp-team">HAND '+S.hand+' \u2014 '+SEATS.map(function(s){return ({0:'YOU',2:'MARCUS',4:'DANA',6:'VICTOR'})[s]+' '+S.scores[s];}).join(' \u00b7 ')+'</span><button type="button" id="spNext">NEXT HAND</button>';
+    scoreEl.innerHTML='<span class="sp-team">HAND '+S.hand+' \u2014 '+SEATS.map(function(s){return ({0:'YOU',2:'MARCUS',4:'DANA',6:'VICTOR'})[s]+' '+S.scores[s];}).join(' \u00b7 ')+'</span>';
   }else if(S.phase==='gameOver'){
     scoreEl.innerHTML='<span class="sp-team">GAME OVER \u2014 '+({0:'YOU',2:'MARCUS',4:'DANA',6:'VICTOR'})[S.winner]+' WINS \u00b7 '+SEATS.map(function(s){return ({0:'YOU',2:'MARCUS',4:'DANA',6:'VICTOR'})[s]+' '+S.scores[s];}).join(' \u00b7 ')+'</span><button type="button" id="spAgain">NEW GAME</button>';
   }else{
@@ -3007,7 +3078,21 @@ function renderScore(){
 function renderHand(){
   handEl.innerHTML='';
   if(S.phase==='lobby'){if(sitInEl)handEl.appendChild(sitInEl);return;}
+  if(S.phase==='dealing')return; /* cards are in flight from the dealer — the hand appears when the deal lands */
   var legal=S.phase==='play'&&S.turn===0?legalCards(0):[];
+  /* v4 SPLIT FAN: on the hero's turn the illegal cards are pulled ALL THE WAY
+     OUT of the fan into a collapsed pile at the left (.sp-aside, 3px steps,
+     dimmed, pointer-events none) and only the playable cards stay in the fan
+     (.sp-play), lifted + glowing. An illegal card can never cover a playable
+     card — they live in different boxes 8px apart — so the middle playable
+     card is always fully exposed and tappable. When it is not the hero's
+     turn (or during the pass) the full fan shows as in v3. Wide playable
+     fans (11-12 cards) step 26px instead of 28px so the row still fits the
+     368px hand at 390px wide; ranks stay uncovered (a "10" rank ends at
+     +25px, the next card starts at +26px). */
+  var playStep=(legal.length>=11)?26:28;
+  var aside=null,play=null;
+  if(S.phase==='play'&&S.turn===0){aside=el('div','sp-aside');play=el('div','sp-play');}
   S.hands[0].forEach(function(c){
     var d=el('div','sp-card'+(isRed(c.suit)?' red':''));
     d.innerHTML='<b>'+c.rank+'</b><i>'+c.suit+'</i>';
@@ -3015,13 +3100,24 @@ function renderHand(){
       var sel=S.passSel.some(function(x){return x.rank===c.rank&&x.suit===c.suit;});
       if(sel)d.classList.add('sp-selected');
       d.onclick=function(){togglePassSelect(c);};
+      handEl.appendChild(d);
     }else if(S.phase==='play'&&S.turn===0){
       var ok=legal.some(function(l){return l.rank===c.rank&&l.suit===c.suit;});
-      if(ok)d.classList.add('sp-playable');else d.classList.add('sp-dim');
-      d.onclick=function(){heroPlay(c,d);};
+      if(ok){
+        d.classList.add('sp-playable');
+        if(play.childNodes.length)d.style.marginLeft=(-(42-playStep))+'px';
+        d.onclick=function(){heroPlay(c,d);};
+        play.appendChild(d);
+      }else{
+        d.classList.add('sp-dim');
+        if(aside.childNodes.length)d.style.marginLeft='-39px';
+        aside.appendChild(d);
+      }
+    }else{
+      handEl.appendChild(d);
     }
-    handEl.appendChild(d);
   });
+  if(aside){if(aside.childNodes.length)handEl.appendChild(aside);handEl.appendChild(play);}
 }
 function renderTrick(){
   SEATS.forEach(function(s){
@@ -3043,15 +3139,25 @@ function newHand(){
   S.passSel=[];S.pendingPass={};
   S.handPoints={0:0,2:0,4:0,6:0};S.tricks={0:0,2:0,4:0,6:0};
   S.trick=[];S.trickCount=0;S.heartsBroken=false;S.leadSuit=null;S.over=false;S.moon=null;
-  S.resolvingTrick=false;S.resolveScheduled=false;S.pulling=false;S.lastWinner=null;S.lastLeader=null;S.pullTarget=null;clearPullNodes();
+  S.resolvingTrick=false;S.resolveScheduled=false;S.pulling=false;S.lastWinner=null;S.lastLeader=null;S.pullTarget=null;clearPullNodes();clearDealNodes();
   log('Hand '+S.hand+' dealt. Pass: '+S.passDir+'.');
-  if(S.passDir==='NO PASS'){hint('Hand '+S.hand+' — no pass this hand.');startPlay();return;}
-  S.phase='pass';
+  /* v4 AUTO-DEAL: no tap-to-deal button. Nikki deals the cards
+     out one by one (runDealAnimation: card backs fly from the dealer to each
+     seat in turn) and the hand starts by itself when the deal lands. */
+  S.phase='dealing';
   renderScore();renderHand();renderTrick();
-  SEATS.forEach(function(s){if(s!==0)S.pendingPass[s]=botPass(s);});
-  hint('Hand '+S.hand+' — pass 3 cards '+S.passDir+'. Tap 3 cards, then PASS.');
-  showPassPanel();
-  renderScore();
+  hint('Nikki is dealing hand '+S.hand+'\u2026');
+  runDealAnimation(function(){
+    if(S.phase!=='dealing')return;
+    S.dealsDone++;
+    if(S.passDir==='NO PASS'){hint('Hand '+S.hand+' — no pass this hand.');startPlay();return;}
+    S.phase='pass';
+    renderScore();renderHand();renderTrick();
+    SEATS.forEach(function(s){if(s!==0)S.pendingPass[s]=botPass(s);});
+    hint('Hand '+S.hand+' — pass 3 cards '+S.passDir+'. Tap 3 cards, then PASS.');
+    showPassPanel();
+    renderScore();
+  });
 }
 function togglePassSelect(c){
   if(S.phase!=='pass')return;
@@ -3270,7 +3376,9 @@ function scoreHand(){
     renderScore();
     return;
   }
-  hint('Hand '+S.hand+' done. Tap NEXT HAND in the score strip.');
+  hint('Hand '+S.hand+' done. Nikki is dealing again\u2026');
+  /* v4 AUTO-DEAL: Nikki deals the next one herself — no button, no tap. */
+  dly(2200,function(){if(!S.over&&S.phase==='handEnd')newHand();});
 }
 function newGame(){
   clearHtTimers();
@@ -3278,7 +3386,7 @@ function newGame(){
   newHand();
 }
 function sitIn(){
-  /* NO auto-deal: the table loads empty and waits. SIT IN starts the game. */
+  /* SIT IN starts the game — the first hand deals automatically (v4 auto-deal). */
   if(S.phase!=='lobby')return;
   S.seated=true;
   if(sitInEl&&sitInEl.parentNode)sitInEl.parentNode.removeChild(sitInEl);
@@ -3309,7 +3417,7 @@ window.__heartsTest={
     heartsBroken:S.heartsBroken,trickCount:S.trickCount,
     heroHand:S.hands[0]?S.hands[0].map(cardId):[],trick:S.trick.map(function(p){return NAMES[p.seat]+':'+cardId(p.card);}),
     passSelected:S.passSel.map(cardId),moon:S.moon,winner:S.winner,
-    log:S.log.slice(-20),over:S.over,seated:S.seated,pulling:!!S.pulling,lastWinner:S.lastWinner,lastLeader:S.lastLeader,pullTarget:S.pullTarget||null,resolving:S.resolvingTrick,resolveScheduled:S.resolveScheduled,timers:S.timers.length};},
+    log:S.log.slice(-20),over:S.over,seated:S.seated,pulling:!!S.pulling,lastWinner:S.lastWinner,lastLeader:S.lastLeader,pullTarget:S.pullTarget||null,resolving:S.resolvingTrick,resolveScheduled:S.resolveScheduled,dealsDone:S.dealsDone,dealing:S.phase==='dealing',dealCards:(S.dealNodes||[]).length,timers:S.timers.length};},
   pass:function(cards){submitPass(cards);},
   sitIn:function(){sitIn();},
   playLowest:function(){if(S.phase==='play'&&S.turn===0){var c=botChoose(0);playCard(0,c);return cardId(c);}return null;},
@@ -3329,7 +3437,7 @@ window.__heartsTest={
   scoreHandPoints:function(hp){return scoreHandPoints(hp);},
   dealTest:function(hands){
     /* Scripted deal for harness checks: hands = {0:['Q\u2660','2\u2663',...], ...} (13 each). Skips the pass; 2 of clubs leads. */
-    clearHtTimers();
+    clearHtTimers();clearDealNodes();
     SEATS.forEach(function(s){
       S.hands[s]=(hands[s]||[]).map(function(id){
         return {rank:id.slice(0,-1),suit:id.slice(-1)};
