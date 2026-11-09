@@ -1077,24 +1077,6 @@ button,.button,[role="button"]{touch-action:manipulation}
 .nf6-deal-price{font:800 18px/1.2 sans-serif;color:#fff;text-align:center;margin:2px 0}
 .nf6-deal-note{font:600 13px/1.4 sans-serif;color:#ffe9a8;text-align:center;margin:6px 0 12px}
 .nf6-deal-claim{width:100%;padding:14px;font:800 18px/1 sans-serif}
-  /* v9: a game that is not built yet never gets a live-looking button. */
-  .nf6-play-disabled{opacity:.45 !important;filter:grayscale(1);cursor:not-allowed !important;}
-  /* v9 SLOTS: real illustrated machines — gold cabinet, SVG reel symbols. */
-  .nf9-cabinet{border:3px solid #d4af37;border-radius:14px;padding:14px;background:linear-gradient(180deg,#3a2a12,#171204);box-shadow:0 0 0 2px #7a5200,0 8px 22px rgba(0,0,0,.6);margin:8px 0;}
-  .nf9-reels{display:flex;gap:8px;justify-content:center;}
-  .nf9-reel{flex:1;max-width:96px;aspect-ratio:1/1;background:linear-gradient(180deg,#fff8dc,#f5e6b8);border:3px solid #d4af37;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:4px;}
-  .nf9-reel svg{width:100%;height:100%;display:block;}
-  .nf9-pay{font-size:12px;line-height:1.5;color:#f5d97a;text-align:center;margin-top:10px;}
-  .nf9-slot-card{border:2px solid #d4af37;border-radius:12px;padding:10px;margin:10px 0;background:linear-gradient(180deg,#2a2110,#171204);text-align:center;}
-  .nf9-slot-card .nf9-mini{display:flex;gap:6px;justify-content:center;}
-  .nf9-slot-card .nf9-mini span{width:52px;height:52px;background:linear-gradient(180deg,#fff8dc,#f5e6b8);border:2px solid #d4af37;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:3px;}
-  .nf9-slot-card .nf9-mini svg{width:100%;height:100%;display:block;}
-  /* v9 HOSTS: two hosts side by side, unframed portraits (BARE-HEADS). */
-  .nf9-hosts{display:flex;gap:10px;padding:8px 10px 2px;justify-content:center;}
-  .nf9-host{flex:1;max-width:190px;background:transparent;border:0;padding:0;cursor:pointer;}
-  .nf9-host-img{display:block;width:100%;height:104px;object-fit:cover;object-position:top center;}
-  .nf9-host-name{text-align:center;font-size:13px;font-weight:700;color:#f5d97a;margin-top:3px;}
-  .nf9-host-line{text-align:center;font-size:14px;font-weight:600;color:#fff;padding:6px 12px 8px;min-height:30px;}
 .nf6-deal-result{text-align:center;font:800 15px/1.4 sans-serif;color:#8fff9a;min-height:22px;margin-top:8px}
 .nf6-shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
 .nf6-shop-card{background:linear-gradient(180deg,#2a1a10,#171115);border:2px solid #f5cf6d;border-radius:12px;padding:10px 8px;text-align:center;color:#ffe9a8}
@@ -1298,7 +1280,7 @@ button,.button,[role="button"]{touch-action:manipulation}
 (function(){
   var stage=document.getElementById('stage'),camera=document.getElementById('camera'),seats=Array.prototype.slice.call(document.querySelectorAll('.seat')),motion=document.getElementById('motion'),deck=document.getElementById('deck'),muck=document.getElementById('muck'),potChips=document.getElementById('potChips'),potValueNode=document.getElementById('potValue'),statusMain={textContent:''},statusTrail={textContent:''},turnCopy={textContent:''},toast=document.getElementById('toast'),buttons=Array.prototype.slice.call(document.querySelectorAll('.action')),addButton=document.getElementById('addChips');
   var localSeatAbsolute=0;
-  var activeConfig={game:'holdem',maxSeats:8,sb:1,bb:2,holeCards:2,freeTable:false},timers=[],pot=0,dealerButton=1,handRunning=false,pendingUser=null,pendingRaiseState=null,selectedRaiseTo=null,audio=null,alertsUnlocked=false,audioSilenced=false,gameStarted=true,alertCount=0,micStream=null,bank=500,minimumBuyin=1,handFolded={},handAllIn={},sittingOut={},waitingForBigBlind=false,pendingJoinNextHand=false,liveSnapshotActive=false,seatHoldTimer=null,seatHoldUntil=0,turnToken=0,handNumber=0,gameSpeed=1,spectateFirstHand=false,auditLog=[],handContributions=[0,0,0,0,0,0,0,0],localSeatAbsolute=0,roundBetTotals=[0,0,0,0,0,0,0,0],currentAggressor=null,liveTransport=null,mpMode=false,mpSpectating=false,mpStalled=false,mpJoined=false,mpWantSeat=null,reconnecting=false,lastServerRevision=0,reconnectBannerTimer=null,leaderboardRevision=0,accountRevision=0,accountConnected=false,dailyBonusAvailable=false,dailyBonusPending=false;
+  var activeConfig={game:'holdem',maxSeats:8,sb:1,bb:2,holeCards:2,freeTable:false},timers=[],pot=0,dealerButton=1,handRunning=false,pendingUser=null,pendingRaiseState=null,selectedRaiseTo=null,audio=null,alertsUnlocked=false,gameStarted=true,alertCount=0,micStream=null,bank=500,minimumBuyin=1,handFolded={},handAllIn={},sittingOut={},waitingForBigBlind=false,pendingJoinNextHand=false,liveSnapshotActive=false,seatHoldTimer=null,seatHoldUntil=0,turnToken=0,handNumber=0,gameSpeed=1,spectateFirstHand=false,auditLog=[],handContributions=[0,0,0,0,0,0,0,0],localSeatAbsolute=0,roundBetTotals=[0,0,0,0,0,0,0,0],currentAggressor=null,liveTransport=null,mpMode=false,mpSpectating=false,mpStalled=false,mpJoined=false,mpWantSeat=null,reconnecting=false,lastServerRevision=0,reconnectBannerTimer=null,leaderboardRevision=0,accountRevision=0,accountConnected=false,dailyBonusAvailable=false,dailyBonusPending=false;
     var mpWaitingForNextHand=false; 
   var emptyBotSeat={},pendingBotSeat={},botSeatIn={},BOT_POOL=['Big Sal','Dee R.','Hank P.','Rosa M.','Chad W.','Pearl J.','Omar S.','Gus T.','Ivy L.','Frank D.','Lena K.','Moe B.','Tara S.','Vince R.','Opal G.','Duke H.','Nina P.','Cleo B.','Rudy F.','Sadie W.'];
   /* ONE WALLET — the coin store, this table and the casino games share ONE balance: localStorage 'nikkiflixs_bankroll'. Coins bought in the store land here; every page reads and writes the same key. */
@@ -1317,25 +1299,15 @@ button,.button,[role="button"]{touch-action:manipulation}
 
   var names=seats.map(function(s){return s.querySelector('strong').textContent});
   var stacks=seats.map(function(seat){return Number(seat.querySelector('.nameplate span').textContent.replace(/[^0-9]/g,''))||0});
-  /* v9 SCALED STACKS (Jerry 2026-11-09, CORRECTED rule — supersedes the
-     400-600xBB formula): hero (admin, bank 450M) starts at 1,200,000 GC
-     at EVERY tier; bots start at fixed per-seat amounts between 100 and
-     200,000 GC, all different, most up in the tens/hundreds of thousands
-     — real players can WIN that money. These ARE the engine stacks:
-     setStack is the single writer, so the nameplate number and the stack
-     the game plays with can never differ. */
-  var NF9_BOT_STACKS={1:80000,2:120000,3:150000,4:100000,5:200000,6:90000,7:175000};
-  function nf9HeroStack(){var bb=(typeof activeConfig!=='undefined'&&activeConfig&&activeConfig.bb)?activeConfig.bb:2;return Math.min(bank,Math.max(1200000,600*bb));}
-  function nf9BotStack(index){var v=NF9_BOT_STACKS[index];return (typeof v==='number')?v:100000;}
   function setStack(index,value){stacks[index]=Math.max(0,Math.floor(value));var _sp=seats[index].querySelector('.nameplate span'),_st=money(stacks[index]);if(_sp.textContent!==_st)_sp.textContent=_st;seats[index].querySelector('.seat-chips').classList.toggle('empty',stacks[index]===0)}
   function commitChips(index,requested,reason){var paid=Math.min(stacks[index],Math.max(0,Math.floor(requested)));setStack(index,stacks[index]-paid);handContributions[index]=(handContributions[index]||0)+paid;if(stacks[index]===0)handAllIn[index]=true;logEvent('stack-deducted',{seat:index,name:names[index],reason:reason,amount:paid,remaining:stacks[index]});if(paid>0)sfx('chips');return paid}
   var pendingCreatorReset=false;
   function applyCreatorReset(src,force){
     /* the reset itself: BETWEEN hands only; automatic resets fire only
-       from under 100; the amount is the hero's scaled stack (v9: 1.2M+) */
+       from under 100; the amount is always 5,000 */
     if(handRunning)return false;
     if(!force&&stacks[localSeatAbsolute]>=100){logEvent('creator-refill-skipped',{src:src,reason:'stack-100-plus',stack:stacks[localSeatAbsolute]});return false}
-    setStack(localSeatAbsolute,nf9HeroStack());
+    setStack(localSeatAbsolute,5000);
     pendingJoinNextHand=true;clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;
     seats[localSeatAbsolute].classList.remove('out-of-chips');
     
@@ -1364,10 +1336,10 @@ button,.button,[role="button"]{touch-action:manipulation}
     logEvent('seat-held-for-reload',{seat:index,holdSeconds:180,until:seatHoldUntil});
     if(creatorOn())refillCreator('auto-bust');
   }
-  function freshBotStack(index){var i=(typeof index==='number')?index:-1;if(NF9_BOT_STACKS[i])return NF9_BOT_STACKS[i];return 100000;}
+  function freshBotStack(){var base=Math.max(activeConfig.bb*60,stacks[0]||0);return Math.max(activeConfig.bb*20,Math.round(base*(.5+Math.random()*1.3)/5)*5)}
   var PROMISE_SEAT=5; /* PROMISE PERMANENT SEAT: Promise never leaves, not even for a human. She is never rotated out, never made-room out, and never replaced by a random bot. If she busts she reloads and stays. */
   function botLeaves(index,reason){
-    if(index===PROMISE_SEAT){if(stacks[index]<=0){setStack(index,freshBotStack(index));delete sittingOut[index];delete handFolded[index];seats[index].classList.remove('folded','out-of-chips','seat-open');logEvent('promise-permanent-rebuy',{seat:index,reason:reason,hand:handNumber})}else{logEvent('promise-permanent-blocked',{seat:index,reason:reason,hand:handNumber})}return}
+    if(index===PROMISE_SEAT){if(stacks[index]<=0){setStack(index,freshBotStack());delete sittingOut[index];delete handFolded[index];seats[index].classList.remove('folded','out-of-chips','seat-open');logEvent('promise-permanent-rebuy',{seat:index,reason:reason,hand:handNumber})}else{logEvent('promise-permanent-blocked',{seat:index,reason:reason,hand:handNumber})}return}
     emptyBotSeat[index]=true;sittingOut[index]=true;handFolded[index]=true;setStack(index,0);clearGiftStay(index); 
     var seat=seats[index];seat.classList.add('seat-open');seat.querySelector('.nameplate strong').textContent='OPEN SEAT';var wrap=seat.querySelector('.portrait-wrap');if(wrap){wrap.style.opacity='.16';wrap.style.filter='grayscale(1)'}
     logEvent('bot-left',{seat:index,name:names[index],reason:reason,hand:handNumber});
@@ -1384,7 +1356,7 @@ button,.button,[role="button"]{touch-action:manipulation}
     var avPool=(FEMALE_BOT_NAMES.indexOf(name)>-1?[16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]).map(function(a){return 'https://nikkiflixs.com/assets/avatars/gallery/avatar-'+(a<10?'0':'')+a+'.png'});
     var free=avPool.filter(function(p){return !usedAv[p]});
     var av=free.length?free[Math.floor(Math.random()*free.length)]:avPool[Math.floor(Math.random()*avPool.length)];/* duplicate beats mismatch: if every matched avatar is taken, reuse a matched one rather than falling back to a wrong-gender avatar */
-    var stack=freshBotStack(index),seat=seats[index],img=seat.querySelector('.portrait');
+    var stack=freshBotStack(),seat=seats[index],img=seat.querySelector('.portrait');
     names[index]=name;botSeatIn[index]=stack;if(img){img.src=av;img.alt=name;img.setAttribute('data-neutral-src',av);img.onerror=null}
     var wrap2=seat.querySelector('.portrait-wrap');if(wrap2){wrap2.style.opacity='';wrap2.style.filter=''}
     seat.classList.remove('seat-open','out-of-chips','folded'); 
@@ -1425,9 +1397,9 @@ button,.button,[role="button"]{touch-action:manipulation}
   function buzz(pattern){if(alertsUnlocked&&navigator.vibrate){navigator.vibrate(pattern);return true}return false}
   var sfxLast={},sfxNoiseBuf=null;
 function sfx(kind){
-    if(!alertsUnlocked||!audio||audioSilenced)return;
+    if(!alertsUnlocked||!audio)return;
     try{
-      if(audio.state==='suspended'&&!audioSilenced)audio.resume();
+      if(audio.state==='suspended')audio.resume();
       var now=audio.currentTime;
       if(kind==='chips'){
         if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;
@@ -1449,10 +1421,9 @@ function sfx(kind){
   }
   function unlockAlerts(){
     alertsUnlocked=true;
-    if(audioSilenced)return Promise.resolve();
     try{
       if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();
-      var resumed=(audio.state==='suspended'&&!audioSilenced)?audio.resume():Promise.resolve();
+      var resumed=audio.state==='suspended'?audio.resume():Promise.resolve();
       var oscillator=audio.createOscillator(),gain=audio.createGain();gain.gain.value=.00001;oscillator.connect(gain);gain.connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.02);
       return resumed
     }catch(e){return Promise.resolve()}
@@ -1469,8 +1440,8 @@ function sfx(kind){
   }
   function playSfx(name,vol){
     try{
-      if(window.__nfMuted)return false; if(!alertsUnlocked||!audio||audioSilenced||!sfxBuffers[name])return false;
-      if(audio.state==='suspended'&&!audioSilenced)audio.resume();
+      if(window.__nfMuted)return false; if(!alertsUnlocked||!audio||!sfxBuffers[name])return false;
+      if(audio.state==='suspended')audio.resume();
       var src=audio.createBufferSource();src.buffer=sfxBuffers[name];
       var g=audio.createGain();g.gain.value=(vol==null?.5:vol);
       src.connect(g);g.connect(audio.destination);src.start();return true;
@@ -1621,7 +1592,6 @@ function sfx(kind){
       if(mpMode||liveSnapshotActive)return; /* R5: the live server owns the table */
       if(handRunning)return;
       if(tableRoom.classList.contains('is-hidden'))return;
-      if(window.__nfAway)return; /* v9: away — no new hand while he is gone */
       clearTimers();disarmAll();prepareNextHand();
       handRunning=true;
       GF_deck=GF_newDeck();handNumber++;saveResumeMarker();
@@ -1706,57 +1676,7 @@ function sfx(kind){
       indices.forEach(function(index,n){later(n*420,function(){  document.querySelectorAll('.board-card')[index].style.opacity='1';statusMain.textContent=label+' · CARD '+(n+1)+' OF '+indices.length})});
       later(indices.length*420+250,done);
     }
-    /* v9 BOT MIX (Jerry 2026-11-09 — supersedes pat-only): NOT every
-       bot plays pat — a table of only pat-players folds every hand.
-       Each bot has its own style, so hands have action, bets, calls,
-       raises and a showdown — but bots stay beatable: no sharks, and
-       they still fold weak hands sometimes. Styles by seat:
-       1 Ross V. tight (pat only — the old policy), 2 Tony C. loose
-       (draws + pairs, calls), 3 Mason R. bluff (raises weak sometimes),
-       4 Andre K. tight-aggressive (pat only, raises strong often),
-       5 Promise balanced (pat + good draws), 6 Marcia J. station
-       (calls almost anything, never raises), 7 Luis G. loose-aggressive. */
-    var NF9_BOT_STYLE={1:'tight',2:'loose',3:'bluff',4:'tag',5:'balanced',6:'station',7:'looseagg'};
-    function nf9PatHand(index,label){
-      var cards=demoHands[index];
-      if(label==='PREFLOP'){
-        var a=cardValue(cards[0][0]),b=cardValue(cards[1][0]);
-        var pair=a===b, suited=cards[0][1]===cards[1][1];
-        var strong=(pair&&a>=12)||(a===14&&b===13)||(a===13&&b===14);
-        var play=strong||(pair&&a>=8)||(suited&&((a===14&&b===12)||(a===12&&b===14)||(a===13&&b===12)||(a===12&&b===13)));
-        return {play:play, strong:strong};
-      }
-      var shown=label==='FLOP'?3:label==='TURN'?4:5;
-      var board=boardCards.slice(0,shown);
-      var rank=bestGameSelection(board,cards).rank;
-      var boardTop=Math.max.apply(null,board.map(function(c){return cardValue(c[0])}));
-      if(rank[0]>=2) return {play:true, strong:rank[0]>=3};
-      if(rank[0]===1){ var pv=rank[1]; var play=(pv===boardTop)||(pv>=11); return {play:play, strong:play&&(pv>=13||(pv===boardTop&&pv>=12))}; }
-      return {play:false, strong:false};
-    }
-    function nf9HandShape(index,label){
-      var pat=nf9PatHand(index,label),cards=demoHands[index];
-      if(label==='PREFLOP'){
-        var a=cardValue(cards[0][0]),b=cardValue(cards[1][0]);
-        var pair=a===b,suited=cards[0][1]===cards[1][1];
-        var high=(a>=10&&b>=10),ace=(a===14||b===14),conn=Math.abs(a-b)<=2&&Math.min(a,b)>=5;
-        return {pat:pat.play,strong:pat.strong,draw:suited||conn,drawStrong:suited&&conn,medium:pair||high||(ace&&suited)||(a===13&&b===12)||(a===12&&b===13),overcards:high};
-      }
-      var shown=label==='FLOP'?3:label==='TURN'?4:5;
-      var board=boardCards.slice(0,shown),all=board.concat(cards);
-      var rank=bestGameSelection(board,cards).rank;
-      var boardTop=Math.max.apply(null,board.map(function(c){return cardValue(c[0])}));
-      var suits={}; all.forEach(function(c){suits[c[1]]=(suits[c[1]]||0)+1;});
-      var flushDraw=false; Object.keys(suits).forEach(function(s){if(suits[s]>=4)flushDraw=true;});
-      var vals={}; all.forEach(function(c){var v=cardValue(c[0]);vals[v]=1;if(v===14)vals[1]=1;});
-      var u=Object.keys(vals).map(Number).sort(function(x,y){return x-y;});
-      var open=false,gut=false,i,j;
-      for(i=0;i<u.length;i++){for(j=i+3;j<u.length&&j<=i+4;j++){if(u[j]-u[i]===j-i&&j-i+1>=4)open=true;}}
-      for(i=0;i+3<u.length;i++){if(u[i+3]-u[i]===4)gut=true;}
-      var lo=Math.min(cardValue(cards[0][0]),cardValue(cards[1][0]));
-      return {pat:pat.play,strong:pat.strong,draw:flushDraw||open||gut,drawStrong:flushDraw||open,medium:rank[0]===1||(lo>boardTop),overcards:lo>boardTop};
-    }
-    function GF_botDecision(index,state,label){ /* v9 BOT MIX: per-seat styles — tight, loose, bluff, tag, balanced, station, loose-aggressive. */
+    function GF_botDecision(index,state,label){ /* bot policy, unchanged in spirit: fold weak, call decent, raise strong, check marginal; most bots fold most hands */
       var toCall=Math.max(0,state.currentBet-state.contribution),roll=Math.random(),cards=demoHands[index],score=0;
       if(label==='PREFLOP'){var a=cardValue(cards[0][0]),b=cardValue(cards[1][0]);score=Math.max(a,b)/14+(a===b?.8:0)+(cards[0][1]===cards[1][1]?.16:0)+(Math.abs(a-b)<=2?.12:0)}
       else{var shown=label==='FLOP'?3:label==='TURN'?4:5,rank=bestGameSelection(boardCards.slice(0,shown),cards).rank;score=rank[0]+((rank[1]||0)/20)}
@@ -1769,67 +1689,11 @@ function sfx(kind){
         else{var _shown=label==='FLOP'?3:label==='TURN'?4:5,_br=bestGameSelection(boardCards.slice(0,_shown),cards).rank,_boardTop=Math.max.apply(null,boardCards.slice(0,_shown).map(function(c){return cardValue(c[0])}));_premium=_br[0]>=2||(_br[0]===1&&_br[1]>_boardTop)}
         if(!_premium)return{choice:'fold'};
         if(toCall)return{choice:'call'};return{choice:'check'};}
-      /* v9 BOT MIX: one style per seat (see NF9_BOT_STYLE above).
-         Tight/tag play pat only; loose/station/balanced play draws
-         and medium hands too; bluff/looseagg raise weak hands
-         SOMETIMES (never always) — so hands have action and a
-         showdown, and real players can still win the bots' money.
-         The _largeAllIn premium block above still folds non-premium
-         hands against a big all-in. A free check is still free. */
-      var style=(typeof NF9_BOT_STYLE!=='undefined'&&NF9_BOT_STYLE[index])||'tight';
-      var shape=nf9HandShape(index,label);
-      if(toCall>0){
-        if(style==='tight'){
-          if(!shape.pat) return {choice:'fold'};
-          if(shape.strong&&state.canRaise&&roll<.35) return {choice:'raise', raiseBy:activeConfig.bb*2};
-          return {choice:'call'};
-        }
-        if(style==='tag'){
-          if(!shape.pat) return {choice:'fold'};
-          if(shape.strong&&state.canRaise&&roll<.65) return {choice:'raise', raiseBy:activeConfig.bb*2};
-          return {choice:'call'};
-        }
-        if(style==='balanced'){
-          if(shape.pat){ if(shape.strong&&state.canRaise&&roll<.45) return {choice:'raise', raiseBy:activeConfig.bb*2}; return {choice:'call'}; }
-          if(shape.drawStrong) return {choice:'call'};
-          if(shape.medium&&roll<.5) return {choice:'call'};
-          return {choice:'fold'};
-        }
-        if(style==='loose'){
-          if(shape.pat) return {choice:'call'};
-          if(shape.draw||shape.medium) return {choice:'call'};
-          if(shape.overcards&&roll<.5) return {choice:'call'};
-          return {choice:'fold'};
-        }
-        if(style==='station'){
-          if(shape.pat||shape.draw||shape.medium||shape.overcards) return {choice:'call'};
-          if(cardValue(cards[0][0])===14||cardValue(cards[1][0])===14) return {choice:'call'};
-          return {choice:'fold'};
-        }
-        if(style==='looseagg'){
-          if(shape.strong&&state.canRaise&&roll<.5) return {choice:'raise', raiseBy:activeConfig.bb*2};
-          if(shape.pat) return {choice:'call'};
-          if(shape.drawStrong||shape.medium){ if(state.canRaise&&roll<.15) return {choice:'raise', raiseBy:activeConfig.bb*2}; return {choice:'call'}; }
-          if(shape.draw&&roll<.6) return {choice:'call'};
-          if(state.canRaise&&roll<.12) return {choice:'raise', raiseBy:activeConfig.bb*2};
-          return {choice:'fold'};
-        }
-        /* bluff: raises strong, calls made hands + good draws,
-           bluff-raises weak hands sometimes (never always). */
-        if(shape.strong&&state.canRaise&&roll<.6) return {choice:'raise', raiseBy:activeConfig.bb*2};
-        if(shape.pat) return {choice:'call'};
-        if(shape.drawStrong) return {choice:'call'};
-        if(state.canRaise&&roll<.25) return {choice:'raise', raiseBy:activeConfig.bb*2};
-        if(shape.draw||shape.medium) return {choice:'call'};
-        return {choice:'fold'};
-      }
-      if(shape.strong&&state.canRaise){
-        var _rr=style==='tag'?.6:style==='bluff'?.5:style==='looseagg'?.45:style==='balanced'?.4:.3;
-        if(roll<_rr) return {choice:'raise', raiseBy:activeConfig.bb*2};
-      }
-      if(style==='bluff'&&state.canRaise&&roll<.2) return {choice:'raise', raiseBy:activeConfig.bb*2};
-      if(style==='looseagg'&&shape.medium&&state.canRaise&&roll<.1) return {choice:'raise', raiseBy:activeConfig.bb*2};
-      return {choice:'check'};
+      if(!state.canRaise){if(toCall){if(decent&&roll>.12+pressure*.35)return{choice:'call'};if(pressure<.18&&roll<.34)return{choice:'call'};return{choice:'fold'}}return{choice:'check'}}
+      if(strong&&roll<(.48-pressure*.25))return{choice:'raise',raiseBy:10+5*Math.floor(Math.random()*4)};
+      if(toCall){if(decent&&roll>.12+pressure*.35)return{choice:'call'};if(pressure<.18&&roll<.34)return{choice:'call'};return{choice:'fold'}}
+      if(strong&&roll<.42)return{choice:'raise',raiseBy:10+5*Math.floor(Math.random()*4)};
+      return{choice:'check'};
     }
     function GF_playHand(smallBlindPaid,bigBlindPaid){ /* R2: the street chain — each round closes (R3) before the next street is revealed */
       handParts=[];seats.forEach(function(s,i){if(!handFolded[i]){handParts.push(i);ps(i).hands++}});
@@ -2536,32 +2400,6 @@ function GF_showdown() {
   talk.addEventListener('click',toggleTalk);
   document.addEventListener('visibilitychange',function(){if(document.hidden)stopTalk()});window.addEventListener('pagehide',stopTalk);
   window.__pokerTest.getMicrophoneProof=function(){return{requestCount:micRequestCount,pending:micRequestPending,active:!!micStream,buttonText:talk.textContent,help:microphoneHelp({name:'NotAllowedError'}),events:auditLog.filter(function(item){return item.type.indexOf('microphone-')===0}).slice(-4)}};
-  /* v9 AUDIO STOP (Jerry 2026-11-09, strengthened 2026-11-09: he X'd out
-     10 minutes ago and STILL hears it): exiting a game must STOP all audio
-     COMPLETELY — not a fade, not suspend-and-resume. The AudioContext is
-     CLOSED (a closed context can never sound again), the mics are stopped,
-     the live voice peers are closed AND blocked from re-creating (the next
-     live snapshot would re-make them), and every <audio> element is paused.
-     The HAND is NOT stopped — it keeps its state in memory (seat, cards,
-     pot, hand number) and runs to completion silently; the next hand is
-     blocked while he is away (window.__nfAway). Re-entry resumes audio +
-     the hand. */
-  window.__nfStopAllAudio=function(){audioSilenced=true;try{window.__nfAudioStopped=true;}catch(e){}try{if(typeof stopTalk==='function')stopTalk();}catch(e){}try{if(typeof stopCasinoTalk==='function')stopCasinoTalk();}catch(e){}try{if(window.__nfStopLiveVoice)window.__nfStopLiveVoice();}catch(e){}try{document.querySelectorAll('audio').forEach(function(a){try{a.pause();a.srcObject=null;}catch(e){}});}catch(e){}try{if(audio){try{audio.close();}catch(e){}audio=null;}}catch(e){}return{silenced:true,context:null,mic:!!micStream};};
-  window.__nfResumeAudio=function(){audioSilenced=false;try{window.__nfAudioStopped=false;}catch(e){}try{if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();if(audio&&audio.state==='suspended')audio.resume();}catch(e){}return{silenced:false,context:audio?audio.state:null};};
-  window.__nfAudioState=function(){var tt=null;try{tt=talk.textContent;}catch(e){}var ae=0,ap=0;try{document.querySelectorAll('audio').forEach(function(a){ae++;if(!a.paused&&!a.ended)ap++;});}catch(e){}var snd={};try{snd=window.__snd||{};}catch(e){}return{silenced:audioSilenced,audioStopped:!!window.__nfAudioStopped,context:audio?audio.state:null,mic:!!micStream,talk:tt,timers:timers.length,handRunning:handRunning,hand:handNumber,audioEls:ae,audioPlaying:ap,snd:snd};};
-  /* v9 RE-ENTRY — resume the hand without restarting it. If the hand he
-     left is still live, it is already running (kept in memory) — just show
-     it. If it ended while he was away, deal the NEXT hand. Never a reset. */
-  window.__nfResumeHand=function(){try{window.__nfAway=false;}catch(e){}try{var tr=document.getElementById('tableRoom');if(tr&&tr.classList.contains('is-hidden'))return{running:handRunning,hand:handNumber,hidden:true};if(handRunning)return{running:true,hand:handNumber,resumed:true};GF_startHand();return{running:handRunning,hand:handNumber,next:true};}catch(e){return{running:handRunning,hand:handNumber,error:String(e)}};};
-  /* v9 RE-ENTRY — release the hero seat after the 3-minute hold expires:
-     out of the hand, seat empty, stack recorded (the test copy never debits
-     the bank on sit-in, so there is nothing to credit back here — the live
-     server credits the stack to the bank server-side). */
-  window.__nfReleaseSeat=function(){try{sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;pendingJoinNextHand=false;}catch(e){}try{var s=document.querySelector('.seat[data-index="0"]');if(s)s.classList.add('empty-seat');}catch(e){}return{seat:localSeatAbsolute,stack:stacks[localSeatAbsolute],hand:handNumber};};
-  window.__nfSaveResume=function(){try{saveResumeMarker();}catch(e){}return true;};
-  /* v9 BOT PAT PROBE (test hook): scripted bot decisions against known
-     hands — saves/restores the live hand, so the probe never corrupts it. */
-  window.__pokerTest.botPatProbe=function(seat,hole,board,label,toCall){var saveH=demoHands[seat]?demoHands[seat].slice():[],saveB=boardCards.slice();try{demoHands[seat]=hole.slice();boardCards=board.slice();var d=GF_botDecision(seat,{currentBet:toCall,contribution:0,canRaise:true},label);return{choice:d.choice,raiseBy:d.raiseBy||0};}finally{demoHands[seat]=saveH;boardCards=saveB;}};
   var leaderboardModal=document.getElementById('leaderboardModal'),leaderboardStatus=document.getElementById('leaderboardStatus'),leaderboardList=document.getElementById('leaderboardList'),leaderboardPeriod=document.getElementById('leaderboardPeriod'),championPortrait=document.getElementById('championPortrait'),championName=document.getElementById('championName'),championMonth=document.getElementById('championMonth'),championScore=document.getElementById('championScore');
   var leaderboardAvatars={"avatar-1":"https://nikkiflixs.com/assets/avatars/gallery/avatar-01.png","avatar-2":"https://nikkiflixs.com/assets/avatars/gallery/avatar-17.png","avatar-3":"https://nikkiflixs.com/assets/avatars/gallery/avatar-03.png","avatar-4":"https://nikkiflixs.com/assets/avatars/gallery/avatar-18.png","avatar-5":"https://nikkiflixs.com/assets/avatars/gallery/avatar-02.png","avatar-6":"https://nikkiflixs.com/assets/avatars/gallery/avatar-21.png"};
   function leaderboardAvatar(key){return leaderboardAvatars[String(key)]||"https://nikkiflixs.com/assets/avatars/gallery/avatar-03.png"}
@@ -2677,9 +2515,9 @@ function GF_showdown() {
     if(mpMode&&lastServerRevision>0){window.__liveTableKey=tableKey;tableRoom.classList.remove('is-hidden');fitCamera();return}
     window.__liveTableKey=tableKey;
     clearTimers();clearTimeout(seatHoldTimer);seatHoldTimer=null;seatHoldUntil=0;pendingJoinNextHand=false;localSeatAbsolute=0;applyViewerPerspective(0);var game=button.getAttribute('data-game'),maxSeats=Number(button.getAttribute('data-seats')),sb=Number(button.getAttribute('data-sb')),bb=Number(button.getAttribute('data-bb')),freeTable=button.getAttribute('data-free-table')==='true',listedMinimum=Number(button.getAttribute('data-min-buyin'));activeConfig={game:game,maxSeats:maxSeats,sb:sb,bb:bb,holeCards:game==='omaha'?4:2,freeTable:freeTable};minimumBuyin=freeTable?0:(Number.isFinite(listedMinimum)?listedMinimum:1);configureHoleCards(activeConfig.holeCards);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');sittingOut=maxSeats===6?{0:true,3:true,5:true}:{0:true};waitingForBigBlind=false;dealerButton=1;handNumber=0;handRunning=false;seats[0].classList.remove('out-of-chips');seats[0].classList.add('empty-seat');seats[0].setAttribute('aria-label','Your empty seat, bottom-center');
-    var userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:nf9HeroStack());stacks.forEach(function(v,index){setStack(index,index===0?userStart:nf9BotStack(index));});try{window.__nf9OpeningStacks=stacks.slice();}catch(e){}botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');spectateFirstHand=false;gameSpeed=1;if(stacks[0]>0){}if(creatorOn()){names[localSeatAbsolute]='The Creator';restoreName(localSeatAbsolute)}else{try{var _acct=JSON.parse(localStorage.getItem('nikkiflixs_account')||'null');if(_acct&&_acct.username){names[localSeatAbsolute]=String(_acct.username);restoreName(localSeatAbsolute)}}catch(e){}}
+    var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');spectateFirstHand=false;gameSpeed=1;if(stacks[0]>0){}if(creatorOn()){names[localSeatAbsolute]='The Creator';restoreName(localSeatAbsolute)}else{try{var _acct=JSON.parse(localStorage.getItem('nikkiflixs_account')||'null');if(_acct&&_acct.username){names[localSeatAbsolute]=String(_acct.username);restoreName(localSeatAbsolute)}}catch(e){}}
     document.getElementById('tableGame').textContent=(freeTable?'Starter Texas Hold’em':game==='omaha'?'Pot-Limit Omaha':'Texas Hold’em')+' · GREEN · TIER 1';document.getElementById('tableStakes').textContent='BLINDS '+sb+' / '+bb+' · '+(freeTable?'NO MINIMUM BUY-IN':'MIN BUY-IN 1 GOLD COIN');document.getElementById('modalReason').textContent=freeTable?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount to your stack.':'Move Gold Coins from your account to your table stack. Buy-in: GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString()+'.';
-    var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):Math.max(bb*100,nf9HeroStack())));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
+    var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):bb*100));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
     (function(){var _lb=document.getElementById('roomLobby');if(_lb)_lb.classList.add('hidden')})();tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();GF_seedDisplayHands();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(creatorOn()&&bank<minimumBuyin){bank=minimumBuyin*5;walletSave();}else GF_waitForLiveThenLocal()  } window.__startTableDirectly=selectTable; var tableRoom=document.getElementById('tableRoom');Array.prototype.forEach.call(document.querySelectorAll('#tableGrid .join-table'),function(button){button.addEventListener('click',function(){selectTable(button)})});document.getElementById('backRoom').addEventListener('click',function(){resumeLeaveCleared=true;clearResumeMarker();if(window.__tier4&&window.__tier4.showLobby)window.__tier4.showLobby()}); 
   (function(){var b=document.getElementById('handLogBtn');if(b)b.addEventListener('click',openHandLog);var c=document.getElementById('handLogClose');if(c)c.addEventListener('click',function(){document.getElementById('handLogPanel').classList.remove('open')});var r=document.getElementById('handLogRefresh');if(r)r.addEventListener('click',openHandLog);var cp=document.getElementById('handLogCopy');if(cp)cp.addEventListener('click',function(){var bd=document.getElementById('handLogBody');if(!bd)return;try{navigator.clipboard.writeText(bd.textContent).then(function(){}).catch(function(){})}catch(e){}})})();
   var lobbyBuyModal=document.getElementById('lobbyBuyModal');if(document.getElementById('lobbyBuy'))document.getElementById('lobbyBuy').addEventListener('click',function(){var _lm=document.getElementById('lobbyBuyModal');if(_lm)_lm.classList.remove('open');var _bm=document.getElementById('buyModal');if(_bm)_bm.classList.add('open')});if(document.getElementById('storeOpen'))document.getElementById('storeOpen').addEventListener('click',function(){openStoreChooser()});document.getElementById('closeLobbyBuy').addEventListener('click',function(){lobbyBuyModal.classList.remove('open')});lobbyBuyModal.addEventListener('click',function(event){if(event.target===lobbyBuyModal)lobbyBuyModal.classList.remove('open')});Array.prototype.forEach.call(lobbyBuyModal.querySelectorAll('.package'),function(button){button.addEventListener('click',function(){button.blur();var old=button.querySelector('small');if(old)old.remove();var note=document.createElement('small');note.style.cssText='display:block;margin-top:6px;color:#fff0b5';note.textContent='Secure cashier required';button.appendChild(note)})});
@@ -3026,7 +2864,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===localSeatAbsolute&&toInd
   document.body.appendChild(adminModal);
   adminModal.querySelector('.gift-x').addEventListener('click',function(){adminModal.classList.remove('open')});
   adminModal.addEventListener('click',function(e){if(e.target===adminModal)adminModal.classList.remove('open')});
-  function applyCreatorSeat(sitDown){if(creatorOn()){names[localSeatAbsolute]='The Creator';restoreName(localSeatAbsolute);try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}var a=ammoGet(),chg=false;['mg','pt','sg','gr'].forEach(function(k){if(a[k]<10){a[k]=10;chg=true}});if(a.ptShots<6){a.ptShots=6;chg=true}if(chg)ammoSet(a); ['nikkiflixs_pops_taunt','nikkiflixs_pops_mad'].forEach(function(k){if(popsGet(k)<10)popsSet(k,10)});if(sitDown&&!handRunning&&stacks[localSeatAbsolute]<nf9HeroStack())setStack(localSeatAbsolute,nf9HeroStack())}paintPopBtn()}
+  function applyCreatorSeat(sitDown){if(creatorOn()){names[localSeatAbsolute]='The Creator';restoreName(localSeatAbsolute);try{localStorage.setItem('nikkiflixs_unlock_flame','1')}catch(e){}var a=ammoGet(),chg=false;['mg','pt','sg','gr'].forEach(function(k){if(a[k]<10){a[k]=10;chg=true}});if(a.ptShots<6){a.ptShots=6;chg=true}if(chg)ammoSet(a); ['nikkiflixs_pops_taunt','nikkiflixs_pops_mad'].forEach(function(k){if(popsGet(k)<10)popsSet(k,10)});if(sitDown&&!handRunning&&stacks[localSeatAbsolute]<5000)setStack(localSeatAbsolute,5000)}paintPopBtn()}
   function paintAdmin(msg){
     var b=document.getElementById('adminBody');if(!b)return;var on=creatorOn();var hasPin=false;try{hasPin=!!localStorage.getItem('nikkiflixs_creator_pin')}catch(e){}
     var html='<p style="margin:4px 0 10px;color:#e8ddc4;font-size:14px;line-height:1.45">'+(on?'👑 <strong>Creator mode is ON.</strong> Everything is free and unlimited for you on this phone — tables, store, dice, pops, flags. Your seat name is <strong>The Creator</strong>.':'Creator mode is OFF. '+(hasPin?'Enter your PIN to switch it on.':'Set your PIN once — after that, this phone knows you.'))+'</p>';
@@ -3034,7 +2872,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===localSeatAbsolute&&toInd
     if(on)html+='<button class="gp-btn" id="adminOff" type="button" style="margin-bottom:10px">EXIT CREATOR MODE</button>';
     html+='<div id="adminMsg" style="min-height:20px;color:#ffd968;font-size:14px;margin-bottom:6px">'+(msg||'')+'</div>';
     if(on){
-      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">💰 YOUR MONEY</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Wallet <strong style="color:#ffd968">'+money(bank)+'</strong> · Stack at the table <strong style="color:#ffd968">'+money(stacks[localSeatAbsolute])+'</strong>. Your stack NEVER refills mid-hand — all-in means all-in. Bust out and the reset lands BETWEEN hands, and only if your stack is under 100: back to 1,200,000. This button is the manual reset (between hands only) and tops your wallet:</p><button class="gp-btn" id="adminRefill" type="button" style="margin-bottom:6px">💰 RESET — WALLET +250,000 · STACK TO 1,200,000 (BETWEEN HANDS)</button>';
+      html+='<h4 style="margin:10px 0 4px;color:#f4d68d">💰 YOUR MONEY</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">Wallet <strong style="color:#ffd968">'+money(bank)+'</strong> · Stack at the table <strong style="color:#ffd968">'+money(stacks[localSeatAbsolute])+'</strong>. Your stack NEVER refills mid-hand — all-in means all-in. Bust out and the reset lands BETWEEN hands, and only if your stack is under 100: back to 5,000. This button is the manual reset (between hands only) and tops your wallet:</p><button class="gp-btn" id="adminRefill" type="button" style="margin-bottom:6px">💰 RESET — WALLET +250,000 · STACK TO 5,000 (BETWEEN HANDS)</button>';
       html+='<h4 style="margin:10px 0 4px;color:#f4d68d">🎟️ GENERATE A GIFT CODE</h4><p style="margin:0 0 6px;color:#cbbf9f;font-size:13px">These are your giveaway codes — free gifts you hand out: gold coins, pops, dice sets and gifts (#11–#29 are the dice sets and gifts). Tap GENERATE next to an item and this panel makes a one-time code for it. Send the code to the player — they type it into REDEEM A CODE in their profile or the Coin Store and the item lands in their account. Codes you make are listed under this section so you can copy them again.</p>';
       CATALOG.forEach(function(c){html+='<div class="admin-row"><span>#'+c[0]+' — '+c[3]+'</span><button class="gp-btn gen-btn" data-no="'+c[0]+'" type="button">GENERATE</button></div>'});
       html+='<div id="genOut" style="margin-top:10px"></div>';
@@ -3259,7 +3097,6 @@ window.__NIKKIFLIXS_START_LIVE__=(function(){
   }
   function ensurePeer(seat){
     if(seat===state.mySeat)return null;
-    if(window.__nfAudioStopped)return null; /* v9: away — no voice peers */
     var P=peers[seat];if(P)return P;
     var pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
     var audio=document.createElement('audio');audio.autoplay=true;audio.style.display='none';document.body.appendChild(audio);
@@ -3281,13 +3118,7 @@ window.__NIKKIFLIXS_START_LIVE__=(function(){
     if(P.audio&&P.audio.parentNode)P.audio.parentNode.removeChild(P.audio);
     delete peers[seat];
   }
-  /* v9 AUDIO STOP — live voice: close every peer connection, stop the
-     local mic stream, pause every <audio> element. Called from
-     __nfStopAllAudio on every game exit. */
-  window.__nfStopLiveVoice=function(){try{Object.keys(peers).forEach(function(k){closePeer(Number(k))});}catch(e){}try{if(micStreamLive){micStreamLive.getTracks().forEach(function(tr){try{tr.stop();}catch(e){}});micStreamLive=null;}}catch(e){}try{document.querySelectorAll('audio').forEach(function(a){try{a.pause();a.srcObject=null;}catch(e){}});}catch(e){}return{peers:0};};
-  window.__nfLiveVoiceState=function(){var els=document.querySelectorAll('audio'),playing=0;try{els.forEach(function(a){if(!a.paused&&!a.ended)playing++;});}catch(e){}return{peers:Object.keys(peers).length,audioEls:els.length,playing:playing,micLive:!!micStreamLive};};
   function syncPeers(st){
-    if(window.__nfAudioStopped){Object.keys(peers).forEach(function(k){closePeer(Number(k))});return;} /* v9: away — voices off */
     if(!st||st.yourSeat==null||st.yourSeat<0)return;
     var occupied={};
     st.seats.forEach(function(s){if(s&&!s.empty)occupied[s.seat]=true});
@@ -3474,7 +3305,6 @@ window.__NIKKIFLIXS_START_LIVE__();
   </div>
   
 <script id="nfTierScript">
-/* NF TIER MODULE v9 (2026-11-09) */
 /* ===== NF TIER MODULE v2 (2026-11-07): clean top, ticker only, gate, nameplate bank.
    DRAFT amounts only — no payment is ever taken. NO watch-a-video anywhere:
    video-earn is OUT because Jerry only wants it if he gets paid for people
@@ -3885,139 +3715,6 @@ function nfRenderBanner(){
   dots.forEach(function(dt,i){ dt.classList.toggle('on', i===bannerIdx); });
 }
 function nfStartBanner(){ if(bannerTimer) clearInterval(bannerTimer); bannerTimer=setInterval(function(){ bannerIdx=(bannerIdx+1)%BANNER_DEALS.length; nfRenderBanner(); }, 4000); }
-/* v9 LOBBY ROWS (Jerry 2026-11-09): every game, every offer, every
-   promotion lives in a lobby row. Row order: ALL GAMES, CARD GAMES,
-   MISCELLANEOUS GAMES AND PROMOTIONS. A live game appears in row 1
-   AND in its category row. Tiles route through nfTileTap (v6), which
-   handles live/sports/soon/promo/shop/invite kinds (see patch below). */
-var NF9_TILE={
- 'Green Poker · 1/2':{img:'poker-table',name:'Green Poker · 1/2',tag:'TOP',table:true},
- 'Lucky 7s Slots':{img:'tile-slots',name:'Lucky 7s Slots',tag:'NEW',game:'slots'},
- 'Blackjack Bonus':{img:'tile-blackjack',name:'Blackjack Bonus',tag:'NEW',game:'blackjack'},
- 'Prize Wheel':{img:'wheel',name:'Prize Wheel',tag:'EXCLUSIVE',game:'wheel'},
- 'Sports Bet':{img:'coins-double',name:'Sports Bet',tag:'NEW',sports:true},
- 'Dominoes':{img:'chips-star',name:'Dominoes',tag:'NEW',live:'table-2player-dominoes-v2.html'},
- 'Farkle':{img:'chips-star',name:'Farkle',tag:'NEW',live:'table-2player-farkle-v2.html'},
- 'Yahtzee':{img:'daily-cash',name:'Yahtzee',tag:'NEW',live:'table-2player-yahtzee-v3.html'},
- 'Chess':{img:'hero-poker',name:'Chess',tag:'NEW',live:'table-2player-chess-v2.html'},
- 'Gin Rummy':{img:'tile-blackjack',name:'Gin Rummy',tag:'NEW',live:'table-2player-gin-rummy-v3.html'},
- 'Hearts':{img:'poker-table',name:'Hearts',tag:'NEW',live:'table-4player-hearts-v4.html'},
- 'Pinochle':{img:'tile-blackjack',name:'Pinochle',tag:'NEW',live:'table-4player-pinochle-v3.html'},
- 'Spades':{img:'poker-table',name:'Spades',tag:'NEW',live:'table-4player-spades-v5.html'},
- 'Draw 5 Poker':{img:'poker-table',name:'Draw 5 Poker',tag:'NEW',live:'table-8player-draw5-navy.html'},
- 'Omaha Poker':{img:'poker-table',name:'Omaha Poker',tag:'NEW',live:'table-8player-omaha-blue.html'},
- 'Lowball Poker':{img:'poker-table',name:'Lowball Poker',tag:'NEW',live:'table-8player-lowball-brown.html'},
- 'Stud 5 Poker':{img:'poker-table',name:'Stud 5 Poker',tag:'NEW',live:'table-8player-stud5-gold.html'},
- 'Stud 7 Poker':{img:'poker-table',name:'Stud 7 Poker',tag:'NEW',live:'table-8player-stud7-orange.html'},
- 'Craps':{img:'chips-star',name:'Craps',tag:'SOON',soon:'craps'},
- 'FlyAce':{img:'hero-poker',name:'FlyAce',tag:'SOON',soon:'flyace'},
- 'Keno':{img:'coins-500k',name:'Keno',tag:'SOON',soon:'keno'},
- 'Special Offer':{img:'promo-banner',name:'Special Offer',tag:'DEAL',promo:'deal'},
- 'Daily Gift':{img:'daily-gift',name:'Daily Gift',tag:'NEW',daily:true},
- 'Gift Shop':{img:'daily-cash',name:'Gift Shop',tag:'SHOP',shop:'gift'},
- 'App Store':{img:'coins-500k',name:'App Store',tag:'SHOP',shop:'app'},
- 'Refer a Friend':{img:'coins-double',name:'Refer a Friend',tag:'BOOSTED',invite:true},
- 'Coin Packages':{img:'coins-500k',name:'Coin Packages',tag:'DEAL',promo:'deal'}
-};
-var NF9_ROW_ALL=['Green Poker · 1/2','Lucky 7s Slots','Blackjack Bonus','Prize Wheel','Sports Bet','Dominoes','Farkle','Yahtzee','Chess','Gin Rummy','Hearts','Pinochle','Spades','Draw 5 Poker','Omaha Poker','Lowball Poker','Stud 5 Poker','Stud 7 Poker','Craps','FlyAce','Keno'];
-var NF9_ROW_CARD=['Green Poker · 1/2','Blackjack Bonus','Spades','Hearts','Pinochle','Gin Rummy','Draw 5 Poker','Omaha Poker','Lowball Poker','Stud 5 Poker','Stud 7 Poker'];
-var NF9_ROW_MISC=['Dominoes','Farkle','Yahtzee','Chess','Lucky 7s Slots','Prize Wheel','Sports Bet','Craps','FlyAce','Keno','Special Offer','Daily Gift','Gift Shop','App Store','Refer a Friend','Coin Packages'];
-/* v9 ROOMS: one box per room. The boxes use the v8 lobby tile look.
-   Rooms: Poker Room (all tiers + variants), Red/Green/Black/Purple/
-   Blue Tables (that colour's tiers), Card Games, Board Games,
-   Blackjack Room, Craps Room, Sports Book, Slots Room, Nikki's Bar
-   (the social lounge: friends, messages, invites, the hosts), and
-   Misc & Promotions. Sports Book and Slots Room open their rooms
-   directly (the sportsbook page / the slots room page ARE the room). */
-var NF9_LIVE_PAGES={spades:'table-4player-spades-v5.html'};
-var NF9_ROOMS=[
- {id:'poker', name:'Poker Room', sub:'All 10 tier tables + poker variants', img:'hero-poker'},
- {id:'red', name:'Red Tables', sub:'Red · 10/20 and 25/50', img:'poker-table'},
- {id:'green', name:'Green Tables', sub:'Green · 1/2 and 5/10', img:'daily-cash'},
- {id:'black', name:'Black Tables', sub:'Black · 100/200 and 500/1000', img:'tile-blackjack'},
- {id:'purple', name:'Purple Tables', sub:'Purple · 100/200 and 1000/2000', img:'coins-500k'},
- {id:'blue', name:'Blue Tables', sub:'Blue · 500/1000 and 1000/2000', img:'tile-slots'},
- {id:'cards', name:'Card Games', sub:'Spades, Hearts, Pinochle, Gin Rummy, Blackjack', img:'poker-table'},
- {id:'board', name:'Board Games', sub:'Dominoes, Chess, Yahtzee, Farkle', img:'chips-star'},
- {id:'blackjack', name:'Blackjack Room', sub:'All our blackjack games', img:'tile-blackjack'},
- {id:'craps', name:'Craps Room', sub:'All our craps games', img:'chips-star'},
- {id:'sports', name:'Sports Book', sub:'Week 10 · 14 games · fantasy', img:'coins-double'},
- {id:'slots', name:'Slots Room', sub:'Every slot machine', img:'slots-tile'},
- {id:'bar', name:"Nikki's Bar", sub:'Friends, messages, invites, the hosts', img:'daily-gift'},
- {id:'misc', name:'Misc & Promotions', sub:'Offers, gifts, stores, wheel, more', img:'promo-banner'}
-];
-var NF9_ROOM_TILES={cards:['Spades','Hearts','Pinochle','Gin Rummy','Blackjack Bonus'], board:['Dominoes','Chess','Yahtzee','Farkle'], blackjack:['Blackjack Bonus'], craps:['Craps'], misc:['Special Offer','Daily Gift','Gift Shop','App Store','Refer a Friend','Coin Packages','Prize Wheel','FlyAce','Keno']};
-var NF9_ROOM_VARIANTS=['Draw 5 Poker','Omaha Poker','Lowball Poker','Stud 5 Poker','Stud 7 Poker'];
-function nf9OpenRoom(id){
-  if(id==='sports'){ nf6OpenSports(); return true; }
-  if(id==='slots'){ nf6OpenSlotsRoom(); return true; }
-  var rm=null; NF9_ROOMS.forEach(function(r){ if(r.id===id) rm=r; });
-  if(!rm) return false;
-  NF5_RETURN='lobby';
-  nf6Page('nfGameRoom', rm.name.toUpperCase(), rm.sub+'. DRAFT — no payment taken.');
-  var b=nf6Body('nfGameRoom');
-  var h='';
-  if(id==='bar'){
-    h+='<div class="nf6-deal-result" id="nf9RoomLine">Welcome to Nikki\'s Bar — pull up a chair.</div>';
-  }
-  function tileCard(t){
-    var soon=t.soon?' <span style="color:#f5d97a">· COMING SOON</span>':'';
-    return '<div class="nf6-shop-card"><img src="'+NF_IMG[t.img]+'" alt="'+t.name+'" style="width:100%;border-radius:8px"><b>'+t.name+'</b><span>'+(t.tag||'')+soon+'</span>'
-      +'<button class="nf-gate-btn" type="button" data-room-entry="'+t.name+'">PLAY</button></div>';
-  }
-  function tierRow(t){
-    var cur=null; try{ cur=window.__tier5.table(); }catch(e){}
-    var isCur=cur && cur.sb===t.sb && cur.bb===t.bb;
-    return '<button class="nf6-tier-row" type="button" data-room-tier="'+t.slug+'">'+t.name+' · Blinds '+t.sb+'/'+t.bb+(isCur?' <span style="color:#7ed957">● YOU ARE HERE</span>':'')+'<span>'+(isCur?'PLAYING ›':'OPEN ›')+'</span></button>';
-  }
-  if(id==='poker'||id==='red'||id==='green'||id==='black'||id==='purple'||id==='blue'){
-    h+='<div class="nf6-shop-sec">TABLES — BLINDS</div>';
-    NF6_TIERS.forEach(function(t){
-      var col=t.slug.split('-')[0];
-      if(id==='poker'||col===id) h+=tierRow(t);
-    });
-    if(id==='poker'){
-      h+='<div class="nf6-shop-sec">POKER VARIANTS</div><div class="nf6-shop-grid">';
-      NF9_ROOM_VARIANTS.forEach(function(n){ h+=tileCard(NF9_TILE[n]); });
-      h+='</div>';
-    }
-  } else if(id==='bar'){
-    h+='<div class="nf6-shop-grid">'
-      +'<div class="nf6-shop-card"><b>Friends</b><span>Your poker friends</span><button class="nf-gate-btn" type="button" data-room-bar="friends">OPEN</button></div>'
-      +'<div class="nf6-shop-card"><b>Messages</b><span>Chat with your friends</span><button class="nf-gate-btn" type="button" data-room-bar="messages">OPEN</button></div>'
-      +'<div class="nf6-shop-card"><b>Invite Friends</b><span>Bring your friends to the tables</span><button class="nf-gate-btn" type="button" data-room-bar="invite">OPEN</button></div>'
-      +'<div class="nf6-shop-card"><b>Meet Nikki</b><span>Your poker host</span><button class="nf-gate-btn" type="button" data-room-bar="nikki">SAY HI</button></div>'
-      +'<div class="nf6-shop-card"><b>Meet Promise</b><span>Your casino host</span><button class="nf-gate-btn" type="button" data-room-bar="promise">SAY HI</button></div></div>';
-  } else {
-    h+='<div class="nf6-shop-grid">';
-    (NF9_ROOM_TILES[id]||[]).forEach(function(n){ h+=tileCard(NF9_TILE[n]); });
-    h+='</div>';
-  }
-  b.innerHTML=h;
-  b.querySelectorAll('[data-room-tier]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var slug=btn.getAttribute('data-room-tier');
-      var cur=null; try{ cur=window.__tier5.table(); }catch(e){}
-      var t=null; NF6_TIERS.forEach(function(x){ if(x.slug===slug) t=x; });
-      if(t && cur && cur.sb===t.sb && cur.bb===t.bb){ nfRequireAuth(nf9EnterTable); }
-      else { toast(t.name+' opens in the full build — this test copy has the Green 1-2 table. (DRAFT)'); }
-    });
-  });
-  b.querySelectorAll('[data-room-entry]').forEach(function(btn){
-    btn.addEventListener('click', function(){ var t=nf6TileByName(btn.getAttribute('data-room-entry')); if(t) nfTileTap(t); });
-  });
-  b.querySelectorAll('[data-room-bar]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var k=btn.getAttribute('data-room-bar');
-      if(k==='friends'){ if(window.__tier5) window.__tier5.openFriends('friends'); }
-      else if(k==='messages'){ if(window.__tier5) window.__tier5.openMessages('messages'); }
-      else if(k==='invite'){ if(window.__tier5) window.__tier5.openFriends('invitations'); }
-      else if(k==='nikki'||k==='promise'){ var line=$('nf9RoomLine'); var txt=window.__nf9SayHost?window.__nf9SayHost(k):''; if(line&&txt) line.textContent=txt; }
-    });
-  });
-  nf6ShowScreen('nfGameRoom');
-  return true;
-}
 function nfBuildLobby(){
   var s=nfEl('div','nf-screen'); s.id='nfLobby';
   var top=nfEl('div','nf-lobby-top','<b>NIKKIFLIXS</b><div class="nf-bal" id="nfLobbyBal">GC 0<small>SC 0.32 · DRAFT</small></div>');
@@ -4032,21 +3729,32 @@ function nfBuildLobby(){
     var row=nfEl('div','nf-tiles');
     tiles.forEach(function(tl){
       var b=nfEl('button','nf-tile','<img src="'+NF_IMG[tl.img]+'" alt="'+tl.name+'">'+(tl.tag?'<span class="nf-tag">'+tl.tag+'</span>':'')+'<span class="nf-heart">♥</span><b>'+tl.name+'</b>');
-      b.setAttribute('data-tile', tl.name);
       b.addEventListener('click', function(){ nfTileTap(tl); });
-      var _h=b.querySelector('.nf-heart');
-      if(_h){ _h.__nf6wired=1; _h.addEventListener('click', function(ev){ ev.stopPropagation(); ev.preventDefault(); nf6ToggleFav(tl.name); }); }
       row.appendChild(b);
     });
     sec.appendChild(row); return sec;
   }
-  var sec1=section('Rooms', NF9_ROOMS.map(function(rm){ return {img:rm.img, name:rm.name, tag:'ROOM', room:rm.id}; }));
+  var sec1=section('Previously Played', [
+    {img:'poker-table', name:'Green Poker · 1/2', tag:'TOP', table:true},
+    {img:'tile-blackjack', name:'Blackjack Bonus', tag:'NEW'},
+    {img:'tile-slots', name:'Lucky 7s Slots', tag:'NEW'}
+  ]);
+  var sec2=section('New Games', [
+    {img:'slots-tile', name:'Lucky 7s Deluxe', tag:'NEW'},
+    {img:'wheel', name:'Prize Wheel', tag:'EXCLUSIVE'},
+    {img:'hero-poker', name:'Poker Night', tag:'TOP', table:true}
+  ]);
+  var sec3=section('Favorites', [
+    {img:'chips-star', name:'High Roller', tag:'TOP', table:true},
+    {img:'daily-gift', name:'Daily Gift', tag:'NEW', daily:true},
+    {img:'poker-table', name:'Red Poker · 10/20', tag:'', table:true}
+  ]);
   var authBar=nfEl('div','nf-sec');
   authBar.innerHTML='<button class="nf-gate-btn" id="nfLobbyLogin" type="button">LOG IN</button><button class="nf-gate-btn ghost" id="nfLobbySignup" type="button">SIGN UP</button>';
   var nav=nfEl('div','nf-bottom-nav');
   nav.innerHTML='<button type="button" class="on" id="nfNavHome">🏠<br>Home</button><button type="button" id="nfNavGames">🎮<br>Games</button><button type="button" class="nf-nav-buy" id="nfNavBuy">BUY</button><button type="button" id="nfNavSearch">🔍<br>Search</button><button type="button" id="nfNavMore">☰<br>More</button>';
   s.appendChild(top); s.appendChild(hero); s.appendChild(banner); s.appendChild(pills);
-  s.appendChild(sec1); s.appendChild(authBar); s.appendChild(nav);
+  s.appendChild(sec1); s.appendChild(sec2); s.appendChild(sec3); s.appendChild(authBar); s.appendChild(nav);
   document.body.appendChild(s);
   $('nfBannerPrice').addEventListener('click', function(){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); });
   $('nfPillOffer').addEventListener('click', function(){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); });
@@ -4147,9 +3855,8 @@ function nfBuildAvatar(){
     try{ localStorage.setItem('nf_avatar_pick', pickedAvatar); }catch(e){}
     nfHideFlow();
     nfTopUpCreator();
-    try{ if(window.__nf9GreetLogin)window.__nf9GreetLogin(); }catch(e){}
-    if(nfAfterAuth){ var _d=nfAfterAuth; nfAfterAuth=null; try{ window.__nf9JustLoggedIn=true; }catch(e){} _d(); return; }
-    try{ window.__nf9JustLoggedIn=true; }catch(e){} nf9EnterTable();
+    if(nfAfterAuth){ var _d=nfAfterAuth; nfAfterAuth=null; _d(); return; }
+    enterGate('login');
   });
 }
 /* --- Daily Login Rewards (7-day escalating, skip resets) --- */
@@ -4298,7 +4005,7 @@ function nf5OnTable(){
   return true;
 }
 function nf5Back(){
-  if(NF5_RETURN==='table'){ nfHideFlow(); try{ if(window.__nfResumeAudio)window.__nfResumeAudio(); }catch(e){} }
+  if(NF5_RETURN==='table'){ nfHideFlow(); }
   else { nfShow('nfLobby'); }
 }
 
@@ -4401,31 +4108,6 @@ function nf5BuildCarousel(){
     +'<button class="nf5-tbtn" id="nf5LobbyMenuBtn" type="button" aria-label="Menu">☰</button></div>';
   var lt=lobby.querySelector('.nf-lobby-top');
   if(lt && lt.parentNode) lt.parentNode.insertBefore(top, lt.nextSibling);
-  /* v9 HOSTS (Jerry 2026-11-09): Nikki + Promise at the top of the new
-     lobby, UNDER the top bar, above the carousel, visible without
-     scrolling. Portraits are copied from the ones already in this file.
-     Unframed (BARE-HEADS LAW). Greeting bar sits directly underneath. */
-  (function(){
-    var wrap=nfEl('div','nf9-hosts');
-    var nik=nfEl('button','nf9-host'); nik.type='button'; nik.setAttribute('data-host','nikki');
-    var prom=nfEl('button','nf9-host'); prom.type='button'; prom.setAttribute('data-host','promise');
-    var dImg=document.querySelector('img[alt^="Nikki, the dealer"]');
-    var pImg=document.querySelector('.seat[data-index="5"] .portrait');
-    var nSrc=dImg?dImg.getAttribute('src'):'assets/nikki.png';
-    var pSrc=pImg?pImg.getAttribute('src'):'assets-v7-src/avatar-promise.jpg';
-    var nIm=document.createElement('img'); nIm.src=nSrc; nIm.alt='Nikki, your poker host'; nIm.className='nf9-host-img';
-    var pIm=document.createElement('img'); pIm.src=pSrc; pIm.alt='Promise, your casino host'; pIm.className='nf9-host-img';
-    var nNm=nfEl('div','nf9-host-name');nNm.textContent='Nikki · Poker';
-    var pNm=nfEl('div','nf9-host-name');pNm.textContent='Promise · Casino';
-    nik.appendChild(nIm);nik.appendChild(nNm);
-    prom.appendChild(pIm);prom.appendChild(pNm);
-    wrap.appendChild(nik);wrap.appendChild(prom);
-    var line=nfEl('div','nf9-host-line'); line.id='nf9HostLine';
-    line.textContent='Excellent choice! Good luck!';
-    if(top&&top.parentNode){ top.parentNode.insertBefore(wrap, top.nextSibling); top.parentNode.insertBefore(line, wrap.nextSibling); }
-    nik.addEventListener('click',function(){ window.__nf9SayHost('nikki'); });
-    prom.addEventListener('click',function(){ window.__nf9SayHost('promise'); });
-  })();
   /* carousel (the hero of the opening screen) */
   var car=nfEl('div','nf5-carousel'); car.id='nf5Carousel';
   var vp=nfEl('div','nf5-car-viewport'); vp.id='nf5CarViewport';
@@ -4434,14 +4116,12 @@ function nf5BuildCarousel(){
     var card=nfEl('div','nf5-car-card'); card.setAttribute('data-game', g.id);
     card.innerHTML='<div class="nf5-mini">'+nf5Scene(g)+'</div>'
       +'<div class="nf5-car-name">'+g.name+'</div><div class="nf5-car-sub">'+g.sub+'</div>'
-      +'<div class="nf5-car-btns"><button class="nf5-lobby-btn" type="button">LOBBY</button>'
-      +((g.kind==='poker'||(typeof NF9_LIVE_PAGES!=='undefined'&&NF9_LIVE_PAGES[g.id]))?'<button class="nf5-play-btn" type="button">PLAY NOW</button>'
-      :'<button class="nf5-play-btn nf6-play-disabled" type="button" disabled aria-disabled="true">COMING SOON</button>')+'</div>';
+      +'<div class="nf5-car-btns"><button class="nf5-lobby-btn" type="button">LOBBY</button><button class="nf5-play-btn" type="button">PLAY NOW</button></div>';
     card.addEventListener('click', function(ev){
       var idx=NF5_GAMES.indexOf(g);
-      if(ev.target.classList.contains('nf5-play-btn')){ if(idx!==nf5CarIdx)nf5CarGo(idx); nf5PlayNow(g); }
-      else if(ev.target.classList.contains('nf5-lobby-btn')){ if(idx!==nf5CarIdx)nf5CarGo(idx); nf6OpenGameLobby(g.id); }
-      else if(idx!==nf5CarIdx){ nf5CarGo(idx); }
+      if(idx!==nf5CarIdx){ nf5CarGo(idx); return; }
+      if(ev.target.classList.contains('nf5-play-btn')) nf5PlayNow(g);
+      else if(ev.target.classList.contains('nf5-lobby-btn')){ nf6OpenGameLobby(g.id); }
     });
     track.appendChild(card);
   });
@@ -4484,7 +4164,7 @@ function nf5BuildCarousel(){
   /* sports-bet promo card (right-side style promo, under the pills) */
   var pills=lobby.querySelector('.nf-pills');
   var sp=nfEl('div','nf5-sports');
-  sp.innerHTML='<b>🏈 SPORTS BET</b><div class="nf5-sports-teams">Week 10 · 14 games · 49ers vs Cowboys</div><div class="nf5-sports-win">WIN x3 OR MORE</div><button id="nf5SportsBet" type="button">PLACE YOUR BET (DRAFT)</button>';
+  sp.innerHTML='<b>🏈 SPORTS BET</b><div class="nf5-sports-teams">Dallas Cowboys vs L.A. Rams vs New Orleans Saints</div><div class="nf5-sports-win">WIN x3 OR MORE</div><button id="nf5SportsBet" type="button">PLACE YOUR BET (DRAFT)</button>';
   if(pills && pills.parentNode) pills.parentNode.insertBefore(sp, pills.nextSibling);
   $('nf5SportsBet').addEventListener('click', function(){ nf6OpenSports(); });
   /* bottom bar: avatar + name + balance | Tournaments / Store / Lottery / Leagues / Albums / Free Chips / Daily Bonus / More */
@@ -5095,7 +4775,6 @@ function nf5BuildProfile(){
 
 /* ---------- HAMBURGER MENU (upgrades v4's menu — same screen, full items) ---------- */
 function nf5Logout(){
-  try{ if(window.__nfStopAllAudio)window.__nfStopAllAudio(); }catch(e){}
   try{ localStorage.removeItem('nf_user_email'); localStorage.removeItem('nf_avatar_pick'); localStorage.removeItem('nf_authed'); }catch(e){}
   nfAuthed=false; nfAfterAuth=null;
   window.__nf5PendingInvite=null;
@@ -5408,7 +5087,7 @@ window.__tier6={
    X/Back on every page. Same tier IIFE scope as v4/v5. ===== */
 var nfAuthed=false; var nfAfterAuth=null;
 try{ nfAuthed = localStorage.getItem('nf_authed')==='1'; }catch(e){}
-var NF6_SCREENS=['nfDealPage','nfGiftShop','nfSearchPage','nfGameLobby','nfStores','nfAppStore','nfGameList','nfGameSlots','nfGameSlotsRoom','nfGameSlotMachine','nfGameBlackjack','nfGameWheel','nfGameSports','nfGameRoom'];
+var NF6_SCREENS=['nfDealPage','nfGiftShop','nfSearchPage','nfGameLobby','nfStores','nfAppStore','nfGameList','nfGameSlots','nfGameBlackjack','nfGameWheel','nfGameSports'];
 function nf6HideAll(){ NF6_SCREENS.forEach(function(id){ var e=$(id); if(e) e.hidden=true; }); }
 function nf6ShowScreen(id){
   nf6HideAll();
@@ -5417,7 +5096,7 @@ function nf6ShowScreen(id){
   var e=$(id); if(e) e.hidden=false;
 }
 /* Every navigation hides the v6 screens too; every v5 screen gets an X. */
-var _nfShow6=nfShow; nfShow=function(id){ var _wasGame=false; try{ var _tr=document.getElementById('tableRoom'); var _cr=document.getElementById('casinoTableRoom'); _wasGame=!!((_tr&&!_tr.classList.contains('is-hidden'))||(_cr&&!_cr.classList.contains('is-hidden'))); }catch(e){} nf6HideAll(); _nfShow6(id); nf6EnsureX(id); if(id!=='nfGameWheel'){ try{ if(window.__nf9WheelTimer){clearInterval(window.__nf9WheelTimer);window.__nf9WheelTimer=null;} }catch(e){} } if(_wasGame){ try{ if(window.__nfStopAllAudio)window.__nfStopAllAudio(); }catch(e){} try{ if(window.__nf9OnTableExit)window.__nf9OnTableExit(); }catch(e){} } };
+var _nfShow6=nfShow; nfShow=function(id){ nf6HideAll(); _nfShow6(id); nf6EnsureX(id); };
 var _nf5Show6=nf5Show; nf5Show=function(id){ nf6HideAll(); _nf5Show6(id); nf6EnsureX(id); };
 var _nfHideFlow6=nfHideFlow; nfHideFlow=function(){ nf6HideAll(); _nfHideFlow6(); };
 nf5OnTable=function(){
@@ -5427,7 +5106,7 @@ nf5OnTable=function(){
 };
 if(window.__tier5) window.__tier5.onTable=nf5OnTable;
 function nf6Back(){
-  if(NF5_RETURN==='table'){ nfHideFlow(); try{ if(window.__nfResumeAudio)window.__nfResumeAudio(); }catch(e){} }
+  if(NF5_RETURN==='table'){ nfHideFlow(); }
   else if(NF5_RETURN==='promos'){ nfShow('nfPromos'); }
   else { nfShow('nfLobby'); }
 }
@@ -5463,121 +5142,6 @@ function nf6BankDelta(amt, label){
   return after;
 }
 /* --- LOGIN ONCE: you log in once, then you are in. Tiles never re-open login. --- */
-/* v9 PLAY NOW (Jerry 2026-11-09): the old poker entry routed through
-   enterGate, re-fired the 3 login popups over the table, never explicitly
-   showed the table, and left the hero SPECTATING — PLAY NOW must put him
-   IN the game. nf9EnterTable hides all flow, removes the gate if present,
-   unhides #tableRoom, RESUMES audio, and auto-taps SIT IN when the hero
-   seat still has the empty-seat class. Idempotent: never re-runs
-   selectTable (would reset stacks/hands) and never re-clicks SIT IN
-   when already seated. */
-function nf9EnterTable(){
-  var _justIn=false; try{ _justIn=!!window.__nf9JustLoggedIn; window.__nf9JustLoggedIn=false; }catch(e){}
-  var _hold=nf9HoldCheck();
-  var _expired=_hold.held&&!_hold.fresh;
-  if(_expired){
-    try{ nf9ReleaseSeat('expired'); }catch(e){}
-    try{ window.__nf9NoAutoSit=true; }catch(e){}
-    if(!_justIn){ try{ localStorage.removeItem('nf_authed'); }catch(e){} try{ nfAuthed=false; }catch(e){} try{ nfShow('nfAuth'); }catch(e){} try{ toast('Your seat was held 3 minutes — logged out. Log in and sit in again.'); }catch(e){} return; }
-  } else if(_hold.held){ try{ if(window.__nf9HoldTimer){ clearTimeout(window.__nf9HoldTimer); window.__nf9HoldTimer=null; } }catch(e){} }
-  try{ window.__nfAway=false; }catch(e){}
-  nfHideFlow(); nfTopUpCreator();
-  try{ if(window.__nfResumeAudio) window.__nfResumeAudio(); }catch(e){}
-  try{ var gEl=document.getElementById('nfGate'); if(gEl) gEl.remove(); }catch(e){}
-  try{ gateEntered=true; }catch(e){}
-  try{ var tr=document.getElementById('tableRoom'); if(tr) tr.classList.remove('is-hidden'); }catch(e){}
-  try{ if(window.__nfResumeHand) window.__nfResumeHand(); }catch(e){}
-  var _noSit=false; try{ _noSit=!!window.__nf9NoAutoSit; window.__nf9NoAutoSit=false; }catch(e){}
-  if(!_noSit){
-    try{ var si=document.getElementById('sitIn');
-         var heroSeat=document.querySelector('.seat[data-index="0"]')||document.querySelector('.seat[data-view-slot="0"]');
-         var heroEmpty=heroSeat&&heroSeat.classList.contains('empty-seat');
-         if(si&&si.offsetParent!==null&&heroEmpty){ si.click(); }
-         else if(si){ var _st=null; try{ _st=window.__pokerTest.getState(); }catch(e){}
-           /* v9 SIT-BACK-IN: hero seated but SITTING OUT (his turn timed
-              out while he was away — the engine marks him sittingOut and
-              never deals him in again). Sitting out means he is NOT in a
-              live hand, so SIT IN is safe: it queues him for the NEXT hand,
-              never the current one. */
-           if(_st&&_st.sittingOut&&_st.sittingOut.indexOf('0')>=0&&!_st.pendingJoinNextHand){ si.click(); } }
-    }catch(e){}
-  }
-  try{ if(typeof startLoginPopups==='function') startLoginPopups(); }catch(e){}
-}
-/* v9: one honest PLAY route for every game. Real games open their real
-   page; games with no engine in this test copy open a real draft page
-   that says so plainly — never a toast, never nothing. */
-function nf9OpenDraftGame(g){
-  nf6Page('nfGameDraft', '<h3 class="nf-title" style="margin:10px 0 2px">'+g.name+'</h3>' +
-    '<p class="nf6-sub">'+g.sub+' — full game opens in the full build.</p>' +
-    '<div class="nf6-draft-note">'+g.name+' is not built yet in this test copy. This copy has the Green 1-2 poker table — the full build adds every table and every game.</div>' +
-    '<div class="nf-row" style="margin-top:14px"><button type="button" class="nf-btn nf-btn-primary" data-back="lobby">BACK TO LOBBY</button></div>');
-}
-function nf9PlayGame(g){
-  if(g.kind==='poker'){ nfRequireAuth(nf9EnterTable); return; }
-  if(typeof NF9_LIVE_PAGES!=='undefined'&&NF9_LIVE_PAGES[g.id]){ window.location.href=NF9_LIVE_PAGES[g.id]; return; }
-  if(g.kind==='slots'){ nf6OpenSlots(); return; }
-  if(g.kind==='blackjack'){ nf6OpenBlackjack(); return; }
-  if(g.kind==='wheel'){ nf6OpenWheel(); return; }
-  if(g.kind==='sports'){ nf6OpenSports(); return; }
-  nf9OpenDraftGame(g);
-}
-/* v9 HOST LINES: Nikki's is the standing record ('Excellent choice!' +
-   good luck). No Promise lobby line exists anywhere in the record or
-   code, so hers is the new plain greeting the task orders — Jerry can
-   swap the wording. Neither line, voice nor timing was rewritten. */
-var NF9_NIKKI_LINE='Excellent choice! Good luck!';
-var NF9_PROMISE_LINE='Welcome — good luck at the tables!';
-var nf9GreetedLogin=false;
-window.__nf9SayHost=function(who){
-  var line=document.getElementById('nf9HostLine');
-  if(line) line.textContent=(who==='promise')?NF9_PROMISE_LINE:NF9_NIKKI_LINE;
-  return line?line.textContent:'';
-};
-window.__nf9GreetLogin=function(){
-  if(nf9GreetedLogin) return false;
-  nf9GreetedLogin=true;
-  var line=document.getElementById('nf9HostLine');
-  if(line) line.textContent=NF9_NIKKI_LINE+' '+NF9_PROMISE_LINE;
-  return true;
-};
-/* v9 RE-ENTRY — 3-minute seat hold (Jerry 2026-11-09). The hold is
-   stamped on the FIRST exit only (a later lobby tap must not reset the
-   clock), only while the hero is actually seated (a released seat must
-   never re-stamp), stored in localStorage so it survives a reload, and
-   armed with a 180s timer that logs him out if he is still away when
-   it fires. */
-var NF9_HOLD_KEY='nf_exit_hold', NF9_HOLD_MS=180000;
-function nf9HoldCheck(){ try{ var raw=localStorage.getItem(NF9_HOLD_KEY); if(!raw) return {held:false}; var h=JSON.parse(raw); var age=Date.now()-(h.ts||0); return {held:true, fresh:age<=NF9_HOLD_MS, ageMs:age, hand:h.hand||0}; }catch(e){ return {held:false, error:String(e)}; } }
-window.__nf9HasFreshHold=function(){ var c=nf9HoldCheck(); return !!(c.held&&c.fresh); };
-function nf9ArmHoldExpiry(){ try{ if(window.__nf9HoldTimer) return; }catch(e){} window.__nf9HoldTimer=setTimeout(function(){ try{ window.__nf9HoldTimer=null; nf9ReleaseSeat('timeout'); }catch(e){} }, NF9_HOLD_MS); }
-function nf9ReleaseSeat(reason){
-  try{ if(window.__nf9HoldTimer){ clearTimeout(window.__nf9HoldTimer); window.__nf9HoldTimer=null; } }catch(e){}
-  var rel={reason:reason||'expired', stack:0, hand:0};
-  try{ var st=window.__pokerTest?window.__pokerTest.getState():null; if(st){ rel.stack=st.stacks?st.stacks[0]:0; rel.hand=st.handNumber||0; } }catch(e){}
-  try{ if(window.__nfReleaseSeat) window.__nfReleaseSeat(); }catch(e){}
-  try{ localStorage.removeItem(NF9_HOLD_KEY); }catch(e){}
-  try{ window.__nf9LastRelease=rel; }catch(e){}
-  if(reason==='timeout'){ try{ window.__nf9NoAutoSit=true; }catch(e){} try{ nfShow('nfAuth'); }catch(e){} try{ toast('Your seat was held 3 minutes — logged out. Log in and sit in again.'); }catch(e){} }
-  return rel;
-}
-window.__nf9OnTableExit=function(){
-  try{
-    var tr=document.getElementById('tableRoom');
-    if(!tr||tr.classList.contains('is-hidden')) return {held:false, reason:'table-hidden'};
-    var hero=document.querySelector('.seat[data-index="0"]');
-    if(hero&&hero.classList.contains('empty-seat')) return {held:false, reason:'not-seated'};
-    var c=nf9HoldCheck();
-    if(c.held&&c.fresh) return {held:true, already:true, hand:c.hand};
-    var st=null; try{ st=window.__pokerTest?window.__pokerTest.getState():null; }catch(e){}
-    var hold={ts:Date.now(), hand:st?st.handNumber:0};
-    try{ localStorage.setItem(NF9_HOLD_KEY, JSON.stringify(hold)); }catch(e){}
-    try{ window.__nfAway=true; }catch(e){}
-    try{ if(window.__nfSaveResume) window.__nfSaveResume(); }catch(e){}
-    nf9ArmHoldExpiry();
-    return {held:true, hand:hold.hand};
-  }catch(e){ return {held:false, error:String(e)}; }
-};
 function nfRequireAuth(dest){
   if(nfAuthed){ dest(); return; }
   nfAfterAuth=dest; nfShow('nfAuth');
@@ -5617,19 +5181,11 @@ var NF6_TILES=[
  {img:'daily-gift', name:'Daily Gift', tag:'NEW', daily:true},
  {img:'poker-table', name:'Red Poker · 10/20', tag:'', table:true}
 ];
-function nf6TileByName(name){ var f=null; NF6_TILES.forEach(function(t){ if(t.name===name) f=t; }); if(!f && typeof NF9_TILE!=='undefined' && NF9_TILE[name]) f=NF9_TILE[name]; return f; }
+function nf6TileByName(name){ var f=null; NF6_TILES.forEach(function(t){ if(t.name===name) f=t; }); return f; }
 nfTileTap=function(tl){
-  if(tl.room){ nf9OpenRoom(tl.room); return; }
-  if(tl.live){ window.location.href=tl.live; return; }
-  if(tl.sports){ nf6OpenSports(); return; }
-  if(tl.soon){ nf6OpenGameLobby(tl.soon); return; }
-  if(tl.promo==='deal'){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); return; }
-  if(tl.shop==='gift'){ nfOpenGiftShop('lobby'); return; }
-  if(tl.shop==='app'){ nfOpenAppStore('lobby'); return; }
-  if(tl.invite){ if(window.__tier5) window.__tier5.openFriends('invitations'); return; }
   if(tl.table){
     if((tl.name||'').indexOf('Green Poker')===0){
-      nfRequireAuth(nf9EnterTable);
+      nfRequireAuth(function(){ nfHideFlow(); nfTopUpCreator(); enterGate('login'); });
       return;
     }
     nf6OpenGameLobby('poker');
@@ -5641,7 +5197,14 @@ nfTileTap=function(tl){
   if(tl.game==='wheel' || tl.name==='Prize Wheel'){ nf6OpenWheel(); return; }
   toast(tl.name+' opens from the lobby in the full build — this test copy has the poker tables. (DRAFT)');
 };
-nf5PlayNow=function(g){ nf9PlayGame(g); return g.kind==='poker'?'table':'lobby'; };
+nf5PlayNow=function(g){
+  if(g.kind==='poker'){
+    nfRequireAuth(function(){ nfHideFlow(); nfTopUpCreator(); enterGate('login'); });
+    return 'table';
+  }
+  nf6OpenGameLobby(g.id);
+  return 'lobby';
+};
 /* --- FAVORITES: heart toggles, Favorites section follows. --- */
 var NF6_DEFAULT_FAVS=['High Roller','Daily Gift','Red Poker · 10/20'];
 function nf6Favs(){
@@ -5661,7 +5224,7 @@ function nf6TileButton(tl){
   b.setAttribute('data-tile', tl.name);
   b.addEventListener('click', function(){ nfTileTap(tl); });
   var h=b.querySelector('.nf-heart');
-  if(h){ h.__nf6wired=1; h.addEventListener('click', function(ev){ ev.stopPropagation(); ev.preventDefault(); nf6ToggleFav(tl.name); }); }
+  if(h) h.addEventListener('click', function(ev){ ev.stopPropagation(); ev.preventDefault(); nf6ToggleFav(tl.name); });
   return b;
 }
 function nf6PaintHearts(){
@@ -5691,14 +5254,6 @@ function nf6Page(id, title, sub){
     s.innerHTML='<div class="nf-auth"><button class="nf-close-x" type="button" aria-label="Close">×</button><h1>'+title+'</h1>'+(sub?'<div class="nf-sub">'+sub+'</div>':'')+'<div class="nf6-body"></div></div>';
     s.querySelector('.nf-close-x').addEventListener('click', function(){ nf6Back(); });
     document.body.appendChild(s);
-  } else {
-    /* v9: a re-opened page shows ITS OWN title/sub — never the
-       header left over from the game/section that opened it first. */
-    var _h1=s.querySelector('.nf-auth > h1');
-    if(_h1 && title!=null) _h1.innerHTML=title;
-    if(sub){ var _sub=s.querySelector('.nf-auth > .nf-sub');
-      if(_sub) _sub.innerHTML=sub;
-      else if(_h1){ var _d=document.createElement('div'); _d.className='nf-sub'; _d.innerHTML=sub; _h1.parentNode.insertBefore(_d, _h1.nextSibling); } }
   }
   return s;
 }
@@ -5968,7 +5523,7 @@ function nf6OpenGameLobby(gameId){
   var g=null; NF5_GAMES.forEach(function(x){ if(x.id===gameId) g=x; });
   if(!g) return false;
   NF5_RETURN='lobby';
-  nf6Page('nfGameLobby', g.name+' LOBBY', g.sub+(g.kind==='poker'?'':((typeof NF9_LIVE_PAGES!=='undefined'&&NF9_LIVE_PAGES[g.id])?' — opens on its own live page.':' — NOT BUILT YET in this test copy')));
+  nf6Page('nfGameLobby', g.name+' LOBBY', g.sub);
   var b=nf6Body('nfGameLobby');
   var artSrc=g.art ? NF_IMG[g.art] : (g.img ? NF5_IMG[g.img] : null);
   var h=artSrc ? '<img class="nf6-deal-art" src="'+artSrc+'" alt="'+g.name+'">' : '';
@@ -5981,7 +5536,7 @@ function nf6OpenGameLobby(gameId){
     });
   }
   h+='<button class="nf-gate-btn nf6-deal-claim" id="nf6LobbyPlay" type="button" style="margin-top:14px">PLAY NOW</button>'
-    +'<div class="nf-sub">'+(g.kind==='poker'?'DRAFT — this test copy has the Green 1-2 poker table. Other tables open in the full build.':((typeof NF9_LIVE_PAGES!=='undefined'&&NF9_LIVE_PAGES[g.id])?g.name+' opens on its own live page — tap PLAY NOW.':g.name+' is NOT BUILT YET in this test copy — the full game opens in the full build. This copy has the Green 1-2 poker table.'))+'</div>';
+    +'<div class="nf-sub">DRAFT — this test copy has the Green 1-2 poker table. Other tables open in the full build.</div>';
   b.innerHTML=h;
   b.querySelectorAll('[data-tier]').forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -5989,29 +5544,16 @@ function nf6OpenGameLobby(gameId){
       var cur=null; try{ cur=window.__tier5.table(); }catch(e){}
       var t=null; NF6_TIERS.forEach(function(x){ if(x.slug===slug) t=x; });
       if(t && cur && cur.sb===t.sb && cur.bb===t.bb){
-        nfRequireAuth(nf9EnterTable);
+        nfRequireAuth(function(){ nfHideFlow(); nfTopUpCreator(); enterGate('login'); });
       } else {
         toast(t.name+' opens in the full build — this test copy has the Green 1-2 table. (DRAFT)');
       }
     });
   });
-  var lp=$('nf6LobbyPlay');
-  if(lp){
-    if(g.kind==='poker'){
-      lp.addEventListener('click', function(){ nfRequireAuth(nf9EnterTable); });
-    } else if(typeof NF9_LIVE_PAGES!=='undefined'&&NF9_LIVE_PAGES[g.id]){
-      /* v9: a real live game (Spades) — PLAY NOW opens its own page. */
-      lp.addEventListener('click', function(){ window.location.href=NF9_LIVE_PAGES[g.id]; });
-    } else {
-      /* v9: no engine in this test copy — the page says so plainly
-         above the button, and the button is a greyed COMING SOON pill,
-         not a live PLAY NOW that does nothing when tapped. */
-      lp.textContent=g.name+' — COMING SOON';
-      lp.classList.add('nf6-play-disabled');
-      lp.disabled=true;
-      lp.setAttribute('aria-disabled','true');
-    }
-  }
+  $('nf6LobbyPlay').addEventListener('click', function(){
+    if(g.kind==='poker'){ nfRequireAuth(function(){ nfHideFlow(); nfTopUpCreator(); enterGate('login'); }); }
+    else { window.__nf5DraftGame=g.id; toast(g.name+' opens in the full build — this test copy has the poker tables. (DRAFT)'); }
+  });
   nf6ShowScreen('nfGameLobby');
   return true;
 }
@@ -6021,11 +5563,10 @@ function nf6OpenGameList(title){
   nf6Page('nfGameList', (title||'ALL GAMES').toUpperCase(), 'Every game in this section — tap one to play.');
   var b=nf6Body('nfGameList');
   var h='';
-  [['Previously Played',[0,1,2]],['New Games',[3,4,5]],['Favorites','favs'],['All Live Games','nf9all']].forEach(function(sec){
+  [['Previously Played',[0,1,2]],['New Games',[3,4,5]],['Favorites','favs']].forEach(function(sec){
     h+='<div class="nf6-shop-sec">'+sec[0].toUpperCase()+'</div><div class="nf6-shop-grid">';
     var tiles=[];
     if(sec[1]==='favs'){ nf6Favs().forEach(function(n){ var t=nf6TileByName(n); if(t) tiles.push(t); }); }
-    else if(sec[1]==='nf9all'){ NF9_ROW_ALL.forEach(function(n){ var t=nf6TileByName(n); if(t) tiles.push(t); }); }
     else { sec[1].forEach(function(i){ tiles.push(NF6_TILES[i]); }); }
     tiles.forEach(function(t){
       h+='<div class="nf6-shop-card"><img src="'+NF_IMG[t.img]+'" alt="'+t.name+'" style="width:100%;border-radius:8px"><b>'+t.name+'</b><span>'+(t.tag||'')+'</span>'
@@ -6040,92 +5581,57 @@ function nf6OpenGameList(title){
   nf6ShowScreen('nfGameList');
   return true;
 }
-/* --- SLOTS ROOM (v9): real illustrated machines — NO emoji on any reel. --- */
-/* Reel symbols are inline SVG illustrations (drawn art, not font emoji). */
-var NF9_SLOT_ART={
- '7':'<svg viewBox="0 0 64 64"><defs><linearGradient id="nf9g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe98a"/><stop offset="1" stop-color="#c99600"/></linearGradient></defs><text x="32" y="50" font-size="48" font-weight="900" text-anchor="middle" fill="url(#nf9g7)" stroke="#7a5200" stroke-width="1.5" font-family="Arial,sans-serif">7</text></svg>',
- 'cherry':'<svg viewBox="0 0 64 64"><path d="M32 22 C34 12 44 8 50 8" stroke="#2e7d32" stroke-width="3" fill="none"/><ellipse cx="46" cy="12" rx="8" ry="4" fill="#4caf50" transform="rotate(-25 46 12)"/><circle cx="24" cy="40" r="13" fill="#d32f2f"/><circle cx="40" cy="44" r="12" fill="#b71c1c"/><circle cx="20" cy="36" r="4" fill="#ff8a80"/><circle cx="36" cy="40" r="3.5" fill="#ff8a80"/></svg>',
- 'lemon':'<svg viewBox="0 0 64 64"><ellipse cx="32" cy="36" rx="20" ry="14" fill="#fdd835" stroke="#c0a000" stroke-width="1.5"/><path d="M32 22 C36 14 44 12 48 14 C44 20 38 22 32 22" fill="#66bb6a"/><circle cx="50" cy="36" r="3" fill="#f9a825"/><ellipse cx="26" cy="32" rx="6" ry="3" fill="#fff59d" transform="rotate(-20 26 32)"/></svg>',
- 'bell':'<svg viewBox="0 0 64 64"><path d="M32 10 C20 10 14 22 14 34 L14 44 L50 44 L50 34 C50 22 44 10 32 10 Z" fill="#ffc107" stroke="#a67c00" stroke-width="1.5"/><circle cx="32" cy="50" r="5" fill="#ff8a00"/><rect x="12" y="44" width="40" height="4" rx="2" fill="#ffb300"/></svg>',
- 'star':'<svg viewBox="0 0 64 64"><polygon points="32,6 39,24 58,25 43,37 48,56 32,45 16,56 21,37 6,25 25,24" fill="#ffd54f" stroke="#c99600" stroke-width="1.5"/></svg>',
- 'diamond':'<svg viewBox="0 0 64 64"><polygon points="16,14 48,14 58,26 32,58 6,26" fill="#4fc3f7" stroke="#0277bd" stroke-width="1.5"/><polygon points="16,14 26,26 38,26 48,14" fill="#b3e5fc"/><line x1="6" y1="26" x2="58" y2="26" stroke="#0277bd" stroke-width="1.5"/><line x1="26" y1="26" x2="32" y2="58" stroke="#0277bd" stroke-width="1"/><line x1="38" y1="26" x2="32" y2="58" stroke="#0277bd" stroke-width="1"/></svg>',
- 'coin':'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24" fill="#ffd54f" stroke="#a67c00" stroke-width="2.5"/><circle cx="32" cy="32" r="18" fill="none" stroke="#c99600" stroke-width="1.5"/><polygon points="32,20 35,29 44,29 37,35 39,44 32,39 25,44 27,35 20,29 29,29" fill="#ff8f00"/></svg>',
- 'bar':'<svg viewBox="0 0 64 64"><rect x="6" y="20" width="52" height="24" rx="6" fill="#212121" stroke="#ffd54f" stroke-width="2"/><text x="32" y="38" font-size="16" font-weight="900" text-anchor="middle" fill="#ffd54f" font-family="Arial,sans-serif">BAR</text></svg>'
-};
-var NF9_SLOTS=[
- {id:'lucky7', name:'Lucky 7s Slots', reels:3, theme:'Classic 3-reel · single payline', symbols:['7','cherry','lemon','bell','star','diamond'], payText:'Three 7s — 50,000 · Three of a kind — 10,000 · Two 7s — 2,000 · Any pair — 500',
-  pay:function(r){ if(r[0]==='7'&&r[1]==='7'&&r[2]==='7') return 50000; if(r[0]===r[1]&&r[1]===r[2]) return 10000; var s=r.filter(function(x){return x==='7'}).length; if(s===2) return 2000; if(r[0]===r[1]||r[1]===r[2]||r[0]===r[2]) return 500; return 0; }},
- {id:'fruit', name:'Fruit Frenzy', reels:3, theme:'Classic 3-reel · fruit', symbols:['cherry','lemon','star','diamond','coin','bell'], payText:'Three cherries — 25,000 · Three lemons — 10,000 · Three of a kind — 5,000 · Any pair — 500',
-  pay:function(r){ if(r[0]==='cherry'&&r[1]==='cherry'&&r[2]==='cherry') return 25000; if(r[0]==='lemon'&&r[1]==='lemon'&&r[2]==='lemon') return 10000; if(r[0]===r[1]&&r[1]===r[2]) return 5000; if(r[0]===r[1]||r[1]===r[2]||r[0]===r[2]) return 500; return 0; }},
- {id:'deluxe', name:'Lucky 7s Deluxe', reels:5, theme:'Modern 5-reel', symbols:['7','cherry','lemon','bell','star','diamond','coin'], payText:'Five 7s — 100,000 · Four 7s — 25,000 · Three 7s — 5,000 · Three of a kind — 1,000 · Two 7s — 500',
-  pay:function(r){ var s=r.filter(function(x){return x==='7'}).length; if(s===5) return 100000; if(s===4) return 25000; if(s===3) return 5000; if(r[0]===r[1]&&r[1]===r[2]) return 1000; if(s===2) return 500; return 0; }},
- {id:'coins', name:'Golden Coin Rush', reels:5, theme:'Modern 5-reel · coins', symbols:['coin','7','star','diamond','bell','cherry'], payText:'Five coins — 100,000 · Five 7s — 50,000 · Four coins — 25,000 · Three coins — 10,000 · Three of a kind — 1,000',
-  pay:function(r){ var c=r.filter(function(x){return x==='coin'}).length; var s=r.filter(function(x){return x==='7'}).length; if(c===5) return 100000; if(s===5) return 50000; if(c===4) return 25000; if(c===3) return 10000; if(r[0]===r[1]&&r[1]===r[2]) return 1000; return 0; }}
-];
-var nf6Slots={machine:'lucky7', reels:['cherry','cherry','cherry'], spinning:false, lastWin:0};
-function nf9SlotById(id){ var f=null; NF9_SLOTS.forEach(function(m){ if(m.id===id) f=m; }); return f||NF9_SLOTS[0]; }
-function nf9SlotSpinOnce(m){ if(m.id==='lucky7'){ var r=Math.random(); if(r<0.06) return '7'; return m.symbols[1+Math.floor(Math.random()*5)]; } return m.symbols[Math.floor(Math.random()*m.symbols.length)]; }
-function nf6OpenSlotsRoom(){
-  NF5_RETURN='lobby';
-  nf6Page('nfGameSlotsRoom','SLOTS ROOM','Every slot machine — pick one and play. Real illustrated reels, no emoji. DRAFT, no payment taken.');
-  var b=nf6Body('nfGameSlotsRoom');
-  var h='';
-  NF9_SLOTS.forEach(function(m){
-    var mini=m.symbols.slice(0,3).map(function(s){ return '<span>'+NF9_SLOT_ART[s]+'</span>'; }).join('');
-    h+='<div class="nf9-slot-card"><div class="nf9-mini">'+mini+'</div><b>'+m.name+'</b><span>'+m.theme+' · 1,000 GC a spin</span><span>'+m.payText+'</span>'
-      +'<button class="nf-gate-btn nf6-deal-claim" type="button" data-slot-machine="'+m.id+'" style="margin-top:10px">PLAY '+m.name.toUpperCase()+'</button></div>';
-  });
-  h+='<div class="nf-sub">Balance: <b id="nf6SlotsRoomBal"></b></div>';
-  b.innerHTML=h;
-  b.querySelectorAll('[data-slot-machine]').forEach(function(btn){
-    btn.addEventListener('click', function(){ nf6OpenSlotMachine(btn.getAttribute('data-slot-machine')); });
-  });
-  var bal=$('nf6SlotsRoomBal'); if(bal) bal.textContent='GC '+nfBank().toLocaleString();
-  nf6ShowScreen('nfGameSlotsRoom');
-  return true;
+/* --- SLOTS: real 3-reel game, 1,000 GC a spin. --- */
+var NF6_SLOT_SYMS=['7️⃣','🍒','🍋','🔔','⭐','💎'];
+var nf6Slots={reels:['🍒','🍒','🍒'], spinning:false, lastWin:0};
+function nf6SlotSpinOnce(){
+  var r=Math.random();
+  if(r<0.06) return '7️⃣';
+  return NF6_SLOT_SYMS[1+Math.floor(Math.random()*5)];
 }
-function nf6OpenSlotMachine(id){
-  var m=nf9SlotById(id);
-  nf6Slots.machine=m.id; nf6Slots.reels=[]; for(var i=0;i<m.reels;i++) nf6Slots.reels.push(m.symbols[i % m.symbols.length]); nf6Slots.lastWin=0;
-  NF5_RETURN='slots-room';
-  nf6Page('nfGameSlotMachine', m.name.toUpperCase(), m.theme+' · 1,000 GC a spin · '+m.payText+'. DRAFT, no payment taken.');
-  var b=nf6Body('nfGameSlotMachine');
-  var cells=''; for(var j=0;j<m.reels;j++) cells+='<span class="nf9-reel" id="nf6Reel'+j+'">'+NF9_SLOT_ART[nf6Slots.reels[j]]+'</span>';
-  b.innerHTML='<div class="nf9-cabinet"><div class="nf9-reels">'+cells+'</div><div class="nf9-pay">'+m.payText+'</div></div>'
+function nf6SlotWin(reels){
+  if(reels[0]==='7️⃣'&&reels[1]==='7️⃣'&&reels[2]==='7️⃣') return 50000;
+  if(reels[0]===reels[1]&&reels[1]===reels[2]) return 10000;
+  var sevens=reels.filter(function(x){ return x==='7️⃣'; }).length;
+  if(sevens===2) return 2000;
+  if(reels[0]===reels[1]||reels[1]===reels[2]||reels[0]===reels[2]) return 500;
+  return 0;
+}
+function nf6OpenSlots(){
+  NF5_RETURN='lobby';
+  nf6Page('nfGameSlots','LUCKY 7s SLOTS','3 reels · 1,000 GC a spin · three 7s pays 50,000. DRAFT, no payment taken.');
+  var b=nf6Body('nfGameSlots');
+  b.innerHTML='<div class="nf6-reels"><span id="nf6Reel0">🍒</span><span id="nf6Reel1">🍒</span><span id="nf6Reel2">🍒</span></div>'
     +'<div class="nf6-deal-result" id="nf6SlotsResult">Tap SPIN — 1,000 GC a spin.</div>'
-    +'<button class="nf-gate-btn nf6-deal-claim" id="nf6SlotsSpin" type="button">SPIN — 1,000 GC</button>'
-    +'<button class="nf-gate-btn" id="nf9SlotsRoomBack" type="button" style="margin-top:8px">BACK TO SLOTS ROOM</button>'
+    +'<button class="nf-gate-btn nf6-deal-claim" id="nf6SlotsSpin" type="button">🎰 SPIN — 1,000 GC</button>'
     +'<div class="nf-sub">Balance: <b id="nf6SlotsBal"></b></div>';
   $('nf6SlotsSpin').addEventListener('click', function(){ nf6SlotsSpin(); });
-  $('nf9SlotsRoomBack').addEventListener('click', function(){ nf6OpenSlotsRoom(); });
   nf6PaintSlotsBal();
-  nf6ShowScreen('nfGameSlotMachine');
+  nf6ShowScreen('nfGameSlots');
   return true;
 }
-function nf6OpenSlots(){ return nf6OpenSlotsRoom(); }
 function nf6PaintSlotsBal(){ var e=$('nf6SlotsBal'); if(e) e.textContent='GC '+nfBank().toLocaleString(); }
 function nf6SlotsSpin(){
   if(nf6Slots.spinning) return Promise.resolve(null);
   if(nfBank()<1000){ toast('Not enough coins — 1,000 GC a spin.'); return Promise.resolve({error:'broke'}); }
-  var m=nf9SlotById(nf6Slots.machine);
   nf6Slots.spinning=true;
-  nf6BankDelta(-1000, m.name+' spin');
-  var finalReels=[]; for(var i=0;i<m.reels;i++) finalReels.push(nf9SlotSpinOnce(m));
+  nf6BankDelta(-1000, 'Lucky 7s spin');
+  var finalReels=[nf6SlotSpinOnce(), nf6SlotSpinOnce(), nf6SlotSpinOnce()];
   var res=$('nf6SlotsResult'); if(res) res.textContent='Spinning…';
   var ticks=0;
   return new Promise(function(resolve){
     var iv=setInterval(function(){
       ticks++;
-      for(var i=0;i<m.reels;i++){ var el=$('nf6Reel'+i); if(el) el.innerHTML=NF9_SLOT_ART[m.symbols[Math.floor(Math.random()*m.symbols.length)]]; }
+      for(var i=0;i<3;i++){ var el=$('nf6Reel'+i); if(el) el.textContent=NF6_SLOT_SYMS[Math.floor(Math.random()*NF6_SLOT_SYMS.length)]; }
       if(ticks>=9){
         clearInterval(iv);
-        for(var j=0;j<m.reels;j++){ var el2=$('nf6Reel'+j); if(el2) el2.innerHTML=NF9_SLOT_ART[finalReels[j]]; }
-        var win=m.pay(finalReels);
+        for(var j=0;j<3;j++){ var el2=$('nf6Reel'+j); if(el2) el2.textContent=finalReels[j]; }
+        var win=nf6SlotWin(finalReels);
         nf6Slots.reels=finalReels; nf6Slots.lastWin=win; nf6Slots.spinning=false;
-        if(win>0){ nf6BankDelta(win, m.name+' win'); if(res) res.textContent='YOU WON '+win.toLocaleString()+' GOLD COINS!'; }
+        if(win>0){ nf6BankDelta(win, 'Lucky 7s win'); if(res) res.textContent='🎉 YOU WON '+win.toLocaleString()+' GOLD COINS!'; }
         else if(res) res.textContent='No win this spin — try again!';
         nf6PaintSlotsBal();
-        resolve({machine:m.id, reels:finalReels, win:win, bank:nfBank()});
+        resolve({reels:finalReels, win:win, bank:nfBank()});
       }
     }, 90);
   });
@@ -6237,14 +5743,6 @@ function nf6WheelPick(){
   for(var i=0;i<NF6_WHEEL_PRIZES.length;i++){ acc+=NF6_WHEEL_PRIZES[i].w; if(r<acc) return i; }
   return 0;
 }
-/* v9 WHEEL 24H (Jerry 2026-11-09): one free spin per 24 hours. The
-   last-spin time is stored in localStorage in this test copy so a
-   reload / logout cannot reset it. The live version must store it
-   server-side per account, same as the bank. */
-var NF9_WHEEL_KEY='nf_wheel_last_spin';
-function nf9WheelState(){ var last=0; try{ last=Number(localStorage.getItem(NF9_WHEEL_KEY)||'0')||0; }catch(e){} var remaining=last?Math.max(0, last+86400000-Date.now()):0; return {last:last, remaining:remaining, canSpin:remaining<=0}; }
-function nf9WheelFmt(ms){ var s=Math.ceil(ms/1000); var h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60; function p(n){ return (n<10?'0':'')+n; } return p(h)+':'+p(m)+':'+p(sec); }
-function nf9WheelPaint(){ var st=nf9WheelState(); var btn=$('nf6WheelSpin'); var tEl=$('nf9WheelTimer'); if(tEl) tEl.textContent=st.canSpin?'Free spin ready — spin once per 24 hours.':'Next free spin in '+nf9WheelFmt(st.remaining); if(btn){ btn.disabled=!st.canSpin; btn.style.opacity=st.canSpin?'':'0.45'; } return st; }
 function nf6OpenWheel(){
   NF5_RETURN='lobby';
   nf6Page('nfGameWheel','PRIZE WHEEL','Free spin — win up to 40,000,000 gold coins. DRAFT, no payment taken.');
@@ -6255,25 +5753,17 @@ function nf6OpenWheel(){
   var legend=NF6_WHEEL_PRIZES.map(function(p){ return '<span style="color:'+p.color+'">● '+p.amt.toLocaleString()+'</span>'; }).join(' ');
   b.innerHTML='<div class="nf6-wheel-wrap"><div class="nf6-wheel" id="nf6Wheel" style="background:'+grad+'"></div><div class="nf6-wheel-pointer">▼</div></div>'
     +'<div class="nf6-wheel-legend">'+legend+'</div>'
-    +'<div class="nf6-deal-result" id="nf9WheelTimer">Free spin ready — spin once per 24 hours.</div>'
     +'<div class="nf6-deal-result" id="nf6WheelResult">Tap SPIN — it is free.</div>'
     +'<button class="nf-gate-btn nf6-deal-claim" id="nf6WheelSpin" type="button">🎡 SPIN — FREE</button>'
     +'<div class="nf-sub">Balance: <b id="nf6WheelBal"></b></div>';
   $('nf6WheelSpin').addEventListener('click', function(){ nf6WheelSpin(); });
-  try{ if(window.__nf9WheelTimer) clearInterval(window.__nf9WheelTimer); }catch(e){}
-  window.__nf9WheelTimer=setInterval(function(){ try{ nf9WheelPaint(); }catch(e){} }, 1000);
-  nf9WheelPaint();
   nf6PaintWheelBal();
   nf6ShowScreen('nfGameWheel');
   return true;
 }
 function nf6PaintWheelBal(){ var e=$('nf6WheelBal'); if(e) e.textContent='GC '+nfBank().toLocaleString(); }
 function nf6WheelSpin(){
-  var st=nf9WheelState();
-  if(!st.canSpin){ var r0=$('nf6WheelResult'); if(r0) r0.textContent='Next free spin in '+nf9WheelFmt(st.remaining)+' — come back then!'; nf9WheelPaint(); return Promise.resolve({ok:false, blocked:true, prize:0, bank:nfBank()}); }
   if(nf6Wheel.spinning) return Promise.resolve(null);
-  try{ localStorage.setItem(NF9_WHEEL_KEY, String(Date.now())); }catch(e){}
-  nf9WheelPaint();
   nf6Wheel.spinning=true;
   var idx=nf6WheelPick();
   var prize=NF6_WHEEL_PRIZES[idx].amt;
@@ -6290,96 +5780,56 @@ function nf6WheelSpin(){
       nf6BankDelta(prize, 'Prize wheel win');
       if(res) res.textContent='🎡 YOU WON '+prize.toLocaleString()+' GOLD COINS!';
       nf6PaintWheelBal();
-      nf9WheelPaint();
-      resolve({ok:true, prize:prize, bank:nfBank()});
+      resolve({prize:prize, bank:nfBank()});
     }, 2700);
   });
 }
 /* --- SPORTS BET: pick a team, stake, working bet slip (DRAFT). --- */
 var NF6_SPORTS=[
- {a:'Washington Commanders', b:'New York Giants', day:'Thu Nov 12', time:'8:15 PM ET', spread:'Giants -1.5', ou:'43.5'},
- {a:'New England Patriots', b:'Detroit Lions', day:'Sun Nov 15', time:'9:30 AM ET · Munich', spread:'Lions -2.5', ou:'50.5'},
- {a:'Buffalo Bills', b:'New York Jets', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Bills -8.5', ou:'51.5'},
- {a:'Carolina Panthers', b:'New Orleans Saints', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Panthers -1.5', ou:'47.5'},
- {a:'Houston Texans', b:'Cleveland Browns', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Texans -4.5', ou:'39.5'},
- {a:'Jacksonville Jaguars', b:'Tennessee Titans', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Jaguars -9.5', ou:'46.5'},
- {a:'Kansas City Chiefs', b:'Atlanta Falcons', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Chiefs -3', ou:'46.5'},
- {a:'Miami Dolphins', b:'Indianapolis Colts', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Colts -2.5', ou:'41.5'},
- {a:'Minnesota Vikings', b:'Green Bay Packers', day:'Sun Nov 15', time:'1:00 PM ET', spread:'Packers -3', ou:'42.5'},
- {a:'Los Angeles Rams', b:'Arizona Cardinals', day:'Sun Nov 15', time:'4:05 PM ET', spread:'Rams -7', ou:'45.5'},
- {a:'Seattle Seahawks', b:'Las Vegas Raiders', day:'Sun Nov 15', time:'4:05 PM ET', spread:'Seahawks -3', ou:'42.5'},
- {a:'San Francisco 49ers', b:'Dallas Cowboys', day:'Sun Nov 15', time:'4:25 PM ET', spread:'49ers -4.5', ou:'55.5'},
- {a:'Pittsburgh Steelers', b:'Cincinnati Bengals', day:'Sun Nov 15', time:'8:20 PM ET', spread:'Bengals -3.5', ou:'47.5'},
- {a:'Los Angeles Chargers', b:'Baltimore Ravens', day:'Mon Nov 16', time:'8:15 PM ET', spread:'Ravens -4.5', ou:'38.5'}
+ {a:'Dallas Cowboys', b:'L.A. Rams'},
+ {a:'New Orleans Saints', b:'Dallas Cowboys'},
+ {a:'L.A. Rams', b:'New Orleans Saints'}
 ];
-/* v9 SPORTSBOOK (Jerry 2026-11-09): the FULL Week 10 slate, 14 games,
-   Nov 12-16 2026. NO TEAM PLAYS TWICE IN ONE WEEK. One pick PER GAME:
-   each game keeps its own pick, its own stake, and its own PLACE YOUR
-   BET. Spreads + over/unders are the Vegas lines as of Nov 8, 2026 —
-   researched, dated on the page, lines move. No live feed exists in
-   this test copy, so every game shows UPCOMING with its kickoff time
-   and NO live score is ever shown. Bye week: Bears, Broncos, Eagles,
-   Buccaneers — none of them plays this week. */
-var NF9_SPORTS_BYES=['Chicago Bears','Denver Broncos','Philadelphia Eagles','Tampa Bay Buccaneers'];
-var NF9_FANTASY_WATCH=[['Josh Allen','Buffalo Bills','QB'],['Christian McCaffrey','San Francisco 49ers','RB'],['Ja\'Marr Chase','Cincinnati Bengals','WR'],['Lamar Jackson','Baltimore Ravens','QB'],['Justin Herbert','Los Angeles Chargers','QB'],['Patrick Mahomes','Kansas City Chiefs','QB'],['Bijan Robinson','Atlanta Falcons','RB'],['Amon-Ra St. Brown','Detroit Lions','WR']];
-var nf9SportsSel=[]; for(var _s9=0;_s9<NF6_SPORTS.length;_s9++) nf9SportsSel.push({team:null,stake:1000});
 var nf6SportsSel={game:0, team:0, stake:1000};
 function nf6SportsBets(){ try{ return JSON.parse(localStorage.getItem('nf_sports_bets')||'[]'); }catch(e){ return []; } }
 function nf6OpenSports(){
   NF5_RETURN='lobby';
-  nf6Page('nfGameSports','SPORTSBOOK','WEEK 10 · NOV 12–16, 2026 — all 14 games. Pick ONE team per game. WIN pays ×3. Lines as of Nov 8, 2026 — lines move. No live scores in this test copy. DRAFT — no real money, coins move in the test copy.');
+  nf6Page('nfGameSports','SPORTS BET','Pick a team — WIN pays ×3. DRAFT — no real money, coins move in the test copy.');
   var b=nf6Body('nfGameSports');
   var h='';
   NF6_SPORTS.forEach(function(g,gi){
-    h+='<div class="nf6-shop-sec">GAME '+(gi+1)+' · '+g.day.toUpperCase()+'</div>'
-      +'<div class="nf6-shop-card" data-sports-game="'+gi+'" style="text-align:left"><b>'+g.a+' vs '+g.b+'</b>'
-      +'<span>UPCOMING · '+g.day+' '+g.time+'</span>'
-      +'<span>Spread: '+g.spread+' · O/U '+g.ou+' · WIN pays ×3</span>'
+    h+='<div class="nf6-shop-sec">GAME '+(gi+1)+'</div>'
+      +'<div class="nf6-shop-card" style="text-align:left"><b>'+g.a+' vs '+g.b+'</b><span>WIN pays ×3</span>'
       +'<div style="display:flex;gap:8px;margin-top:8px"><button class="nf-gate-btn" type="button" data-game="'+gi+'" data-team="0" style="flex:1">'+g.a+'</button>'
-      +'<button class="nf-gate-btn" type="button" data-game="'+gi+'" data-team="1" style="flex:1">'+g.b+'</button></div>'
-      +'<div class="nf6-shop-sec" style="margin-top:8px">STAKE — GAME '+(gi+1)+'</div><div style="display:flex;gap:8px" data-stake-row="'+gi+'">'
-      +'<button class="nf-gate-btn" type="button" data-game="'+gi+'" data-stake="1000" style="flex:1">1,000</button>'
-      +'<button class="nf-gate-btn" type="button" data-game="'+gi+'" data-stake="10000" style="flex:1">10,000</button>'
-      +'<button class="nf-gate-btn" type="button" data-game="'+gi+'" data-stake="100000" style="flex:1">100,000</button></div>'
-      +'<button class="nf-gate-btn nf6-deal-claim" type="button" data-place-game="'+gi+'" style="margin-top:10px">PLACE BET — GAME '+(gi+1)+'</button></div>';
+      +'<button class="nf-gate-btn" type="button" data-game="'+gi+'" data-team="1" style="flex:1">'+g.b+'</button></div></div>';
   });
-  h+='<div class="nf6-deal-result" id="nf6SportsResult"></div>'
+  h+='<div class="nf6-shop-sec">STAKE</div><div style="display:flex;gap:8px" id="nf6StakeRow">'
+    +'<button class="nf-gate-btn" type="button" data-stake="1000" style="flex:1">1,000</button>'
+    +'<button class="nf-gate-btn" type="button" data-stake="10000" style="flex:1">10,000</button>'
+    +'<button class="nf-gate-btn" type="button" data-stake="100000" style="flex:1">100,000</button></div>'
+    +'<button class="nf-gate-btn nf6-deal-claim" id="nf6PlaceBet" type="button" style="margin-top:12px">PLACE YOUR BET</button>'
+    +'<div class="nf6-deal-result" id="nf6SportsResult"></div>'
     +'<div class="nf6-shop-sec">MY BETS</div><div id="nf6MyBets"></div>'
-    +'<div class="nf6-shop-sec">FANTASY</div><div class="nf6-shop-card" data-fantasy-section style="text-align:left">'
-    +'<b>ON BYE THIS WEEK — do not start:</b><span>'+NF9_SPORTS_BYES.join(' · ')+'</span>'
-    +'<b style="margin-top:8px">FANTASY WATCH — stars playing this week:</b><span>'+NF9_FANTASY_WATCH.map(function(w){ return w[0]+' ('+w[1]+' · '+w[2]+')'; }).join(' · ')+'</span>'
-    +'<span>Fantasy info — no live scores in this test copy.</span></div>'
     +'<div class="nf-sub">Balance: <b id="nf6SportsBal"></b></div>';
   b.innerHTML=h;
-  nf9SportsSel=[]; for(var i=0;i<NF6_SPORTS.length;i++) nf9SportsSel.push({team:null,stake:1000});
+  nf6SportsSel={game:0, team:0, stake:1000};
   b.querySelectorAll('[data-team]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      var gi=+btn.getAttribute('data-game');
-      nf9SportsSel[gi].team=+btn.getAttribute('data-team');
-      var card=btn.closest('[data-sports-game]');
-      card.querySelectorAll('[data-team]').forEach(function(x){ x.classList.toggle('nf6-got', x===btn); });
+      nf6SportsSel.game=+btn.getAttribute('data-game'); nf6SportsSel.team=+btn.getAttribute('data-team');
+      b.querySelectorAll('[data-team]').forEach(function(x){ x.classList.toggle('nf6-got', x===btn); });
     });
   });
   b.querySelectorAll('[data-stake]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      var gi=+btn.getAttribute('data-game');
-      nf9SportsSel[gi].stake=+btn.getAttribute('data-stake');
-      var row=btn.closest('[data-stake-row]');
-      row.querySelectorAll('[data-stake]').forEach(function(x){ x.classList.toggle('nf6-got', x===btn); });
+      nf6SportsSel.stake=+btn.getAttribute('data-stake');
+      b.querySelectorAll('[data-stake]').forEach(function(x){ x.classList.toggle('nf6-got', x===btn); });
     });
   });
-  b.querySelectorAll('[data-place-game]').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var gi=+btn.getAttribute('data-place-game');
-      var sel=nf9SportsSel[gi];
-      if(sel.team===null){ toast('Pick a team in Game '+(gi+1)+' first.'); return; }
-      nf6SportsBet(gi, sel.team, sel.stake);
-    });
-  });
+  $('nf6PlaceBet').addEventListener('click', function(){ nf6SportsBet(nf6SportsSel.game, nf6SportsSel.team, nf6SportsSel.stake); });
   nf6RenderMyBets(); nf6PaintSportsBal();
   nf6ShowScreen('nfGameSports');
   return true;
- }
+}
 function nf6RenderMyBets(){
   var el=$('nf6MyBets'); if(!el) return;
   var bets=nf6SportsBets();
@@ -6485,7 +5935,7 @@ window.__tier6.gameLobbyInfo=function(){
 };
 window.__tier6.gameList=function(title){ return nf6OpenGameList(title||'All Games'); };
 window.__tier6.slots=function(){
-  var s=$('nfGameSlotMachine')||$('nfGameSlots'); var vis=s?!s.hidden:null;
+  var s=$('nfGameSlots'); var vis=s?!s.hidden:null;
   return {visible:vis, reels:nf6Slots.reels.slice(), spinning:nf6Slots.spinning, lastWin:nf6Slots.lastWin, bank:nfBank()};
 };
 window.__tier6.slotsSpin=function(){ return nf6SlotsSpin(); };
@@ -6532,73 +5982,6 @@ window.__tier6.splatDrip=function(key, seat){
 };
 window.__tier6.back=function(){ nf6Back(); return true; };
 window.__tier6.onTable=function(){ try{ return window.__tier5.onTable(); }catch(e){ return null; } };
-/* ===== NF TIER MODULE v9 (2026-11-09) — test hooks in window.__tier9. ===== */
-window.__tier9={};
-window.__tier9.stacks=function(){
-  var open=null; try{ open=window.__nf9OpeningStacks?window.__nf9OpeningStacks.slice():null; }catch(e){}
-  var live=null; try{ live=window.__pokerTest.getState().stacks.slice(); }catch(e){}
-  var nameplates=Array.prototype.map.call(document.querySelectorAll('.seat[data-index] .nameplate span'), function(s){ return (s.textContent||'').replace(/[^0-9]/g,''); });
-  var bb=2; try{ bb=window.__pokerTest.getState().bb; }catch(e){}
-  return {opening:open, live:live, nameplates:nameplates, bb:bb};
-};
-window.__tier9.botPat=function(seat,hole,board,label,toCall){ try{ return window.__pokerTest.botPatProbe(seat,hole,board,label,toCall); }catch(e){ return {error:String(e)}; } };
-window.__tier9.hosts=function(){
-  var row=document.querySelector('.nf9-hosts');
-  var cards=Array.prototype.map.call(document.querySelectorAll('.nf9-host'), function(c){ var im=c.querySelector('img'); var r=c.getBoundingClientRect(); return {host:c.getAttribute('data-host'), imgW:im?im.naturalWidth:0, imgH:im?im.naturalHeight:0, x:Math.round(r.x), y:Math.round(r.y), w:Math.round(r.width), h:Math.round(r.height)}; });
-  var line=document.getElementById('nf9HostLine');
-  var lr=line?line.getBoundingClientRect():null;
-  var car=document.querySelector('.nf5-carousel'); var cr=car?car.getBoundingClientRect():null;
-  var top=document.querySelector('.nf5-topbar'); var tr=top?top.getBoundingClientRect():null;
-  return {present:!!row, hosts:cards, line:line?line.textContent:'', lineRect:lr?{x:Math.round(lr.x),y:Math.round(lr.y),w:Math.round(lr.width),h:Math.round(lr.height)}:null, carouselTop:cr?Math.round(cr.top):null, topbarBottom:tr?Math.round(tr.bottom):null};
-};
-window.__tier9.hostTap=function(who){ return window.__nf9SayHost(who); };
-window.__tier9.greetLogin=function(){ return window.__nf9GreetLogin(); };
-window.__tier9.playNow=function(gameId){
-  nf6OpenGameLobby(gameId);
-  var btn=$('nf6LobbyPlay'); if(!btn) return {error:'no PLAY NOW button'};
-  btn.click();
-  var tr=document.getElementById('tableRoom');
-  var hero=document.querySelector('.seat[data-index="0"]');
-  var draft=$('nfGameDraft');
-  var auth=$('nfAuth');
-  return {tableVisible:tr?!tr.classList.contains('is-hidden'):null, heroSeated:hero?!hero.classList.contains('empty-seat'):null, draftVisible:draft?!draft.hidden:null, authVisible:auth?!auth.hidden:null, btnDisabled:!!btn.disabled, btnText:btn.textContent};
-};
-window.__tier9.draftPage=function(){ var s=$('nfGameDraft'); return {visible:s?!s.hidden:null, text:s?s.textContent.slice(0,400):''}; };
-window.__tier9.wheelState=function(){ return nf9WheelState(); };
-window.__tier9.wheelSetLast=function(ms){ try{ localStorage.setItem(NF9_WHEEL_KEY, String(ms)); }catch(e){} return nf9WheelPaint(); };
-window.__tier9.wheelTimer=function(){ var t=document.getElementById('nf9WheelTimer'); var b=$('nf6WheelSpin'); return {text:t?t.textContent:'', disabled:b?!!b.disabled:null, opacity:b?b.style.opacity:''}; };
-window.__tier9.sports=function(){
-  var s=$('nfGameSports');
-  var games=NF6_SPORTS.map(function(g){ return {a:g.a, b:g.b, day:g.day, time:g.time, spread:g.spread, ou:g.ou}; });
-  var sel=nf9SportsSel.map(function(x){ return {team:x.team, stake:x.stake}; });
-  var fan=document.querySelector('[data-fantasy-section]');
-  return {visible:s?!s.hidden:null, games:games, sel:sel, bets:nf6SportsBets(), bank:nfBank(), fantasyPresent:!!fan, fantasyText:fan?fan.textContent.slice(0,600):'', byes:NF9_SPORTS_BYES.slice()};
-};
-window.__tier9.sportsbook=function(){
-  var cards=Array.prototype.map.call(document.querySelectorAll('[data-sports-game]'), function(c){ return {text:c.textContent.replace(/\s+/g,' ').trim().slice(0,300)}; });
-  return {count:cards.length, cards:cards};
-};
-window.__tier9.lobbyRooms=function(){
-  var sec=null;
-  Array.prototype.forEach.call(document.querySelectorAll('#nfLobby .nf-sec'), function(s){ var h=s.querySelector('h2'); if(h&&h.textContent.indexOf('Rooms')===0) sec=s; });
-  if(!sec) return {present:false, rooms:[]};
-  var rooms=Array.prototype.map.call(sec.querySelectorAll('.nf-tile .nf-tile, .nf-tile'), function(b){ var nm=(b.querySelector('b')||{}).textContent||''; var tg=(b.querySelector('.nf-tag')||{}).textContent||''; var im=b.querySelector('img'); return {name:nm, tag:tg, imgW:im?im.naturalWidth:0}; });
-  return {present:true, rooms:rooms};
-};
-window.__tier9.openRoom=function(id){ var ok=nf9OpenRoom(id); var s=$('nfGameRoom'); var sw=$('nfGameSports'); var sr=$('nfGameSlotsRoom'); var entries=Array.prototype.map.call(document.querySelectorAll('#nfGameRoom [data-room-entry], #nfGameRoom [data-room-tier], #nfGameRoom [data-room-bar]'), function(b){ return b.getAttribute('data-room-entry')||b.getAttribute('data-room-tier')||b.getAttribute('data-room-bar'); }); return {ok:ok, roomVisible:s?!s.hidden:null, sportsVisible:sw?!sw.hidden:null, slotsRoomVisible:sr?!sr.hidden:null, title:s?(s.querySelector('h1')||{}).textContent||null:null, entries:entries}; };
-window.__tier9.roomEntry=function(name){ var btn=document.querySelector('#nfGameRoom [data-room-entry="'+name+'"]'); if(!btn) return {error:'no such entry'}; btn.click(); return {clicked:name}; };
-window.__tier9.roomTier=function(slug){ var btn=document.querySelector('#nfGameRoom [data-room-tier="'+slug+'"]'); if(!btn) return {error:'no such tier'}; btn.click(); var tr=document.getElementById('tableRoom'); return {clicked:slug, tableVisible:tr?!tr.classList.contains('is-hidden'):null}; };window.__tier9.lobbyGames=function(){ return {all:NF9_ROW_ALL.slice(), card:NF9_ROW_CARD.slice(), misc:NF9_ROW_MISC.slice(), tiles:NF9_TILE}; };
-window.__tier9.audio=function(){ try{ return window.__nfAudioState(); }catch(e){ return {error:String(e)}; } };
-window.__tier9.reentry=function(){ var tr=document.getElementById('tableRoom'); var hero=document.querySelector('.seat[data-index="0"]'); var holes=[]; try{ holes=Array.prototype.map.call(document.querySelectorAll('.seat[data-index="0"] .hole'), function(h){ return (h.textContent||'').trim(); }); }catch(e){} var st=null; try{ st=window.__pokerTest.getState(); }catch(e){} var hold=null; try{ hold=nf9HoldCheck(); }catch(e){} var potEl=document.getElementById('potValue'); var acts=Array.prototype.map.call(document.querySelectorAll('.actions [data-action]'), function(b){ return {a:b.getAttribute('data-action'), disabled:!!b.disabled}; }); return {tableVisible:tr?!tr.classList.contains('is-hidden'):null, heroSeated:hero?!hero.classList.contains('empty-seat'):null, heroHoles:holes, hand:st?st.handNumber:null, running:st?st.running:null, pot:st?st.pot:null, potText:potEl?potEl.textContent:'', stacks:st?st.stacks.slice():null, sittingOut:st?st.sittingOut:null, pendingJoin:st?st.pendingJoinNextHand:null, actions:acts, hold:hold, lastRelease:window.__nf9LastRelease||null, away:!!window.__nfAway, audioStopped:!!window.__nfAudioStopped}; };
-window.__tier9.holdSetTs=function(ts){ try{ var raw=localStorage.getItem(NF9_HOLD_KEY); var h=raw?JSON.parse(raw):{hand:0}; h.ts=ts; localStorage.setItem(NF9_HOLD_KEY, JSON.stringify(h)); }catch(e){} return nf9HoldCheck(); };
-window.__tier9.holdExpireNow=function(){ return nf9ReleaseSeat('timeout'); };
-window.__tier9.voice=function(){ try{ return window.__nfLiveVoiceState(); }catch(e){ return {error:String(e)}; } };
-window.__tier9.resumeHand=function(){ try{ return window.__nfResumeHand(); }catch(e){ return {error:String(e)}; } };
-window.__tier9.stopAudio=function(){ try{ return window.__nfStopAllAudio(); }catch(e){ return {error:String(e)}; } };
-window.__tier9.resumeAudio=function(){ try{ return window.__nfResumeAudio(); }catch(e){ return {error:String(e)}; } };
-window.__tier9.slotsRoom=function(){ nf6OpenSlotsRoom(); var s=$('nfGameSlotsRoom'); var cards=Array.prototype.map.call(document.querySelectorAll('[data-slot-machine]'), function(b){ return {id:b.getAttribute('data-slot-machine'), name:b.textContent}; }); return {visible:s?!s.hidden:null, machines:cards}; };
-window.__tier9.slotOpen=function(id){ nf6OpenSlotMachine(id); var s=$('nfGameSlotMachine'); var cells=Array.prototype.map.call(document.querySelectorAll('.nf9-reel'), function(c){ return {svg:!!c.querySelector('svg'), text:(c.textContent||'').trim()}; }); return {visible:s?!s.hidden:null, machine:nf6Slots.machine, reels:nf6Slots.reels.slice(), cells:cells, payText:(document.querySelector('.nf9-pay')||{}).textContent||''}; };
-window.__tier9.slotSpin=function(id){ if(id) nf6OpenSlotMachine(id); return nf6SlotsSpin().then(function(r){ var cells=Array.prototype.map.call(document.querySelectorAll('.nf9-reel'), function(c){ return {svg:!!c.querySelector('svg'), text:(c.textContent||'').trim()}; }); r.cells=cells; return r; }); };
 
 
 /* ===== NF TIER MODULE v7 (2026-11-08) — REAL emotion faces (not a slide),
@@ -6671,7 +6054,6 @@ function nf7DomSetFace(index, emo){
    lobby top bar, in normal flow after the balance pill — it covers NOTHING.
    Every other screen keeps the v6 X (back to lobby/table). --- */
 function nf7ExitLobby(){
-  try{ if(window.__nfStopAllAudio)window.__nfStopAllAudio(); }catch(e){}
   try{ nf5Logout(); }catch(e){ try{ nfShow('nfAuth'); }catch(e2){} }
 }
 nf6EnsureX = function(id){
@@ -6843,7 +6225,7 @@ window.__tier4={
   showLobby:function(){ nfShow('nfLobby'); }, showDaily:function(){ nfShow('nfDaily'); nfRenderDaily(); },
   doAuth:function(email){ nfDoAuth(email||'test@nikkiflixs.com'); },
   pickAvatar:function(n){ var grid=$('nfAvatarGrid'); var imgs=grid?grid.querySelectorAll('img'):[]; var im=imgs[n||2]; if(im) im.click(); return pickedAvatar; },
-  enterTable:function(){ nf9EnterTable(); return true; },
+  enterTable:function(){ nfHideFlow(); nfTopUpCreator(); enterGate('login'); return true; },
   dailyState:nfDailyState,
   dailyClaim:nfDailyClaim,
   dailySet:function(last, streak){ try{ localStorage.setItem('nf_daily_last', last||''); localStorage.setItem('nf_daily_streak', String(streak||0)); }catch(e){} nfRenderDaily(); return nfDailyState(); },
