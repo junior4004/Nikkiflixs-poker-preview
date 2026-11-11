@@ -837,7 +837,7 @@ button,.button,[role="button"]{touch-action:manipulation}
 .nf-hero h1{margin:0;font:800 26px/1.05 sans-serif;color:#ffe9a8;text-shadow:0 2px 6px #000}
 .nf-hero p{margin:4px 0 0;font:600 12px/1.4 sans-serif;color:#fff}
 .nf-banner{position:relative;margin:0 10px 10px;border:2px solid #f5cf6d;border-radius:14px;overflow:hidden;background:#171115}
-.nf-banner img{width:100%;height:150px;object-fit:cover;display:block}
+.nf-banner img{width:100%;height:96px;object-fit:cover;display:block} /* v13: banner shortened — its ONLY $29.99 price button sat under the sticky bottom nav (invisible, un-tappable). It now clears the nav. */
 .nf-banner .nf-b-txt{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(180deg,transparent,#000e)}
 .nf-banner .nf-b-amt{font:800 24px/1.05 sans-serif;color:#ffe9a8;text-shadow:0 2px 6px #000}
 .nf-banner .nf-b-badges{margin:4px 0;font:800 11px/1.4 sans-serif;color:#7ed957}
@@ -896,6 +896,11 @@ button,.button,[role="button"]{touch-action:manipulation}
 .nf-flag-grid button{border:1px solid #f5cf6d44;border-radius:9px;background:#241a12;color:#ffe9a8;font:700 11px/1.3 sans-serif;padding:8px 4px;cursor:pointer}
 .nf-flag-grid button span{display:block;font-size:26px}
 .nf-bottom-nav{position:sticky;bottom:0;display:flex;align-items:center;gap:4px;background:#120b08;border-top:1px solid #f1cf7940;padding:8px 10px 14px}
+/* v13 LOBBY SCROLL LANE: the lobby was one scrollable box with a sticky bottom nav, so whatever content sat at the viewport bottom (promo pills, the banner price button) slid UNDER the nav — invisible, un-tappable. Now the lobby is a flex column: ticker pinned at the top, content scrolling in its own lane, nav a fixed footer. Nothing ever sits under the nav. */
+#nfLobby{display:flex;flex-direction:column;overflow:hidden}
+#nfLobby .nf-lobby-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#nfLobby>#nfTicker{flex:none}
+#nfLobby>.nf-bottom-nav{position:static;flex:none}
 .nf-bottom-nav button{flex:1;background:none;border:0;color:#d5cabe;font:800 11px/1.3 sans-serif;padding:6px 2px}
 .nf-bottom-nav button.on{color:#ffe9a8}
 .nf-bottom-nav .nf-nav-buy{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid #ffe9a8;background:linear-gradient(180deg,#ff5b7a,#c2185b);color:#fff;font:800 13px/1.1 sans-serif;margin-top:-26px;box-shadow:0 6px 18px #000c}
@@ -1130,7 +1135,7 @@ button,.button,[role="button"]{touch-action:manipulation}
 .seat.nf-angry .nameplate{outline:2px solid #e8112d;box-shadow:0 0 14px #e8112d}
 </style>
 <style id="nf11Style">
-#nf11Intro,#nf11Duet,#nf11Lobby{position:fixed;inset:0;z-index:9999;display:none;overflow-y:auto;background:radial-gradient(ellipse 120% 60% at 50% -10%,#5a141b 0%,#1c0709 55%,#070304 100%);color:#f5e6c8;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#nf11Intro{position:fixed;inset:0;z-index:9999;display:none;overflow-y:auto;background:radial-gradient(ellipse 120% 60% at 50% -10%,#5a141b 0%,#1c0709 55%,#070304 100%);color:#f5e6c8;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 #nf11Intro{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px}
 #nf11Intro .nf11-brand{font-size:15px;letter-spacing:.45em;color:#f2c76f;font-weight:800}
 #nf11Intro h1{font-size:34px;letter-spacing:.06em;color:#f5e6c8;margin:0;font-weight:800}
@@ -1138,43 +1143,6 @@ button,.button,[role="button"]{touch-action:manipulation}
 #nf11Enter{border:3px solid #f2c76f;background:linear-gradient(180deg,#7a1622,#3d0a10);color:#ffe9a8;font-size:24px;font-weight:800;letter-spacing:.18em;padding:18px 34px;border-radius:14px;cursor:pointer;box-shadow:0 0 0 6px #f2c76f22,0 10px 30px #000c;min-width:280px;min-height:64px}
 #nf11Enter:active{transform:scale(.97)}
 #nf11Intro .nf11-note{font-size:13px;color:#c9b48a;max-width:320px;line-height:1.5}
-#nf11Duet{flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:22px;text-align:center}
-#nf11Duet h2{font-size:22px;color:#f2c76f;margin:0;letter-spacing:.08em}
-#nf11Duet .nf11-hosts{display:flex;gap:18px;justify-content:center;align-items:flex-start}
-#nf11Duet figure{margin:0;width:150px}
-#nf11Duet figure img{width:150px;height:auto;display:block}
-#nf11Duet figcaption{font-weight:800;font-size:15px;color:#f5e6c8;margin-top:6px}
-#nf11Duet figcaption small{display:block;font-weight:600;font-size:12px;color:#e5ba53}
-#nf11Duet .nf11-bubble{background:#fff7db;color:#2b1216;border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;margin-top:8px}
-#nf11DuetContinue{border:2px solid #f2c76f;background:linear-gradient(180deg,#7a1622,#3d0a10);color:#ffe9a8;font-size:17px;font-weight:800;letter-spacing:.12em;padding:13px 26px;border-radius:12px;cursor:pointer;min-height:52px}
-#nf11Lobby{display:block}
-#nf11Lobby .nf11-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:12px 14px;background:#160708ee;border-bottom:1px solid #f2c76f44}
-#nf11Lobby .nf11-top b{font-size:19px;letter-spacing:.1em;color:#f2c76f}
-#nf11Lobby .nf11-bal{margin-left:auto;font-weight:800;font-size:14px;color:#ffe9a8}
-#nf11Lobby .nf11-buy{border:2px solid #f2c76f;background:linear-gradient(180deg,#ba1d30,#74101c);color:#fff7db;font-weight:800;font-size:15px;letter-spacing:.1em;padding:9px 16px;border-radius:9px;cursor:pointer;min-height:44px}
-#nf11Lobby .nf11-hosts{display:flex;gap:14px;justify-content:center;padding:16px 12px 4px}
-#nf11Lobby figure{margin:0;width:130px;text-align:center}
-#nf11Lobby figure img{width:130px;height:auto;display:block}
-#nf11Lobby figcaption{font-weight:800;font-size:14px;margin-top:6px}
-#nf11Lobby figcaption small{display:block;font-weight:600;font-size:12px;color:#e5ba53}
-#nf11Prompt{text-align:center;color:#ffe9a8;font-size:15px;font-weight:700;padding:8px 16px 2px;min-height:24px}
-#nf11Tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 14px 20px}
-#nf11Tiles button{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;overflow:hidden;border:1px solid #dfb96b87;border-radius:12px;padding:12px;color:#fff;cursor:pointer;min-height:190px;background-color:#111;background-size:cover;background-position:center;box-shadow:0 10px 24px #000a;text-align:left}
-#nf11Tiles button:active{border-color:#f2c76f}
-#nf11Tiles button::before{content:"›";position:absolute;top:8px;right:10px;z-index:2;width:34px;height:34px;display:grid;place-items:center;border:1px solid #dfb96b87;background:#05050588;color:#f2c76f;font-size:20px;font-weight:800}
-#nf11Tiles button::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,transparent 25%,#050505f4 88%)}
-#nf11Tiles button>*{position:relative;z-index:1}
-#nf11Tiles .nf11-num{font-size:11px;letter-spacing:.16em;color:#f2c76f;font-weight:800}
-#nf11Tiles button b{display:block;font-size:24px;line-height:.95;text-transform:uppercase;letter-spacing:.01em;color:#fff;margin:6px 0 5px}
-#nf11Tiles button span:last-child{font-size:12px;color:#d6cfc5;line-height:1.35;display:block}
-#nf11Tiles button[data-nf11-room="poker"]{background-image:url('/assets/rooms/poker/assets/poker-lobby/table-01.webp');background-position:center 30%}
-#nf11Tiles button[data-nf11-room="games"]{background-image:url('/assets/game-room.webp')}
-#nf11Tiles button[data-nf11-room="theater"]{background-image:url('/assets/posters/night-of-the-living-dead-1080p.jpg');background-position:center 18%}
-#nf11Tiles button[data-nf11-room="casino"],#nf11Tiles button[data-nf11-room="sportsbook"],#nf11Tiles button[data-nf11-room="store"],#nf11Tiles button[data-nf11-room="coinstore"]{background-image:url('/assets/casino-floor.webp')}
-#nf11Tiles button[data-nf11-room="tables"],#nf11Tiles button[data-nf11-room="assetstore"]{background-image:url('/assets/rooms/poker/assets/poker-lobby/table-03.webp');background-position:center 30%}
-#nf11Tiles button[data-nf11-room="radio"]{background-image:linear-gradient(135deg,#2a1a3a,#0a0a0a 60%,#3a2a1a)}
-#nf11Tiles button[data-nf11-room="bar"]{background-image:linear-gradient(135deg,#5a1224,#1a070d 55%,#3a2312)}
-#nf11Lobby .nf11-foot{text-align:center;color:#c9a24d;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:0 0 22px}
 </style>
 </head>
 <body>
@@ -1468,7 +1436,7 @@ button,.button,[role="button"]{touch-action:manipulation}
    
   
   
-  function buzz(pattern){if(alertsUnlocked&&navigator.vibrate){navigator.vibrate(pattern);return true}return false}
+  function buzz(pattern){ /* v13 VIBRATION (Jerry 2026-11-09): buzz was gated only on alertsUnlocked, which is set on the FIRST pointerdown anywhere — Tap to Enter, before he is even in a game. Now it needs gameEntered too (set ONLY by SIT IN). */ if(!gameEntered||!alertsUnlocked||!navigator.vibrate)return false; navigator.vibrate(pattern); return true; }
   var sfxLast={},sfxNoiseBuf=null;
 function sfx(kind){
     if(!alertsUnlocked||!audio||audioSilenced||!gameEntered)return;
@@ -1489,10 +1457,9 @@ function sfx(kind){
   }
   document.addEventListener('pointerdown',function(){unlockAlerts()},{once:true});
   document.addEventListener('click',function(){unlockAlerts()},{once:true});
-  function alertUserTurn(index,isWarning){
-    if(index!==localSeatAbsolute)return{beeped:false,buzzed:false,suppressed:true};
-    return{beeped:false,buzzed:buzz(isWarning?[160,80,160]:[180,70,180]),suppressed:false}
-  }
+  function alertUserTurn(index,isWarning){ /* v13: the seat check alone was not enough — localSeatAbsolute is 0 while spectating, so a bot in seat 0 buzzed him. Now it also needs gameEntered and the hero actually seated. */ if(!gameEntered||sittingOut[localSeatAbsolute])return{beeped:false,buzzed:false,suppressed:true}; if(index!==localSeatAbsolute)return{beeped:false,buzzed:false,suppressed:true}; return{beeped:dingUserTurn(),buzzed:buzz(isWarning?[160,80,160]:[180,70,180]),suppressed:false}; }
+  /* SOUND SWEEP (Jerry's rule): your-turn ding — vibrate + ding fire ONLY on the hero's turn. */
+  function dingUserTurn(){try{if(!alertsUnlocked||!audio)return false;if(audio.state==='suspended')audio.resume();var now=audio.currentTime,o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=880;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.14,now+.02);g.gain.exponentialRampToValueAtTime(.0001,now+.16);o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+.18);return true}catch(e){return false}}
   function unlockAlerts(){
     alertsUnlocked=true;
     if(audioSilenced)return Promise.resolve();
@@ -1645,7 +1612,7 @@ function sfx(kind){
     function saveResumeMarker(){if(resumeLeaveCleared)return;try{if(handNumber<1)return;localStorage.setItem(RESUME_KEY,JSON.stringify({seat:localSeatAbsolute,hand:handNumber,ts:Date.now()}))}catch(e){}}
     function readResumeMarker(){try{var m=JSON.parse(localStorage.getItem(RESUME_KEY)||'null');if(!m||typeof m.hand!=='number'||m.hand<1)return null;if(Date.now()-(m.ts||0)>RESUME_TTL){localStorage.removeItem(RESUME_KEY);return null}return m}catch(e){return null}}
     function clearResumeMarker(){try{localStorage.removeItem(RESUME_KEY)}catch(e){}}
-    function showReturningBanner(){var s=document.getElementById('connectionState');if(s){s.textContent='RETURNING TO YOUR SEAT · HAND '+handNumber;s.classList.add('show','restored')}}
+    function showReturningBanner(){ /* v13 STRIPPED: it told him he was coming back to a seat on a table he never picked. The resume marker still keeps the hand number for the bots; nothing tells him he is in a seat. */ }
     function hideReturningBanner(){var s=document.getElementById('connectionState');if(s&&(s.classList.contains('show')||s.classList.contains('restored')))s.classList.remove('show','restored')}
     window.addEventListener('beforeunload',function(){saveResumeMarker()});
     function GF_waitForLiveThenLocal(){ /* R5: the live wire may still be connecting (Render cold start). Do NOT start a local hand until it has resolved — starting one first and letting the live hand overwrite it mid-hand is the "cards switch / game starts over" bug. */
@@ -1661,7 +1628,7 @@ function sfx(kind){
         if(st&&st.status==='connected')return; /* adapter attaching/attached */
         if(st&&(st.status==='no-session'||st.status==='socketio-load-failed'||st.status==='no-socketio')){startLocalOrReentry();return}
         waited+=500;
-        if(waited>=12000){startLocalOrReentry();return} /* live never resolved: local play, clearly local */
+        if(waited>=90000){startLocalOrReentry();return} /* v13: Render free-tier cold start is 30-60s; the 12s wait gave up and started a LOCAL hand, then the live snapshot arrived and overwrote it — the visible 'starts over and gives him cards'. Terminal states still start local immediately. */ /* live never resolved: local play, clearly local */
         setTimeout(poll,500);
       }
       setTimeout(poll,700);
@@ -2648,7 +2615,7 @@ function GF_showdown() {
      out of the hand, seat empty, stack recorded (the test copy never debits
      the bank on sit-in, so there is nothing to credit back here — the live
      server credits the stack to the bank server-side). */
-  window.__nfReleaseSeat=function(){try{sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;pendingJoinNextHand=false;}catch(e){}try{var s=document.querySelector('.seat[data-index="0"]');if(s)s.classList.add('empty-seat');}catch(e){}return{seat:localSeatAbsolute,stack:stacks[localSeatAbsolute],hand:handNumber};};
+  window.__nfReleaseSeat=function(){try{sittingOut[localSeatAbsolute]=true;handFolded[localSeatAbsolute]=true;pendingJoinNextHand=false;mpJoined=false;}catch(e){}try{var s=document.querySelector('.seat[data-index="0"]');if(s)s.classList.add('empty-seat');}catch(e){}return{seat:localSeatAbsolute,stack:stacks[localSeatAbsolute],hand:handNumber};};
   window.__nfSaveResume=function(){try{saveResumeMarker();}catch(e){}return true;};
   /* v9 BOT PAT PROBE (test hook): scripted bot decisions against known
      hands — saves/restores the live hand, so the probe never corrupts it. */
@@ -2744,6 +2711,8 @@ function GF_showdown() {
     var game=snapshot.game==='omaha'?'omaha':'holdem',holeCount=game==='omaha'?4:2,localCards=Array.isArray(snapshot.localCards)?snapshot.localCards:[],board=Array.isArray(snapshot.board)?snapshot.board:[],bets=Array.isArray(snapshot.bets)?snapshot.bets:[];
     var _heroPl=(snapshot.players||[]).filter(function(item){return Number(item.seat)===snapshot.localSeat})[0];var _heroSittingOut=_heroPl&&_heroPl.sittingOut;var _cardsOk=(localCards.length===0&&(snapshot.spectating===true||snapshot.localSeat<0||snapshot.handRunning===false||_heroSittingOut))||(localCards.length===holeCount&&localCards.every(validCard));if(!_cardsOk||!board.every(validCard)){logEvent('reconnect-snapshot-rejected',{revision:snapshot.serverRevision,reason:'invalid cards'});return false}
     if(mpServerDead){logEvent('multiplayer-snapshot-ignored-fallback-local',{revision:snapshot&&snapshot.serverRevision});return false}mpSnapshotSeen=true;authWatchdogGen++;liveSnapshotActive=true;mpMode=true;hideReturningBanner();reentryWaiting=false;var incomingHand=Math.max(0,Math.floor(Number(snapshot.handNumber)||0));if(snapshot.spectating===true||snapshot.localSeat<0||snapshot.localSeat>=maxSeats){return mpPaintSpectate(snapshot)}
+  /* v13 ENTRY = SPECTATE (Jerry 2026-11-09, MANDATORY): the server snapshot must NOT seat him on entry — the 3-min server seat hold used to re-seat him with cards the moment he opened a table. He spectates until he taps SIT IN (which sets mpJoined / pendingJoinNextHand). A reconnect still restores his seat. */
+  if(!mpJoined && !reconnecting && !pendingJoinNextHand){ try{ logEvent('entry-spectate',{hand:handNumber}); }catch(_){} return mpPaintSpectate(snapshot); }
     var _newHand=incomingHand!==handNumber;
     if(_newHand){resetVisuals();lastPaintedHeroCards=''}
     clearTimers();clearTurn();handRunning=false;activeConfig={game:game,maxSeats:maxSeats,sb:Math.max(1,Math.floor(Number(snapshot.smallBlind)||1)),bb:Math.max(2,Math.floor(Number(snapshot.bigBlind)||2)),holeCards:holeCount,freeTable:snapshot.freeTable===true};minimumBuyin=activeConfig.freeTable?0:Math.max(1,Math.floor(Number(snapshot.minimumBuyin)||0));configureHoleCards(holeCount);tableRoom.classList.toggle('sixmax',maxSeats===6);tableRoom.classList.toggle('omaha',game==='omaha');if(_newHand){resetVisuals();lastPaintedHeroCards=''}
@@ -2775,7 +2744,7 @@ function GF_showdown() {
   (function(){var b=document.getElementById('handLogBtn');if(b)b.addEventListener('click',openHandLog);var c=document.getElementById('handLogClose');if(c)c.addEventListener('click',function(){document.getElementById('handLogPanel').classList.remove('open')});var r=document.getElementById('handLogRefresh');if(r)r.addEventListener('click',openHandLog);var cp=document.getElementById('handLogCopy');if(cp)cp.addEventListener('click',function(){var bd=document.getElementById('handLogBody');if(!bd)return;try{navigator.clipboard.writeText(bd.textContent).then(function(){}).catch(function(){})}catch(e){}})})();
   var lobbyBuyModal=document.getElementById('lobbyBuyModal');if(document.getElementById('lobbyBuy'))document.getElementById('lobbyBuy').addEventListener('click',function(){var _lm=document.getElementById('lobbyBuyModal');if(_lm)_lm.classList.remove('open');var _bm=document.getElementById('buyModal');if(_bm)_bm.classList.add('open')});if(document.getElementById('storeOpen'))document.getElementById('storeOpen').addEventListener('click',function(){openStoreChooser()});document.getElementById('closeLobbyBuy').addEventListener('click',function(){lobbyBuyModal.classList.remove('open')});lobbyBuyModal.addEventListener('click',function(event){if(event.target===lobbyBuyModal)lobbyBuyModal.classList.remove('open')});Array.prototype.forEach.call(lobbyBuyModal.querySelectorAll('.package'),function(button){button.addEventListener('click',function(){button.blur();var old=button.querySelector('small');if(old)old.remove();var note=document.createElement('small');note.style.cssText='display:block;margin-top:6px;color:#fff0b5';note.textContent='Secure cashier required';button.appendChild(note)})});
   function reconnectProofSnapshot(){var proofNames=['Ross V.','Tony C.','Mason R.','You','Andre K.','Promise','Marcia J.','Luis G.'];return{authoritative:true,serverRevision:41,game:'holdem',maxSeats:8,smallBlind:25,bigBlind:50,localSeat:3,handNumber:18,dealerSeat:1,pot:1375,handRunning:true,localCards:[['A','♠'],['K','♠']],board:[['10','♥'],['J','♣'],['4','♦']],bets:[0,50,100,250,0,500,0,475],players:seats.map(function(seat,index){return{seat:index,displayName:proofNames[index],stack:index===3?7777:1200+index*125,folded:index===6,allIn:false,sittingOut:false}}),activeTurn:{seat:5,toCall:0,secondsRemaining:14,currentBet:500,contribution:500,lastFullRaise:250}}}
-  window.__pokerTest.startReconnectProof=function(){selectTable(document.querySelector('.join-table'));clearTimers();lastServerRevision=0;window.__pokerTest.pendingReconnectSnapshot=reconnectProofSnapshot();var adapter={authenticated:true,resumeRequests:[],subscribe:function(handler){this.receive=handler},requestResume:function(payload){this.resumeRequests.push(payload)},sendAction:function(action){this.lastAction=action}};window.__pokerTest.reconnectAdapter=adapter;var attached=attachLiveServer(adapter);adapter.receive({type:'disconnect',reason:'audit cable drop'});return{adapterAttached:attached,reconnecting:reconnecting,resumeRequests:adapter.resumeRequests.length}};
+  window.__pokerTest.startReconnectProof=function(){var _jt=document.querySelector('.join-table'); if(_jt) selectTable(_jt); /* v13: no .join-table in the v13 room list — the table is already open here, so the re-open is skipped. */clearTimers();lastServerRevision=0;window.__pokerTest.pendingReconnectSnapshot=reconnectProofSnapshot();var adapter={authenticated:true,resumeRequests:[],subscribe:function(handler){this.receive=handler},requestResume:function(payload){this.resumeRequests.push(payload)},sendAction:function(action){this.lastAction=action}};window.__pokerTest.reconnectAdapter=adapter;var attached=attachLiveServer(adapter);adapter.receive({type:'disconnect',reason:'audit cable drop'});return{adapterAttached:attached,reconnecting:reconnecting,resumeRequests:adapter.resumeRequests.length}};
   window.__pokerTest.finishReconnectProof=function(){var snapshot=window.__pokerTest.pendingReconnectSnapshot||reconnectProofSnapshot(),adapter=window.__pokerTest.reconnectAdapter;if(adapter&&adapter.receive)adapter.receive({type:'snapshot',snapshot:snapshot});else restoreAuthoritativeSnapshot(snapshot);var localNodes=seats[3].querySelectorAll('.hole'),proof={adapterAttached:!!adapter,restoreArrivedThroughSubscription:!reconnecting&&lastServerRevision===41,reconnecting:reconnecting,serverRevision:lastServerRevision,sameSeat:localSeatAbsolute===3&&Number(seats[3].getAttribute('data-view-slot'))===0,sameHand:handNumber===18&&handRunning,sameCards:localNodes[0].textContent==='A'&&localNodes[0].getAttribute('data-suit')==='♠'&&localNodes[1].textContent==='K'&&localNodes[1].getAttribute('data-suit')==='♠',sameChips:stacks[3]===7777,sameBets:roundBetTotals.join(',')==='0,50,100,250,0,500,0,475',samePot:pot===1375,resumeRequested:!!(adapter&&adapter.resumeRequests.length>=2),staleSnapshotRejected:restoreAuthoritativeSnapshot(snapshot)===false};clearTimeout(reconnectBannerTimer);var state=document.getElementById('connectionState');state.textContent='RECONNECTED · SAME SEAT · HAND 18 · A♠ K♠ · STACK GC 7,777 · BET GC 250 · POT GC 1,375';state.classList.add('show','restored');logEvent('reconnect-proof',proof);return proof};
   window.__pokerTest.simulateReconnectProof=function(){var hold=window.__pokerTest.startReconnectProof(),proof=window.__pokerTest.finishReconnectProof();proof.hold=hold;return proof};
   var casinoRoom=document.getElementById('casinoTableRoom'),blackjackGame=document.getElementById('blackjackGame'),crapsGame=document.getElementById('crapsGame'),blackjackActions=document.getElementById('blackjackActions'),crapsActions=document.getElementById('crapsActions'),crapsBetChoices=document.getElementById('crapsBetChoices'),crapsChipButtons=Array.prototype.slice.call(document.querySelectorAll('.craps-denom')),casinoBalance=document.getElementById('casinoBalance');
@@ -2897,7 +2866,7 @@ function grenadeBlast(toIndex){explodePortrait(toIndex);var plate=seats[toIndex]
 function shotgunBlast(toIndex){var wrap=seats[toIndex].querySelector('.portrait-wrap');if(!wrap)return;wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var c=document.createElement('div');c.className='sg-crater';wrap.appendChild(c);setTimeout(function(){c.classList.add('fade')},2400);setTimeout(function(){c.remove()},3100)}
 
 
-function nfVibrate(ms){try{if(navigator.vibrate)navigator.vibrate(ms)}catch(e){}}
+function nfVibrate(ms){ /* v13: nfVibrate was COMPLETELY ungated — the glove-punch throwable called it, so bots throwing gloves vibrated his phone on others' turns. Now it needs gameEntered, the hero seated, and the hero's seat being the active one. */ try{ if(!gameEntered) return; if(sittingOut[localSeatAbsolute]) return; var _hs=document.querySelector('.seat.active'); if(!_hs||Number(_hs.getAttribute('data-index'))!==localSeatAbsolute) return; if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
  
 
   function clearGiftStay(index){try{var seat=seats[index];if(!seat)return;['nf-love-stay','nf-cigar-stay','nf-drink-stay'].forEach(function(cls){var el=seat.querySelector('.'+cls);if(el)el.remove()})}catch(e){}} 
@@ -2999,7 +2968,7 @@ function nfSplatBurst(toIndex,item){
   setTimeout(function(){ if(!d.parentNode) return; try{ d.getAnimations().forEach(function(a){ a.cancel(); }); }catch(e){} d.style.transform='translate(-50%,-18%) scale(1,1.24)'; d.style.transition='opacity 1s ease'; d.style.opacity='0'; setTimeout(function(){ if(d.parentNode) d.remove(); }, 1050); }, 5000);
   /* no on-screen word here, per Jerry */
 }
-function nfGlovePunch(fromIndex,toIndex){flyItem(['glove','Boxing Glove','🥊'],fromIndex,toIndex,function(){var b=seatCenter(toIndex);var g=document.createElement('div');g.className='thrown-item';g.style.cssText='position:fixed;z-index:99990;left:'+(b.x-27)+'px;top:'+(b.y-27)+'px;font-size:54px';g.textContent='🥊';document.body.appendChild(g);var punches=0;var wrap=seats[toIndex].querySelector('.portrait-wrap');function punch(){if(punches>=3){g.remove();return}punches++;nfVibrate(90);if(wrap){wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake')}if(g.animate)g.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate(-14px,4px) scale(1.25)'},{transform:'translate(0,0) scale(1)'}],{duration:220});setTimeout(punch,340)}punch()})}
+function nfGlovePunch(fromIndex,toIndex){flyItem(['glove','Boxing Glove','🥊'],fromIndex,toIndex,function(){var b=seatCenter(toIndex);var g=document.createElement('div');g.className='thrown-item';g.style.cssText='position:fixed;z-index:99990;left:'+(b.x-27)+'px;top:'+(b.y-27)+'px;font-size:54px';g.textContent='🥊';document.body.appendChild(g);var punches=0;var wrap=seats[toIndex].querySelector('.portrait-wrap');function punch(){if(punches>=3){g.remove();return}punches++;if(wrap){wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake')}if(g.animate)g.animate([{transform:'translate(0,0) scale(1)'},{transform:'translate(-14px,4px) scale(1.25)'},{transform:'translate(0,0) scale(1)'}],{duration:220});setTimeout(punch,340)}punch()})}
 function nfFishHit(fromIndex,toIndex){flyItem(['fish','Fish','🐟'],fromIndex,toIndex,function(){var wrap=seats[toIndex].querySelector('.portrait-wrap');if(wrap){wrap.classList.remove('nf-fish-pump');void wrap.offsetWidth;wrap.classList.add('nf-fish-pump')}})}
 
 function nfBookCrack(fromIndex,toIndex){flyItem(['book','Book','📖'],fromIndex,toIndex,function(){var wrap=seats[toIndex].querySelector('.portrait-wrap');if(!wrap)return;wrap.classList.remove('splat-shake');void wrap.offsetWidth;wrap.classList.add('splat-shake');var c=document.createElement('div');c.style.cssText='position:absolute;inset:0;z-index:9;pointer-events:none;transition:opacity .6s ease';c.innerHTML='<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%"><g stroke="rgba(255,255,255,.95)" stroke-width="2.4" fill="none" stroke-linecap="round"><polyline points="50,8 44,26 58,40 46,58 52,78 48,96"/><polyline points="44,26 28,34 14,30"/><polyline points="58,40 76,44 90,38"/><polyline points="46,58 30,70 18,86"/><polyline points="52,78 68,84 82,96"/></g></svg>';wrap.appendChild(c);setTimeout(function(){c.style.opacity='0'},3000);setTimeout(function(){c.remove()},3700)})}
@@ -3658,6 +3627,8 @@ var buyBtn=$('buyChips');
 if(buyBtn){ buyBtn.classList.add('nf-buy-side'); buyBtn.innerHTML='BUY<small>COINS</small>'; tickRight.appendChild(buyBtn); }
 ticker.appendChild(tickRight);
 var toolbar=room.querySelector('.toolbar'); if(toolbar) room.insertBefore(ticker, toolbar); else room.insertBefore(ticker, room.firstChild);
+/* v13 TICKER ON THE LOBBY: the moving deal ticker (#nfTicker) is ONE node. It lives in the lobby when the lobby shows and in the table when the table shows — reparented, never duplicated, never covering anything (in-flow both places). */
+window.__nfPlaceTicker=function(where){ try{ var tk=document.getElementById('nfTicker'); if(!tk) return; if(where==='lobby'){ var lb=document.getElementById('nfLobby'); if(lb){ lb.insertBefore(tk, lb.firstChild); } } else { var rm=document.getElementById('tableRoom'); if(rm){ var tb=rm.querySelector('.toolbar'); if(tb) rm.insertBefore(tk, tb); else rm.insertBefore(tk, rm.firstChild); } } }catch(_){} };
 /* ROOM + STORE into the ticker's left column, bigger, with icons. */
 ['backRoom','storeBtn'].forEach(function(id){
   var b=$(id); if(!b) return;
@@ -3952,7 +3923,7 @@ setInterval(nfPaintHero, 1000);
 
 /* ---------- v4 FLOW SCREENS ---------- */
 function nfEl(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
-function nfShow(id){ ['nfLobby','nfAuth','nfAvatar','nfDaily','nfPromos','nfMenuScr'].forEach(function(x){ var e=$(x); if(e) e.hidden = (x!==id); }); }
+function nfShow(id){ ['nfLobby','nfAuth','nfAvatar','nfDaily','nfPromos','nfMenuScr'].forEach(function(x){ var e=$(x); if(e) e.hidden = (x!==id); }); /* v13: the ticker lives in the lobby while the lobby shows. */ if(id==='nfLobby'){ try{ if(window.__nfPlaceTicker) window.__nfPlaceTicker('lobby'); }catch(e){} } }
 function nfHideFlow(){ ['nfLobby','nfAuth','nfAvatar','nfDaily','nfPromos','nfMenuScr'].forEach(function(x){ var e=$(x); if(e) e.hidden=true; }); }
 function nfPaintLobbyBalance(){
   var b=$('nfLobbyBal'); if(b) b.innerHTML='GC '+nfBank().toLocaleString()+'<small>SC 0.32 · DRAFT</small>';
@@ -4037,11 +4008,7 @@ function nf10OpenRoom(id){
     return '<div class="nf6-shop-card"><img src="'+NF_IMG[t.img]+'" alt="'+t.name+'" style="width:100%;border-radius:8px"><b>'+t.name+'</b><span>'+(t.tag||'')+'</span>'
       +'<button class="nf-gate-btn" type="button" data-room-entry="'+t.name+'">PLAY</button></div>';
   }
-  function tierRow(t){
-    var cur=null; try{ cur=window.__tier5.table(); }catch(e){}
-    var isCur=cur && cur.sb===t.sb && cur.bb===t.bb;
-    return '<button class="nf6-tier-row" type="button" data-room-tier="'+t.slug+'">'+t.name+' · Blinds '+t.sb+'/'+t.bb+(isCur?' <span style="color:#7ed957">● YOU ARE HERE</span>':'')+'<span>'+(isCur?'PLAYING ›':'OPEN ›')+'</span></button>';
-  }
+  function tierRow(t){ /* v13: no row ever claims he is in a table — every row reads OPEN until HE taps it and taps SIT IN. */     return '<button class="nf6-tier-row" type="button" data-room-tier="'+t.slug+'">'+t.name+' · Blinds '+t.sb+'/'+t.bb+'<span>OPEN ›</span></button>'; }
   if(id==='poker'||id==='red'||id==='green'||id==='black'||id==='purple'||id==='blue'){
     h+='<div class="nf6-shop-sec">TABLES — BLINDS</div>';
     NF6_TIERS.forEach(function(t){
@@ -4085,7 +4052,7 @@ function nf10OpenRoom(id){
   return true;
 }
 function nfTileTap(tl){
-  if(tl.table){ nfShow('nfAuth'); return; }
+  if(tl.table){ /* v13: stale v10 branch — poker tiles open the POKER ROOM list, never the login screen. */ nf10OpenRoom('poker'); return; }
   if(tl.daily){ nfShow('nfDaily'); nfRenderDaily(); return; }
   toast(tl.name+' opens from the lobby in the full build — this test copy has the poker tables. (DRAFT)');
 }
@@ -4278,7 +4245,66 @@ function nfBuildMenu(){
   document.body.appendChild(mb);
   try{ window.__nfMuted = localStorage.getItem('nf_volume')==='off'; }catch(e){}
 }
-nfBuildAuth(); nfBuildAvatar(); nfBuildDaily(); nfBuildPromos(); nfBuildMenu();
+window.__nf13LobbyScroll=function(){ /* v13 LOBBY SCROLL LANE: wrap the lobby's content (everything except the ticker and the bottom nav) in a .nf-lobby-scroll lane. The ticker pins at the top, the nav is a fixed footer, the content scrolls between them — nothing ever sits under the nav. */ var lb=document.getElementById('nfLobby'); if(!lb||lb.querySelector('.nf-lobby-scroll')) return; var w=document.createElement('div'); w.className='nf-lobby-scroll'; var nav=lb.querySelector('.nf-bottom-nav'); var kids=Array.prototype.slice.call(lb.childNodes); kids.forEach(function(n){ if(n===nav) return; if(n.nodeType===1&&n.id==='nfTicker') return; w.appendChild(n); }); if(nav) lb.insertBefore(w, nav); else lb.appendChild(w); };
+function nfBuildLobby(){
+  var s=nfEl('div','nf-screen'); s.id='nfLobby';
+  var top=nfEl('div','nf-lobby-top','<b>NIKKIFLIXS</b><div class="nf-bal" id="nfLobbyBal">GC 0<small>SC 0.32 · DRAFT</small></div>');
+  var hero=nfEl('div','nf-hero','<img id="nfHeroImg" src="'+NF_IMG['hero-poker']+'" alt="Nikkiflixs poker"><div class="nf-hero-txt"><h1>COME TAKE OUR COINS.</h1><p>Nikkiflixs Poker Club and Entertainment — real tables, real players, gold coins.</p></div>');
+  var banner=nfEl('div','nf-banner'); banner.id='nfBanner'; banner.setAttribute('data-deal','0');
+  banner.innerHTML='<img id="nfBannerImg" src="'+NF_IMG['promo-banner']+'" alt="Promo deal"><div class="nf-b-dots"><i class="on"></i><i></i><i></i></div><div class="nf-b-txt"><div class="nf-b-amt" id="nfBannerAmt">208,500 GOLD COINS</div><div class="nf-b-badges" id="nfBannerBadges">20% EXTRA · + FREE SC 36</div><button class="nf-b-price" id="nfBannerPrice" type="button">ONLY $29.99</button></div>';
+  var pills=nfEl('div','nf-pills');
+  pills.innerHTML='<button class="nf-pill" id="nfPillOffer" type="button">🪙 SPECIAL OFFER<small>Deals up to 40M GC</small></button><button class="nf-pill" id="nfPillDaily" type="button">🎁 DAILY GIFT<small id="nfDailyCount">23:59:59</small></button><button class="nf-pill" id="nfPillRefer" type="button">👥 REFER A FRIEND<span class="nf-boost">BOOSTED</span></button>';
+  function section(title, tiles){
+    var sec=nfEl('div','nf-sec');
+    var h=nfEl('h2','',title+'<button type="button">SHOW ALL ›</button>'); sec.appendChild(h);
+    var row=nfEl('div','nf-tiles');
+    tiles.forEach(function(tl){
+      var b=nfEl('button','nf-tile','<img src="'+NF_IMG[tl.img]+'" alt="'+tl.name+'">'+(tl.tag?'<span class="nf-tag">'+tl.tag+'</span>':'')+'<span class="nf-heart">♥</span><b>'+tl.name+'</b>');
+      b.setAttribute('data-tile', tl.name);
+      b.addEventListener('click', function(){ nfTileTap(tl); });
+      var _h=b.querySelector('.nf-heart');
+      if(_h){ _h.__nf6wired=1; _h.addEventListener('click', function(ev){ ev.stopPropagation(); ev.preventDefault(); nf6ToggleFav(tl.name); }); }
+      row.appendChild(b);
+    });
+    sec.appendChild(row); return sec;
+  }
+  var sec1=section('Previously Played', [
+    {img:'poker-table', name:'Green Poker · 1/2', tag:'TOP', table:true},
+    {img:'tile-blackjack', name:'Blackjack Bonus', tag:'NEW', room:'blackjack'},
+    {img:'tile-slots', name:'Lucky 7s Slots', tag:'NEW', room:'slots'}
+  ]);
+  var sec2=section('New Games', [
+    {img:'slots-tile', name:'Lucky 7s Deluxe', tag:'NEW', room:'slots'},
+    {img:'wheel', name:'Prize Wheel', tag:'EXCLUSIVE', game:'wheel'},
+    {img:'hero-poker', name:'Poker Night', tag:'TOP', room:'poker'}
+  ]);
+  var sec3=section('Favorites', [
+    {img:'chips-star', name:'High Roller', tag:'TOP', room:'poker'},
+    {img:'daily-gift', name:'Daily Gift', tag:'NEW', daily:true},
+    {img:'poker-table', name:'Red Poker · 10/20', tag:'', room:'red'}
+  ]);
+  var authBar=nfEl('div','nf-sec');
+  authBar.innerHTML='<button class="nf-gate-btn" id="nfLobbyLogin" type="button">LOG IN</button><button class="nf-gate-btn ghost" id="nfLobbySignup" type="button">SIGN UP</button>';
+  var nav=nfEl('div','nf-bottom-nav');
+  nav.innerHTML='<button type="button" class="on" id="nfNavHome">🏠<br>Home</button><button type="button" id="nfNavGames">🎮<br>Games</button><button type="button" class="nf-nav-buy" id="nfNavBuy">BUY</button><button type="button" id="nfNavSearch">🔍<br>Search</button><button type="button" id="nfNavMore">☰<br>More</button>';
+  s.appendChild(top); s.appendChild(hero); s.appendChild(banner); s.appendChild(pills);
+  s.appendChild(sec1); s.appendChild(sec2); s.appendChild(sec3); s.appendChild(authBar); var _sp=document.createElement('div'); _sp.className='nf10-lobby-spacer'; s.appendChild(_sp); s.appendChild(nav);
+  document.body.appendChild(s);
+  $('nfBannerPrice').addEventListener('click', function(){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); });
+  $('nfPillOffer').addEventListener('click', function(){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); });
+  $('nfPillDaily').addEventListener('click', function(){ nfShow('nfDaily'); nfRenderDaily(); });
+  $('nfPillRefer').addEventListener('click', function(){ window.__tier5.openFriends('invitations'); });
+  $('nfLobbyLogin').addEventListener('click', function(){ nfShow('nfAuth'); });
+  $('nfLobbySignup').addEventListener('click', function(){ nfShow('nfAuth'); nfSetAuthMode('signup'); });
+  $('nfNavGames').addEventListener('click', function(){ document.querySelector('.nf-sec').scrollIntoView(); });
+  $('nfNavHome').addEventListener('click', function(){ nfShow('nfLobby'); var l=$('nfLobby'); var _w=l?l.querySelector('.nf-lobby-scroll'):null; if(_w) _w.scrollTop=0; else if(l) l.scrollTop=0; window.scrollTo(0,0); });
+  $('nfNavSearch').addEventListener('click', function(){ nf6OpenSearch(); });
+  $('nfNavMore').addEventListener('click', function(){ nfOpenMenu(); });
+  $('nfNavBuy').addEventListener('click', function(){ nfOpenStores(); });
+  nfStartBanner(); nfPaintLobbyBalance();
+  setInterval(function(){ var c=$('nfDailyCount'); if(!c) return; var now=new Date(); var mid=new Date(now); mid.setHours(24,0,0,0); var s=Math.max(0, Math.floor((mid-now)/1000)); var hh=String(Math.floor(s/3600)).padStart(2,'0'), mm=String(Math.floor(s%3600/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0'); c.textContent=hh+':'+mm+':'+ss; }, 1000);
+}
+ nfBuildLobby(); nfBuildAuth(); nfBuildAvatar(); nfBuildDaily(); nfBuildPromos(); nfBuildMenu(); try{ if(window.__nfPlaceTicker) window.__nfPlaceTicker('lobby'); }catch(e){} try{ if(window.__nf13LobbyScroll) window.__nf13LobbyScroll(); }catch(e){}
 nfRenderDaily();
 /* Old v3 gate: keep its PIN logic, but never show it first — the auth sheet's ADMIN uses the same PIN. */
 if(gateEl) gateEl.style.display='none';
@@ -5482,16 +5508,16 @@ function nf10EnterTable(){
   try{ var _raw10=null; try{ _raw10=JSON.parse(localStorage.getItem(NF10_HOLD_KEY)||'null'); }catch(e){} if(_raw10&&!_raw10.pending&&_raw10.ts&&(Date.now()-_raw10.ts)>NF10_HOLD_MS){ nf10ReleaseSeat('expired'); try{ nfShow('nfAuth'); }catch(e){} return false; } }catch(e){}
   nfHideFlow(); nfTopUpCreator();
   try{ if(window.__nfResumeAudio) window.__nfResumeAudio(); }catch(e){}
-  try{ if(window.__nfSetGameEntered) window.__nfSetGameEntered(true); }catch(e){}
+  /* v13: gameEntered is set ONLY by SIT IN now — opening a table must not arm vibration/sound. __nfResumeHand() stays: it only starts a hand if none is running, never resets handNumber. */
   try{ var gEl=document.getElementById('nfGate'); if(gEl) gEl.remove(); }catch(e){}
   try{ gateEntered=true; }catch(e){}
-  try{ var tr=document.getElementById('tableRoom'); if(tr) tr.classList.remove('is-hidden'); }catch(e){}
+  try{ var tr=document.getElementById('tableRoom'); if(tr) tr.classList.remove('is-hidden'); try{ if(window.__nfPlaceTicker) window.__nfPlaceTicker('table'); }catch(e){} }catch(e){}
   try{ if(window.__nf10HoldTimer){ clearTimeout(window.__nf10HoldTimer); window.__nf10HoldTimer=null; } }catch(e){}
   try{ localStorage.removeItem(NF10_HOLD_KEY); }catch(e){}
   try{ window.__nfAway=false; }catch(e){}
   try{ window.__nf10NoAutoSit=false; }catch(e){}
   try{ if(window.__nfResumeHand) window.__nfResumeHand(); }catch(e){}
-  try{ if(typeof startLoginPopups==='function') startLoginPopups(); }catch(e){}
+  /* v13: login-deal popups do NOT fire on opening a table — they fired the $4.99 deal over the felt the instant a table opened. They still fire on actual login (enterGate). */
   return true;
 }
 /* v10 PLAY ROUTE: every game in this build opens its real game.
@@ -5500,7 +5526,7 @@ function nf10EnterTable(){
    unbuilt games in v10 — no draft page, no greyed button, no toast.
    Anything with no route does nothing (unreachable in this build). */
 function nf10PlayGame(g){
-  if(g.kind==='poker'){ nfRequireAuth(nf10EnterTable); return; }
+  if(g.kind==='poker'){ /* v13: PLAY NOW opens the POKER ROOM list — he picks the table, never straight to a table, and no login wall in front of browsing. */ nf10OpenRoom('poker'); return; }
   if(typeof NF10_LIVE_PAGES!=='undefined'&&NF10_LIVE_PAGES[g.id]){ window.location.href=NF10_LIVE_PAGES[g.id]; return; }
   if(g.kind==='slots'){ nf6OpenSlots(); return; }
   if(g.kind==='blackjack'){ nf6OpenBlackjack(); return; }
@@ -5682,7 +5708,7 @@ var NF6_TILES=[
 ];
 function nf6TileByName(name){ var f=null; NF6_TILES.forEach(function(t){ if(t.name===name) f=t; }); if(!f && typeof NF10_TILE!=='undefined' && NF10_TILE[name]) f=NF10_TILE[name]; return f; }
 nfTileTap=function(tl){
-  if(tl.room){ nfRequireAuth(function(){ nf10OpenRoom(tl.room); }); return; }
+  if(tl.room){ /* v13: room tiles open the room list — no login wall in front of browsing. */ nf10OpenRoom(tl.room); return; }
   if(tl.live){ window.location.href=tl.live; return; }
   if(tl.sports){ nf6OpenSports(); return; }
   if(tl.promo==='deal'){ nfOpenDeal(BANNER_DEALS[bannerIdx], 'lobby'); return; }
@@ -5690,7 +5716,7 @@ nfTileTap=function(tl){
   if(tl.shop==='app'){ nfOpenAppStore('lobby'); return; }
   if(tl.invite){ if(window.__tier5) window.__tier5.openFriends('invitations'); return; }
   if(tl.daily){ nfShow('nfDaily'); nfRenderDaily(); return; }
-  if(tl.table){ nfRequireAuth(nf10EnterTable); return; }
+  if(tl.table){ /* v13: poker tile opens the POKER ROOM list, never a table, and no login wall in front of browsing. */ nf10OpenRoom('poker'); return; }
   if(tl.game==='wheel'){ nf6OpenWheel(); return; }
   if(tl.game==='slots'){ nf6OpenSlotsRoom(); return; }
   if(tl.game==='blackjack'){ nf6OpenBlackjack(); return; }
@@ -6029,10 +6055,8 @@ function nf6OpenGameLobby(gameId){
   var h=artSrc ? '<img class="nf6-deal-art" src="'+artSrc+'" alt="'+g.name+'">' : '';
   if(g.kind==='poker'){
     h+='<div class="nf6-shop-sec">TABLES — BLINDS</div>';
-    var cur=null; try{ cur=window.__tier5.table(); }catch(e){}
     NF6_TIERS.forEach(function(t){
-      var isCur=cur && cur.sb===t.sb && cur.bb===t.bb;
-      h+='<button class="nf6-tier-row" type="button" data-tier="'+t.slug+'">'+t.name+' · Blinds '+t.sb+'/'+t.bb+(isCur?' <span style="color:#7ed957">● YOU ARE HERE</span>':'')+'<span>'+(isCur?'PLAYING ›':'OPEN ›')+'</span></button>';
+      h+='<button class="nf6-tier-row" type="button" data-tier="'+t.slug+'">'+t.name+' · Blinds '+t.sb+'/'+t.bb+'<span>OPEN ›</span></button>';
     });
   }
   h+='<button class="nf-gate-btn nf6-deal-claim" id="nf6LobbyPlay" type="button" style="margin-top:14px">PLAY NOW</button>'
@@ -6049,7 +6073,7 @@ function nf6OpenGameLobby(gameId){
   var lp=$('nf6LobbyPlay');
   if(lp){
     if(g.kind==='poker'){
-      lp.addEventListener('click', function(){ nfRequireAuth(nf10EnterTable); });
+      lp.addEventListener('click', function(){ /* v13: game-lobby PLAY NOW for poker opens the POKER ROOM list, no login wall in front of browsing. */ nf10OpenRoom('poker'); });
     } else if(typeof NF10_LIVE_PAGES!=='undefined'&&NF10_LIVE_PAGES[g.id]){
       /* v10: a real live game (Spades) — PLAY NOW opens its own page. */
       lp.addEventListener('click', function(){ window.location.href=NF10_LIVE_PAGES[g.id]; });
@@ -7023,16 +7047,13 @@ function nf11ApplyFelt(colour){var f=NF11_FELTS[colour];if(!f)return;
   if(f.border)css+='.table::before{border:'+f.border+'!important;}';
   if(f.shadow)css+='.table{box-shadow:'+f.shadow+'!important;}';
   st.textContent=css;}
-function nf11HideAll(){['nf11Intro','nf11Duet','nf11Lobby'].forEach(function(id){var e=$(id);if(e)e.style.display='none';});}
-function nf11PaintBal(){var b=$('nf11Bal');if(b){try{var f=A.nfBank;if(f)b.textContent='GC '+f().toLocaleString();}catch(_){}}}
+function nf11HideAll(){ /* v13: only the intro remains of the nf11 screens — the duet screen and the photo lobby are deleted. The v10 lobby is hidden by nfShow/nfHideFlow, not here. */ var e=$('nf11Intro');if(e)e.style.display='none'; }
+
 function nf11ShowIntro(){nf11HideAll();var e=$('nf11Intro');if(e)e.style.display='flex';}
-function nf11ShowDuet(){nf11HideAll();var e=$('nf11Duet');if(e)e.style.display='flex';
-  try{if(window.__nf10GreetAudio)window.__nf10GreetAudio();}catch(_){}
-  setTimeout(function(){var d=$('nf11Duet');if(d&&d.style.display!=='none')nf11ShowLobby();},9000);}
-function nf11ShowLobby(){nf11HideAll();var e=$('nf11Lobby');if(e)e.style.display='block';nf11PaintBal();}
-function nf11EnterFlow(){var seen=null;try{seen=sessionStorage.getItem('nikkiflixs_lobby_duet');}catch(_){}
-  if(seen){nf11ShowLobby();}else{try{sessionStorage.setItem('nikkiflixs_lobby_duet','1');}catch(_){}nf11ShowDuet();}}
-window.nf11ShowLobby=nf11ShowLobby;window.nf11ShowDuet=nf11ShowDuet;window.nf11EnterFlow=nf11EnterFlow;window.nf11HideAll=nf11HideAll;
+/* v13 REMOVED: the duet-screen function — the static hosts screen is gone. The duet is the v10 audio (Nikki then Promise) over the lobby; see nf11EnterFlow. */
+function nf11ShowLobby(){ /* v13 ONE LOBBY: the v10 lobby (nfLobby) is the only lobby. The photo-tile nf11Lobby and the static hosts screen are gone. NOTE: nfShow lives inside the tier script's scope and is NOT visible from this block — so the show/hide is done inline here (same effect as nfShow('nfLobby')). */ nf11HideAll(); var _lb=$('nfLobby'); if(_lb){ _lb.style.display=''; } ['nfLobby','nfAuth','nfAvatar','nfDaily','nfPromos','nfMenuScr'].forEach(function(x){ var e=$(x); if(e) e.hidden = (x!=='nfLobby'); }); try{ if(window.__nfPlaceTicker) window.__nfPlaceTicker('lobby'); }catch(_){} /* v13: a table picked on room.html (#tier=) opens now — once, after the duet, spectating. SIT IN is still his tap, never automatic. */ try{var _ht=window.__nf11HashTier; if(_ht){window.__nf11HashTier=null; nf11OpenTier(_ht);}}catch(_){} }
+function nf11EnterFlow(){ /* v13 DUET BACK (Jerry 2026-11-09, MANDATORY): the static hosts screen is GONE. The duet is the v10 mechanism — __nf10GreetAudio plays Nikki, then Promise, their voices, their lines, their timing, OVER the lobby. It plays on EVERY Tap to Enter: the v10 guard (startedAt) is reset here, and the once-per-session sessionStorage gate is gone. */ try{ if(window.__nf10Greet){ window.__nf10Greet.startedAt=0; window.__nf10Greet.finishedAt=0; window.__nf10Greet.order=[]; window.__nf10Greet.nikki.played=false; window.__nf10Greet.nikki.ended=false; window.__nf10Greet.nikki.currentTime=0; window.__nf10Greet.promise.played=false; window.__nf10Greet.promise.ended=false; window.__nf10Greet.promise.currentTime=0; window.__nf10Greet.error=''; } }catch(_){} try{ if(window.__nf10GreetAudio) window.__nf10GreetAudio(); }catch(_){} nf11ShowLobby(); }
+window.nf11ShowLobby=nf11ShowLobby;window.nf11EnterFlow=nf11EnterFlow;window.nf11HideAll=nf11HideAll;
 function nf11OpenTier(slug){var t=null;NF11_TIERS.forEach(function(x){if(x.slug===slug)t=x;});if(!t)return;
   nf11ApplyFelt(t.colour);
   var btn=document.createElement('button');
@@ -7041,8 +7062,8 @@ function nf11OpenTier(slug){var t=null;NF11_TIERS.forEach(function(x){if(x.slug=
   window.__nf11TierBtn=btn;
   var dest=function(){if(window.__nf11TierBtn){var b=window.__nf11TierBtn;window.__nf11TierBtn=null;if(window.__startTableDirectly)window.__startTableDirectly(b);}need('nf10EnterTable')();
     try{var g=$('tableGame');if(g)g.textContent='NIKKIFLIXS · '+t.name.toUpperCase()+' · '+t.colour.toUpperCase()+' · TIER '+t.tier;
-    var s=$('tableStakes');if(s)s.textContent='BLINDS '+t.sb+'/'+t.bb;}catch(_){}};
-  try{need('nfRequireAuth')(dest);}catch(_){dest();}}
+    var s=$('tableStakes');if(s)s.textContent='BLINDS '+t.sb+'/'+t.bb;     var bs=$('buildStamp');if(bs)bs.textContent='NIKKIFLIXS POKER · '+t.colour.toUpperCase()+' · TIER '+t.tier;}catch(_){}};
+  dest(); /* v13: no login wall in front of opening a picked table — spectating is free. SIT IN is where joining/auth happens, never the table pick. */}
 window.nf11OpenTier=nf11OpenTier;
 function nf11GamesRoom(){if(typeof A.setReturn==='function'){try{A.setReturn('lobby');}catch(_){}}
   need('nf6Page')('nfGameRoom','CARD GAMES','Four-player classics and board games — pick a game.');
@@ -7061,71 +7082,16 @@ function nf11TablesRoom(){if(typeof A.setReturn==='function'){try{A.setReturn('l
     +'</div>';
   var bj=$('nf11BJBtn');if(bj)bj.addEventListener('click',function(){need('nf6OpenBlackjack')();});
   need('nf6ShowScreen')('nfGameRoom');return true;}
-var NF11_ROOMS=[
- {id:'poker',num:'01 · CARDS',name:'Poker',sub:'Hold\'em and Omaha tables, ready for a seat.'},
- {id:'games',num:'02 · TABLETOP',name:'Game Room',sub:'Cards, boards, dominoes, dice and more.'},
- {id:'theater',num:'03 · WATCH',name:'Theater',sub:'Free movies, classic TV, news and antenna TV.'},
- {id:'casino',num:'04 · SLOTS',name:'Poker Club',sub:'Classic reels and modern bonus machines.'},
- {id:'sportsbook',num:'05 · SPORTS',name:'Sportsbook',sub:'Live odds, scores and gold-coin fun bets.'},
- {id:'radio',num:'06 · MUSIC',name:'Radio',sub:'Live local stations and music videos by genre.'},
- {id:'tables',num:'07 · TABLES',name:'Table Games',sub:'Blackjack and craps, live on the felt.'},
- {id:'store',num:'08 · SHOP',name:'The Store',sub:'Gift shop, gold coins, dice, cards, tables, apps & real sports cards.'},
- {id:'coinstore',num:'09 · COINS',name:'Coin Store',sub:'Top up your gold coins with PayPal.'},
- {id:'assetstore',num:'10 · BUILDERS',name:'Asset Store',sub:'Poker tables, avatars, cards and dice for builders.'},
- {id:'bar',num:'12 · LOUNGE',name:'Nikki\'s Bar',sub:'Pool, shuffleboard and darts — free play in Nikki\'s lounge.'}];
-function nf11RoomTap(room){
-  if(room.id==='poker'){try{need('nfRequireAuth')(function(){need('nf10OpenRoom')('poker');});}catch(_){need('nf10OpenRoom')('poker');}return;}
-  if(room.id==='games'){nf11GamesRoom();return;}
-  if(room.id==='theater'){window.location.href='/assets/rooms/theater/index.html';return;}
-  if(room.id==='casino'){window.location.href='/assets/rooms/casino/slots.html';return;}
-  if(room.id==='sportsbook'){need('nf6OpenSports')();return;}
-  if(room.id==='radio'){window.location.href='/radio-index.html';return;}
-  if(room.id==='tables'){nf11TablesRoom();return;}
-  if(room.id==='store'){window.location.href='/store-hub.html';return;}
-  if(room.id==='coinstore'){window.location.href='/assets/rooms/casino/coin-store.html';return;}
-  if(room.id==='assetstore'){window.location.href='/store/index.html';return;}
-  if(room.id==='bar'){window.location.href='/assets/rooms/bar/index.html';return;}}
-function nf11HostImg(which){
-  try{
-    if(which==='nikki'){var d=document.querySelector('img[alt^="Nikki, the dealer"]');if(d&&d.src)return d.src;}
-    if(which==='promise'){var s=document.querySelector('.seat[data-index="5"] .portrait');if(s&&s.src)return s.src;}
-  }catch(_){}
-  return '';}
-var NF11_NIKKI_LINE='Excellent choice! Good luck!';
-var NF11_PROMISE_LINE='Welcome — good luck at the tables!';
+
+
+
+
 /* --- build the three entry screens --- */
 var intro=document.createElement('div');intro.id='nf11Intro';
 intro.innerHTML='<div class="nf11-brand">NIKKIFLIXS</div><h1>COME TAKE OUR COINS.</h1><div class="nf11-slogan">Poker Club and Entertainment</div><button id="nf11Enter" type="button">TAP TO ENTER</button><div class="nf11-note">Gold coins only. No cash value. Tap to enter and meet your hosts.</div>';
 document.body.appendChild(intro);
-var duet=document.createElement('div');duet.id='nf11Duet';
-duet.innerHTML='<h2>YOUR HOSTS</h2><div class="nf11-hosts">'
- +'<figure><img id="nf11NikkiImg" src="" alt="Nikki, your poker host"><figcaption>Nikki<small>Poker · Game Room · Theater</small></figcaption><div class="nf11-bubble">'+NF11_NIKKI_LINE+'</div></figure>'
- +'<figure><img id="nf11PromiseImg" src="" alt="Promise, your casino host"><figcaption>Promise<small>Poker Club · Radio</small></figcaption><div class="nf11-bubble">'+NF11_PROMISE_LINE+'</div></figure>'
- +'</div><button id="nf11DuetContinue" type="button">TAP TO CONTINUE</button>';
-document.body.appendChild(duet);
-var lobby=document.createElement('div');lobby.id='nf11Lobby';
-var tilesHtml='';
-NF11_ROOMS.forEach(function(r){tilesHtml+='<button type="button" data-nf11-room="'+r.id+'"><span class="nf11-num">'+r.num+'</span><b>'+r.name+'</b><span>'+r.sub+'</span></button>';});
-lobby.innerHTML='<div class="nf11-top"><b>NIKKIFLIXS</b><span class="nf11-bal" id="nf11Bal">GC 0</span><button class="nf11-buy" id="nf11Buy" type="button">BUY</button></div>'
- +'<div class="nf11-hosts">'
- +'<figure><img id="nf11LobbyNikki" src="" alt="Nikki, your poker host"><figcaption>Nikki<small>Poker · Game Room · Theater</small></figcaption></figure>'
- +'<figure><img id="nf11LobbyPromise" src="" alt="Promise, your casino host"><figcaption>Promise<small>Poker Club · Radio</small></figcaption></figure>'
- +'</div><div id="nf11Prompt">So — what are we doing tonight?</div>'
- +'<div id="nf11Tiles">'+tilesHtml+'</div>'
- +'<div class="nf11-foot">Nikkiflixs Poker Club and Entertainment</div>';
-document.body.appendChild(lobby);
-/* portraits: same runtime sources the v10 hosts row used */
-var _ni=nf11HostImg('nikki'), _pi=nf11HostImg('promise');
-['nf11NikkiImg','nf11LobbyNikki'].forEach(function(id){var e=$(id);if(e&&_ni)e.src=_ni;});
-['nf11PromiseImg','nf11LobbyPromise'].forEach(function(id){var e=$(id);if(e&&_pi)e.src=_pi;});
-function nf11SayHost(which){var p=$('nf11Prompt');if(!p)return;
-  p.textContent=(which==='nikki'?NF11_NIKKI_LINE:NF11_PROMISE_LINE);}
-['nf11NikkiImg','nf11LobbyNikki'].forEach(function(id){var e=$(id);if(e)e.addEventListener('click',function(){nf11SayHost('nikki');});});
-['nf11PromiseImg','nf11LobbyPromise'].forEach(function(id){var e=$(id);if(e)e.addEventListener('click',function(){nf11SayHost('promise');});});
+
 $('nf11Enter').addEventListener('click',function(){nf11EnterFlow();});
-$('nf11DuetContinue').addEventListener('click',function(){nf11ShowLobby();});
-$('nf11Buy').addEventListener('click',function(){try{if(typeof A.nfOpenStores==='function'){A.nfOpenStores();return;}}catch(_){}var bm=$('buyModal');if(bm)bm.classList.add('open');});
-lobby.querySelectorAll('[data-nf11-room]').forEach(function(btn){btn.addEventListener('click',function(){var id=btn.getAttribute('data-nf11-room');var r=null;NF11_ROOMS.forEach(function(x){if(x.id===id)r=x;});if(r)nf11RoomTap(r);});});
 /* --- the old lobby's entry points are routed inside the v10 closures
    (v11 bridge, end of the flow script block): nfShow('nfLobby') shows
    this first lobby, and nfHideFlow / nf6ShowScreen / nf6HideAll hide
@@ -7137,13 +7103,13 @@ window.__startTableDirectly=function(btn){window.__nf11Entered=true;nf11HideAll(
 try{var tr=$('tableRoom');if(tr)tr.classList.add('is-hidden');}catch(_){}
 try{var cr=$('casinoTableRoom');if(cr)cr.classList.add('is-hidden');}catch(_){}
 try{var lb=$('nfLobby');if(lb)lb.style.display='none';}catch(_){}
-nf11ShowIntro();
+nf11ShowIntro(); /* v13 HASH TIER: room.html rows link to this one file with #tier=<slug>. Record the pick here; it opens after the entry flow (see nf11ShowLobby). Never on boot, never seated. */ window.__nf11HashTier=null; try{var _hm=(location.hash||'').match(/^#tier=([a-z]+-\d+-\d+)$/); if(_hm){var _hs=_hm[1]; var _ok=false; NF11_TIERS.forEach(function(x){if(x.slug===_hs)_ok=true;}); if(_ok) window.__nf11HashTier=_hs;}}catch(_){} /* v13 FROM-HOME AUTO-ENTER: nikkiflixs.com forwards here after Tap to Enter. Skip this page's intro tap and go straight to the duet + lobby — never to a table, never seated. */ try{ if(sessionStorage.getItem('nikkiflixs_from_home')==='1'){ sessionStorage.removeItem('nikkiflixs_from_home'); setTimeout(function(){ nf11EnterFlow(); }, 300); } }catch(_){}
 window.__nf11={entered:function(){return !!window.__nf11Entered;},
  introVisible:function(){var e=$('nf11Intro');return !!e&&e.style.display!=='none';},
- duetVisible:function(){var e=$('nf11Duet');return !!e&&e.style.display!=='none';},
- lobbyVisible:function(){var e=$('nf11Lobby');return !!e&&e.style.display!=='none';},
- rooms:function(){return NF11_ROOMS.map(function(r){return r.id;});},
- openTier:nf11OpenTier,showLobby:nf11ShowLobby,showDuet:nf11ShowDuet,
+ duetVisible:function(){return !!(window.__nf10Greet&&window.__nf10Greet.startedAt);},
+ lobbyVisible:function(){var e=$('nfLobby');return !!e&&!e.hidden&&e.style.display!=='none';},
+ 
+ openTier:nf11OpenTier,showLobby:nf11ShowLobby,
  duetState:function(){return window.__nf10Greet||null;},
  pokerRoomOpen:function(){return need('nf10OpenRoom')('poker');}};
 })();
