@@ -207,20 +207,21 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 .ss-tag.sit{background:#3a1d1d;color:#e06c6c;}
 .ss-tag.slp{background:#1d2a3a;color:#8ecdfc;}
 
+@media (max-width:480px){.topbar{flex-wrap:wrap;gap:8px;padding:8px 10px}.topbar h1{flex:1 1 100%;order:-1;text-align:center;font-size:20px}.topbar .back{flex:1 1 0;padding:8px 4px;font-size:13px;min-height:38px}}
 </style>
 </head>
 <body>
 <div class="topbar">
   <button class="back" id="backBtn" type="button">← Poker Club</button>
-  <h1>🏈 Sportsbook</h1>
-  <button class="back" id="myBetsBtn" type="button">🎫 My Bets</button>
-  <button class="back" id="parlayBtn" type="button">🎟️ Parlay <span id="parlayCount" class="pbadge"></span></button>
+  <h1>Sportsbook</h1>
+  <button class="back" id="myBetsBtn" type="button">My Bets</button>
+  <button class="back" id="parlayBtn" type="button">Parlay <span id="parlayCount" class="pbadge"></span></button>
 </div>
 <div class="ticker-wrap" id="tickerWrap" aria-label="Live scores">
-  <span class="ticker-label">⚡ SCORES</span>
+  <span class="ticker-label">SCORES</span>
   <div class="ticker-mask"><div class="ticker" id="ticker"><span>Loading live scores…</span></div></div>
 </div>
-<div class="funbanner">For fun only — gold coins have no cash value. Spreads shown are real Vegas-style lines.</div>
+<div class="funbanner">For fun only — gold coins have no cash value. Spreads are live Vegas lines via The Odds API. Lines move — check back often.</div>
 <div style="max-width:640px;margin:0 auto;padding:12px;">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
     <div style="text-align:left;">
@@ -233,21 +234,21 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 </div>
 
 <div class="linesbar demo" id="linesBar">
-  <span class="dot"></span><span class="grow" id="linesText">DEMO LINES — sample data for preview</span>
+  <span class="dot"></span><span class="grow" id="linesText">Loading live lines…</span>
 </div>
 <div class="viewtabs" id="viewTabs" role="tablist" aria-label="Sportsbook views">
-  <button class="vtab active" id="oddsTab" type="button" role="tab" aria-selected="true">🎲 Odds</button>
-  <button class="vtab" id="schedTab" type="button" role="tab" aria-selected="false">📅 Schedules</button>
-  <button class="vtab" id="newsTab" type="button" role="tab" aria-selected="false">📰 News</button>
-  <button class="vtab" id="fantTab" type="button" role="tab" aria-selected="false">🏆 Fantasy</button>
+  <button class="vtab active" id="oddsTab" type="button" role="tab" aria-selected="true">Odds</button>
+  <button class="vtab" id="schedTab" type="button" role="tab" aria-selected="false">Schedules</button>
+  <button class="vtab" id="newsTab" type="button" role="tab" aria-selected="false">News</button>
+  <button class="vtab" id="fantTab" type="button" role="tab" aria-selected="false">Fantasy</button>
 </div>
 <div id="oddsView">
 <div id="scoreStrip" aria-label="Live and final scores">
-  <div class="ss-head">🏟️ SCORES — LIVE &amp; FINAL <span class="ss-src">real scores via ESPN · auto-refresh</span></div>
+  <div class="ss-head">SCORES — LIVE &amp; FINAL <span class="ss-src">real scores via ESPN · auto-refresh</span></div>
   <div id="ssBody" class="ss-body"><div class="ss-loading">Loading scores…</div></div>
 </div>
 <nav class="leagues" id="leagues" aria-label="Leagues"></nav>
-<div class="pickhint">Tap a line to bet it straight · tap <b>🎟️ Parlay</b> up top to build a ticket</div>
+<div class="pickhint">Tap a line to bet it straight · tap <b>Parlay</b> up top to build a ticket</div>
 <div id="games"></div>
 </div>
 <div id="schedView" style="display:none">
@@ -265,17 +266,17 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 <div id="fantView" style="display:none">
   <nav class="leagues" id="fantLeagues" aria-label="Fantasy leagues"></nav>
   <div class="subtabs" role="tablist" aria-label="Fantasy sections">
-    <button class="vtab active" id="injTab" type="button">🤕 Injuries</button>
-    <button class="vtab" id="advTab" type="button">💡 Advice</button>
-    <button class="vtab" id="ssTab" type="button">🎯 Start/Sit</button>
-    <button class="vtab" id="slpTab" type="button">😴 Sleepers</button>
-    <button class="vtab" id="cmpTab" type="button">⚖️ Compare</button>
-    <button class="vtab" id="pwrTab" type="button">📊 Power</button>
-    <button class="vtab" id="hotTab" type="button">🔥 Hot/Not</button>
+    <button class="vtab active" id="injTab" type="button">Injuries</button>
+    <button class="vtab" id="advTab" type="button">Advice</button>
+    <button class="vtab" id="ssTab" type="button">Start/Sit</button>
+    <button class="vtab" id="slpTab" type="button">Sleepers</button>
+    <button class="vtab" id="cmpTab" type="button">Compare</button>
+    <button class="vtab" id="pwrTab" type="button">Power</button>
+    <button class="vtab" id="hotTab" type="button">Hot/Not</button>
   </div>
   <div id="fantInjView">
     <div id="injWireWrap">
-      <div class="wire-head" style="background:#160f08;border-color:#c9a22733;">⚡ <b>LIVE INJURY WIRE</b> — <span id="wireStatus">connecting…</span></div>
+      <div class="wire-head" style="background:#160f08;border-color:#c9a22733;"> <b>LIVE INJURY WIRE</b> — <span id="wireStatus">connecting…</span></div>
       <div class="wire-sub">Breaking injuries across all 32 teams · auto-refreshes every 3 min on game days</div>
       <div id="injWire"></div>
     </div>
@@ -301,16 +302,16 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
       <input id="cmpA" type="text" placeholder="Player 1 — e.g. Brock Purdy" autocomplete="off" aria-label="First player">
       <span class="cmp-vs">VS</span>
       <input id="cmpB" type="text" placeholder="Player 2 — e.g. Lamar Jackson" autocomplete="off" aria-label="Second player">
-      <button class="cmp-go" id="cmpGo" type="button">⚖️ Compare</button>
+      <button class="cmp-go" id="cmpGo" type="button">Compare</button>
     </div>
     <div id="cmpOut"></div>
   </div>
   <div id="fantPwrView" style="display:none">
-    <div class="fant-note">📊 NFL Power Rankings · computed live from win% + point differential</div>
+    <div class="fant-note"> NFL Power Rankings · computed live from win% + point differential</div>
     <div id="pwrList"></div>
   </div>
   <div id="fantHotView" style="display:none">
-    <div class="fant-note">🔥 Hot/Not · who's trending in fantasy headlines right now</div>
+    <div class="fant-note">Hot/Not · who's trending in fantasy headlines right now</div>
     <div id="hotList"></div>
   </div>
 </div>
@@ -338,7 +339,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 
 <div class="modal" id="parlayModal" role="dialog" aria-modal="true">
   <div class="mcard">
-    <h2>🎟️ Parlay Ticket</h2>
+    <h2>Parlay Ticket</h2>
     <div class="paytable" id="parlayPays"></div>
     <p class="sub">Tap a side to lock it in. One pick per game · <b>3 picks minimum</b> · a push drops your ticket to the next payout down.</p>
     <div id="ticketGames"></div>
@@ -355,7 +356,7 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 </div>
 <div class="modal" id="betsModal" role="dialog" aria-modal="true">
   <div class="mcard">
-    <h2>🎫 My bets</h2>
+    <h2> My bets</h2>
     <p class="sub">Settled automatically when games go final.</p>
     <div id="betsList"></div>
     <div class="mactions" style="grid-template-columns:1fr"><button class="cancel" id="betsClose" type="button">Close</button></div>
@@ -363,12 +364,12 @@ button{font:inherit;cursor:pointer;touch-action:manipulation}
 </div>
 
 <div class="toast" id="toast" role="status"></div>
-<button id="cmBtn" type="button" aria-label="Ask Checkmate"><img src="../../checkmate-avatar.png" alt="Checkmate"></button>
+<button id="cmBtn" type="button" aria-label="Ask Checkmate"><img src="../../checkmate-avatar.png" alt="Checkmate" onerror="this.style.display='none'"></button>
 <div id="cmBubble" role="button" tabindex="0">Looking for odds, schedules, news or fantasy? It's all right here. <b>Tap me to ask.</b></div>
 <div id="cmPanel" role="dialog" aria-label="Checkmate sports guide">
-  <div class="cmhead"><span><img src="../../checkmate-avatar.png" alt="Checkmate" class="cmhead-img"> CHECKMATE</span><button id="cmClose" type="button" aria-label="Close">✕</button></div>
+  <div class="cmhead"><span><img src="../../checkmate-avatar.png" alt="Checkmate" class="cmhead-img" onerror="this.style.display='none'"> CHECKMATE</span><button id="cmClose" type="button" aria-label="Close">✕</button></div>
   <div id="cmLog" aria-live="polite"></div>
-  <div class="cmrow"><input id="cmInput" placeholder="Ask about the sportsbook…" aria-label="Ask Checkmate" autocomplete="off"><button id="cmSend" type="button" aria-label="Send">➤</button></div>
+  <div class="cmrow"><input id="cmInput" placeholder="Ask about the sportsbook…" aria-label="Ask Checkmate" autocomplete="off"><button id="cmSend" type="button" aria-label="Send">Send</button></div>
 </div>
 <script>
 (function(){
@@ -383,53 +384,16 @@ var SCORE_CACHE_KEY='nikkiflixs_sportsbook_scores';
 var MIN_BET=50;
 /* ============ LEAGUES ============ */
 var SPORTS=[
-  {key:'americanfootball_nfl',label:'NFL',icon:'🏈'},
-  {key:'basketball_nba',label:'NBA',icon:'🏀'},
-  {key:'baseball_mlb',label:'MLB',icon:'⚾'},
-  {key:'icehockey_nhl',label:'NHL',icon:'🏒'},
-  {key:'americanfootball_ncaaf',label:'NCAAF',icon:'🏈'},
-  {key:'soccer_epl',label:'Soccer',icon:'⚽'},
-  {key:'mma_mixed_martial_arts',label:'MMA',icon:'🥊'}
+  {key:'americanfootball_nfl',label:'NFL'},
+  {key:'basketball_nba',label:'NBA'},
+  {key:'baseball_mlb',label:'MLB'},
+  {key:'icehockey_nhl',label:'NHL'},
+  {key:'americanfootball_ncaaf',label:'NCAAF'},
+  {key:'soccer_epl',label:'Soccer'},
+  {key:'mma_mixed_martial_arts',label:'MMA'}
 ];
-/* ============ DEMO DATA (realistic sample lines) ============ */
-var DEMO_TEAMS={
-  americanfootball_nfl:[['Chiefs','KC'],['Bills','BUF'],['Eagles','PHI'],['49ers','SF'],['Cowboys','DAL'],['Ravens','BAL'],['Lions','DET'],['Packers','GB']],
-  basketball_nba:[['Lakers','LAL'],['Celtics','BOS'],['Warriors','GSW'],['Nuggets','DEN'],['Suns','PHX'],['Knicks','NYK'],['Mavericks','DAL'],['Bucks','MIL']],
-  baseball_mlb:[['Yankees','NYY'],['Dodgers','LAD'],['Astros','HOU'],['Braves','ATL'],['Red Sox','BOS'],['Cubs','CHC'],['Mets','NYM'],['Giants','SF']],
-  icehockey_nhl:[['Bruins','BOS'],['Rangers','NYR'],['Avalanche','COL'],['Oilers','EDM'],['Maple Leafs','TOR'],['Golden Knights','VGK'],['Lightning','TB'],['Stars','DAL']],
-  americanfootball_ncaaf:[['Georgia','UGA'],['Alabama','ALA'],['Ohio State','OSU'],['Michigan','MICH'],['Texas','TEX'],['Oregon','ORE'],['LSU','LSU'],['Notre Dame','ND']],
-  soccer_epl:[['Arsenal','ARS'],['Man City','MCI'],['Liverpool','LIV'],['Chelsea','CHE'],['Tottenham','TOT'],['Man United','MUN'],['Newcastle','NEW'],['Aston Villa','AVL']],
-  mma_mixed_martial_arts:[['Jon Jones','JJ'],['Islam Makhachev','IM'],['Alex Pereira','AP'],['Ilia Topuria','IT'],['Dricus du Plessis','DDP'],['Tom Aspinall','TA'],['Merab Dvalishvili','MD'],['Sean OMalley','SO']]
-};
-function demoGames(sportKey){
-  var teams=DEMO_TEAMS[sportKey]||DEMO_TEAMS.americanfootball_nfl;
-  var games=[],now=Date.now(),i;
-  for(i=0;i<4;i++){
-    var a=teams[(i*2)%teams.length],b=teams[(i*2+1)%teams.length];
-    var favSpread=-(1.5+i*2+((i%2)*0.5));
-    var mlFav=-110-i*25, mlDog=100+i*30;
-    var total=44+i*3.5;
-    var status='upcoming',hs=null,as=null,mins=0;
-    if(i===3){ /* one final game so demo bets can settle */
-      status='final';
-      hs=Math.round(21+i*3+2); as=Math.round(17+i*2);
-    } else if(i===2){
-      status='live'; hs=14+i; as=10+i; mins=32+i*11;
-    }
-    games.push({
-      id:'demo_'+sportKey+'_'+i, sport:sportKey,
-      home:a[0], homeAbbr:a[1], away:b[0], awayAbbr:b[1],
-      commence: status==='upcoming' ? new Date(now+(i+1)*5*3600*1000).toISOString() : new Date(now-3*3600*1000).toISOString(),
-      status:status, homeScore:hs, awayScore:as, mins:mins,
-      spreadHome:favSpread, spreadHomeOdds:-110, spreadAwayOdds:-110,
-      mlHome:mlFav, mlAway:mlDog,
-      totalLine:total, overOdds:-110, underOdds:-110,
-      tv: i%2? 'ESPN':'FOX'
-    });
-  }
-  return games;
-}
-/* ============ STORAGE ============ */
+/* v13: demo/fake lines DELETED — if the live feed fails, the page says so. No invented lines, ever. */
+var linesError=false, linesUpdatedAt=0;
 function lsGet(k,f){try{var v=localStorage.getItem(k);return v==null?f:JSON.parse(v);}catch(e){return f;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function getBank(){try{var v=parseInt(localStorage.getItem(BANK_KEY)||'~',10);return isNaN(v)?null:v;}catch(e){return null;}}
@@ -473,15 +437,15 @@ var liveMode=false;
 function loadGames(sportKey,cb){
   var cache=lsGet(CACHE_KEY,{}),now=Date.now();
   var c=cache[sportKey];
-  if(c&&now-c.ts<CACHE_MS){liveMode=!!c.live;cb(c.games);return;}
-  if(!ODDS_API_KEY){liveMode=false;var d=demoGames(sportKey);cb(d);return;}
+  if(c&&now-c.ts<CACHE_MS){liveMode=!!c.live;linesError=false;cb(c.games);return;}
+  if(!ODDS_API_KEY){liveMode=false;linesError=true;cb([]);return;}
   var url='https://api.the-odds-api.com/v4/sports/'+encodeURIComponent(sportKey)+'/odds/?apiKey='+encodeURIComponent(ODDS_API_KEY)+'&regions=us&markets=h2h,spreads,totals&oddsFormat=american';
   fetch(url).then(function(r){if(!r.ok)throw new Error('api '+r.status);return r.json();})
   .then(function(data){
     var games=data.map(normGame);
     cache[sportKey]={ts:now,games:games,live:true};lsSet(CACHE_KEY,cache);
-    liveMode=true;cb(games);
-  }).catch(function(){liveMode=false;cb(demoGames(sportKey));});
+    liveMode=true;linesError=false;linesUpdatedAt=now;cb(games);
+  }).catch(function(){liveMode=false;linesError=true;cb([]);});
 }
 function refreshScores(cb){
   /* pull final/live scores for sports with open bets; throttled to 6h */
@@ -556,7 +520,7 @@ function settleOpenBets(){
     }
     var s=scoreFor(b),hs=null,as=null,done=false;
     if(s&&s.completed){hs=s.homeScore;as=s.awayScore;done=true;}
-    else if(b.demoFinal){hs=b.demoFinal.home;as=b.demoFinal.away;done=true;}
+   
     if(!done)return;
     var r=settleBet(b,hs,as);
     if(!r)return;
@@ -582,7 +546,7 @@ function renderLeagues(){
   SPORTS.forEach(function(s){
     var b=document.createElement('button');b.type='button';
     b.className='league'+(s.key===curSport?' active':'');
-    b.textContent=s.icon+' '+s.label;
+    b.textContent=s.label;
     b.addEventListener('click',function(){curSport=s.key;renderLeagues();loadGames(curSport,renderGames);});
     nav.appendChild(b);
   });
@@ -601,14 +565,14 @@ function oddBtn(g,label,val,click){
 function renderGames(games){
   curGames=games;
   var bar=document.getElementById('linesBar'),txt=document.getElementById('linesText');
-  if(liveMode){bar.className='linesbar live';txt.textContent='LIVE LINES — real odds via The Odds API';}
-  else{bar.className='linesbar demo';txt.textContent='DEMO LINES — sample data for preview';}
+  if(liveMode){bar.className='linesbar live';txt.textContent='LIVE LINES — real odds via The Odds API'+(linesUpdatedAt?' · updated '+new Date(linesUpdatedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}):'');}
+  else{bar.className='linesbar demo';txt.textContent=linesError?'LINES UNAVAILABLE — check your connection and try again':'Loading live lines…';}
   var wrap=document.getElementById('games');wrap.innerHTML='';
-  if(!games.length){wrap.innerHTML='<div class="empty">No games found for this league right now.</div>';return;}
+  if(!games.length){wrap.innerHTML='<div class="empty">'+(linesError?'Lines unavailable right now — check your connection and try again.':'No games with lines right now — check back closer to game day.')+'</div>';return;}
   games.forEach(function(g){
     var d=document.createElement('div');d.className='gcard';
     var top=document.createElement('div');top.className='gtop';
-    top.innerHTML='<span class="grow gtime">'+fmtTime(g.commence)+(g.tv?' · 📺 '+g.tv:'')+'</span>';
+    top.innerHTML='<span class="grow gtime">'+fmtTime(g.commence)+(g.tv?' ·  '+g.tv:'')+'</span>';
     var badge=document.createElement('span');badge.innerHTML=statBadge(g);top.appendChild(badge);
     d.appendChild(top);
     var teams=document.createElement('div');teams.className='teams';
@@ -664,7 +628,7 @@ function openSlip(g,type,pick){
   var p=pickLabel(g,type,pick);
   slip={game:g,type:type,pick:pick,odds:p.odds,line:p.line,label:p.label};
   document.getElementById('slipGame').textContent=g.away+' @ '+g.home;
-  document.getElementById('slipPick').innerHTML='<span>📋</span><span>'+p.label+' <b>('+fmtOdds(p.odds)+')</b></span>';
+  document.getElementById('slipPick').innerHTML='<span>'+p.label+' <b>('+fmtOdds(p.odds)+')</b></span>';
   document.getElementById('stakeInput').value=500;
   updatePayout();
   document.getElementById('slipModal').classList.add('open');
@@ -681,18 +645,19 @@ function placeBet(){
   if(stake>bal){say('Not enough coins — grab more in the Coin Store.');return;}
   var g=slip.game;
   var bets=getBets();
+  if(slip.type==='spread'||slip.type==='moneyline'){ var tp=slip.pick==='home'?g.home:g.away; for(var bi=0;bi<bets.length;bi++){ if(bets[bi].status==='open'&&bets[bi].team===tp){ say('You already have an open bet on '+tp+' this week — one pick per team.'); return; } } }
   var bet={
     id:'b'+Date.now(), gameId:g.id, sportKey:g.sport,
     gameLabel:g.away+' @ '+g.home,
-    type:slip.type, pick:slip.pick, label:slip.label,
+    type:slip.type, pick:slip.pick, team:(slip.type==='total'?null:(slip.pick==='home'?g.home:g.away)), label:slip.label,
     line:slip.line, odds:slip.odds, stake:stake,
     status:'open', placedAt:Date.now()
   };
-  if(!liveMode&&g.status==='final'){bet.demoFinal={home:g.homeScore,away:g.awayScore};}
+ 
   bets.unshift(bet);setBets(bets);
   setBank(bal-stake);renderBal();
   document.getElementById('slipModal').classList.remove('open');
-  say('Bet placed! Good luck 🍀');
+  say('Bet placed! Good luck');
   settleOpenBets();renderBal();
 }
 /* ============ MY BETS ============ */
@@ -704,7 +669,7 @@ function renderBets(){
     var d=document.createElement('div');d.className='bet';
     var st=b.status==='open'?'OPEN':b.status==='won'?'WON ✓':b.status==='lost'?'LOST':'PUSH';
     if(b.type==='parlay'){
-      d.innerHTML='<div class="bl1"><span>🎟️ '+b.legs.length+'-leg parlay @ '+fmtOdds(b.odds)+'</span><span class="st '+b.status+'">'+st+'</span></div>'+
+      d.innerHTML='<div class="bl1"><span> '+b.legs.length+'-leg parlay @ '+fmtOdds(b.odds)+'</span><span class="st '+b.status+'">'+st+'</span></div>'+
         '<div class="bl2">'+b.legs.map(function(l){return l.label;}).join('<br>')+'<br>Stake: 5 GC → <b>'+b.payout+' GC</b>'+(b.finalScore?' · '+b.finalScore:'')+'</div>';
       list.appendChild(d);return;
     }
@@ -716,14 +681,14 @@ function renderBets(){
 /* ============ SCHEDULES (ESPN free API, no key) ============ */
 var SCHED_CACHE_KEY='nikkiflixs_sched_cache';
 var SCHED_LEAGUES=[
-  {key:'nfl',espn:'football/nfl',label:'NFL',icon:'🏈'},
-  {key:'nba',espn:'basketball/nba',label:'NBA',icon:'🏀'},
-  {key:'mlb',espn:'baseball/mlb',label:'MLB',icon:'⚾'},
-  {key:'nhl',espn:'hockey/nhl',label:'NHL',icon:'🏒'},
-  {key:'ncaaf',espn:'football/college-football',label:'NCAAF',icon:'🏈'},
-  {key:'ncaam',espn:'basketball/mens-college-basketball',label:'NCAAM',icon:'🏀'},
-  {key:'mls',espn:'soccer/usa.1',label:'MLS',icon:'⚽'},
-  {key:'epl',espn:'soccer/eng.1',label:'EPL',icon:'⚽'}
+  {key:'nfl',espn:'football/nfl',label:'NFL'},
+  {key:'nba',espn:'basketball/nba',label:'NBA'},
+  {key:'mlb',espn:'baseball/mlb',label:'MLB'},
+  {key:'nhl',espn:'hockey/nhl',label:'NHL'},
+  {key:'ncaaf',espn:'football/college-football',label:'NCAAF'},
+  {key:'ncaam',espn:'basketball/mens-college-basketball',label:'NCAAM'},
+  {key:'mls',espn:'soccer/usa.1',label:'MLS'},
+  {key:'epl',espn:'soccer/eng.1',label:'EPL'}
 ];
 var curSchedLeague='nfl',curTeamId=null,schedWeekMode=true,schedInitDone=false,schedTeams=[];
 function schedCacheGet(bucket,sub){
@@ -882,7 +847,7 @@ function renderTeamSchedule(out){
     var row=el('div','srow');
     var badge=g.result?'<span class="wl '+g.result.toLowerCase()+'">'+g.result+'</span>':'<span class="wl na">·</span>';
     var mid=g.ha+' '+g.oppAbbr;
-    var sub=(g.week?g.week+' · ':'')+(g.completed?'Final':(g.tv?'📺 '+g.tv:''));
+    var sub=(g.week?g.week+' · ':'')+(g.completed?'Final':(g.tv?' '+g.tv:''));
     var right=g.completed
       ? '<span class="ssc">'+g.usScore+' - '+g.oppScore+'<small>final</small></span>'
       : '<span class="ssc"><small>'+dt.d2+(g.tv?' · '+g.tv:'')+'</small></span>';
@@ -898,7 +863,7 @@ function renderWeekBoard(evs){
   w.appendChild(el('div','sched-head',label+' — this week ('+evs.length+' games)'));
   evs.forEach(function(g){
     var d=el('div','gcard');
-    var top=el('div','gtop','<span class="grow gtime">'+schedDate(g.date).d1+' · '+schedDate(g.date).d2+(g.tv?' · 📺 '+g.tv:'')+'</span>');
+    var top=el('div','gtop','<span class="grow gtime">'+schedDate(g.date).d1+' · '+schedDate(g.date).d2+(g.tv?' ·  '+g.tv:'')+'</span>');
     var st=g.completed?'<span class="gstat final">Final</span>':(g.live?'<span class="gstat live">● Live</span>':'<span class="gstat upcoming">Upcoming</span>');
     var bs=el('span');bs.innerHTML=st;top.appendChild(bs);d.appendChild(top);
     d.appendChild(el('div','teams',
@@ -1002,7 +967,7 @@ function renderNews(arts){
     else{card.addEventListener('click',function(e){e.preventDefault();});}
     var media=a.img
       ?'<img src="'+a.img.replace(/"/g,'')+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
-      :'<span class="nph">📰</span>';
+      :'<span class="nph"></span>';
     card.innerHTML=media+'<span class="nbody"><h3></h3><span class="nmeta">ESPN <span class="ago">'+relTime(a.pub)+'</span></span></span>';
     card.querySelector('h3').textContent=a.headline;
     w.appendChild(card);
@@ -1173,7 +1138,7 @@ function renderFantAdvice(arts){
     else{card.addEventListener('click',function(e){e.preventDefault();});}
     var media=a.img
       ?'<img src="'+a.img.replace(/"/g,'')+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
-      :'<span class="nph">💡</span>';
+      :'<span class="nph"></span>';
     card.innerHTML=media+'<span class="nbody"><h3></h3><span class="nmeta">ESPN FANTASY <span class="ago">'+relTime(a.pub)+'</span></span></span>';
     card.querySelector('h3').textContent=a.headline;
     w.appendChild(card);
@@ -1411,7 +1376,7 @@ function enterSleepers(){
         if(!trend.length){
           w.appendChild(el('div','empty','No fresh sleeper buzz right now.<br>Check back soon — updating.'));return;
         }
-        w.appendChild(el('div','sched-head','📈 Trending in fantasy news'));
+        w.appendChild(el('div','sched-head',' Trending in fantasy news'));
         w.appendChild(el('div','fant-note','No explicit sleeper picks this week — these names are buzzing:'));
         trend.slice(0,10).forEach(function(e){
           var row=el('div','srow');
@@ -1424,7 +1389,7 @@ function enterSleepers(){
         });
         return;
       }
-      w.appendChild(el('div','sched-head','😴 Sleepers of the week ('+picks.length+')'));
+      w.appendChild(el('div','sched-head','Sleepers of the week ('+picks.length+')'));
       var posOrder={QB:0,RB:1,WR:2,TE:3};
       ['QB','RB','WR','TE'].forEach(function(pos){
         var bp=picks.filter(function(e){return e.p.pos===pos;})[0];
@@ -1441,7 +1406,7 @@ function enterSleepers(){
         card.href=e.href||'#';
         if(e.href){card.target='_blank';card.rel='noopener';}
         else{card.addEventListener('click',function(ev){ev.preventDefault();});}
-        card.innerHTML='<span class="nph">😴</span><span class="nbody"><h3></h3><span class="nmeta">'+
+        card.innerHTML='<span class="nph"></span><span class="nbody"><h3></h3><span class="nmeta">'+
           (e.p.pos?e.p.pos+' · ':'')+e.p.team+' · ESPN FANTASY <span class="ago">'+
           relTime(new Date(e.ts).toISOString())+'</span></span></span>';
         card.querySelector('h3').textContent=e.why;
@@ -1628,7 +1593,7 @@ function renderCompare(da,db){
     var elc=el('div','cmp-card'+(win?' cmp-winner':''));
     var head=el('div','cmp-head');
     var nm=el('span','pname');nm.textContent=p.name;
-    var sub=el('small');sub.textContent=(p.pos?p.pos+' · ':'')+p.team+(p.injured?' · ⚠️ '+(p.injDetail||'questionable'):'');
+    var sub=el('small');sub.textContent=(p.pos?p.pos+' · ':'')+p.team+(p.injured?' · ⚠ '+(p.injDetail||'questionable'):'');
     nm.appendChild(sub);head.appendChild(nm);elc.appendChild(head);
     var per=agg.gp>1?' ('+(Math.round(f/agg.gp*10)/10)+'/gm)':'';
     var rows=[];
@@ -1657,7 +1622,7 @@ function renderCompare(da,db){
   else if(winner.injured)reasons.push('note: '+winner.name+' carries an injury tag ('+(winner.injDetail||'check status')+')');
   reasons.push('hotter recent form ('+wf+' vs '+lf+' est. PPR over last few games)');
   var call=el('div','cmp-call');
-  call.innerHTML='<img class="cmface" src="assets/checkmate.png" alt="Checkmate" onerror="this.style.display=\'none\'"> '+
+  call.innerHTML='<img class="cmface" src="../../checkmate.png" alt="Checkmate" onerror="this.style.display=\'none\'"> '+
     '<b>Checkmate\'s call:</b> Start <b>'+winner.name+'</b> — '+reasons.join('; ')+'.';
   out.appendChild(call);
   try{if(typeof cmLog==='function')cmLog('compare '+pa.name+' vs '+pb.name,'Checkmate picked '+winner.name);}
@@ -1865,7 +1830,7 @@ function cmToggle(force){
 function cmSay(text,me){
   var log=document.getElementById('cmLog');
   var d=el('div','cmmsg '+(me?'me':'cm'));
-  if(!me){var av=el('img','cmavatar');av.src='../../checkmate-avatar.png';av.alt='Checkmate';d.appendChild(av);}
+  if(!me){var av=el('img','cmavatar');av.src='../../checkmate-avatar.png';av.onerror=function(){this.style.display='none';};av.alt='Checkmate';d.appendChild(av);}
   var t=el('span','');t.textContent=text;d.appendChild(t);
   log.appendChild(d);
   log.scrollTop=log.scrollHeight;
@@ -1925,23 +1890,23 @@ function cmAnswer(q){
       var dt=schedDate(g.date);
       return {say:'The '+team.name+' play '+g.ha+' '+g.oppName+' ('+g.oppAbbr+') — '+dt.d1+' at '+dt.d2+(g.tv?' on '+g.tv:'')+'.',act:goSched};
     }
-    return {say:'I don\'t have the '+team.name+' schedule loaded yet — tap 📅 Schedules, pick '+team.name+', and you\'ll see their full season.',act:goSched};
+    return {say:'I don\'t have the '+team.name+' schedule loaded yet — tap Schedules, pick '+team.name+', and you\'ll see their full season.',act:goSched};
   }
   if(/injur|hurt|is out|questionable|doubtful|day.to.day/.test(ql))
-    return {say:'Injury reports live under 🏆 Fantasy → Injuries. Pick a team to see who\'s out.',act:function(){setView('fant');setFantSub('inj');}};
+    return {say:'Injury reports live under Fantasy → Injuries. Pick a team to see who\'s out.',act:function(){setView('fant');setFantSub('inj');}};
   if(/fantasy/.test(ql)){
     if(/advice|start|sit|sleeper|waiver|rank|pickup|stream/.test(ql))
-      return {say:'Fantasy advice is under 🏆 Fantasy → Advice — newest headlines first.',act:function(){setView('fant');setFantSub('adv');}};
-    return {say:'Fantasy stuff lives under the 🏆 tab — injuries and advice.',act:function(){setView('fant');}};
+      return {say:'Fantasy advice is under Fantasy → Advice — newest headlines first.',act:function(){setView('fant');setFantSub('adv');}};
+    return {say:'Fantasy stuff lives under the  tab — injuries and advice.',act:function(){setView('fant');}};
   }
   if(/news|headline/.test(ql))
-    return {say:'Fresh headlines are on the 📰 News tab — newest first, never stale.',act:function(){setView('news');}};
+    return {say:'Fresh headlines are on the News tab — newest first, never stale.',act:function(){setView('news');}};
   if(/schedule/.test(ql))
-    return {say:'Full-season schedules are on the 📅 tab — pick a league, then a team.',act:goSched};
+    return {say:'Full-season schedules are on the  tab — pick a league, then a team.',act:goSched};
   if(/odds|line|spread|bet|moneyline|total/.test(ql))
-    return {say:'Odds and gold-coin betting are on the 🎲 Odds tab.',act:function(){setView('odds');}};
+    return {say:'Odds and gold-coin betting are on the Odds tab.',act:function(){setView('odds');}};
   if(/who.*win|predict/.test(ql))
-    return {say:'I don\'t make picks — but the 🎲 tab has the real lines if you want to size one up.',act:function(){setView('odds');}};
+    return {say:'I don\'t make picks — but the  tab has the real lines if you want to size one up.',act:function(){setView('odds');}};
   if(/hello|\bhi\b|hey|thanks|thank/.test(ql))
     return {say:'Hey. Odds, schedules, news, fantasy — what are you looking for?',act:null};
   var baked=cmBakedAnswer(q);
@@ -2084,7 +2049,7 @@ function amToDec(o){return o>0?1+o/100:1+100/Math.abs(o);}
 function decToAm(dd){if(dd>=2)return Math.round((dd-1)*100);return Math.round(-100/(dd-1));}
 function renderPays(){
   var w=document.getElementById('parlayPays');if(!w||w.getAttribute('data-done'))return;w.setAttribute('data-done','1');
-  var h='<div class="pt-head">🎟️ WHAT IT PAYS — EVERY PICK MUST WIN</div>';
+  var h='<div class="pt-head"> WHAT IT PAYS — EVERY PICK MUST WIN</div>';
   [3,4,5,6,7,8,9,10].forEach(function(n){h+='<div><span>'+n+' correct</span><b>'+PARLAY_CARD[n]+' to 1</b></div>';});
   w.innerHTML=h;
 }
@@ -2110,7 +2075,7 @@ function openParlay(){
 }
 function ticketLegFor(g,pick){
   var pl=pickLabel(g,'spread',pick);if(!pl)return null;
-  return {gameId:g.id,sportKey:g.sport,gameLabel:g.away+' @ '+g.home,type:'spread',pick:pick,label:pl.label,odds:-110,line:pl.line};
+  return {gameId:g.id,sportKey:g.sport,gameLabel:g.away+' @ '+g.home,type:'spread',pick:pick,team:pick==='home'?g.home:g.away,label:pl.label,odds:-110,line:pl.line};
 }
 function ticketTap(g,pick){
   var i,found=-1;
@@ -2121,6 +2086,8 @@ function ticketTap(g,pick){
     if(found>-1){ticketPicks[found]=leg;}
     else{
       if(ticketPicks.length>=PARLAY_MAX_LEGS){say('Max '+PARLAY_MAX_LEGS+' picks on one ticket.');return;}
+      var dup=false; for(var ti=0;ti<ticketPicks.length;ti++){ if(ticketPicks[ti].team===leg.team){dup=true;break;} }
+      if(dup){say('That team is already on this ticket — one pick per team each week.');return;}
       ticketPicks.push(leg);
     }
   }
@@ -2174,6 +2141,7 @@ function renderTicketSummary(){
 }
 function renderTicket(){renderTicketGames();renderTicketSummary();}
 function parlayBuy(){
+  var seenT={}; for(var di=0;di<ticketPicks.length;di++){ if(seenT[ticketPicks[di].team]){ say('Two legs pick the same team — one pick per team each week.'); return; } seenT[ticketPicks[di].team]=1; }
   var n=ticketPicks.length;
   if(n<PARLAY_MIN){say('Pick at least '+PARLAY_MIN+' games first.');return;}
   var st=ticketStake();
@@ -2192,7 +2160,7 @@ function parlayBuy(){
   setBank(bal-st);renderBal();
   ticketPicks=[];renderParlayBadge();
   document.getElementById('parlayModal').classList.remove('open');
-  say('🎟️ Ticket bought! '+st+' GC in — all '+n+' picks pay '+m+' to 1. Good luck 🍀');
+  say(' Ticket bought! '+st+' GC in — all '+n+' picks pay '+m+' to 1. Good luck ');
   if(settleOpenBets()){renderBal();}
   renderBets();
 }
@@ -2290,14 +2258,14 @@ function renderSmashSpots(w){
   if(games.length<2)return;
   games.sort(function(a,b){return b.totalLine-a.totalLine;});
   var sec=el('div','trend-sec');
-  var h=el('div','trend-head');h.textContent='💥 Smash spots — highest totals this week';sec.appendChild(h);
+  var h=el('div','trend-head');h.textContent=' Smash spots — highest totals this week';sec.appendChild(h);
   games.slice(0,3).forEach(function(g){
     var d=el('div','ss-card');
     d.innerHTML='<div class="pname">'+g.away+' @ '+g.home+'</div>'+
       '<div class="why">Total '+g.totalLine+' — expect fireworks. Start your studs from this game with confidence.</div>';
     sec.appendChild(d);
   });
-  var h2=el('div','trend-head');h2.textContent='🧊 Cold spots — lowest totals this week';sec.appendChild(h2);
+  var h2=el('div','trend-head');h2.textContent=' Cold spots — lowest totals this week';sec.appendChild(h2);
   games.slice(-3).reverse().forEach(function(g){
     var d=el('div','ss-card');
     d.innerHTML='<div class="pname">'+g.away+' @ '+g.home+'</div>'+
@@ -2317,7 +2285,7 @@ function renderNextWeekRadar(w){
   }).then(function(x){
     if(!x.evs.length)return;
     var sec=el('div','trend-sec');
-    var h=el('div','trend-head');h.textContent='📅 Next week radar — Week '+x.week+' matchups to stash for';sec.appendChild(h);
+    var h=el('div','trend-head');h.textContent=' Next week radar — Week '+x.week+' matchups to stash for';sec.appendChild(h);
     x.evs.slice(0,6).forEach(function(e){
       var comp=e.competitions&&e.competitions[0];if(!comp)return;
       var cs=comp.competitors||[],home=null,away=null;
@@ -2351,8 +2319,8 @@ function enterHotNot(){
         });
       });
       w.innerHTML='';
-      renderTrendSec(w,'🔥 Heating Up',hot);
-      renderTrendSec(w,'🧊 Cooling Off',not);
+      renderTrendSec(w,' Heating Up',hot);
+      renderTrendSec(w,' Cooling Off',not);
       if(!Object.keys(hot).length&&!Object.keys(not).length){
         w.appendChild(el('div','empty','No strong trends in the headlines right now.<br>Check back after the games.'));
       }
@@ -2434,7 +2402,7 @@ function enterLiveWire(){
     w.innerHTML='';
     var br=all.filter(function(p){return p._breaking;});
     if(br.length){
-      var h=el('div','wire-head');h.innerHTML='🔴 <b>BREAKING</b> — reported in the last hour ('+br.length+')';w.appendChild(h);
+      var h=el('div','wire-head');h.innerHTML=' <b>BREAKING</b> — reported in the last hour ('+br.length+')';w.appendChild(h);
     }
     all.slice(0,25).forEach(function(p){
       var r=el('div','wire-row');
@@ -2485,7 +2453,7 @@ try{
 
 loadGames(curSport,function(games){
   renderGames(games);
-  refreshScores(function(){if(settleOpenBets()){renderBal();say('Bets settled! Check 🎫 My Bets.');}});
+  refreshScores(function(){if(settleOpenBets()){renderBal();say('Bets settled! Check My Bets.');}});
 });
 })();
 </script>
