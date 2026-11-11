@@ -130,8 +130,6 @@
     lsSet(DONE_KEY, '1');
     window.__NIKKIFLIXS_GATE__ = { done: true, step: null };
     if (root.parentNode) root.parentNode.removeChild(root);
-    /* v13: on-demand gate (index-v13) — continue to the green file (one lobby) when the gate finishes. */
-    try { if (typeof window.__NIKKIFLIXS_GATE_DONE_CB__ === 'function') { var _cb = window.__NIKKIFLIXS_GATE_DONE_CB__; window.__NIKKIFLIXS_GATE_DONE_CB__ = null; _cb(); } } catch (e) {}
     try { if (typeof window.__NIKKIFLIXS_START_LIVE__ === 'function') window.__NIKKIFLIXS_START_LIVE__(); } catch (e) {}
     /* Creator role is applied by the table's own load path (it validates the
        token via /api/me at load). A creator who just signed in through the
