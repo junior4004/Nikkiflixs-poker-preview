@@ -781,7 +781,7 @@ button,.button,[role="button"]{touch-action:manipulation}
   <header class="toolbar">
     <button class="back-room" id="backRoom" type="button">‹ ROOM</button><div class="table-summary"><strong id="tableGame">Texas Hold’em · 8-max</strong><span id="tableStakes">BLINDS 25 / 50 · BUY-IN GC 2,000–5,000</span></div><div class="toolbar-spacer"></div>
     <span class="balance-pill">GOLD COINS <b id="tableBalance">GC 0</b></span>
-    <button class="tool" id="adminBtn" type="button" aria-label="Open creator admin">👑 ADMIN</button><button class="tool" id="profileOpen" type="button" aria-label="Open your profile">👤 PROFILE</button>
+    <button class="tool" id="adminBtn" type="button" aria-label="Open creator admin">👑 ADMIN</button>
     <button class="tool" id="storeBtn" type="button" aria-label="Open the stores">🛒 STORE</button>
     
     <button class="tool" id="flagBtn" type="button" aria-label="Pick your country flag">🏳 FLAG</button>
@@ -918,273 +918,6 @@ button,.button,[role="button"]{touch-action:manipulation}
 </main>
 <div class="craps-rules-panel" id="crapsRulesPanel" role="dialog" aria-modal="true" aria-labelledby="crapsRulesTitle"><div class="craps-rules-card"><h2 id="crapsRulesTitle">Craps bets &amp; payouts</h2><p>The table applies standard casino resolution: line bets establish a point; Come and Don’t Come travel to their own point; place, hardway, and Big 6/8 bets remain working until they win or lose.</p><div class="craps-rules-grid"><div><b>PASS / COME</b>7 or 11 wins on come-out; 2, 3, 12 lose. After a point, point before 7 wins.</div><div><b>DON’T PASS / DON’T COME</b>2 or 3 wins, 12 pushes; after a point, 7 before point wins.</div><div><b>PLACE</b>4/10 pay 9:5; 5/9 pay 7:5; 6/8 pay 7:6. Seven loses.</div><div><b>HARDWAYS</b>Hard 4/10 pay 7:1; hard 6/8 pay 9:1. Seven or the easy combination loses.</div><div><b>FIELD</b>3, 4, 9, 10, 11 pay even; 2 and 12 pay double.</div><div><b>ONE ROLL</b>2/12 pay 30:1; 3/11 pay 15:1; Any 7 pays 4:1; Any Craps pays 7:1.</div><div><b>HORN / C &amp; E</b>Horn covers 2, 3, 11, 12. C &amp; E combines Any Craps and Eleven.</div><div><b>BIG 6 / BIG 8</b>Pays even money when its number rolls before 7.</div></div><button class="craps-rules-close" id="crapsRulesClose" type="button">BACK TO TABLE</button></div></div>
 <script>
-/* ===== RED SOUND PACK (~/workspace/rebuilt-game/sound-pack.js, inlined) =====
-   WebAudio noise-burst transients only — no oscillator sweeps, no placeholder bleeps.
-   playChip / playDeal / playMuck / playCheck / playTurnDing (+ setPlayerTurn). */
-/* Nikkiflixs poker table sounds — WebAudio only */
-(() => {
-  "use strict";
-
-  let audio = null;
-  let noiseBuffer = null;
-  let playerTurn = false;
-  let dingPlayedThisTurn = false;
-
-  function getAudio() {
-    if (!audio) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return null;
-
-      audio = new AudioCtx();
-      const length = audio.sampleRate; // One second of reusable noise
-      noiseBuffer = audio.createBuffer(1, length, audio.sampleRate);
-
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < length; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-
-      // Start/resume after a user gesture on mobile browsers.
-      const unlock = () => {
-        if (audio && audio.state !== "running") audio.resume().catch(() => {});
-      };
-      window.addEventListener("pointerdown", unlock, { passive: true });
-      window.addEventListener("touchstart", unlock, { passive: true });
-    }
-
-    if (audio.state !== "running") audio.resume().catch(() => {});
-    return audio;
-  }
-
-  function burst({
-    time,
-    sourceDuration = 0.025,
-    envelopeDuration = 0.06,
-    attack = 0.002,
-    volume = 0.2,
-    filters = []
-  }) {
-    const ctx = getAudio();
-    if (!ctx || !noiseBuffer) return;
-
-    const source = ctx.createBufferSource();
-    source.buffer = noiseBuffer;
-    source.loop = true;
-
-    let node = source;
-    for (const spec of filters) {
-      const filter = ctx.createBiquadFilter();
-      filter.type = spec.type || "bandpass";
-      filter.frequency.setValueAtTime(spec.frequency, time);
-      filter.Q.setValueAtTime(spec.Q || 0.8, time);
-      node.connect(filter);
-      node = filter;
-    }
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(volume, time + attack);
-    gain.gain.setValueAtTime(volume, time + Math.min(sourceDuration, envelopeDuration));
-    gain.gain.exponentialRampToValueAtTime(
-      0.0001,
-      time + Math.max(envelopeDuration, attack + 0.01)
-    );
-
-    node.connect(gain);
-    gain.connect(ctx.destination);
-    source.start(time);
-    source.stop(time + sourceDuration);
-    source.onended = () => {
-      source.disconnect();
-      node.disconnect();
-      gain.disconnect();
-    };
-  }
-
-  function playChip(style = "single") {
-    const ctx = getAudio();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.005;
-
-    if (style === "bet" || style === "win") {
-      // A short cluster of clacks, followed by a soft sliding stack.
-      const count = style === "win" ? 4 : 3;
-      for (let i = 0; i < count; i++) {
-        const at = t + i * 0.035 + Math.random() * 0.012;
-        burst({
-          time: at,
-          sourceDuration: 0.018,
-          envelopeDuration: 0.045,
-          volume: style === "win" ? 0.25 : 0.21,
-          filters: [
-            { type: "highpass", frequency: 500 },
-            { type: "bandpass", frequency: 2300 + Math.random() * 700, Q: 1.2 }
-          ]
-        });
-        burst({
-          time: at,
-          sourceDuration: 0.025,
-          envelopeDuration: 0.055,
-          volume: 0.11,
-          filters: [{ type: "lowpass", frequency: 850 }]
-        });
-      }
-
-      burst({
-        time: t + 0.09,
-        sourceDuration: 0.11,
-        envelopeDuration: 0.13,
-        attack: 0.012,
-        volume: 0.055,
-        filters: [
-          { type: "highpass", frequency: 300 },
-          { type: "lowpass", frequency: 1900 }
-        ]
-      });
-      return;
-    }
-
-    // Single chip clack.
-    burst({
-      time: t,
-      sourceDuration: 0.02,
-      envelopeDuration: 0.05,
-      volume: 0.23,
-      filters: [
-        { type: "highpass", frequency: 450 },
-        { type: "bandpass", frequency: 2700 + Math.random() * 500, Q: 1.1 }
-      ]
-    });
-    burst({
-      time: t,
-      sourceDuration: 0.03,
-      envelopeDuration: 0.065,
-      volume: 0.12,
-      filters: [{ type: "lowpass", frequency: 950 }]
-    });
-  }
-
-  function playDeal() {
-    const ctx = getAudio();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.005;
-
-    // Soft card glide and a light landing tap.
-    burst({
-      time: t,
-      sourceDuration: 0.16,
-      envelopeDuration: 0.17,
-      attack: 0.018,
-      volume: 0.085,
-      filters: [
-        { type: "bandpass", frequency: 1450, Q: 0.65 },
-        { type: "lowpass", frequency: 4200 }
-      ]
-    });
-    burst({
-      time: t + 0.14,
-      sourceDuration: 0.018,
-      envelopeDuration: 0.05,
-      volume: 0.105,
-      filters: [
-        { type: "highpass", frequency: 350 },
-        { type: "lowpass", frequency: 2400 }
-      ]
-    });
-  }
-
-  function playMuck() {
-    const ctx = getAudio();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.005;
-
-    burst({
-      time: t,
-      sourceDuration: 0.085,
-      envelopeDuration: 0.095,
-      attack: 0.012,
-      volume: 0.055,
-      filters: [
-        { type: "bandpass", frequency: 1000, Q: 0.55 },
-        { type: "lowpass", frequency: 2600 }
-      ]
-    });
-    burst({
-      time: t + 0.075,
-      sourceDuration: 0.018,
-      envelopeDuration: 0.045,
-      volume: 0.07,
-      filters: [{ type: "lowpass", frequency: 1500 }]
-    });
-  }
-
-  function playCheck() {
-    const ctx = getAudio();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.005;
-
-    // Brief low wooden knock, shaped from filtered noise.
-    burst({
-      time: t,
-      sourceDuration: 0.035,
-      envelopeDuration: 0.11,
-      attack: 0.002,
-      volume: 0.22,
-      filters: [
-        { type: "lowpass", frequency: 700 },
-        { type: "bandpass", frequency: 260, Q: 0.8 }
-      ]
-    });
-    burst({
-      time: t,
-      sourceDuration: 0.02,
-      envelopeDuration: 0.065,
-      volume: 0.07,
-      filters: [{ type: "bandpass", frequency: 950, Q: 0.7 }]
-    });
-  }
-
-  function setPlayerTurn(isPlayerTurn) {
-    playerTurn = Boolean(isPlayerTurn);
-    if (!playerTurn) dingPlayedThisTurn = false;
-  }
-
-  function playTurnDing() {
-    if (!playerTurn || dingPlayedThisTurn) return;
-    dingPlayedThisTurn = true;
-
-    const ctx = getAudio();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.005;
-
-    // Short ringing-like tone made from resonant noise transients, not an oscillator.
-    for (const [frequency, volume, delay] of [
-      [1850, 0.12, 0],
-      [2750, 0.075, 0.012]
-    ]) {
-      burst({
-        time: t + delay,
-        sourceDuration: 0.018,
-        envelopeDuration: 0.28,
-        attack: 0.002,
-        volume,
-        filters: [{ type: "bandpass", frequency, Q: 24 }]
-      });
-    }
-
-    if (navigator.vibrate) navigator.vibrate(35);
-  }
-
-  window.playChip = playChip;       // playChip(), playChip("bet"), playChip("win")
-  window.playDeal = playDeal;
-  window.playMuck = playMuck;
-  window.playCheck = playCheck;
-  window.setPlayerTurn = setPlayerTurn;
-  window.playTurnDing = playTurnDing;
-})();
-
-</script>
-<script>
 (function(){
   var stage=document.getElementById('stage'),camera=document.getElementById('camera'),seats=Array.prototype.slice.call(document.querySelectorAll('.seat')),motion=document.getElementById('motion'),deck=document.getElementById('deck'),muck=document.getElementById('muck'),potChips=document.getElementById('potChips'),potValueNode=document.getElementById('potValue'),statusMain={textContent:''},statusTrail={textContent:''},turnCopy={textContent:''},toast=document.getElementById('toast'),buttons=Array.prototype.slice.call(document.querySelectorAll('.action')),addButton=document.getElementById('addChips');
   var localSeatAbsolute=0;
@@ -1317,34 +1050,35 @@ button,.button,[role="button"]{touch-action:manipulation}
   
   function buzz(pattern){if(alertsUnlocked&&navigator.vibrate){navigator.vibrate(pattern);return true}return false}
   var sfxLast={},sfxNoiseBuf=null;
-function heroSeatedPlaying(){
-  /* RED SOUND GATE: hero seated AND playing a live hand on this table. */
-  try{return handRunning&&!sittingOut[localSeatAbsolute]&&stacks[localSeatAbsolute]>0&&!document.getElementById('tableRoom').classList.contains('is-hidden')}catch(e){return false}
-}
 function sfx(kind){
-  /* RED SOUND PACK: chip clacks are WebAudio noise-burst transients
-     (window.playChip('bet')) — the old oscillator-sweep chips branch is gone.
-     Gated: silent until the hero is seated and playing. */
-  if(kind==='chips'){try{if(heroSeatedPlaying()&&window.playChip)window.playChip('bet')}catch(e){}}
-}
+    if(!alertsUnlocked||!audio)return;
+    try{
+      if(audio.state==='suspended')audio.resume();
+      var now=audio.currentTime;
+      if(kind==='chips'){
+        if(sfxLast.chips&&now-sfxLast.chips<.08)return;sfxLast.chips=now;
+        if(!sfxNoiseBuf){sfxNoiseBuf=audio.createBuffer(1,Math.floor(audio.sampleRate*.08),audio.sampleRate);var dc=sfxNoiseBuf.getChannelData(0);for(var j=0;j<dc.length;j++)dc[j]=(Math.random()*2-1)*(1-j/dc.length)}
+        [0,.05,.11].forEach(function(off){
+          /* deep body knock — a real chip's low thock, not a ping */
+          var o=audio.createOscillator(),g2=audio.createGain();o.type='sine';o.frequency.setValueAtTime(215+Math.random()*45,now+off);o.frequency.exponentialRampToValueAtTime(118,now+off+.05);g2.gain.setValueAtTime(.17,now+off);g2.gain.exponentialRampToValueAtTime(.001,now+off+.065);o.connect(g2);g2.connect(audio.destination);o.start(now+off);o.stop(now+off+.075);
+          /* low clack — filtered noise burst under the knock */
+          var ns=audio.createBufferSource();ns.buffer=sfxNoiseBuf;var nf=audio.createBiquadFilter();nf.type='bandpass';nf.frequency.value=1050+Math.random()*300;nf.Q.value=.9;var ng=audio.createGain();ng.gain.setValueAtTime(.15,now+off);ng.gain.exponentialRampToValueAtTime(.001,now+off+.045);ns.connect(nf);nf.connect(ng);ng.connect(audio.destination);ns.start(now+off);
+        });
+      }
+    }catch(e){}
+  }
   document.addEventListener('pointerdown',function(){unlockAlerts()},{once:true});
   document.addEventListener('click',function(){unlockAlerts()},{once:true});
   function alertUserTurn(index,isWarning){
-    /* RED SOUND PACK: turn ding (+ vibrate) only on the hero's turn, once per
-       turn. The 20s warning vibrate is REMOVED — ding+vibrate fires once per
-       turn, never any other time, and never before the hero is seated. */
-    if(index!==localSeatAbsolute){try{if(window.setPlayerTurn)window.setPlayerTurn(false)}catch(e){}return{beeped:false,buzzed:false,suppressed:true}}
-    if(isWarning)return{beeped:false,buzzed:false,suppressed:true};
-    if(!heroSeatedPlaying())return{beeped:false,buzzed:false,suppressed:true};
-    var _dinged=false;try{if(window.setPlayerTurn)window.setPlayerTurn(true);if(window.playTurnDing)window.playTurnDing();_dinged=true}catch(e){}
-    return{beeped:_dinged,buzzed:_dinged,suppressed:false}
+    if(index!==localSeatAbsolute)return{beeped:false,buzzed:false,suppressed:true};
+    return{beeped:false,buzzed:buzz(isWarning?[160,80,160]:[180,70,180]),suppressed:false}
   }
   function unlockAlerts(){
     alertsUnlocked=true;
     try{
       if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();
       var resumed=audio.state==='suspended'?audio.resume():Promise.resolve();
-      /* RED: no oscillator blip — creating/resuming the AudioContext is the unlock. */
+      var oscillator=audio.createOscillator(),gain=audio.createGain();gain.gain.value=.00001;oscillator.connect(gain);gain.connect(audio.destination);oscillator.start();oscillator.stop(audio.currentTime+.02);
       return resumed
     }catch(e){return Promise.resolve()}
   }
@@ -1381,7 +1115,7 @@ function sfx(kind){
     })
   });
   function point(el){var a=camera.getBoundingClientRect(),b=el.getBoundingClientRect(),scale=parseFloat(getComputedStyle(camera).getPropertyValue('--scale'))||1;return{x:(b.left+b.width/2-a.left)/scale,y:(b.top+b.height/2-a.top)/scale}}
-  function flyCard(target,onDone){try{if(heroSeatedPlaying()&&window.playDeal)window.playDeal()}catch(e){}var from=point(deck),to=point(target),card=document.createElement('i');card.className='flying-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(to.x-from.x)+'px');card.style.setProperty('--dy',(to.y-from.y)+'px');motion.appendChild(card);  var cardDone=false;function finishCard(){if(cardDone)return;cardDone=true;target.style.opacity='1';if(card.parentNode)card.remove();if(onDone)onDone()}card.addEventListener('animationend',finishCard);setTimeout(finishCard,900)}
+  function flyCard(target,onDone){var from=point(deck),to=point(target),card=document.createElement('i');card.className='flying-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(to.x-from.x)+'px');card.style.setProperty('--dy',(to.y-from.y)+'px');motion.appendChild(card);  var cardDone=false;function finishCard(){if(cardDone)return;cardDone=true;target.style.opacity='1';if(card.parentNode)card.remove();if(onDone)onDone()}card.addEventListener('animationend',finishCard);setTimeout(finishCard,900)}
   function flyChips(seat,toWinner,amount){
     if(toWinner){slidePotToWinner(Number(seat.getAttribute('data-index')),amount);return}
     var seatIndex=Number(seat.getAttribute('data-index'));postRoundBet(seatIndex,amount,'BET',true)
@@ -1416,10 +1150,10 @@ function sfx(kind){
   }
   function slidePotToWinner(index,amount){
     
-    try{if(heroSeatedPlaying()&&window.playChip)window.playChip('win')}catch(e){}
+    sfx('chips');
     var from=point(potChips),to=point(seats[index].querySelector('.seat-chips')),flight=document.createElement('div');flight.className='pot-flight';flight.style.left=from.x+'px';flight.style.top=from.y+'px';flight.style.setProperty('--dx',(to.x-from.x)+'px');flight.style.setProperty('--dy',(to.y-from.y)+'px');flight.innerHTML='<span class="bet-stack"><i></i><i></i><i></i><i></i></span><b class="bet-amount">POT '+money(amount)+' → '+names[index]+'</b>';motion.appendChild(flight);potChips.style.opacity='0';logEvent('pot-slide-started',{seat:index,name:names[index],amount:amount});var paid=false;function payWinner(){if(paid)return;paid=true;setStack(index,stacks[index]+amount);logEvent('pot-slide-arrived',{seat:index,name:names[index],amount:amount,stack:stacks[index]})}flight.addEventListener('animationend',function(){payWinner();flight.remove()});later(1700,function(){payWinner();if(flight.parentNode)flight.remove()})
   }
-  function foldCards(seat,onDone){try{if(heroSeatedPlaying()&&window.playMuck)window.playMuck()}catch(e){}var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
+  function foldCards(seat,onDone){var target=point(muck),cards=Array.prototype.slice.call(seat.querySelectorAll('.hole'));muck.classList.add('show');cards.forEach(function(source,n){var from=point(source),card=document.createElement('i');card.className='fold-card';card.style.left=(from.x-16)+'px';card.style.top=(from.y-23)+'px';card.style.setProperty('--dx',(target.x-from.x+(n?5:-5))+'px');card.style.setProperty('--dy',(target.y-from.y)+'px');motion.appendChild(card);source.style.opacity='0';card.addEventListener('animationend',function(){card.remove()})});later(780,function(){seat.classList.add('folded');later(360,function(){muck.classList.remove('show')});if(onDone)onDone()})}
   /* Screen coordinates are viewer-relative; game positions below stay absolute. Every disc has a dedicated clear lane between the rail and that player's bet. */
   var markerPositions=[['36%','80%'],['24%','67%'],['21%','53%'],['24%','32%'],['57%','28%'],['76%','32%'],['79%','53%'],['76%','67%']];
   function nextEligible(after){for(var step=1;step<=8;step++){var index=(after+step)%8;if(!sittingOut[index]&&stacks[index]>0)return index}return after}
@@ -1432,7 +1166,7 @@ function sfx(kind){
   function disableActions(){buttons.forEach(function(b){b.disabled=true})}
   function enableActions(toCall){var fold=document.querySelector('[data-action="fold"]'),check=document.querySelector('[data-action="check"]'),call=document.querySelector('[data-action="call"]'),raise=document.querySelector('[data-action="raise"]');if(stacks[localSeatAbsolute]<=0){disableActions();call.textContent='CALL';return}fold.disabled=false;raise.disabled=false;check.disabled=!!toCall;call.disabled=!toCall;call.textContent=toCall?'CALL '+money(Math.min(toCall,stacks[localSeatAbsolute])):'CALL'}
   function closeRaiseModal(){document.getElementById('raiseModal').classList.remove('open');selectedRaiseTo=null;document.getElementById('confirmRaise').disabled=true}
-  function clearTurn(){try{if(window.setPlayerTurn)window.setPlayerTurn(false)}catch(e){}turnToken++;seats.forEach(function(s){s.classList.remove('active','warning','authoritative');s.style.removeProperty('--turn-green');s.style.removeProperty('--turn-red')});disableActions();closeRaiseModal();pendingRaiseState=null}
+  function clearTurn(){turnToken++;seats.forEach(function(s){s.classList.remove('active','warning','authoritative');s.style.removeProperty('--turn-green');s.style.removeProperty('--turn-red')});disableActions();closeRaiseModal();pendingRaiseState=null}
   function startTurn(index,label,toCall,onChoice,raiseState){
     clearTurn();var seat=seats[index],token=turnToken;void seat.offsetWidth;seat.classList.add('active');statusMain.textContent=label+' · '+names[index]+' acts';logEvent('turn',{round:label,seat:index,name:names[index],toCall:toCall});var turnAlert=alertUserTurn(index,false);
     if(index===localSeatAbsolute){alertCount++;toast.setAttribute('aria-label','Your turn alerts '+alertCount+'; loud beep '+(turnAlert.beeped?'played':'blocked')+'; vibration '+(turnAlert.buzzed?'sent':'unavailable'))}
@@ -1571,7 +1305,7 @@ function sfx(kind){
           }
           var amount=Math.max(0,currentBet-contributions[idx]),paid=commitChips(idx,amount,amount?'call':'check');
           contributions[idx]+=paid;acted[idx]=true;
-          if(paid){postRoundBet(idx,paid,handAllIn[idx]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(idx,'CHECK',false);try{if(heroSeatedPlaying()&&window.playCheck)window.playCheck()}catch(e){};later(420,next)}
+          if(paid){postRoundBet(idx,paid,handAllIn[idx]?'ALL-IN':'CALL',false);later(760,next)}else{setActionPlate(idx,'CHECK',false);playSfx('knock-knock',.6);later(420,next)}
         },{currentBet:currentBet,contribution:contributions[idx],bigBlind:activeConfig.bb,lastFullRaise:lastFullRaise});
       }
       statusTrail.textContent='CLOCKWISE ORDER · '+order.map(function(i){return names[i]}).join(' → ');
@@ -2432,7 +2166,7 @@ function mpTriggerServerEmotions(snapshot){
     var standardStart=bb*60,userStart=freeTable?(accountConnected?0:Math.min(bank,500)):(accountConnected?0:(bank>=minimumBuyin?Math.min(bank,standardStart):0));stacks.forEach(function(v,index){setStack(index,index===0?userStart:Math.max(bb*20,Math.round(Math.max(standardStart,userStart)*(.55+Math.random()*1.05))))});botSeatIn={};emptyBotSeat={};pendingBotSeat={};stacks.forEach(function(v,index){if(index!==0)botSeatIn[index]=v});var openIdx=1+Math.floor(Math.random()*Math.max(1,maxSeats-1));botLeaves(openIdx,'made-room');spectateFirstHand=false;gameSpeed=1;if(stacks[0]>0){}if(creatorOn()){names[localSeatAbsolute]='The Creator';restoreName(localSeatAbsolute)}
     document.getElementById('tableGame').textContent=(freeTable?'Starter Texas Hold’em':game==='omaha'?'Pot-Limit Omaha':'Texas Hold’em')+' · '+maxSeats+'-max';document.getElementById('tableStakes').textContent='BLINDS '+sb+' / '+bb+' · '+(freeTable?'NO MINIMUM BUY-IN':'BUY-IN GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString());document.getElementById('modalReason').textContent=freeTable?'This Starter Table has no minimum buy-in. Move any positive Gold Coin amount to your stack.':'Move Gold Coins from your account to your table stack. Buy-in: GC '+minimumBuyin.toLocaleString()+'–'+(bb*100).toLocaleString()+'.';
     var chipRange=document.getElementById('chipRange'),rangeMinimum=freeTable?1:minimumBuyin,rangeMaximum=Math.max(rangeMinimum,Math.min(bank,freeTable?Math.max(1,bank):bb*100));chipRange.min=String(rangeMinimum);chipRange.max=String(rangeMaximum);chipRange.step=String(Math.max(1,sb));chipRange.value=chipRange.min;document.getElementById('chipAmount').textContent=money(Number(chipRange.value));
-    (function(){var _lb=document.getElementById('roomLobby');if(_lb)_lb.classList.add('hidden')})();tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();GF_seedDisplayHands();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(creatorOn()&&bank<minimumBuyin){bank=minimumBuyin*5;walletSave();}else GF_waitForLiveThenLocal()  } window.__startTableDirectly=selectTable; var tableRoom=document.getElementById('tableRoom');Array.prototype.forEach.call(document.querySelectorAll('#tableGrid .join-table'),function(button){button.addEventListener('click',function(){selectTable(button)})});document.getElementById('backRoom').addEventListener('click',function(){location.href='/index.html'}); 
+    (function(){var _lb=document.getElementById('roomLobby');if(_lb)_lb.classList.add('hidden')})();tableRoom.classList.remove('is-hidden');fitCamera();resetVisuals();setBlinds();GF_seedDisplayHands();sittingOut[0]=true;handFolded[0]=true;seats[0].classList.add('folded');logEvent('table-opened',{game:game,maxSeats:maxSeats,smallBlind:sb,bigBlind:bb,buyIn:freeTable?[0,null]:[minimumBuyin,bb*100],freeTable:freeTable,userStartingStack:userStart,botsMidHand:false,omahaExactRule:game==='omaha'?'exactly 2 hole + 3 board':null});if(creatorOn()&&bank<minimumBuyin){bank=minimumBuyin*5;walletSave();}else GF_waitForLiveThenLocal()  } window.__startTableDirectly=selectTable; var tableRoom=document.getElementById('tableRoom');Array.prototype.forEach.call(document.querySelectorAll('#tableGrid .join-table'),function(button){button.addEventListener('click',function(){selectTable(button)})});document.getElementById('backRoom').addEventListener('click',function(){location.href='../casino/index.html'}); 
   (function(){var b=document.getElementById('handLogBtn');if(b)b.addEventListener('click',openHandLog);var c=document.getElementById('handLogClose');if(c)c.addEventListener('click',function(){document.getElementById('handLogPanel').classList.remove('open')});var r=document.getElementById('handLogRefresh');if(r)r.addEventListener('click',openHandLog);var cp=document.getElementById('handLogCopy');if(cp)cp.addEventListener('click',function(){var bd=document.getElementById('handLogBody');if(!bd)return;try{navigator.clipboard.writeText(bd.textContent).then(function(){}).catch(function(){})}catch(e){}})})();
   var lobbyBuyModal=document.getElementById('lobbyBuyModal');if(document.getElementById('lobbyBuy'))document.getElementById('lobbyBuy').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});if(document.getElementById('storeOpen'))document.getElementById('storeOpen').addEventListener('click',function(){openStoreChooser()});document.getElementById('closeLobbyBuy').addEventListener('click',function(){lobbyBuyModal.classList.remove('open')});lobbyBuyModal.addEventListener('click',function(event){if(event.target===lobbyBuyModal)lobbyBuyModal.classList.remove('open')});Array.prototype.forEach.call(lobbyBuyModal.querySelectorAll('.package'),function(button){button.addEventListener('click',function(){button.blur();var old=button.querySelector('small');if(old)old.remove();var note=document.createElement('small');note.style.cssText='display:block;margin-top:6px;color:#fff0b5';note.textContent='Secure cashier required';button.appendChild(note)})});
   function reconnectProofSnapshot(){var proofNames=['Ross V.','Tony C.','Mason R.','You','Andre K.','Promise','Marcia J.','Luis G.'];return{authoritative:true,serverRevision:41,game:'holdem',maxSeats:8,smallBlind:25,bigBlind:50,localSeat:3,handNumber:18,dealerSeat:1,pot:1375,handRunning:true,localCards:[['A','♠'],['K','♠']],board:[['10','♥'],['J','♣'],['4','♦']],bets:[0,50,100,250,0,500,0,475],players:seats.map(function(seat,index){return{seat:index,displayName:proofNames[index],stack:index===3?7777:1200+index*125,folded:index===6,allIn:false,sittingOut:false}}),activeTurn:{seat:5,toCall:0,secondsRemaining:14,currentBet:500,contribution:500,lastFullRaise:250}}}
@@ -2487,7 +2221,7 @@ function mpTriggerServerEmotions(snapshot){
   function profSave(){try{localStorage.setItem('nikkiflixs_profile',JSON.stringify(prof))}catch(e){}}
   function openProfile(){var img=seats[localSeatAbsolute].querySelector('.portrait');if(img)document.getElementById('profileAvatar').src=img.getAttribute('src');document.getElementById('profileBalance').textContent=money(bank);document.getElementById('profileStack').textContent=money(stacks[0]);document.getElementById('profileHands').textContent=prof.hands;document.getElementById('profileWins').textContent=prof.wins;document.getElementById('profileBiggest').textContent=money(prof.biggest);document.getElementById('profileModal').classList.add('open')}
   if(document.getElementById('profileOpen'))document.getElementById('profileOpen').addEventListener('click',openProfile);
-  /* RED PROFILE FIX: hero portrait opens only the player card — the portrait's own openProfile listener is removed. It opened profileModal under the player card, and after picking a throwable the profile modal stayed open covering seats 2/3, blocking one-tap splat throws. Profile still opens from the #profileOpen toolbar button (added above ADMIN — the base had no such element). */
+  seats[0].querySelector('.portrait').addEventListener('click',openProfile);
   document.getElementById('closeProfile').addEventListener('click',function(){document.getElementById('profileModal').classList.remove('open')});
   document.getElementById('profileModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});
   document.getElementById('profileStore').addEventListener('click',function(){window.location.href='/assets/rooms/casino/coin-store.html'});
@@ -2728,7 +2462,7 @@ function doThrow(fromIndex,toIndex,item){if(fromIndex===localSeatAbsolute&&toInd
   function creatorPinSet(){try{return !!localStorage.getItem('nikkiflixs_creator_pin')}catch(e){return false}}
   function creatorOffExplicit(){try{return localStorage.getItem('nikkiflixs_creator_off')==='1'}catch(e){return false}}
   function restoreCreatorIfPinSet(){if(!creatorPinSet()||creatorOffExplicit())return false;try{localStorage.setItem('nikkiflixs_creator','1')}catch(e){}applyCreatorSeat(true);return true}
-  function paintAdminButtons(){var show=true;['adminBtn','profileAdmin'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=show?'':'none'})}
+  function paintAdminButtons(){var show=creatorOn()||creatorPinSet();['adminBtn','profileAdmin'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=show?'':'none'})}
   function pinHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h*33)+s.charCodeAt(i))>>>0;return 'x'+h.toString(36)}
   var CODE_SECRET='NF-CREATOR-2026';
   var CATALOG=[
