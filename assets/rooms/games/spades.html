@@ -777,11 +777,11 @@ body.spades-mode .dealer{left:75%!important;top:25%!important}
 body.spades-mode #buildStamp{bottom:120px}
 
 /* --- ONE small score strip: two short lines at the very top edge --- */
-#spScore{position:relative;z-index:41;width:100%;height:34px;padding:2px 6px 0;
+#spScore{position:relative;z-index:41;width:100%;height:22px;padding:2px 6px 0;
   background:#0a0708;border-bottom:1px solid #e2af4f55;color:#ffe7ad;
-  text-align:center;font:700 10px/1.5 "IBM Plex Sans",sans-serif;letter-spacing:.02em;
+  text-align:center;font:700 15px/1.3 "IBM Plex Sans",sans-serif;letter-spacing:.02em;
   white-space:nowrap;overflow:hidden}
-#spScore .sp-team{display:block}
+#spScore .sp-team{display:inline-block;margin:0 16px}
 
 /* --- SPADES v4: NOTHING COVERS NOTHING (Jerry 2026-11-06) --- */
 /* Dim (illegal) cards are dimmed IN PLACE but must never intercept a tap
@@ -852,19 +852,22 @@ body.spades-mode .seat.sp-flagged .nameplate{overflow:visible}
 /* --- hero hand: one fan of 13 cards along the very bottom --- */
 #spHand{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;z-index:55;
   display:flex;justify-content:center;pointer-events:auto}
-.sp-card{width:42px;height:78px;margin-left:-14px;border:1px solid #a89a7d;border-radius:6px 6px 0 0;
-  background:#fffef9;color:#111;font:800 21px/1.05 "IBM Plex Sans",sans-serif;cursor:pointer;
+.sp-card{width:38px;height:70px;margin-left:-10px;border:1px solid #a89a7d;border-radius:6px 6px 0 0;
+  background:#fffef9;color:#111;font:800 19px/1.05 "IBM Plex Sans",sans-serif;cursor:pointer;
   padding:5px 0 0;box-shadow:0 -2px 6px #0007;transition:transform .14s ease,box-shadow .14s ease;
   touch-action:none;user-select:none;-webkit-user-select:none}
 .sp-card.sp-lifted{transform:translateY(-12px);box-shadow:0 -2px 10px #0009,0 0 0 2px #ffd361}
 .sp-card.sp-dragging{transition:none;box-shadow:0 -2px 10px #0009,0 0 0 2px #ffd361}
 .sp-card:first-child{margin-left:0}
 .sp-card.red{color:#b3001b}
-.sp-card small{display:block;font-size:17px;line-height:1}
-/* SPADES v5 — BIG CENTER PIP (Jerry 2026-11-20): a large suit symbol in the
-   middle of every hero card, so the suit is unmistakable at a glance. */
+.sp-card small{display:block;font-size:16px;line-height:1}
+/* SPADES v5.1 — HOLE CARDS MATCH TABLE CARDS (Jerry 2026-11-20): the hand
+   overlapped by 14px, hiding the center pip, so hearts/diamonds blurred
+   together. Overlap is now 10px on a 38px card (28px exposed, 374px total),
+   so the big center pip is FULLY visible in every card — same clear pip
+   as the trick cards. */
 .sp-card .sp-pip{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
-  font-size:24px;line-height:1;font-style:normal;pointer-events:none}
+  font-size:20px;line-height:1;font-style:normal;pointer-events:none}
 .sp-card{position:relative}
 .sp-card.sp-dim{}
 .sp-card.sp-playable{box-shadow:0 -2px 6px #0007,0 0 0 2px #ffd36166}
@@ -935,7 +938,7 @@ body.spades-mode .seat.sp-flagged .nameplate{overflow:visible}
   </section>
 </div>
 <main class="room table-room is-hidden" id="tableRoom" aria-label="Nikkiflixs poker table">
-  <div id="spScore" aria-live="polite"><span class="sp-team" id="spScoreA">YOU+ANDRE 0 pts · 0 bags · Bid – · Took 0</span><span class="sp-team" id="spScoreB">TONY+MARCIA 0 pts · 0 bags · Bid – · Took 0</span></div>
+  <div id="spScore" aria-live="polite"><span class="sp-team" id="spScoreA">US 0</span><span class="sp-team" id="spScoreB">THEM 0</span></div>
   <header class="toolbar">
     <button class="back-room" id="backRoom" type="button">‹ ROOM</button><div class="table-summary"><strong id="tableGame">Spades · 4-Player</strong><span id="tableStakes">FIRST TO 500 · PARTNERS YOU+ANDRE VS TONY+MARCIA</span></div><div class="toolbar-spacer"></div>
     <span class="balance-pill">GOLD COINS <b id="tableBalance">GC 0</b></span>
@@ -3338,11 +3341,16 @@ function retitle(){
 }
 
 function paintScore(){
+  /* SPADES v5.1 — TOP SHOWS ONLY THE COMBINED SCORE (Jerry 2026-11-20):
+     points + bags in one number per team ("US 63", "THEM 52"). No pts,
+     no bags, no Bid, no Took. DISPLAY ONLY — the scoring logic (lock-in,
+     Boston, sandbags, 10-bag -100) is untouched; S.scores already holds
+     points and S.bags the bag count, so the sum follows the real score,
+     including the drop when the 10th bag hits. */
   var a=el('spScoreA'),b=el('spScoreB');
   if(!a||!b)return;
-  var aB=allBidsIn()?teamBidTotal('A'):'\u2013',bB=allBidsIn()?teamBidTotal('B'):'\u2013';
-  a.textContent='YOU+ANDRE '+S.scores.A+' pts \u00b7 '+S.bags.A+' bags \u00b7 Bid '+aB+' \u00b7 Took '+teamTricks('A');
-  b.textContent='TONY+MARCIA '+S.scores.B+' pts \u00b7 '+S.bags.B+' bags \u00b7 Bid '+bB+' \u00b7 Took '+teamTricks('B');
+  a.textContent='US '+(S.scores.A+S.bags.A);
+  b.textContent='THEM '+(S.scores.B+S.bags.B);
 }
 
 function paintBid(){
