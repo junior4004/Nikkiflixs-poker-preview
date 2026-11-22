@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Nikkiflixs Storage Room — owner-only file storage. The full copies live here." />
+  <link rel="icon" href="data:," />
+  <title>Storage Room — Nikkiflixs</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap');
+    :root{
+      color-scheme:light dark;
+      --bg:#11100f;--panel:#1b1918;--panel-2:#262220;--ink:#fffaf6;--muted:#c0b7b1;
+      --line:#3b3531;--accent:#df243d;--accent-2:#9d1428;--gold:#e0b15f;--screen:#000;
+      --shadow:0 18px 48px rgba(0,0,0,.38);--input:#201d1b;
+    }
+    @media(prefers-color-scheme:dark){
+      :root{--bg:#070707;--panel:#141313;--panel-2:#1d1b1a;--ink:#fff;--muted:#bbb4af;--line:#332e2b;--accent:#e72540;--accent-2:#a80e26;--gold:#edbd68;--shadow:0 20px 60px rgba(0,0,0,.58);--input:#171515}
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:auto;background:var(--bg)}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Libre Franklin",sans-serif;min-width:0}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+    .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
+    main{width:min(1060px,100%);margin:auto;padding:0 clamp(14px,3vw,42px) 56px}
+    .browse-nav{position:sticky;top:0;z-index:15;margin:0 calc(clamp(14px,3vw,42px) * -1) 24px;padding:max(12px,env(safe-area-inset-top)) clamp(14px,3vw,42px) 12px;background:linear-gradient(#090909 70%,rgba(9,9,9,.92));border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .browse-nav a{text-decoration:none;color:#d8d2ce;font-size:13px;font-weight:700;padding:8px 11px;border-radius:4px}
+    .browse-nav a:hover,.browse-nav a:focus-visible{background:#2b2725;color:#fff}
+    .browse-nav .lock-btn{margin-left:auto;background:none;border:1px solid var(--line);color:#d8d2ce;font-size:13px;font-weight:700;padding:8px 11px;border-radius:4px}
+    .browse-nav .lock-btn:hover,.browse-nav .lock-btn:focus-visible{background:#2b2725;color:#fff}
+    .room-head{padding-top:clamp(10px,2vw,22px);margin-bottom:8px}
+    .eyebrow{display:block;color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.13em;margin-bottom:8px}
+    .room-head h1{font-size:clamp(28px,4vw,44px);line-height:1.02;letter-spacing:-.035em;margin:0 0 8px;font-weight:800}
+    .room-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.5;max-width:640px}
+    .room-head p strong{color:var(--ink)}
+    .folder-line{margin:18px 0 26px;padding:12px 14px;border:1px solid var(--line);border-radius:5px;background:var(--panel);font-size:13px;line-height:1.5;color:var(--muted)}
+    .folder-line a{color:var(--gold);font-weight:700}
+    .shelf{margin:0 0 30px}
+    .shelf h2{font-size:clamp(19px,2.4vw,25px);line-height:1.1;margin:0 0 4px;font-weight:800}
+    .shelf .shelf-note{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.45}
+    .file-list{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--panel)}
+    .file-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line)}
+    .file-row:last-child{border-bottom:0}
+    .file-row .file-main{min-width:0;flex:1}
+    .file-row .file-name{display:block;font-size:15px;font-weight:700;line-height:1.3}
+    .file-row .file-meta{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.4}
+    .tag{display:inline-block;flex:0 0 auto;font-size:11px;font-weight:800;letter-spacing:.06em;padding:4px 8px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+    .tag.gold{color:#0f0d0b;background:var(--gold);border-color:var(--gold)}
+    .tag.status{color:#f0cb73;border-color:#6c512e}
+    .dl-btn{flex:0 0 auto;display:inline-block;text-decoration:none;background:var(--accent);color:#fff;font-size:13px;font-weight:700;padding:9px 14px;border-radius:5px}
+    .dl-btn:hover,.dl-btn:focus-visible{background:var(--accent-2)}
+    .empty-note{padding:18px 14px;color:var(--muted);font-size:13px;line-height:1.5}
+    .room-foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.6}
+    /* Owner-PIN lock overlay — same pattern as the site gate: full-screen shade, gold-bordered panel. */
+    #storageGate{position:fixed;inset:0;z-index:99999;background:rgba(10,7,5,.97);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+    #storageGate[hidden]{display:none}
+    #storageGate .gate-panel{width:100%;max-width:420px;background:linear-gradient(180deg,#241a12,#120d09);border:2px solid #d9b557;border-radius:14px;box-shadow:0 18px 50px #000;padding:20px;box-sizing:border-box;color:#f2e7c8;font-family:sans-serif}
+    #storageGate h2{margin:0 0 10px;font-size:21px;letter-spacing:.04em;color:#ffd968;text-align:center}
+    #storageGate p{margin:0 0 12px;font-size:15px;line-height:1.5;color:#e8ddc4}
+    #storageGate .gate-msg{min-height:22px;color:#ffd968;font-size:14px;margin:6px 0}
+    #storageGate input{width:100%;padding:12px;border-radius:9px;border:1px solid #7a5b1e;background:#171310;color:#fff;font-size:16px;margin-bottom:10px;box-sizing:border-box}
+    #storageGate button.gate-btn{display:block;width:100%;padding:14px 10px;margin-top:8px;border-radius:10px;border:1px solid #e2af4f;background:linear-gradient(180deg,#b8872d,#654216);color:#fff9df;font-size:17px;font-weight:800;letter-spacing:.03em;cursor:pointer}
+    #storageGate a.gate-leave{display:block;text-align:center;margin-top:14px;color:#f2c76f;font-size:14px}
+    @media(max-width:640px){
+      .file-row{flex-wrap:wrap}
+      .file-row .file-main{flex:1 1 100%}
+    }
+  </style>
+</head>
+<body>
+  <div id="storageGate" role="dialog" aria-label="Storage Room locked">
+    <div class="gate-panel">
+      <h2>STORAGE ROOM — LOCKED</h2>
+      <p>Owner only. Enter the owner PIN to open this room. This is the same PIN as the table admin — one PIN runs the whole club.</p>
+      <form id="storagePinForm">
+        <label class="visually-hidden" for="storagePin">Owner PIN</label>
+        <input id="storagePin" name="pin" type="password" inputmode="numeric" autocomplete="off" minlength="4" maxlength="8" pattern="[0-9]{4,8}" required />
+        <button class="gate-btn" id="storageUnlock" type="submit">Unlock Storage Room</button>
+        <div class="gate-msg" id="storagePinMsg" role="status"></div>
+      </form>
+      <a class="gate-leave" href="../../../index.html">Back to the lobby</a>
+    </div>
+  </div>
+
+  <main id="storageContent" hidden>
+    <nav class="browse-nav" aria-label="Rooms">
+      <a href="../../../index.html">Nikkiflixs</a>
+      <a href="../theater/index.html">Theater</a>
+      <button class="lock-btn" id="storageLockBtn" type="button">Lock Room</button>
+    </nav>
+
+    <header class="room-head">
+      <span class="eyebrow">NIKKIFLIXS — OWNER ONLY</span>
+      <h1>Storage Room</h1>
+      <p>The full copies live here. Everything stored in this room is also kept in the Drive folder below. <strong>Nothing in this room or that folder is ever deleted.</strong></p>
+    </header>
+
+    <p class="folder-line">Drive folder: <a id="folderLink" href="https://drive.google.com/drive/folders/1FKuQJylZpKTR7blkS4nbeOCZsJT4OCcR" target="_blank" rel="noopener">THEATER MASTERS — DO NOT DELETE</a> — open the folder to see every stored file.</p>
+
+    <div id="shelves"></div>
+
+    <footer class="room-foot">
+      Locked room. Owner PIN only — a wrong PIN is rejected. To store a file here, add one row to the shelf list in this page and put the file in the Drive folder above. The master handoff copy on the shelf is a snapshot — re-upload it whenever the master handoff file changes.
+    </footer>
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* Owner-PIN gate — the EXACT gate code from the lobby (index.html):
+       the PIN is checked against the stored hash in localStorage key
+       'nikkiflixs_creator_pin', the same PIN as the table admin.
+       This room NEVER sets a PIN: if no owner PIN is stored on this
+       device, the room stays locked and the owner sets the PIN in the
+       lobby admin first. A wrong PIN is rejected. */
+    function pinHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h*33)+s.charCodeAt(i))>>>0;return 'x'+h.toString(36)}
+    function storedPinHash(){try{return localStorage.getItem('nikkiflixs_creator_pin')}catch(e){return null}}
+
+    var gate = document.getElementById('storageGate');
+    var content = document.getElementById('storageContent');
+    var form = document.getElementById('storagePinForm');
+    var pinInput = document.getElementById('storagePin');
+    var msg = document.getElementById('storagePinMsg');
+    var lockBtn = document.getElementById('storageLockBtn');
+
+    function lockRoom(note){
+      content.hidden = true;
+      gate.hidden = false;
+      pinInput.value = '';
+      if (note) msg.textContent = note;
+      setTimeout(function(){ pinInput.focus(); }, 0);
+    }
+    function unlockRoom(){
+      gate.hidden = true;
+      content.hidden = false;
+      msg.textContent = '';
+    }
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      var stored = storedPinHash();
+      if (!stored) {
+        msg.textContent = 'No owner PIN is set on this device. Set it in the lobby admin first — this room cannot set a PIN.';
+        return;
+      }
+      var pin = pinInput.value;
+      var ok = (pinHash(pin) === stored);
+      if (!ok) {
+        msg.textContent = 'That PIN is not correct.';
+        pinInput.select();
+        return;
+      }
+      unlockRoom();
+    });
+    lockBtn.addEventListener('click', function () { lockRoom(''); });
+
+    /* SHELVES — to add a file, copy one row in the shelf below and fill in
+       name, file, size, kind, and url (the Drive webViewLink for the file).
+       Placeholders have url: '' and a status, and show with no download
+       button until the file lands. Add a new shelf by copying a whole
+       { title, note, files: [...] } block. */
+    var SHELVES = [
+      { title: 'Theater Masters — Uncut', note: 'Full uncut films, restored to the Drive folder. Download from Drive.', files: [
+        { name: 'Daunte Wright — Uncut', file: 'wright-THEATER.mp4', size: '164.5 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1y6Pv0nfBzXyxOozWtUp5_o_b0zK65-2s/view?usp=drivesdk' },
+        { name: 'Adam Toledo — Uncut', file: 'toledo-THEATER.mp4', size: '77.8 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/13CHktpqCes4P-WOrLiEeU5T4RgBqigJu/view?usp=drivesdk' },
+        { name: 'Darian Jarrott — Uncut', file: 'jarrott-THEATER.mp4', size: '70.7 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1NKgjOgPExjRGgThrNygJexqrBHzFAQVb/view?usp=drivesdk' },
+        { name: 'The Covenant School — Uncut', file: 'covenant-THEATER.mp4', size: '69.1 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1lLpNBQ2K8qK6I2MY_vT_morzHciDKB00/view?usp=drivesdk' }
+      ]},
+      { title: 'Theater Masters — Restoring', note: 'Rebuilds in progress. Rows get download links when each film lands in the Drive folder.', files: [
+        { name: 'Stephon Clark — Uncut', file: 'clark-THEATER.mp4', size: '123.1 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1xMif2bTDQYy3J4d6kvmE85NeMlL8_jk3/view?usp=drivesdk' },
+        { name: 'Daniel Shaver — Uncut', file: 'shaver-THEATER.mp4', size: '93.5 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1xGWV7YV4FLhrd2UDEhl6JQZZQ-FM89lT/view?usp=drivesdk' },
+        { name: 'Sonya Massey — Uncut', file: 'massey-THEATER.mp4', size: '127.4 MB', kind: 'UNCUT', url: 'https://drive.google.com/file/d/1GLZfr-wwnr6Nio0GowxAM3XfFP8G9RCV/view?usp=drivesdk' }
+      ]},
+      { title: 'Films — Restored Copies', note: 'Drive copies of the YouTube cuts, restored from verified local copies.', files: [
+        { name: 'Elisa Lam', file: 'Elisa Lam.mp4', size: '98.8 MB', kind: 'FILM', url: 'https://drive.google.com/file/d/11npBU2YZJ808WatE-oApbWC9M1TLzih1/view?usp=drivesdk' },
+        { name: 'Billy the Kid', file: 'Billy the Kid.mp4', size: '95.2 MB', kind: 'FILM', url: 'https://drive.google.com/file/d/1mvP2duMbh6NUkQuF_xxCdZCTjdHOzF_D/view?usp=drivesdk' },
+        { name: 'Ted Bundy — Fixed', file: 'bundy-FINAL-v2.mp4', size: '183.8 MB', kind: 'FILM', url: 'https://drive.google.com/file/d/1QvHcXoCED0XPCGWriyhj7ledx1-Fws9H/view?usp=drivesdk' }
+      ]},
+      { title: 'Heavyweight Debt — Theater', note: 'Theater episodes. Rows get download links when each episode is re-uploaded to the Drive folder.', files: [
+        { name: 'Heavyweight Debt — Ep 1', file: 'The Heavyweight Debt — Episode 1 — Theater.mp4', size: '99.4 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/12BlbmMetfeUFxMLsrTvLNnLl6U1mIDgs/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 3', file: 'The Heavyweight Debt — Episode 3 — Theater.mp4', size: '158.1 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1kGhSugVIaqTOacqIEa3k-gXdq43f7Mit/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 6', file: 'The Heavyweight Debt — Episode 6 — Theater.mp4', size: '198.6 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1-wJfBymiydYuLjVIZoxnggO-VxTA8ohs/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 8', file: 'The Heavyweight Debt — Episode 8 — Theater.mp4', size: '174.1 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1CWroYfdij1Ip9-a9x6RnlASTMPeY7eew/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 15', file: 'HWD Ep15 - The Perp Walk.mp4', size: '37.8 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1l_4SvEe-ovF0eLn3k9J6wynHlKapB0Ir/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 16', file: 'HWD Ep16 - The Hollow Case.mp4', size: '62.0 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1ced0q7hJwCOA3WacJ09DQQ_eikUTaBLJ/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 17', file: 'The Heavyweight Debt — Episode 17 — Theater.mp4', size: '39.8 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1GwAyU4usNhyqvnp5XZESPhft9adjUUgF/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 18', file: 'The Heavyweight Debt — Episode 18 — Theater.mp4', size: '47.4 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1O8rn36SZ70kpS-F7arfpeKTs4uAgQ6O1/view?usp=drivesdk' },
+        { name: 'Heavyweight Debt — Ep 20', file: 'The Heavyweight Debt — Episode 20 — Theater.mp4', size: '47.6 MB', kind: 'THEATER', url: 'https://drive.google.com/file/d/1OFao3okLsm2L6ar0sNLm4gk265N-hqzi/view?usp=drivesdk' }
+      ]},
+      { title: 'Master Handoff', note: 'Snapshot of the master handoff file. Re-upload it whenever the master handoff file changes.', files: [
+        { name: 'Master Handoff — YouTube', file: 'youtube-handoff-2026-11-16.md', size: '57 KB', kind: 'HANDOFF', url: 'https://docs.google.com/document/d/1QtKdNNDfOm3OKlwWpAaDm03HfT8uUKYS/edit?usp=drivesdk&ouid=100738911135270612702&rtpof=true&sd=true' }
+      ]},
+      { title: 'General Storage', note: 'Other files stored in this room. Add a row to this shelf to store something here.', files: [] }
+    ];
+
+    function esc(s){return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+    function renderShelves(){
+      var host = document.getElementById('shelves');
+      var html = '';
+      SHELVES.forEach(function (shelf) {
+        html += '<section class="shelf"><h2>' + esc(shelf.title) + '</h2>';
+        if (shelf.note) html += '<p class="shelf-note">' + esc(shelf.note) + '</p>';
+        html += '<div class="file-list">';
+        if (!shelf.files.length) {
+          html += '<p class="empty-note">Nothing stored here yet.</p>';
+        }
+        shelf.files.forEach(function (f) {
+          var meta = esc(f.file) + (f.size ? ' · ' + esc(f.size) : '');
+          html += '<div class="file-row"><div class="file-main"><span class="file-name">' + esc(f.name) + '</span><span class="file-meta">' + meta + '</span></div>';
+          html += '<span class="tag gold">' + esc(f.kind) + '</span>';
+          if (f.url) {
+            html += '<a class="dl-btn" href="' + esc(f.url) + '" target="_blank" rel="noopener">Download</a>';
+          } else {
+            html += '<span class="tag status">' + esc(f.status || 'Coming soon') + '</span>';
+          }
+          html += '</div>';
+        });
+        html += '</div></section>';
+      });
+      host.innerHTML = html;
+    }
+
+    renderShelves();
+    lockRoom('');
+  })();
+  </script>
+</body>
+</html>
