@@ -589,7 +589,7 @@ function renderLeagues(){
 }
 function statBadge(g){
   if(g.status==='final')return '<span class="gstat final">Final</span>';
-  if(g.status==='live')return '<span class="gstat live">● Live'+(g.mins?' · '+g.mins+'\'':'')+'</span>';
+  if(g.status==='live')return '<span class="gstat live">● Live'+(g.liveDetail?' · '+g.liveDetail:(g.mins?' · '+g.mins+"'" :''))+'</span>';
   return '<span class="gstat upcoming">Upcoming</span>';
 }
 function oddBtn(g,label,val,click){
@@ -598,7 +598,66 @@ function oddBtn(g,label,val,click){
   if(click)b.addEventListener('click',click);else b.disabled=true,b.style.opacity=.4;
   return b;
 }
+/* ============ LIVE STATUS (ESPN scoreboard drives the card) ============
+   The Odds API odds feed has no live state — every game arrives as
+   'upcoming' and nothing ever flips it, so a game already playing
+   still says Upcoming. ESPN's free scoreboard does know: state 'in'
+   = playing now, 'post' = final, with real scores and the clock.
+   Merge it into the betting cards (at most once a minute); if ESPN
+   is unreachable the card keeps its old status — never a made-up
+   score. */
+var ESPN_LEAGUE={'americanfootball_nfl':'football/nfl','basketball_nba':'basketball/nba','baseball_mlb':'baseball/mlb','icehockey_nhl':'hockey/nhl','americanfootball_ncaaf':'football/college-football','soccer_epl':'soccer/eng.1'};
+var liveMergeAt=0;
+function espnKey(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function teamMatches(oddsName,espnTeam){
+  var t=espnTeam||{};
+  var cand=[t.displayName,t.shortDisplayName,t.abbreviation].map(espnKey).filter(Boolean);
+  var full=espnKey(oddsName);
+  for(var i=0;i<cand.length;i++){
+    if(!cand[i])continue;
+    if(full===cand[i]||full.indexOf(cand[i])>=0||cand[i].indexOf(full)>=0)return true;
+  }
+  return false;
+}
+function mergeEspnStatus(games,cb){
+  var path=ESPN_LEAGUE[curSport];
+  if(!path){cb(false);return;}
+  espn(path+'/scoreboard').then(function(d){
+    var evs=d.events||[],changed=false;
+    games.forEach(function(g){
+      for(var i=0;i<evs.length;i++){
+        var comp=(evs[i].competitions&&evs[i].competitions[0])||{};
+        var st=(comp.status&&comp.status.type)||{};
+        var state=st.state||'pre';
+        if(state==='pre')continue;
+        var home=null,away=null;
+        (comp.competitors||[]).forEach(function(c){if(c.homeAway==='home')home=c;else away=c;});
+        if(!home||!away)continue;
+        if(!teamMatches(g.home,home.team)||!teamMatches(g.away,away.team))continue;
+        var sc=function(c){return (c.score==null||c.score==='')?null:parseInt(c.score,10);};
+        var hs=sc(home),as=sc(away);
+        if(state==='in'){
+          if(g.status!=='live'||g.homeScore!==hs||g.awayScore!==as||g.liveDetail!==(st.shortDetail||st.detail||''))changed=true;
+          g.status='live';g.homeScore=hs;g.awayScore=as;g.liveDetail=st.shortDetail||st.detail||'';
+        }else if(state==='post'){
+          if(g.status!=='final'||g.homeScore!==hs||g.awayScore!==as)changed=true;
+          g.status='final';g.homeScore=hs;g.awayScore=as;g.liveDetail='';
+        }
+        break;
+      }
+    });
+    cb(changed);
+  }).catch(function(){cb(false);});
+}
 function renderGames(games){
+  drawGames(games);
+  var now=Date.now();
+  if(now-liveMergeAt>60000){
+    liveMergeAt=now;
+    mergeEspnStatus(games,function(changed){if(changed)drawGames(games);});
+  }
+}
+function drawGames(games){
   curGames=games;
   var bar=document.getElementById('linesBar'),txt=document.getElementById('linesText');
   if(liveMode){bar.className='linesbar live';txt.textContent='LIVE LINES — real odds via The Odds API';}
