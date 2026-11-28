@@ -1065,7 +1065,7 @@ button,.button,[role="button"]{touch-action:manipulation}
     }
   
   setInterval(function(){try{seats.forEach(function(seat,i){var tag=seat.querySelector('.nf-sitout');var show=!!sittingOut[i]&&!emptyBotSeat[i]&&!seat.classList.contains('seat-open')&&!(mpMode&&seat.classList.contains('empty-seat')&&i!==localSeatAbsolute);if(show&&!tag){tag=document.createElement('span');tag.className='nf-sitout';tag.textContent='SITTING OUT';(seat.querySelector('.pocket')||seat).appendChild(tag)}else if(!show&&tag)tag.remove()})}catch(e){}},400);
-  function buzz(pattern){try{var v=navigator.vibrate||navigator.webkitVibrate||navigator.mozVibrate;if(v){v.call(navigator,0);var ok=v.call(navigator,pattern);try{(window.__nfVibrateLog=window.__nfVibrateLog||[]).push({pattern:pattern.slice(),ok:ok!==false,t:Date.now()})}catch(e){}setTimeout(function(){try{v.call(navigator,pattern)}catch(e){}},1200);return ok!==false}}catch(e){}return false}
+  function buzz(pattern){try{var v=navigator.vibrate||navigator.webkitVibrate||navigator.mozVibrate;if(v){v.call(navigator,0);var ok=v.call(navigator,pattern);try{(window.__nfVibrateLog=window.__nfVibrateLog||[]).push({pattern:pattern.slice(),ok:ok!==false,t:Date.now()})}catch(e){}return ok!==false /* v2.7: one buzz call = the pattern ONCE. The old 1200ms re-fire replayed every alert (3 long pulses, then 3 more) — that is the 'keeps vibrating' complaint. A blocked vibrate is retried on the next tap (unlockAlerts / nfPendingVibrate), not by replaying. */}}catch(e){}return false}
   var sfxLast={},sfxNoiseBuf=null;
 function sfx(kind){
     if(!alertsUnlocked||!audio)return;
@@ -1129,27 +1129,27 @@ function sfx(kind){
       return true;
     }catch(e){return false}
   }
-  function nfTurnBeep(isWarning){ /* YOUR-TURN CHIME (v2 LOW BASS — Jerry 2026-11-17, the 880/1318Hz beep was horrible): deep two-note thump, E3 164.8Hz + A3 220Hz, sine + soft triangle octave so it carries as a low thud on a phone speaker. The pair repeats twice per turn (four times for a warning). */
+  function nfTurnBeep(isWarning){ /* YOUR-TURN CHIME (v2.7 — Jerry 2026-11-26: the E3/A3 sine was too soft and too thin. Louder, deeper, more aggressive: square-wave A2 110Hz + E3 164.8Hz, gain .8/.7, short punchy envelope, double whoop. The pair repeats twice per turn (four times for a warning).) */
     if(!alertsUnlocked||!audio)return false;
     try{if(audio.state==='suspended')audio.resume();var t=audio.currentTime+.01;
-      function chime(s0,freq,vol){var g=audio.createGain();g.gain.setValueAtTime(.0001,s0);g.gain.linearRampToValueAtTime(vol,s0+.015);g.gain.exponentialRampToValueAtTime(.0001,s0+.55);g.connect(audio.destination);var o=audio.createOscillator();o.type='sine';o.frequency.value=freq;o.connect(g);o.start(s0);o.stop(s0+.6);var h=audio.createOscillator();h.type='triangle';h.frequency.value=freq*2;var hg=audio.createGain();hg.gain.value=.22;h.connect(hg);hg.connect(g);h.start(s0);h.stop(s0+.6)}
-      function pair(s0){chime(s0,164.8,.6);chime(s0+.22,220,.5)}
-      pair(t);pair(t+.55);
-      if(isWarning){pair(t+1.1);pair(t+1.65)}
-      logEvent('turn-beep-played',{warning:!!isWarning,freq:[164.8,220]});return true}catch(e){return false}
+      function chime(s0,freq,vol){var g=audio.createGain();g.gain.setValueAtTime(.0001,s0);g.gain.linearRampToValueAtTime(vol,s0+.008);g.gain.exponentialRampToValueAtTime(.0001,s0+.32);g.connect(audio.destination);var o=audio.createOscillator();o.type='square';o.frequency.value=freq;o.connect(g);o.start(s0);o.stop(s0+.35);var h=audio.createOscillator();h.type='triangle';h.frequency.value=freq*2;var hg=audio.createGain();hg.gain.value=.25;h.connect(hg);hg.connect(g);h.start(s0);h.stop(s0+.35)}
+      function pair(s0){chime(s0,110,.8);chime(s0+.16,164.8,.7)}
+      pair(t);pair(t+.32);
+      if(isWarning){pair(t+.64);pair(t+.96)}
+      logEvent('turn-beep-played',{warning:!!isWarning,freq:[110,164.8]});return true}catch(e){return false}
   }
   function alertUserTurn(index,isWarning,turnKey){
     if(index!==localSeatAbsolute)return{beeped:false,buzzed:false,suppressed:true};
     if(mpMode&&!nfIsJoined())return{beeped:false,buzzed:false,suppressed:true};
     var key=turnKey||(''+handNumber+':'+index+':'+boardCards.length);
     if(!isWarning&&key===nfLastTurnDingKey)return{beeped:false,buzzed:false,suppressed:false,dedup:true};
-    var beeped=nfTurnBeep(isWarning),buzzed=buzz(isWarning?[500,150,500,150,500,150,500]:[500,150,500,150,500]);logEvent('turn-vibrate',{pattern:isWarning?'warning-4x500':'turn-3x500',buzzed:buzzed});
+    var beeped=nfTurnBeep(isWarning),buzzed=buzz(isWarning?[180,120,180,120,180]:[180,120,180]);logEvent('turn-vibrate',{pattern:isWarning?'warning-3x180':'turn-2x180',buzzed:buzzed}); /* v2.7: a quick double whoop (three max on a warning), never the old 3x500ms buzz. */
     if(beeped||buzzed){nfLastTurnDingKey=key;nfPendingVibrate=false}else nfPendingVibrate=true; /* ADJUSTED2: blocked (no tap yet — AudioContext does not exist) — do NOT consume this turn's key, so the same turn re-alerts after the first tap; remember to retry the vibrate. */
     return{beeped:beeped,buzzed:buzzed,suppressed:false}
   }
   function unlockAlerts(){
     alertsUnlocked=true;
-    if(nfPendingVibrate&&buzz([600,200,600,200,600]))nfPendingVibrate=false; /* ADJUSTED2: first tap — retry a vibrate that was blocked before the tap. */
+    if(nfPendingVibrate&&buzz([180,120,180]))nfPendingVibrate=false; /* ADJUSTED2: first tap — retry a vibrate that was blocked before the tap. */
     try{
       if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();
       var resumed=audio.state==='suspended'?audio.resume():Promise.resolve();
@@ -1243,7 +1243,7 @@ function sfx(kind){
   function closeRaiseModal(){document.getElementById('raiseModal').classList.remove('open');selectedRaiseTo=null;document.getElementById('confirmRaise').disabled=true}
   function clearTurn(){turnToken++;seats.forEach(function(s){s.classList.remove('active','warning','authoritative');s.style.removeProperty('--turn-green');s.style.removeProperty('--turn-red')});disableActions();closeRaiseModal();pendingRaiseState=null}
   function startTurn(index,label,toCall,onChoice,raiseState){
-    clearTurn();var seat=seats[index],token=turnToken;void seat.offsetWidth;seat.classList.add('active');statusMain.textContent=label+' · '+names[index]+' acts';logEvent('turn',{round:label,seat:index,name:names[index],toCall:toCall});var turnAlert=alertUserTurn(index,false,handNumber+':'+index+':'+boardCards.length+':'+toCall);if(index===localSeatAbsolute&&!turnAlert.buzzed){buzz([500,150,500,150,500])}
+    clearTurn();var seat=seats[index],token=turnToken;void seat.offsetWidth;seat.classList.add('active');statusMain.textContent=label+' · '+names[index]+' acts';logEvent('turn',{round:label,seat:index,name:names[index],toCall:toCall});var turnAlert=alertUserTurn(index,false,handNumber+':'+index+':'+boardCards.length+':'+toCall);if(index===localSeatAbsolute&&!turnAlert.buzzed){buzz([180,120,180])}
     if(index===localSeatAbsolute){alertCount++;toast.setAttribute('aria-label','Your turn alerts '+alertCount+'; bass tone '+(turnAlert.beeped?'played':'blocked')+'; vibration '+(turnAlert.buzzed?'sent':'unavailable'))}
     logEvent('turn-alert',{seat:index,userTurn:index===localSeatAbsolute,audioState:audio?audio.state:'not-created',beeped:turnAlert.beeped,buzzed:turnAlert.buzzed,suppressed:turnAlert.suppressed});
     if(index===localSeatAbsolute){enableActions(toCall);pendingUser=onChoice;pendingRaiseState=raiseState}else pendingUser=null;
@@ -1312,6 +1312,7 @@ function sfx(kind){
       if(handRunning)return;
       if(tableRoom.classList.contains('is-hidden'))return;
       clearTimers();disarmAll();prepareNextHand();
+      if(handNumber===0){gameSpeed=0.02;logEvent('gf-opening-fastforward',{hand:handNumber+1});} /* v2.7: the opening hand fast-forwards to the flop — when the player arrives a game is already in motion and he waits for the NEXT hand (continuous-play law). Restored to 1 at the flop (GF_playHand) and on an uncontested end. */
       handRunning=true;
       GF_deck=GF_newDeck();handNumber++;
       var order=GF_dealOrder();
@@ -1421,7 +1422,7 @@ function sfx(kind){
       var sb=smallBlindIndex(),bb=bigBlindIndex(),opening=[0,0,0,0,0,0,0,0];
       opening[sb]=smallBlindPaid;opening[bb]=bigBlindPaid;
       statusMain.textContent='PREFLOP BETTING · POT $'+(smallBlindPaid+bigBlindPaid);
-      GF_bettingRound('PREFLOP',opening,function(){GF_revealBoard([0,1,2],'FLOP',function(){GF_bettingRound('FLOP',[0,0,0,0,0,0,0,0],function(){GF_revealBoard([3],'TURN',function(){GF_bettingRound('TURN',[0,0,0,0,0,0,0,0],function(){GF_revealBoard([4],'RIVER',function(){GF_bettingRound('RIVER',[0,0,0,0,0,0,0,0],GF_showdown)})})})})})});
+      GF_bettingRound('PREFLOP',opening,function(){GF_revealBoard([0,1,2],'FLOP',function(){gameSpeed=1; /* v2.7: opening-hand fast-forward ends at the flop — normal pace from here. */ GF_bettingRound('FLOP',[0,0,0,0,0,0,0,0],function(){GF_revealBoard([3],'TURN',function(){GF_bettingRound('TURN',[0,0,0,0,0,0,0,0],function(){GF_revealBoard([4],'RIVER',function(){GF_bettingRound('RIVER',[0,0,0,0,0,0,0,0],GF_showdown)})})})})})});
     }
   var boardCards=[['A','♥'],['10','♠'],['9','♣'],['2','♦'],['5','♣']];
   var demoHands=[[['K','♣'],['9','♠']],[['K','♦'],['8','♥']],[['J','♦'],['8','♣']],[['K','♥'],['7','♣']],[['J','♣'],['6','♦']],[['8','♦'],['7','♦']],[['Q','♥'],['Q','♣']],[['J','♥'],['6','♣']]];
@@ -1476,7 +1477,7 @@ function sfx(kind){
     sendHandToServer('uncontested',[{seat:winner,name:names[winner],amount:awardedPot}],null,'',[],[{amount:awardedPot,winners:[winner]}]);
     later(650,function(){slidePotToWinner(winner,awardedPot)});
     later(1450,function(){potChips.style.opacity='0';potValueNode.textContent='$0'});
-    later(9100,function(){var oldDealer=dealerIndex(),oldSmallBlind=smallBlindIndex(),oldBigBlind=bigBlindIndex();clearShowdownHighlightKeepLabel();revertEmotions();pot=0;advanceBlindTrio();if(waitingForBigBlind&&bigBlindIndex()===localSeatAbsolute){delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;}setBlinds();handRunning=false;logEvent('hand-complete',{awardedPot:awardedPot,uncontested:true,oldDealer:oldDealer,newDealer:dealerIndex(),oldSmallBlind:oldSmallBlind,newSmallBlind:smallBlindIndex(),oldBigBlind:oldBigBlind,newBigBlind:bigBlindIndex()});later(900,GF_startHand)})
+    later(9100,function(){var oldDealer=dealerIndex(),oldSmallBlind=smallBlindIndex(),oldBigBlind=bigBlindIndex();clearShowdownHighlightKeepLabel();revertEmotions();pot=0;advanceBlindTrio();if(waitingForBigBlind&&bigBlindIndex()===localSeatAbsolute){delete sittingOut[localSeatAbsolute];waitingForBigBlind=false;}setBlinds();handRunning=false;logEvent('hand-complete',{awardedPot:awardedPot,uncontested:true,oldDealer:oldDealer,newDealer:dealerIndex(),oldSmallBlind:oldSmallBlind,newSmallBlind:smallBlindIndex(),oldBigBlind:oldBigBlind,newBigBlind:bigBlindIndex()});gameSpeed=1; /* v2.7: an opening hand that ends before the flop still ends the fast-forward. */ later(900,GF_startHand)})
   }
 
   

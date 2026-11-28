@@ -791,7 +791,8 @@ body[data-game="farkle"] .seat.s1,
 #gameScreen.spades-game #seats .seat.s3,#gameScreen.hearts-game #seats .seat.s3{right:auto!important;left:calc(100% - 38px)!important;top:42%!important;transform:translateY(-50%)!important}
 #gameScreen.spades-game #seats .seat.s0,#gameScreen.hearts-game #seats .seat.s0{left:50%!important;right:auto!important;top:calc(100% + 100px)!important;bottom:auto!important;transform:translateX(-50%)!important}
 #gameScreen.spades-game .hand,#gameScreen.hearts-game .hand{top:calc(130px + var(--spD) + 6px)!important;bottom:auto!important;left:2%!important;right:2%!important;gap:0!important;padding:4px 2px!important;max-height:none!important;overflow:visible!important;flex-wrap:nowrap!important;align-items:flex-end!important;justify-content:center!important}
-#gameScreen.spades-game .hand .card,#gameScreen.hearts-game .hand .card{width:42px!important;height:60px!important;margin-left:-19px!important}
+#gameScreen.spades-game .hand .card{width:36px!important;height:52px!important;margin-left:-8px!important}
+#gameScreen.hearts-game .hand .card{width:42px!important;height:60px!important;margin-left:-19px!important}
 #gameScreen.spades-game .hand .card:first-child,#gameScreen.hearts-game .hand .card:first-child{margin-left:0!important}
 #gameScreen.spades-game .hand .card.selected-card,#gameScreen.hearts-game .hand .card.selected-card{z-index:6;position:relative}
 #gameScreen.spades-game .card,#gameScreen.hearts-game .card{border-radius:7px!important;background:linear-gradient(145deg,#fffdf6,#ece7da)!important;border:1px solid #b3a58c!important;box-shadow:0 5px 10px #000a!important;font-family:"Libre Baskerville",serif!important;color:#181209!important}
@@ -808,9 +809,35 @@ body[data-game="farkle"] .seat.s1,
 #gameScreen.spades-game .bid-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}
 #gameScreen.spades-game .bid-number{height:38px!important;aspect-ratio:auto!important}
 #gameScreen.spades-game .bid-number.kneel-bid{min-height:38px!important}
+.sp-bidmade{display:inline-block;font:800 13px/1 "Source Sans 3",sans-serif;color:#ffd361;background:#3a2410;border:1px solid #f3cf6d;border-radius:4px;padding:1px 4px;margin-right:4px;vertical-align:1px}
+.sp-bidmade.sp-balance{color:#ffe7ad;background:#1a2a1a;border-color:#7fc97f}
+/* SPADES v3 — BOTTOM ROW (Jerry 2026-11-16 ~19:18): NOTHING covers the hero. Only the hero (avatar + nameplate + counter) and the talk circle are on the bottom row. */
+#gameScreen.spades-game .voice-toggle,#gameScreen.spades-game .voice-meter,#gameScreen.spades-game .voice-status,#gameScreen.spades-game .audio-toggle{display:none!important}
+/* SPADES v4 — TOP ROW EMPTY (Jerry 2026-11-17 #5): NOTHING on the top bar. No lobby button, no Games, no title, no Rules. The whole game-nav is gone in Spades. The scorebar (the score) stays. */
+#gameScreen.spades-game .game-nav{display:none!important}
+/* SPADES v4 — BALANCE VISIBLE (Jerry #6): the hero's nameplate must show the full balance, not "...". */
+#gameScreen.spades-game .seat[data-seat="0"] .name{max-width:150px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+#gameScreen.spades-game .seat[data-seat="0"] .sp-bidmade.sp-balance{display:block!important;text-align:center;margin-top:2px}
+/* SPADES v4 — AUDIO TOGGLE (Jerry #5): the fixed speaker button at the bottom-right is outside #gameScreen, so hide it while Spades is open. */
+body:has(#gameScreen.spades-game:not(.hidden)) .audio-toggle{display:none!important}
+#gameScreen.spades-game .voicebar{left:var(--sp-talk-x,auto);top:var(--sp-talk-y,auto);right:auto;bottom:auto;transform:none;width:46px;height:46px;min-height:0;max-width:none;padding:0;background:transparent;border:0;border-radius:50%;box-shadow:none;pointer-events:none}
+#gameScreen.spades-game .talk-button{width:46px;height:46px;min-width:0;min-height:0;margin:0;padding:0;border-radius:50%;font-size:0;gap:0;pointer-events:auto;z-index:60}
+#gameScreen.spades-game .talk-button svg{display:none}
+#gameScreen.spades-game .talk-button::after{content:'TALK';font-size:10px;font-weight:800;color:#f7edd9}
+/* SPADES v5 — CARD FACES (Jerry 2026-11-20): deeper red + a bigger center
+   suit, so Spades cards are unmistakable at a glance. Spades-scoped only. */
+#gameScreen.spades-game .card.red{color:#b3001b!important}
+/* SPADES v5.1 — HOLE CARDS MATCH TABLE CARDS (Jerry 2026-11-20): the hand
+   overlapped by 19px, hiding the big center suit. Overlap is now 8px on a
+   36px card (28px exposed), so the bigsuit is FULLY visible in every card. */
+#gameScreen.spades-game .card .bigsuit{font-size:24px}
+#gameScreen.spades-game .card.played .bigsuit{font-size:28px}
+/* SPADES v4 — NO GRAYING (Jerry 2026-11-17 #3): unplayable cards look NORMAL (full color, full brightness). The global .card.disabled grayscale/brightness is overridden in Spades only. A tap on an illegal card does nothing (disabled cards have no onclick) — silent refusal, no renege. */
+#gameScreen.spades-game .card.disabled{filter:none!important;cursor:default!important}
 @media(min-width:761px){
 #gameScreen.spades-game .table-stage,#gameScreen.hearts-game .table-stage{--spD:min(460px,58vh)}
-#gameScreen.spades-game .hand .card,#gameScreen.hearts-game .hand .card{width:54px!important;height:76px!important;margin-left:-24px!important}
+#gameScreen.spades-game .hand .card{width:54px!important;height:76px!important;margin-left:-14px!important}
+#gameScreen.hearts-game .hand .card{width:54px!important;height:76px!important;margin-left:-24px!important}
 #gameScreen.spades-game .card.played,#gameScreen.hearts-game .card.played{width:52px!important;height:74px!important}
 }
 </style><style id="nf12fix">
@@ -984,7 +1011,9 @@ function spSnd(kind){try{if(typeof promoMuted!=='undefined'&&promoMuted)return}c
 if(kind==='slide')burst('bandpass',1700,0.9,0.22,0.11,0);
 else if(kind==='knock')burst('lowpass',260,0.7,0.5,0.09,0);
 else if(kind==='tick')burst('bandpass',2600,2,0.12,0.05,0);
-else if(kind==='win'){burst('bandpass',2400,2,0.16,0.09,0);burst('bandpass',2900,2,0.16,0.09,0.1);burst('bandpass',3400,2,0.16,0.09,0.2);burst('lowpass',260,0.7,0.4,0.09,0.2)}}catch(e){}}
+else if(kind==='win'){burst('bandpass',2400,2,0.16,0.09,0);burst('bandpass',2900,2,0.16,0.09,0.1);burst('bandpass',3400,2,0.16,0.09,0.2);burst('lowpass',260,0.7,0.4,0.09,0.2)}
+else if(kind==='shuffle'){burst('bandpass',1200,0.8,0.3,0.35,0);burst('bandpass',900,0.8,0.25,0.3,0.12);burst('bandpass',1600,0.8,0.25,0.3,0.24)}
+else if(kind==='deal'){burst('bandpass',1700,0.9,0.22,0.11,0);burst('bandpass',1700,0.9,0.22,0.11,0.07);burst('bandpass',1700,0.9,0.22,0.11,0.14)}}catch(e){}}
 window.__spadesV5={sounds:spSndLog,ctxState:function(){return spSndCtx?spSndCtx.state:'none'},version:'spades-v5'};
 
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -1020,11 +1049,11 @@ function clearTimer(){clearInterval(timer);timer=null;$$('.seat').forEach(x=>{x.
 function timerWarning(frequency=720,duration=.22,volume=.14){try{let Ctx=window.AudioContext||window.webkitAudioContext,ctx=new Ctx(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.frequency.value=frequency;gain.gain.setValueAtTime(.0001,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(volume,ctx.currentTime+.02);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+duration);osc.connect(gain).connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+duration+.02);osc.onended=()=>ctx.close()}catch(e){}}
 function turnStartAlert(seat){if(seat!==0)return;timerWarning(880,.16,.11);try{navigator.vibrate&&navigator.vibrate(140)}catch(e){}}
 function startTimer(seat,secs,onExpire){clearTimer();timerLeft=secs;const el=$(`.seat[data-seat="${seat}"]`);if(el)el.classList.add('active');turnStartAlert(seat);function tick(){let frac=Math.max(0,timerLeft/secs),color=timerLeft<=10?'#d83538':timerLeft<=Math.ceil(secs*.5)?'#e5b52f':'#3bc36b',bar=el&&el.querySelector('.timer i');if(bar){bar.style.width=(frac*100)+'%';bar.style.background=color}if(el){el.style.setProperty('--timer-angle',(frac*360)+'deg');el.style.setProperty('--timer-color',color)}if(timerLeft===10&&seat===0){timerWarning();try{navigator.vibrate&&navigator.vibrate([180,90,180])}catch(e){}}if(timerLeft--<=0){clearTimer();onExpire&&onExpire()}}tick();timer=setInterval(tick,1000)}
-function renderSeats(names,count=4){let box=$('#seats'),seatAvatars=[profile.avatar,count===2?matchedOpponent.avatar:1,8,3,10,6];box.innerHTML='';box.dataset.count=count;for(let i=0;i<count;i++){let s=document.createElement('div');s.className='seat s'+i;s.dataset.seat=i;s.innerHTML=`<span class="avatar-wrap">${avatarHTML(seatAvatars[i]??((i+1)%AVATARS.length),names[i])}</span><span class="name">${escapeHtml(names[i])}</span><span class="timer"><i></i></span>`;box.appendChild(s)}}
+function renderSeats(names,count=4,badges){let box=$('#seats'),seatAvatars=[profile.avatar,count===2?matchedOpponent.avatar:1,8,3,10,6];box.innerHTML='';box.dataset.count=count;for(let i=0;i<count;i++){let s=document.createElement('div');s.className='seat s'+i;s.dataset.seat=i;s.innerHTML=`<span class="avatar-wrap">${avatarHTML(seatAvatars[i]??((i+1)%AVATARS.length),names[i])}</span><span class="name">${badges&&badges[i]?badges[i]:''}${escapeHtml(names[i])}</span><span class="timer"><i></i></span>`;box.appendChild(s)}}
 const RULES={
 chess:`<p>Two medieval armies face each other: ivory castle guards and mounted knights against dark iron sentries and warhorses. Every rank has its own carved figure rather than a tournament-style Staunton silhouette.</p><p>Move by standard chess rules. Castling requires an unmoved king and rook, a clear path, and no check through any crossed square. En passant is available only immediately after a two-square pawn move. Promote to queen, rook, bishop, or knight.</p><p>Checkmate wins. Stalemate, threefold repetition, the 50-move rule, insufficient material, or an accepted draw offer ends in a draw.</p><p>Each move has 90 seconds. On timeout, the opponent chooses whether to wait or end the game.</p>`,
 checkers:`<p>American checkers on dark squares. Men move one diagonal step forward. Captures are mandatory; if another jump is available, the same piece keeps jumping. Kings move and capture one diagonal step in either direction—no flying kings.</p><p>Capture every opposing piece or block all their moves to win. Each move has 90 seconds.</p>`,
-spades:`<p>Four players, partners across. Bidding goes seat by seat with a visible countdown around the active player. Choose 1–13 or Kneel, then confirm before it is entered; Rebid or Cancel returns you to the choices without locking anything in.</p><p>Kneel commits to zero tricks: take none for +100; take one or more for −100 flat. The kneeling player’s result is separate, so the partner’s bid and tricks score normally.</p><p>Spades cannot be led before they are broken unless only spades remain. Highest spade wins; otherwise highest led suit.</p><p>Made contract: 10×bid plus one per bag. Missed: −10×bid. Ten bags cost 100. First to 500 wins; −200 loses.</p>`,
+spades:`<p>Four players, partners across. Bidding goes seat by seat with a visible countdown around the active player. Choose Nil (Kneel) or 1–13, then confirm before it is entered; Rebid or Cancel returns you to the choices without locking anything in. Bidding is free — every button is always available to everybody, no matter what your partner or the opponents bid.</p><p>Minimum 4 is a gameplay rule, not a bidding rule: if your TEAM’s combined bid (you + your partner, Kneel = 0) is below 4, the game locks you in at 4 (bumps the bid up, counter shows the bumped bid) and you must take 4 tricks to make it. A team is SET if it takes fewer than 4 tricks or fewer than its bid. Bid 10 or more combined and take 10 or more tricks and that is a BOSTON — the game ends right there and your team wins.</p><p>Kneel commits to zero tricks: take none for +100; take one or more for −100 flat. The kneeling player’s result is separate, so the partner’s bid and tricks score normally.</p><p>Spades cannot be led before they are broken unless only spades remain. Highest spade wins; otherwise highest led suit.</p><p>Made contract: 10×bid plus one per bag. Missed: −10×bid. Ten bags cost 100. First to 500 wins; −200 loses.</p>`,
 hearts:`<p>Pass three left, right, across, then hold. The 2♣ leads. Follow suit. Hearts can't be led until hearts are broken — a heart played on another suit's trick — unless hearts are all you hold. On the first trick, no heart or Q♠ unless that is all you hold. Hearts cost 1; Q♠ costs 13. Shoot the moon to give every opponent 26.</p><p>When anyone reaches 100, the lowest score wins.</p>`,
 doublePinochle:`<p>Jerry's 80-card house game: A–10–K–Q–J, partnerships across, no passing. At the start, cards are turned face-up one at a time to each player in seating order. The first jack of any suit chooses the first player-dealer; there is no separate dealer at the table. The cards are then picked up, reshuffled, and dealt into one suit-sorted row: hearts, spades, diamonds, clubs; A–10–K–Q–J within each suit.</p><p>Auction starts left of dealer. Every player acts in turn; pass means permanently out. Remaining bidders may keep raising until only one remains. All-pass drops 50 on the dealer. Legal bids: 50–60 by 1, 65–100 by 5, and above 100 by 10. Bidder names trump. Every player's meld cards are laid face-up; cards in arounds are turned sideways. Bidder needs 20 meld. Meld counts only with 20 meld and 20 trick points, and a team needs 20 points to get on board (19 scores nothing). Last trick is worth 2.</p><p>Must follow, must beat if able even over partner, must trump when void, and must overtrump. Bots pay a winning partner with tens then kings. Ace and jack leads signal the suit back to a partner. First identical card played wins ties. Only A, 10, K count one trick point. Miss the bid and you're set; two sets lose. Only bidder may cross the 250/300/500 target.</p><h3>Count feature</h3><p>At match start, choose On or Off. <strong>On</strong> counts each team's trick pile card by card at a relaxed pace after every hand; the running count increases on every king, ten, and ace. <strong>Off</strong> calculates both teams' points instantly.</p>`,
 singlePinochle:`<p>48 cards, two copies of A–10–K–Q–J–9. Deal 12 each; 24 form stock. Before stock ends: follow suit and trump when void; trick winner draws first. After stock: also beat the winning card if able.</p><p>One meld lay-down after stock: run 15, royal marriage 4, common marriage 2, dix 1, aces 10, kings 8, queens 6, jacks 4, pinochle 4. A/10/K in tricks score 1; last trick 1. First to 1000.</p>`,
@@ -1156,17 +1185,232 @@ function dealHands(deck,count,n){let hands=Array.from({length:count},()=>[]);for
 function validFollow(hand,trick){if(!trick.length)return hand;let led=trick[0].card.s,follow=hand.filter(c=>c.s===led);return follow.length?follow:hand}
 function trickWinner(trick,trump=null,order=rankVal){let best=0,led=trick[0].card.s;for(let i=1;i<trick.length;i++){let c=trick[i].card,b=trick[best].card;if((c.s===trump&&b.s!==trump)||(c.s===b.s&&order(c.r)>order(b.r))||(b.s!==trump&&c.s===led&&b.s!==led))best=i}return trick[best].p}
 function renderSpadeOpponentHands(){for(let i=1;i<4;i++){let seat=$(`.seat[data-seat="${i}"]`);if(!seat)continue;let hand=document.createElement('span'),count=T.hands[i]?.length||0;hand.className='spade-opponent-hand';hand.setAttribute('role','img');hand.setAttribute('aria-label',`${T.names[i]} has ${count} face-down card${count===1?'':'s'}`);hand.innerHTML=Array.from({length:Math.min(count,5)},()=>'<i class="mini-back" aria-hidden="true"></i>').join('');seat.appendChild(hand)}}
-function renderTrickCommon(){let ns=T.names.map((n,i)=>`${n} · ${T.hands[i]?.length||0}`);renderSeats(ns,4,T.dealerPhoto);if(T.id==='hearts')renderHeartTrackers();renderOpponentHands(T.hands,T.names);$('#center').innerHTML=T.trick.map(x=>((T.id==='spades'||T.id==='hearts')?spadeCardHTML:proCardHTML)(x.card,'played')).join('');setScore(T.scoreText());setStatus(T.status);$('#actions').innerHTML='';if(T.resolvingTrick){showReadOnlyHand(T.hands[0]);clearTimer();return}showHand(T.hands[0],c=>T.humanPlay(c),c=>T.legal(c),()=>'',true,{doubleTap:true});if(T.turn===0)startTimer(0,30,()=>{autoMode=true;let legal=T.hands[0].filter(T.legal);if(legal.length)T.humanPlay(legal[rnd(legal.length)]);toast('Time expired — a legal card was played.');autoMode=false});else startTimer(T.turn,30,()=>T.aiPlay())}
+/* SPADES v3 — TALK CIRCLE POSITION (Jerry 2026-11-16 ~19:18): place the
+   talk button as a circle immediately to the RIGHT of the hero's nameplate
+   (beside him, not on top of him, never covering him). The voicebar is
+   positioned relative to the table-stage, so the offset is computed from the
+   stage rect. Runs on every render so it tracks the seat. */
+function positionSpadesTalkIx(){
+  var bar=document.getElementById('voicebar');
+  if(!bar||!document.querySelector('#gameScreen.spades-game'))return;
+  var nameEl=document.querySelector('#gameScreen.spades-game .seat[data-seat="0"] .name');
+  var stage=document.querySelector('#gameScreen .table-stage');
+  if(!nameEl||!stage)return;
+  var nr=nameEl.getBoundingClientRect(),sr=stage.getBoundingClientRect();
+  if(!nr.width||!nr.height)return;
+  var size=46;
+  /* SPADES v5 — BOTTOM-RIGHT CORNER (Jerry 2026-11-20): right edge of the
+     stage, centred on the hero name vertically. Lower area, covers nothing. */
+  var x=Math.round(stage.clientWidth-size-10);
+  var y=Math.round(nr.top-sr.top+nr.height/2-size/2);
+  x=Math.max(4,Math.min(stage.clientWidth-size-4,x));
+  y=Math.max(4,Math.min(stage.clientHeight-size-4,y));
+  bar.style.setProperty('--sp-talk-x',x+'px');
+  bar.style.setProperty('--sp-talk-y',y+'px');
+}
+if(!window.__spTalkIxResize){window.__spTalkIxResize=true;window.addEventListener('resize',function(){try{positionSpadesTalkIx();}catch(e){}});}
+function renderTrickCommon(){try{positionSpadesTalkIx();}catch(e){}let ns=T.names.map((n,i)=>`${n} · ${T.hands[i]?.length||0}`);renderSeats(ns,4,(T&&T.id==='spades')?spadeBadges():T.dealerPhoto);if(T.id==='hearts')renderHeartTrackers();renderOpponentHands(T.hands,T.names);$('#center').innerHTML=T.trick.map(x=>((T.id==='spades'||T.id==='hearts')?spadeCardHTML:proCardHTML)(x.card,'played')).join('');setScore(T.scoreText());setStatus(T.status);$('#actions').innerHTML='';if(T.resolvingTrick){showReadOnlyHand(T.hands[0]);clearTimer();return}showHand(T.hands[0],c=>T.humanPlay(c),c=>T.legal(c),()=>'',true,{doubleTap:true});if(T.turn===0)startTimer(0,30,()=>{autoMode=true;let legal=T.hands[0].filter(T.legal);if(legal.length){let c=(T.id==='spades')?spadeSmartCard(0):legal[rnd(legal.length)];if(c)T.humanPlay(c);}toast('Time expired — a legal card was played.');autoMode=false});else startTimer(T.turn,30,()=>T.aiPlay());try{positionSpadesTalkIx();}catch(e){}}
 function collectTrickToWinner(win,after){clearTimer();let cards=[...$('#center').querySelectorAll('.card')],target=$(`.seat[data-seat="${win}"] .avatar-wrap`),table=$('#table'),gameAtStart=current;if(!cards.length||!target)return after();cardFlight=true;let tr=table.getBoundingClientRect(),rr=target.getBoundingClientRect(),left=cards.length;cards.forEach((el,i)=>{let sr=el.getBoundingClientRect(),dx=rr.left+rr.width/2-sr.left-sr.width/2,dy=rr.top+rr.height/2-sr.top-sr.height/2,turn=(i-(cards.length-1)/2)*5,m=el.animate([{transform:'translate(0,0) rotate(0deg)',opacity:1},{transform:`translate(${dx*.55}px,${dy*.55}px) rotate(${turn}deg) scale(.92)`,opacity:1,offset:.6},{transform:`translate(${dx}px,${dy}px) rotate(${turn*1.7}deg) scale(.42)`,opacity:.88}],{duration:matchMedia('(prefers-reduced-motion: reduce)').matches?1:620+i*45,easing:'cubic-bezier(.2,.72,.25,1)',fill:'forwards'});m.onfinish=()=>{if(--left===0){cardFlight=false;if(current===gameAtStart&&!current.paused)after()}}})}
 function completeTrick(){let win=T.winner(T.trick);T.taken[win]++;T.turn=win;spSnd('knock');T.onTrick&&T.onTrick(win);collectTrickToWinner(win,()=>{T.trick=[];if('resolvingTrick'in T)T.resolvingTrick=false;if(T.hands.every(h=>!h.length))T.onHandEnd();else{renderTrickCommon();if(T.turn!==0)aiDelay(()=>T.aiPlay())}})}
 // ---------- SPADES ----------
-function initSpades(scores=[0,0],bags=[0,0],dealer=3,handNo=1){let d=shuffle(deck52()),hands=dealHands(d,4,13),dealt=hands.flat(),unique=new Set(dealt.map(c=>c.id));if(dealt.length!==52||hands.some(h=>h.length!==13)||unique.size!==52)throw new Error('Spades deal must contain 52 unique cards, 13 per player.');T={id:'spades',names:names4(),hands,turn:(dealer+1)%4,trick:[],taken:[0,0,0,0],bids:[null,null,null,null],scores:[...scores],bags:[...bags],phase:'bid',broken:false,dealer,handNo,dealerPhoto:true};T.scoreText=()=>[`Us ${T.scores[0]} · ${T.bags[0]} bags`,`Them ${T.scores[1]} · ${T.bags[1]} bags`,T.phase==='play'?`Bid ${T.bids[0]+T.bids[2]}–${T.bids[1]+T.bids[3]} · Tricks ${T.taken[0]+T.taken[2]}–${T.taken[1]+T.taken[3]}`:`Hand ${T.handNo} · Bidding`];renderSeats(T.names.map((n,i)=>`${n} · ${T.hands[i].length}`),4,true);markDealer(T.dealer);animateTrickDeal(T.hands,T.names,()=>{sortTrickHands(T.hands);spadeBid()})}
-function spadeBid(){$('#gameScreen').classList.add('spades-bidding');renderSeats(T.names.map((n,i)=>`${n} · ${T.hands[i].length}${T.bids[i]===null?'':` · ${T.bids[i]===0?'Kneel':`Bid ${T.bids[i]}`}`}`),4,true);markDealer(T.dealer);renderOpponentHands(T.hands,T.names);setScore(T.scoreText());setStatus('');$('#center').innerHTML='';$('#actions').innerHTML='';showReadOnlyHand(T.hands[0]);let seat=T.turn;if(seat===0){let box=document.createElement('div');box.className='bid-box bid-flash';box.setAttribute('aria-label','Your private bid pad');box.innerHTML='<strong>Your bid</strong><div class="bid-grid"></div>';$('#center').appendChild(box);let grid=box.querySelector('.bid-grid'),kneel=document.createElement('button');kneel.className='bid-number kneel-bid';kneel.textContent='Kneel';kneel.setAttribute('aria-label','Kneel — commit to zero tricks');kneel.onclick=()=>spadeAskBid(0);grid.appendChild(kneel);for(let i=1;i<=13;i++){let b=document.createElement('button');b.className='bid-number';b.textContent=i;b.setAttribute('aria-label',`Bid ${i}`);b.onclick=()=>spadeAskBid(i);grid.appendChild(b)}startTimer(0,30,()=>{toast('Time expired — bid 1 was entered.');spadeTakeBid(1)})}else{startTimer(seat,30,()=>spadeAIBid(seat));aiDelay(()=>spadeAIBid(seat),850)}let active=$(`.seat[data-seat="${seat}"]`);if(active)active.classList.add('bid-turn')}
+function initSpades(scores=[0,0],bags=[0,0],dealer=3,handNo=1){spSnd('shuffle');let d=shuffle(deck52()),hands=dealHands(d,4,13),dealt=hands.flat(),unique=new Set(dealt.map(c=>c.id));if(dealt.length!==52||hands.some(h=>h.length!==13)||unique.size!==52)throw new Error('Spades deal must contain 52 unique cards, 13 per player.');spSnd('deal');T={id:'spades',names:names4(),hands,turn:(dealer+1)%4,trick:[],taken:[0,0,0,0],bids:[null,null,null,null],scores:[...scores],bags:[...bags],phase:'bid',broken:false,dealer,handNo,dealerPhoto:true};/* SPADES v5.1 — TOP SHOWS ONLY THE COMBINED SCORE (Jerry 2026-11-20):
+   points + bags in one number per team. DISPLAY ONLY; scoring untouched. */
+T.scoreText=()=>[`Us ${T.scores[0]+T.bags[0]}`,`Them ${T.scores[1]+T.bags[1]}`];renderSeats(T.names.map((n,i)=>`${n} · ${T.hands[i].length}`),4,spadeBadges());markDealer(T.dealer);animateTrickDeal(T.hands,T.names,()=>{sortTrickHands(T.hands);spadeBid()})}
+function spadeBid(){$('#gameScreen').classList.add('spades-bidding');renderSeats(T.names.map((n,i)=>`${n} · ${T.hands[i].length}${T.bids[i]===null?'':` · Bid ${T.bids[i]}`}`),4,spadeBadges());markDealer(T.dealer);renderOpponentHands(T.hands,T.names);setScore(T.scoreText());setStatus('');try{positionSpadesTalkIx();}catch(e){}$('#center').innerHTML='';$('#actions').innerHTML='';showReadOnlyHand(T.hands[0]);let seat=T.turn;if(seat===0){let box=document.createElement('div');box.className='bid-box bid-flash';box.setAttribute('aria-label','Your private bid pad');box.innerHTML='<strong>Your bid</strong><div class="bid-grid"></div>';$('#center').appendChild(box);let grid=box.querySelector('.bid-grid'),kneel=document.createElement('button');kneel.className='bid-number kneel-bid';kneel.textContent='Kneel';kneel.setAttribute('aria-label','Kneel — commit to zero tricks');kneel.onclick=()=>spadeAskBid(0);grid.appendChild(kneel);for(let i=1;i<=13;i++){let b=document.createElement('button');b.className='bid-number';b.textContent=i;b.setAttribute('aria-label',`Bid ${i}`);b.onclick=()=>spadeAskBid(i);grid.appendChild(b)}startTimer(0,30,()=>{let eb=spadeEstimate(T.hands[0],T.bids[2]==null?0:T.bids[2]);toast('Time expired — bid '+(eb===0?'Kneel':eb)+' was entered.');spadeTakeBid(eb)})}else{startTimer(seat,30,()=>spadeAIBid(seat));aiDelay(()=>spadeAIBid(seat),850)}let active=$(`.seat[data-seat="${seat}"]`);if(active)active.classList.add('bid-turn')}
 function spadeAskBid(n){clearTimer();$('#center').innerHTML='';let kneel=n===0,choice=kneel?'Kneel':n,detail=kneel?'<p>Take no tricks for +100. Taking one or more is −100. Your partner scores normally.</p>':'';modal('Confirm your bid',`<p><strong>${kneel?'Kneel?':`Your bid is ${choice}?`}</strong></p>${detail}`,[['Confirm bid',()=>{closeModal();spadeTakeBid(n)},'good'],['Rebid',()=>{closeModal();spadeBid()}],['Cancel',()=>{closeModal();toast('No bid entered.');spadeBid()}]])}
-function spadeAIBid(seat){if(T.phase!=='bid'||T.turn!==seat||T.bids[seat]!==null)return;let h=T.hands[seat],v=Math.max(1,Math.min(13,Math.round(h.filter(c=>rankVal(c.r)>=12||c.s==='S'&&rankVal(c.r)>=10).length*.55)));spadeTakeBid(v)}
-function spadeTakeBid(n){clearTimer();var _spHeroBid=T.turn===0;T.bids[T.turn]=n;T.turn=(T.turn+1)%4;if(T.bids.every(x=>x!==null)){$('#gameScreen').classList.remove('spades-bidding');T.phase='play';let bs=(T.dealer+1)%4,bw=bs,bh=T.bids[bs];for(let bi=1;bi<4;bi++){let s=(bs+bi)%4;if(T.bids[s]>bh){bh=T.bids[s];bw=s}}T.turn=bw;T.status='';T.legal=c=>{let follow=validFollow(T.hands[0],T.trick);if(!follow.includes(c))return false;if(!T.trick.length&&c.s==='S'&&!T.broken&&T.hands[0].some(x=>x.s!=='S'))return false;return true};T.winner=tr=>trickWinner(tr,'S');T.humanPlay=c=>spadePlay(0,c);T.aiPlay=()=>{let p=T.turn,leg=validFollow(T.hands[p],T.trick).filter(c=>T.trick.length||T.broken||c.s!=='S'||T.hands[p].every(x=>x.s==='S'));leg.sort((a,b)=>rankVal(a.r)-rankVal(b.r));spadePlay(p,leg[Math.min(leg.length-1,rnd(Math.min(3,leg.length)))])};T.onHandEnd=spadeScore;renderTrickCommon();if(T.turn!==0)aiDelay(T.aiPlay)}else spadeBid();if(_spHeroBid)spSnd('tick');}
+function spadeBadges(){return[0,1,2,3].map(function(i){var b=T.bids[i],tk=T.taken[i]||0;var badge=(b===0)?'<span class="sp-bidmade">NIL</span>':'<span class="sp-bidmade">'+tk+'/'+(b==null?'\u2013':b)+'</span>';/* SPADES v4 — BALANCE ON THE NAMEPLATE (Jerry 2026-11-17 #6): the hero's FULL coin balance shows on his nameplate (not on the top bar). */if(i===0){var _bal=0;try{_bal=typeof fkWalletGet==='function'?fkWalletGet():0;}catch(e){}badge+='<span class="sp-bidmade sp-balance">GC '+Number(_bal||0).toLocaleString()+'</span>';}return badge;});}
+function spadeEstimate(hand, partnerBid){
+  partnerBid=partnerBid||0;
+  /* Hand evaluation (same as the standalone Spades bot): Aces are a trick
+     each. Kings count only when protected (Ace in the suit, or suit length
+     3+); a singleton King is not a trick. Queens count only with A+K in
+     the suit or a long suit. Long spades and voids/singletons (ruffing)
+     add tricks.
+     FREE BIDDING (Jerry 2026-11-16): NO floor of any kind. This returns
+     what the hand is actually worth: Nil (0) for a very weak hand, or
+     1-13. A weak hand bidding 1, 2 or 3 is CORRECT — the board never
+     restricts the bid. If the team's combined bid ends up below 4, the
+     team gets SET at scoring time. That is the game. */
+  var bySuit={S:[],H:[],D:[],C:[]};
+  hand.forEach(function(c){bySuit[c.s].push(c);});
+  var sp=bySuit['S'].length;
+  var s=0;
+  hand.forEach(function(c){if(c.r==='A')s+=1;});
+  hand.forEach(function(c){
+    if(c.r!=='K')return;
+    var suit=bySuit[c.s],hasA=suit.some(function(x){return x.r==='A';});
+    if(hasA)s+=1;
+    else if(suit.length>=3)s+=0.75;
+    else if(suit.length===2)s+=0.5;
+  });
+  hand.forEach(function(c){
+    if(c.r!=='Q')return;
+    var suit=bySuit[c.s];
+    var hasA=suit.some(function(x){return x.r==='A';}),hasK=suit.some(function(x){return x.r==='K';});
+    if(hasA&&hasK)s+=0.75;
+    else if(suit.length>=4)s+=0.25;
+  });
+  s+=Math.max(0,sp-3)*0.5;
+  if(sp>=2){
+    ['H','D','C'].forEach(function(suit){
+      var len=bySuit[suit].length;
+      if(len===0)s+=1.0;
+      else if(len===1)s+=0.5;
+    });
+  }
+  if(partnerBid>=5)s+=0.5;
+  else if(partnerBid===4)s+=0.25;
+  var b=Math.round(s);
+  if(b<1)return 0;
+  return Math.min(13,b);
+}
+function spadeSmartCard(p){
+  /* Bid-aware, partner-aware, trick-aware play for seat p (0-3).
+     Team 0 = seats 0,2 (Us); team 1 = seats 1,3 (Them). Partner = (p+2)%4.
+     need = tricks the team still needs; made = bid already made.
+     Leading, needing tricks: lead from strength. Leading, made: lead low.
+     Following: partner winning -> duck (never overtake). Opponent winning
+     and team needs the trick -> cheapest winner. Team made -> play low.
+     Void: trump in ONLY when the team needs the trick and an opponent is
+     winning (cheapest trump that wins). Otherwise dump a low loser. */
+  var hand=T.hands[p];
+  var team=p%2, partner=(p+2)%4;
+  var teamBid=(T.bids[p]||0)+(T.bids[partner]||0);
+  var teamTricks=(T.taken[p]||0)+(T.taken[partner]||0);
+  var need=teamBid-teamTricks, made=need<=0;
+  function low(cards){var s=cards.slice().sort(function(a,b){return rankVal(a.r)-rankVal(b.r);});return s[0];}
+  function ofSuit(s){return hand.filter(function(c){return c.s===s;});}
+  function legalLead(){return hand.filter(function(c){return T.broken||c.s!=='S'||hand.every(function(x){return x.s==='S';});});}
+  function lowestNonSpade(){var ns=hand.filter(function(c){return c.s!=='S';});return ns.length?low(ns):low(hand);}
+  function beatsSpade(card,best){
+    if(card.s==='S'&&best.s!=='S')return true;
+    if(card.s===best.s)return rankVal(card.r)>rankVal(best.r);
+    return false;
+  }
+  /* Kneel (Nil) bid: avoid taking tricks — lowest legal card. Leading: the
+     lowest legal lead. Following: lowest of the led suit if possible,
+     otherwise dump the lowest non-spade (never trump in). */
+  if(T.bids[p]===0){
+    if(!T.trick.length)return low(legalLead());
+    var led0=T.trick[0].card.s, fol0=ofSuit(led0);
+    if(fol0.length)return low(fol0);
+    return lowestNonSpade();
+  }
+  /* SPADES v4 — GIVE TRICKS WHEN SET (Jerry 2026-11-17 #1): if the team is
+     mathematically SET (it needs more tricks than remain in the hand), the
+     bots stop trying to win and GIVE tricks to the opponents — play the
+     lowest legal card. That pushes the opponents' bag count toward 10
+     (sandbags = -100). The hand is always played out (all 13 tricks). */
+  var _totTaken=(T.taken[0]||0)+(T.taken[1]||0)+(T.taken[2]||0)+(T.taken[3]||0);
+  if(need>13-_totTaken){var _lg=legalLead();return _lg.length?low(_lg):low(hand);}
+  if(!T.trick.length){
+    var legal=legalLead();
+    if(!made){
+      var aces=legal.filter(function(c){return c.r==='A'&&c.s!=='S';});
+      if(aces.length){
+        aces.sort(function(a,b){return ofSuit(b.s).length-ofSuit(a.s).length;});
+        return aces[0];
+      }
+      var spA=legal.filter(function(c){return c.s==='S'&&c.r==='A';});
+      if(spA.length)return spA[0];
+      var kings=legal.filter(function(c){
+        if(c.r!=='K')return false;
+        var suit=ofSuit(c.s);
+        if(suit.some(function(x){return x.r==='A';}))return true;
+        return suit.length>=3;
+      });
+      if(kings.length){
+        kings.sort(function(a,b){return ofSuit(b.s).length-ofSuit(a.s).length;});
+        return kings[0];
+      }
+      var spades=legal.filter(function(c){return c.s==='S';});
+      if(spades.length>=4)return low(spades);
+      var best=null,bestLen=-1,bestV=-1;
+      legal.forEach(function(c){
+        var len=ofSuit(c.s).length, v=rankVal(c.r);
+        if(len>bestLen||(len===bestLen&&v>bestV)){best=c;bestLen=len;bestV=v;}
+      });
+      return best||low(legal);
+    }
+    return lowestNonSpade();
+  }
+  var led=T.trick[0].card.s;
+  var follow=ofSuit(led);
+  var bestCard=T.trick[0].card, bestSeat=T.trick[0].p;
+  for(var i=1;i<T.trick.length;i++){
+    var c=T.trick[i].card;
+    if(beatsSpade(c,bestCard)){bestCard=c;bestSeat=T.trick[i].p;}
+  }
+  var partnerWinning=(bestSeat%2)===team;
+  if(follow.length){
+    if(partnerWinning)return low(follow);
+    if(!made){
+      var winners=follow.filter(function(c){return beatsSpade(c,bestCard);});
+      if(winners.length)return low(winners);
+    }
+    return low(follow);
+  }
+  var spades=ofSuit('S');
+  if(!made&&!partnerWinning&&spades.length){
+    var spWin=spades.filter(function(c){return beatsSpade(c,bestCard);});
+    if(spWin.length)return low(spWin);
+  }
+  return lowestNonSpade();
+}
+function spadeAIBid(seat){if(T.phase!=='bid'||T.turn!==seat||T.bids[seat]!==null)return;let partner=(seat+2)%4,v=spadeEstimate(T.hands[seat],T.bids[partner]==null?0:T.bids[partner]);spadeTakeBid(v)}
+function spadeTakeBid(n){clearTimer();var _spHeroBid=T.turn===0;/* FREE BIDDING (Jerry 2026-11-16): no floor, no restriction — the bid goes in as chosen. */T.bids[T.turn]=n;T.turn=(T.turn+1)%4;if(T.bids.every(x=>x!==null)){spadeLockIn();$('#gameScreen').classList.remove('spades-bidding');T.phase='play';let bs=(T.dealer+1)%4,bw=bs,bh=T.bids[bs];for(let bi=1;bi<4;bi++){let s=(bs+bi)%4;if(T.bids[s]>bh){bh=T.bids[s];bw=s}}T.turn=bw;T.status='';T.legal=c=>{let follow=validFollow(T.hands[0],T.trick);if(!follow.includes(c))return false;if(!T.trick.length&&c.s==='S'&&!T.broken&&T.hands[0].some(x=>x.s!=='S'))return false;return true};T.winner=tr=>trickWinner(tr,'S');T.humanPlay=c=>spadePlay(0,c);T.aiPlay=()=>{let p=T.turn,c=spadeSmartCard(p);if(c)spadePlay(p,c)};T.onHandEnd=spadeScore;renderTrickCommon();if(T.turn!==0)aiDelay(T.aiPlay)}else spadeBid();if(_spHeroBid)spSnd('tick');}
 function spadePlay(p,c){if(cardFlight||!T||T.id!=='spades'||T.phase!=='play'||T.turn!==p||T.trick.length>=4||!c)return;let state=T,hand=state.hands[p],cardIndex=hand.indexOf(c);if(cardIndex<0){renderTrickCommon();return}spSnd('slide');flyTrickCard(p,c,()=>{if(T!==state||current?.id!=='spades')return;cardIndex=hand.indexOf(c);if(cardIndex<0){renderTrickCommon();return}hand.splice(cardIndex,1);if(c.s==='S'&&(!T.trick.length||T.trick[0].card.s!=='S'))T.broken=true;T.trick.push({p,card:c});T.turn=(p+1)%4;if(T.trick.length===4){renderTrickCommon();aiDelay(completeTrick,700)}else{renderTrickCommon();if(T.turn!==0)aiDelay(T.aiPlay)}},spadeCardHTML)}
-function spadeScore(){clearTimer();if(T.taken.reduce((sum,n)=>sum+n,0)!==13||T.hands.some(h=>h.length)){throw new Error('Spades hand cannot be scored until all 52 cards have been played.')}for(let team=0;team<2;team++){let players=[team,team+2],kneeling=players.filter(p=>T.bids[p]===0),regular=players.filter(p=>T.bids[p]>0),delta=0,bags=0;for(const p of kneeling)delta+=T.taken[p]===0?100:-100;if(regular.length){let contract=regular.reduce((n,p)=>n+T.bids[p],0),won=regular.reduce((n,p)=>n+T.taken[p],0);delta+=won>=contract?contract*10+(won-contract):-contract*10;if(won>=contract)bags=won-contract}T.bags[team]+=bags;while(T.bags[team]>=10){delta-=100;T.bags[team]-=10}T.scores[team]+=delta;if(team===0)spSnd(delta>0?'win':'knock');}if(T.scores[0]>=500||T.scores[1]>=500||T.scores[0]<=-200||T.scores[1]<=-200)finish('Spades match',T.scores[0]>T.scores[1]?'Your partnership wins':'Their partnership wins',initSpades);else{let scores=[...T.scores],bags=[...T.bags],dealer=(T.dealer+1)%4,handNo=T.handNo+1;initSpades(scores,bags,dealer,handNo)}}
+/* LOCK IN AT FOUR (Jerry 2026-11-16 ~19:18): if a team's combined bid is
+   below 4, bump it UP to 4. Split the shortfall evenly among the NON-Kneel
+   bidders (differ by at most 1 when the shortfall is odd); if one partner
+   Kneels, the other takes the full shortfall to 4; if both Kneel, bump each
+   to 2 (the Kneel is overridden because the team MUST have a bid of 4).
+   The bid itself is FREE — the player CAN bid 1, the board lets them. The
+   bumping happens AFTER the bid is placed, never by blocking it. The counter
+   (spadeBadges) reads T.bids, so it shows the BUMPED bid. Idempotent. */
+function spadeLockIn(){
+  if(!T||T.id!=='spades'||!T.bids||T.bids.some(function(b){return b===null;}))return;
+  [0,1].forEach(function(team){
+    var a=team,b=team+2;
+    var total=(T.bids[a]||0)+(T.bids[b]||0);
+    if(total>=4)return;
+    var short=4-total, aK=T.bids[a]===0, bK=T.bids[b]===0;
+    if(aK&&bK){T.bids[a]=2;T.bids[b]=2;}
+    else if(aK){T.bids[b]=(T.bids[b]||0)+short;}
+    else if(bK){T.bids[a]=(T.bids[a]||0)+short;}
+    else{var bumpA=Math.ceil(short/2);T.bids[a]=(T.bids[a]||0)+bumpA;T.bids[b]=(T.bids[b]||0)+(short-bumpA);}
+  });
+}
+/* BOSTON (Jerry 2026-11-16 ~19:18): returns the winning team (0=Us, 1=Them)
+   if that team bid >=10 combined AND took >=10 tricks, else null. A team
+   that bid >=10 but took <10 is just set (not a Boston). A team that took
+   >=10 but bid <10 is not a Boston either. */
+function spadeCheckBoston(){
+  if(!T||T.id!=='spades'||!T.bids)return null;
+  for(var team=0;team<2;team++){
+    var bid=(T.bids[team]||0)+(T.bids[team+2]||0);
+    var took=(T.taken[team]||0)+(T.taken[team+2]||0);
+    if(bid>=10&&took>=10)return team;
+  }
+  return null;
+}
+function spadeScore(){clearTimer();if(T.taken.reduce((sum,n)=>sum+n,0)!==13||T.hands.some(h=>h.length)){throw new Error('Spades hand cannot be scored until all 52 cards have been played.')}spadeLockIn();for(let team=0;team<2;team++){let players=[team,team+2],kneeling=players.filter(p=>T.bids[p]===0),regular=players.filter(p=>T.bids[p]>0),delta=0,bags=0;for(const p of kneeling)delta+=T.taken[p]===0?100:-100;if(regular.length){let contract=(T.bids[team]||0)+(T.bids[team+2]||0),won=(T.taken[team]||0)+(T.taken[team+2]||0);/* SET/MAKE (Jerry 2026-11-16 ~19:18): SET if the team takes <4 tricks OR fewer than its (bumped) bid; MAKE if it takes >=4 AND >= its bid. The team's tricks taken is the sum of BOTH partners' tricks. */if(won>=4&&won>=contract){delta+=contract*10+(won-contract);bags=won-contract;}else{delta-=contract*10;}}T.bags[team]+=bags;while(T.bags[team]>=10){delta-=100;T.bags[team]-=10}T.scores[team]+=delta;if(team===0)spSnd(delta>0?'win':'knock');}let _boston=spadeCheckBoston();if(_boston!==null){/* BOSTON (Jerry 2026-11-16 ~19:18): a team that bid >=10 combined AND took >=10 tricks wins the match IMMEDIATELY — the game is over right there. Overrides first-to-500. */let _bb=(T.bids[_boston]||0)+(T.bids[_boston+2]||0),_bt=(T.taken[_boston]||0)+(T.taken[_boston+2]||0);finish('BOSTON — '+(_boston===0?'Your partnership':'Their partnership')+' wins','BOSTON! '+(_boston===0?'Your partnership':'Their partnership')+' bid '+_bb+' and took '+_bt+' — game over right there.',initSpades);}else if(T.scores[0]>=500||T.scores[1]>=500||T.scores[0]<=-200||T.scores[1]<=-200)finish('Spades match',T.scores[0]>T.scores[1]?'Your partnership wins':'Their partnership wins',initSpades);else{let scores=[...T.scores],bags=[...T.bags],dealer=(T.dealer+1)%4,handNo=T.handNo+1;initSpades(scores,bags,dealer,handNo)}}
+window.__spadesV5Test={
+  getState:function(){return{phase:T&&T.phase,handNo:T&&T.handNo,turn:T&&T.turn,bids:T?T.bids.slice():[],taken:T?T.taken.slice():[],scores:T?T.scores.slice():[],bags:T?T.bags.slice():[],broken:T&&T.broken,heroHand:T?T.hands[0].map(function(c){return c.id;}):[],trick:T?T.trick.map(function(x){return{seat:x.p,card:x.card.id};}):[],status:T&&T.status};},
+  getHands:function(){return T?T.hands.map(function(h){return h.map(function(c){return c.id;});}):[];},
+  estimate:function(hand,partnerBid){return spadeEstimate(hand||(T&&T.hands[0])||[],partnerBid||0);},
+  smartCard:function(p){var c=spadeSmartCard(p==null?(T&&T.turn):p);return c?c.id:null;},
+  autoBid:function(){if(!T||T.id!=='spades'||T.phase!=='bid'||T.turn!==0)return false;var b=spadeEstimate(T.hands[0],T.bids[2]==null?0:T.bids[2]);spadeTakeBid(b);return b;},
+  autoPlay:function(){if(!T||T.id!=='spades'||T.phase!=='play'||T.turn!==0)return false;var c=spadeSmartCard(0);if(!c)return false;spadePlay(0,c);return c.id;},
+  lockIn:function(bids){var src=(bids||T.bids||[]).slice();var out=src.slice();[0,1].forEach(function(team){var a=team,b=team+2,total=(out[a]||0)+(out[b]||0);if(total>=4)return;var short=4-total,aK=out[a]===0,bK=out[b]===0;if(aK&&bK){out[a]=2;out[b]=2;}else if(aK){out[b]=(out[b]||0)+short;}else if(bK){out[a]=(out[a]||0)+short;}else{var bumpA=Math.ceil(short/2);out[a]=(out[a]||0)+bumpA;out[b]=(out[b]||0)+(short-bumpA);}});return out;},
+  checkBoston:function(bids,taken){var b=bids||(T&&T.bids)||[],tk=taken||(T&&T.taken)||[];for(var team=0;team<2;team++){var bid=(b[team]||0)+(b[team+2]||0),took=(tk[team]||0)+(tk[team+2]||0);if(bid>=10&&took>=10)return team;}return null;},
+  applyLockIn:function(){if(!T)return false;spadeLockIn();try{renderTrickCommon();}catch(e){}return T.bids.slice();},
+  setBids:function(bids){if(!T)return false;T.bids=bids.slice();return true;},
+  setTaken:function(taken){if(!T)return false;T.taken=taken.slice();return true;},
+  setBags:function(bags){if(!T)return false;T.bags=bags.slice();return T.bags.slice();},
+  sounds:function(){return (window.__spadesV5&&window.__spadesV5.sounds?window.__spadesV5.sounds.slice():[]);},
+  forceHandEnd:function(bids,taken){if(!T||T.id!=='spades')return{error:'not spades'};T.bids=(bids||[]).slice();T.taken=(taken||[]).slice();T.hands=[[],[],[],[]];T.trick=[];var before={scores:T.scores.slice(),bags:T.bags.slice()};spadeScore();return{scores:T.scores.slice(),bags:T.bags.slice(),before:before,boston:spadeCheckBoston(),modal:(document.querySelector('.modal .endbox strong')||{}).textContent||null,modalTitle:(document.querySelector('.modal h2')||document.querySelector('.modal strong')||{}).textContent||null};}
+};
 
 // ---------- HEARTS ----------
 function flashHeartPass(text){document.querySelector('.hearts-pass-flash')?.remove();let note=document.createElement('div');note.className='hearts-pass-flash';note.textContent=text;$('.table-stage').appendChild(note);setTimeout(()=>note.remove(),2000)}
